@@ -3,7 +3,7 @@ managed:
   enabled: true
   override:
     - file_option: go_package_prefix
-      value: github.com/sebastienmelki/alpaca-go/api
+      value: github.com/sebastienmelki/alpaca-go/internal/gen
     - file_option: go_package_prefix
       module: buf.build/bufbuild/protovalidate
       value: ""
@@ -12,8 +12,8 @@ managed:
       value: ""
 plugins:
   - local: protoc-gen-go
-    out: ./api
-    opt: module=github.com/sebastienmelki/alpaca-go/api
+    out: ./internal/gen
+    opt: module=github.com/sebastienmelki/alpaca-go/internal/gen
 
   - local: protoc-gen-openapiv3
     out: ./docs
@@ -23,7 +23,7 @@ plugins:
     opt:
       - format=json
 
-  - local: protoc-gen-go-http
-    out: api
+  - local: protoc-gen-go-client
+    out: ./internal/gen
     opt:
-      - module=github.com/sebastienmelki/alpaca-go/api
+      - module=github.com/sebastienmelki/alpaca-go/internal/gen
