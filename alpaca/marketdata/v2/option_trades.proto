@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// OptionTrade represents an option trade.
+message OptionTrade {
+  // Timestamp (RFC 3339).
+  string t = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00.123456Z"] }];
+
+  // Exchange code.
+  string x = 2 [(sebuf.http.field_examples) = { values: ["C"] }];
+
+  // Trade price.
+  double p = 3 [(sebuf.http.field_examples) = { values: ["5.25"] }];
+
+  // Trade size.
+  int64 s = 4 [(sebuf.http.field_examples) = { values: ["10"] }];
+
+  // Trade conditions.
+  repeated string c = 5 [(sebuf.http.field_examples) = { values: ["@"] }];
+}
+
+// GetOptionTradesRequest is the request to get historical option trades.
+message GetOptionTradesRequest {
+  // Comma-separated list of option symbols.
+  string symbols = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL240119C00150000"] }
+  ];
+
+  // Start timestamp (RFC 3339 or YYYY-MM-DD).
+  string start = 2 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15T09:30:00Z"] }
+  ];
+
+  // End timestamp (RFC 3339 or YYYY-MM-DD).
+  string end = 3 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15T16:00:00Z"] }
+  ];
+
+  // Maximum number of trades to return (1-10000, default 1000).
+  int32 limit = 4 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 10000 },
+    (sebuf.http.field_examples) = { values: ["1000"] }
+  ];
+
+  // Page token for pagination.
+  string page_token = 5 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Sort order (asc, desc).
+  string sort = 6 [
+    (sebuf.http.query) = { name: "sort" },
+    (sebuf.http.field_examples) = { values: ["asc"] }
+  ];
+}
+
+// OptionTradesList is a list of trades for a single option symbol.
+message OptionTradesList {
+  repeated OptionTrade trades = 1;
+}
+
+// GetOptionTradesResponse is the response containing option trades.
+message GetOptionTradesResponse {
+  // Map of symbol to trades.
+  map<string, OptionTradesList> trades = 1;
+
+  // Next page token.
+  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+}
+
+// GetLatestOptionTradesRequest is the request to get the latest option trades.
+message GetLatestOptionTradesRequest {
+  // Comma-separated list of option symbols.
+  string symbols = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL240119C00150000"] }
+  ];
+
+  // Data feed (indicative, opra).
+  string feed = 2 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["opra"] }
+  ];
+}
+
+// GetLatestOptionTradesResponse is the response containing the latest option trades.
+message GetLatestOptionTradesResponse {
+  // Map of symbol to latest trade.
+  map<string, OptionTrade> trades = 1;
+}

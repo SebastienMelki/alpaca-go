@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/marketdata/v2/option_trades.proto";
+import "alpaca/marketdata/v2/option_quotes.proto";
+
+// OptionGreeks represents the option Greeks.
+message OptionGreeks {
+  // Delta.
+  double delta = 1 [(sebuf.http.field_examples) = { values: ["0.65"] }];
+
+  // Gamma.
+  double gamma = 2 [(sebuf.http.field_examples) = { values: ["0.05"] }];
+
+  // Theta.
+  double theta = 3 [(sebuf.http.field_examples) = { values: ["-0.10"] }];
+
+  // Vega.
+  double vega = 4 [(sebuf.http.field_examples) = { values: ["0.15"] }];
+
+  // Rho.
+  double rho = 5 [(sebuf.http.field_examples) = { values: ["0.02"] }];
+}
+
+// OptionSnapshot represents a point-in-time option market data snapshot.
+message OptionSnapshot {
+  // Latest trade.
+  OptionTrade latest_trade = 1;
+
+  // Latest quote.
+  OptionQuote latest_quote = 2;
+
+  // Implied volatility.
+  double implied_volatility = 3 [(sebuf.http.field_examples) = { values: ["0.35"] }];
+
+  // Option Greeks.
+  OptionGreeks greeks = 4;
+}
+
+// GetOptionSnapshotsRequest is the request to get option snapshots.
+message GetOptionSnapshotsRequest {
+  // Comma-separated list of option symbols.
+  string symbols = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL240119C00150000"] }
+  ];
+
+  // Data feed (indicative, opra).
+  string feed = 2 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["opra"] }
+  ];
+}
+
+// GetOptionSnapshotsResponse is the response containing option snapshots.
+message GetOptionSnapshotsResponse {
+  // Map of symbol to snapshot.
+  map<string, OptionSnapshot> snapshots = 1;
+}
+
+// GetOptionChainRequest is the request to get an option chain for an underlying.
+message GetOptionChainRequest {
+  // Underlying symbol (bound from path variable).
+  string underlying_symbol = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Data feed (indicative, opra).
+  string feed = 2 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["opra"] }
+  ];
+
+  // Filter by option type (call, put).
+  string type = 3 [
+    (sebuf.http.query) = { name: "type" },
+    (sebuf.http.field_examples) = { values: ["call"] }
+  ];
+
+  // Filter by strike price greater than or equal to.
+  double strike_price_gte = 4 [
+    (sebuf.http.query) = { name: "strike_price_gte" },
+    (sebuf.http.field_examples) = { values: ["140.00"] }
+  ];
+
+  // Filter by strike price less than or equal to.
+  double strike_price_lte = 5 [
+    (sebuf.http.query) = { name: "strike_price_lte" },
+    (sebuf.http.field_examples) = { values: ["160.00"] }
+  ];
+
+  // Filter by expiration date greater than or equal to (YYYY-MM-DD).
+  string expiration_date_gte = 6 [
+    (sebuf.http.query) = { name: "expiration_date_gte" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Filter by expiration date less than or equal to (YYYY-MM-DD).
+  string expiration_date_lte = 7 [
+    (sebuf.http.query) = { name: "expiration_date_lte" },
+    (sebuf.http.field_examples) = { values: ["2024-03-15"] }
+  ];
+
+  // Page token for pagination.
+  string page_token = 8 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Maximum number of results (default 100).
+  int32 limit = 9 [
+    (sebuf.http.query) = { name: "limit" },
+    (sebuf.http.field_examples) = { values: ["100"] }
+  ];
+}
+
+// GetOptionChainResponse is the response containing an option chain.
+message GetOptionChainResponse {
+  // Map of option symbol to snapshot.
+  map<string, OptionSnapshot> snapshots = 1;
+
+  // Next page token.
+  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+}

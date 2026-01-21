@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// CryptoQuote represents a crypto bid/ask quote.
+message CryptoQuote {
+  // Timestamp (RFC 3339).
+  string t = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00.123456Z"] }];
+
+  // Ask price.
+  double ap = 2 [(sebuf.http.field_examples) = { values: ["42010.00"] }];
+
+  // Ask size.
+  double as = 3 [(sebuf.http.field_examples) = { values: ["1.5"] }];
+
+  // Bid price.
+  double bp = 4 [(sebuf.http.field_examples) = { values: ["42000.00"] }];
+
+  // Bid size.
+  double bs = 5 [(sebuf.http.field_examples) = { values: ["2.0"] }];
+}
+
+// GetCryptoQuotesRequest is the request to get historical crypto quotes.
+message GetCryptoQuotesRequest {
+  // Crypto location (us).
+  string loc = 1 [(sebuf.http.field_examples) = { values: ["us"] }];
+
+  // Comma-separated list of symbols.
+  string symbols = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["BTC/USD,ETH/USD"] }
+  ];
+
+  // Start timestamp (RFC 3339 or YYYY-MM-DD).
+  string start = 3 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15T00:00:00Z"] }
+  ];
+
+  // End timestamp (RFC 3339 or YYYY-MM-DD).
+  string end = 4 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15T23:59:59Z"] }
+  ];
+
+  // Maximum number of quotes to return (1-10000, default 1000).
+  int32 limit = 5 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 10000 },
+    (sebuf.http.field_examples) = { values: ["1000"] }
+  ];
+
+  // Page token for pagination.
+  string page_token = 6 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Sort order (asc, desc).
+  string sort = 7 [
+    (sebuf.http.query) = { name: "sort" },
+    (sebuf.http.field_examples) = { values: ["asc"] }
+  ];
+}
+
+// CryptoQuotesList is a list of quotes for a single symbol.
+message CryptoQuotesList {
+  repeated CryptoQuote quotes = 1;
+}
+
+// GetCryptoQuotesResponse is the response containing crypto quotes.
+message GetCryptoQuotesResponse {
+  // Map of symbol to quotes.
+  map<string, CryptoQuotesList> quotes = 1;
+
+  // Next page token.
+  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+}
+
+// GetLatestCryptoQuotesRequest is the request to get the latest crypto quotes.
+message GetLatestCryptoQuotesRequest {
+  // Crypto location (us).
+  string loc = 1 [(sebuf.http.field_examples) = { values: ["us"] }];
+
+  // Comma-separated list of symbols.
+  string symbols = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["BTC/USD,ETH/USD"] }
+  ];
+}
+
+// GetLatestCryptoQuotesResponse is the response containing the latest crypto quotes.
+message GetLatestCryptoQuotesResponse {
+  // Map of symbol to latest quote.
+  map<string, CryptoQuote> quotes = 1;
+}

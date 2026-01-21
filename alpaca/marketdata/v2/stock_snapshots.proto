@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/marketdata/v2/common.proto";
+
+// GetStockSnapshotsRequest is the request to get stock snapshots.
+message GetStockSnapshotsRequest {
+  // Comma-separated list of symbols.
+  string symbols = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL,TSLA,MSFT"] }
+  ];
+
+  // Data feed (iex, sip).
+  string feed = 2 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["sip"] }
+  ];
+
+  // Currency for the response prices.
+  string currency = 3 [
+    (sebuf.http.query) = { name: "currency" },
+    (sebuf.http.field_examples) = { values: ["USD"] }
+  ];
+}
+
+// GetStockSnapshotsResponse is the response containing stock snapshots.
+message GetStockSnapshotsResponse {
+  // Map of symbol to snapshot.
+  map<string, Snapshot> snapshots = 1;
+}
+
+// GetStockSnapshotRequest is the request to get a single stock snapshot.
+message GetStockSnapshotRequest {
+  // Symbol (bound from path variable).
+  string symbol = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Data feed (iex, sip).
+  string feed = 2 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["sip"] }
+  ];
+
+  // Currency for the response prices.
+  string currency = 3 [
+    (sebuf.http.query) = { name: "currency" },
+    (sebuf.http.field_examples) = { values: ["USD"] }
+  ];
+}

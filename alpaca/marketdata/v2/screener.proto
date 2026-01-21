@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// MostActive represents a most active stock.
+message MostActive {
+  // Symbol.
+  string symbol = 1 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Trading volume.
+  int64 volume = 2 [(sebuf.http.field_examples) = { values: ["123456789"] }];
+
+  // Trade count.
+  int64 trade_count = 3 [(sebuf.http.field_examples) = { values: ["54321"] }];
+}
+
+// GetMostActivesRequest is the request to get most active stocks.
+message GetMostActivesRequest {
+  // Number of results to return (default 10, max 100).
+  int32 top = 1 [
+    (sebuf.http.query) = { name: "top" },
+    (buf.validate.field).int32 = { gte: 1, lte: 100 },
+    (sebuf.http.field_examples) = { values: ["10"] }
+  ];
+
+  // Ranking criteria (volume, trades).
+  string by = 2 [
+    (sebuf.http.query) = { name: "by" },
+    (sebuf.http.field_examples) = { values: ["volume"] }
+  ];
+}
+
+// GetMostActivesResponse is the response containing most active stocks.
+message GetMostActivesResponse {
+  // List of most active stocks.
+  repeated MostActive most_actives = 1;
+
+  // Timestamp when this data was last updated (RFC 3339).
+  string last_updated = 2 [(sebuf.http.field_examples) = { values: ["2024-01-15T16:00:00Z"] }];
+}
+
+// Mover represents a top mover stock.
+message Mover {
+  // Symbol.
+  string symbol = 1 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Percent change.
+  double percent_change = 2 [(sebuf.http.field_examples) = { values: ["5.25"] }];
+
+  // Price change.
+  double change = 3 [(sebuf.http.field_examples) = { values: ["7.50"] }];
+
+  // Current price.
+  double price = 4 [(sebuf.http.field_examples) = { values: ["150.25"] }];
+}
+
+// GetMoversRequest is the request to get top movers.
+message GetMoversRequest {
+  // Market type (stocks, crypto).
+  string market_type = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["stocks"] }
+  ];
+
+  // Number of results to return (default 10, max 50).
+  int32 top = 2 [
+    (sebuf.http.query) = { name: "top" },
+    (buf.validate.field).int32 = { gte: 1, lte: 50 },
+    (sebuf.http.field_examples) = { values: ["10"] }
+  ];
+}
+
+// GetMoversResponse is the response containing top movers.
+message GetMoversResponse {
+  // List of top gainers.
+  repeated Mover gainers = 1;
+
+  // List of top losers.
+  repeated Mover losers = 2;
+
+  // Market type.
+  string market_type = 3 [(sebuf.http.field_examples) = { values: ["stocks"] }];
+
+  // Timestamp when this data was last updated (RFC 3339).
+  string last_updated = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T16:00:00Z"] }];
+}

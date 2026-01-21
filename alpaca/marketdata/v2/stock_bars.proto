@@ -1,0 +1,115 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/marketdata/v2/common.proto";
+
+// GetStockBarsRequest is the request to get historical stock bars.
+message GetStockBarsRequest {
+  // Comma-separated list of symbols.
+  string symbols = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL,TSLA,MSFT"] }
+  ];
+
+  // Bar timeframe (1Min, 5Min, 15Min, 30Min, 1Hour, 4Hour, 1Day, 1Week, 1Month).
+  string timeframe = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "timeframe" },
+    (sebuf.http.field_examples) = { values: ["1Day"] }
+  ];
+
+  // Start timestamp (RFC 3339 or YYYY-MM-DD).
+  string start = 3 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01"] }
+  ];
+
+  // End timestamp (RFC 3339 or YYYY-MM-DD).
+  string end = 4 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31"] }
+  ];
+
+  // Maximum number of bars to return (1-10000, default 1000).
+  int32 limit = 5 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 10000 },
+    (sebuf.http.field_examples) = { values: ["1000"] }
+  ];
+
+  // Adjustment type (raw, split, dividend, all).
+  string adjustment = 6 [
+    (sebuf.http.query) = { name: "adjustment" },
+    (sebuf.http.field_examples) = { values: ["raw"] }
+  ];
+
+  // Data feed (iex, sip).
+  string feed = 7 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["sip"] }
+  ];
+
+  // Page token for pagination.
+  string page_token = 8 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Sort order (asc, desc).
+  string sort = 9 [
+    (sebuf.http.query) = { name: "sort" },
+    (sebuf.http.field_examples) = { values: ["asc"] }
+  ];
+}
+
+// StockBarsMap is a map of symbol to bars.
+message StockBarsMap {
+  // Map of symbol to list of bars.
+  map<string, StockBarsList> bars = 1;
+}
+
+// StockBarsList is a list of bars for a single symbol.
+message StockBarsList {
+  repeated Bar bars = 1;
+}
+
+// GetStockBarsResponse is the response containing stock bars.
+message GetStockBarsResponse {
+  // Map of symbol to bars.
+  map<string, StockBarsList> bars = 1;
+
+  // Next page token.
+  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+}
+
+// GetLatestStockBarsRequest is the request to get the latest stock bars.
+message GetLatestStockBarsRequest {
+  // Comma-separated list of symbols.
+  string symbols = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL,TSLA,MSFT"] }
+  ];
+
+  // Data feed (iex, sip).
+  string feed = 2 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["sip"] }
+  ];
+
+  // Currency for the response prices.
+  string currency = 3 [
+    (sebuf.http.query) = { name: "currency" },
+    (sebuf.http.field_examples) = { values: ["USD"] }
+  ];
+}
+
+// GetLatestStockBarsResponse is the response containing the latest stock bars.
+message GetLatestStockBarsResponse {
+  // Map of symbol to latest bar.
+  map<string, Bar> bars = 1;
+}

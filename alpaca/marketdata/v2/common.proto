@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "sebuf/http/annotations.proto";
+
+// Bar represents an OHLCV candlestick bar.
+message Bar {
+  // Timestamp (RFC 3339).
+  string t = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15T09:30:00Z"] }];
+
+  // Open price.
+  double o = 2 [(sebuf.http.field_examples) = { values: ["150.00"] }];
+
+  // High price.
+  double h = 3 [(sebuf.http.field_examples) = { values: ["152.50"] }];
+
+  // Low price.
+  double l = 4 [(sebuf.http.field_examples) = { values: ["149.75"] }];
+
+  // Close price.
+  double c = 5 [(sebuf.http.field_examples) = { values: ["151.25"] }];
+
+  // Volume.
+  int64 v = 6 [(sebuf.http.field_examples) = { values: ["1234567"] }];
+
+  // Number of trades.
+  int64 n = 7 [(sebuf.http.field_examples) = { values: ["5432"] }];
+
+  // Volume weighted average price.
+  double vw = 8 [(sebuf.http.field_examples) = { values: ["150.85"] }];
+}
+
+// Trade represents a single trade execution.
+message Trade {
+  // Timestamp (RFC 3339).
+  string t = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00.123456Z"] }];
+
+  // Exchange code.
+  string x = 2 [(sebuf.http.field_examples) = { values: ["Q"] }];
+
+  // Trade price.
+  double p = 3 [(sebuf.http.field_examples) = { values: ["150.25"] }];
+
+  // Trade size.
+  int64 s = 4 [(sebuf.http.field_examples) = { values: ["100"] }];
+
+  // Trade ID.
+  int64 i = 5 [(sebuf.http.field_examples) = { values: ["12345678901"] }];
+
+  // Trade conditions.
+  repeated string c = 6 [(sebuf.http.field_examples) = { values: ["@"] }];
+
+  // Tape (A = NYSE, B = ARCA, C = NASDAQ).
+  string z = 7 [(sebuf.http.field_examples) = { values: ["C"] }];
+}
+
+// Quote represents a bid/ask quote.
+message Quote {
+  // Timestamp (RFC 3339).
+  string t = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00.123456Z"] }];
+
+  // Ask exchange code.
+  string ax = 2 [(sebuf.http.field_examples) = { values: ["Q"] }];
+
+  // Ask price.
+  double ap = 3 [(sebuf.http.field_examples) = { values: ["150.30"] }];
+
+  // Ask size.
+  int64 as = 4 [(sebuf.http.field_examples) = { values: ["500"] }];
+
+  // Bid exchange code.
+  string bx = 5 [(sebuf.http.field_examples) = { values: ["P"] }];
+
+  // Bid price.
+  double bp = 6 [(sebuf.http.field_examples) = { values: ["150.25"] }];
+
+  // Bid size.
+  int64 bs = 7 [(sebuf.http.field_examples) = { values: ["300"] }];
+
+  // Quote conditions.
+  repeated string c = 8 [(sebuf.http.field_examples) = { values: ["R"] }];
+
+  // Tape.
+  string z = 9 [(sebuf.http.field_examples) = { values: ["C"] }];
+}
+
+// Snapshot represents a point-in-time market data snapshot.
+message Snapshot {
+  // Latest trade.
+  Trade latest_trade = 1;
+
+  // Latest quote.
+  Quote latest_quote = 2;
+
+  // Minute bar.
+  Bar minute_bar = 3;
+
+  // Daily bar.
+  Bar daily_bar = 4;
+
+  // Previous daily bar.
+  Bar prev_daily_bar = 5;
+}
+
+// Timeframe represents the bar timeframe.
+enum Timeframe {
+  TIMEFRAME_UNSPECIFIED = 0;
+  TIMEFRAME_1MIN = 1;
+  TIMEFRAME_5MIN = 2;
+  TIMEFRAME_15MIN = 3;
+  TIMEFRAME_30MIN = 4;
+  TIMEFRAME_1HOUR = 5;
+  TIMEFRAME_4HOUR = 6;
+  TIMEFRAME_1DAY = 7;
+  TIMEFRAME_1WEEK = 8;
+  TIMEFRAME_1MONTH = 9;
+}
+
+// Sort represents sort order.
+enum Sort {
+  SORT_UNSPECIFIED = 0;
+  SORT_ASC = 1;
+  SORT_DESC = 2;
+}
+
+// Feed represents the data feed source.
+enum Feed {
+  FEED_UNSPECIFIED = 0;
+  FEED_IEX = 1;
+  FEED_SIP = 2;
+  FEED_OTC = 3;
+}
+
+// Adjustment represents the data adjustment type.
+enum Adjustment {
+  ADJUSTMENT_UNSPECIFIED = 0;
+  ADJUSTMENT_RAW = 1;
+  ADJUSTMENT_SPLIT = 2;
+  ADJUSTMENT_DIVIDEND = 3;
+  ADJUSTMENT_ALL = 4;
+}
+
+// CryptoLoc represents the crypto location.
+enum CryptoLoc {
+  CRYPTO_LOC_UNSPECIFIED = 0;
+  CRYPTO_LOC_US = 1;
+}

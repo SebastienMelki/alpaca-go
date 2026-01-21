@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// CryptoBar represents a crypto OHLCV bar.
+message CryptoBar {
+  // Timestamp (RFC 3339).
+  string t = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15T09:30:00Z"] }];
+
+  // Open price.
+  double o = 2 [(sebuf.http.field_examples) = { values: ["42000.00"] }];
+
+  // High price.
+  double h = 3 [(sebuf.http.field_examples) = { values: ["42500.00"] }];
+
+  // Low price.
+  double l = 4 [(sebuf.http.field_examples) = { values: ["41800.00"] }];
+
+  // Close price.
+  double c = 5 [(sebuf.http.field_examples) = { values: ["42250.00"] }];
+
+  // Volume.
+  double v = 6 [(sebuf.http.field_examples) = { values: ["123.456789"] }];
+
+  // Number of trades.
+  int64 n = 7 [(sebuf.http.field_examples) = { values: ["5432"] }];
+
+  // Volume weighted average price.
+  double vw = 8 [(sebuf.http.field_examples) = { values: ["42150.00"] }];
+}
+
+// GetCryptoBarsRequest is the request to get historical crypto bars.
+message GetCryptoBarsRequest {
+  // Crypto location (us).
+  string loc = 1 [
+    (sebuf.http.field_examples) = { values: ["us"] }
+  ];
+
+  // Comma-separated list of symbols (e.g., BTC/USD,ETH/USD).
+  string symbols = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["BTC/USD,ETH/USD"] }
+  ];
+
+  // Bar timeframe.
+  string timeframe = 3 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "timeframe" },
+    (sebuf.http.field_examples) = { values: ["1Hour"] }
+  ];
+
+  // Start timestamp (RFC 3339 or YYYY-MM-DD).
+  string start = 4 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01"] }
+  ];
+
+  // End timestamp (RFC 3339 or YYYY-MM-DD).
+  string end = 5 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31"] }
+  ];
+
+  // Maximum number of bars to return (1-10000, default 1000).
+  int32 limit = 6 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 10000 },
+    (sebuf.http.field_examples) = { values: ["1000"] }
+  ];
+
+  // Page token for pagination.
+  string page_token = 7 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Sort order (asc, desc).
+  string sort = 8 [
+    (sebuf.http.query) = { name: "sort" },
+    (sebuf.http.field_examples) = { values: ["asc"] }
+  ];
+}
+
+// CryptoBarsList is a list of bars for a single symbol.
+message CryptoBarsList {
+  repeated CryptoBar bars = 1;
+}
+
+// GetCryptoBarsResponse is the response containing crypto bars.
+message GetCryptoBarsResponse {
+  // Map of symbol to bars.
+  map<string, CryptoBarsList> bars = 1;
+
+  // Next page token.
+  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+}
+
+// GetLatestCryptoBarsRequest is the request to get the latest crypto bars.
+message GetLatestCryptoBarsRequest {
+  // Crypto location (us).
+  string loc = 1 [(sebuf.http.field_examples) = { values: ["us"] }];
+
+  // Comma-separated list of symbols.
+  string symbols = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["BTC/USD,ETH/USD"] }
+  ];
+}
+
+// GetLatestCryptoBarsResponse is the response containing the latest crypto bars.
+message GetLatestCryptoBarsResponse {
+  // Map of symbol to latest bar.
+  map<string, CryptoBar> bars = 1;
+}

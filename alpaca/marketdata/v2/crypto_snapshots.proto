@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/marketdata/v2/crypto_bars.proto";
+import "alpaca/marketdata/v2/crypto_trades.proto";
+import "alpaca/marketdata/v2/crypto_quotes.proto";
+
+// CryptoSnapshot represents a point-in-time crypto market data snapshot.
+message CryptoSnapshot {
+  // Latest trade.
+  CryptoTrade latest_trade = 1;
+
+  // Latest quote.
+  CryptoQuote latest_quote = 2;
+
+  // Minute bar.
+  CryptoBar minute_bar = 3;
+
+  // Daily bar.
+  CryptoBar daily_bar = 4;
+
+  // Previous daily bar.
+  CryptoBar prev_daily_bar = 5;
+}
+
+// GetCryptoSnapshotsRequest is the request to get crypto snapshots.
+message GetCryptoSnapshotsRequest {
+  // Crypto location (us).
+  string loc = 1 [(sebuf.http.field_examples) = { values: ["us"] }];
+
+  // Comma-separated list of symbols.
+  string symbols = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["BTC/USD,ETH/USD"] }
+  ];
+}
+
+// GetCryptoSnapshotsResponse is the response containing crypto snapshots.
+message GetCryptoSnapshotsResponse {
+  // Map of symbol to snapshot.
+  map<string, CryptoSnapshot> snapshots = 1;
+}

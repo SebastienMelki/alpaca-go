@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// NewsImage represents an image associated with a news article.
+message NewsImage {
+  // Image size category.
+  string size = 1 [(sebuf.http.field_examples) = { values: ["large"] }];
+
+  // Image URL.
+  string url = 2 [(sebuf.http.field_examples) = { values: ["https://example.com/image.jpg"] }];
+}
+
+// NewsArticle represents a news article.
+message NewsArticle {
+  // Article ID.
+  int64 id = 1 [(sebuf.http.field_examples) = { values: ["12345678"] }];
+
+  // Headline.
+  string headline = 2 [(sebuf.http.field_examples) = { values: ["Apple Reports Record Q4 Earnings"] }];
+
+  // Author.
+  string author = 3 [(sebuf.http.field_examples) = { values: ["John Smith"] }];
+
+  // Creation timestamp (RFC 3339).
+  string created_at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Update timestamp (RFC 3339).
+  string updated_at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T11:00:00Z"] }];
+
+  // Article summary.
+  string summary = 6 [(sebuf.http.field_examples) = { values: ["Apple Inc. announced record-breaking earnings for the fourth quarter..."] }];
+
+  // Full article content (if include_content is true).
+  string content = 7;
+
+  // Article URL.
+  string url = 8 [(sebuf.http.field_examples) = { values: ["https://news.example.com/article/12345"] }];
+
+  // Associated images.
+  repeated NewsImage images = 9;
+
+  // Related symbols.
+  repeated string symbols = 10 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // News source.
+  string source = 11 [(sebuf.http.field_examples) = { values: ["Benzinga"] }];
+}
+
+// GetNewsRequest is the request to get news articles.
+message GetNewsRequest {
+  // Comma-separated list of symbols to filter by.
+  string symbols = 1 [
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL,TSLA,MSFT"] }
+  ];
+
+  // Start timestamp (RFC 3339).
+  string start = 2 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01T00:00:00Z"] }
+  ];
+
+  // End timestamp (RFC 3339).
+  string end = 3 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31T23:59:59Z"] }
+  ];
+
+  // Maximum number of articles to return (1-50, default 10).
+  int32 limit = 4 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 50 },
+    (sebuf.http.field_examples) = { values: ["10"] }
+  ];
+
+  // Sort order (asc, desc).
+  string sort = 5 [
+    (sebuf.http.query) = { name: "sort" },
+    (sebuf.http.field_examples) = { values: ["desc"] }
+  ];
+
+  // Whether to include full content.
+  bool include_content = 6 [
+    (sebuf.http.query) = { name: "include_content" },
+    (sebuf.http.field_examples) = { values: ["false"] }
+  ];
+
+  // Page token for pagination.
+  string page_token = 7 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Exclude content without symbols.
+  bool exclude_contentless = 8 [
+    (sebuf.http.query) = { name: "exclude_contentless" },
+    (sebuf.http.field_examples) = { values: ["true"] }
+  ];
+}
+
+// GetNewsResponse is the response containing news articles.
+message GetNewsResponse {
+  // List of news articles.
+  repeated NewsArticle news = 1;
+
+  // Next page token.
+  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+}

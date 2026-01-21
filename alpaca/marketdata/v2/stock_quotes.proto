@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/marketdata/v2/common.proto";
+
+// GetStockQuotesRequest is the request to get historical stock quotes.
+message GetStockQuotesRequest {
+  // Comma-separated list of symbols.
+  string symbols = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL,TSLA"] }
+  ];
+
+  // Start timestamp (RFC 3339 or YYYY-MM-DD).
+  string start = 2 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15T09:30:00Z"] }
+  ];
+
+  // End timestamp (RFC 3339 or YYYY-MM-DD).
+  string end = 3 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15T16:00:00Z"] }
+  ];
+
+  // Maximum number of quotes to return (1-10000, default 1000).
+  int32 limit = 4 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 10000 },
+    (sebuf.http.field_examples) = { values: ["1000"] }
+  ];
+
+  // Data feed (iex, sip).
+  string feed = 5 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["sip"] }
+  ];
+
+  // Page token for pagination.
+  string page_token = 6 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Sort order (asc, desc).
+  string sort = 7 [
+    (sebuf.http.query) = { name: "sort" },
+    (sebuf.http.field_examples) = { values: ["asc"] }
+  ];
+}
+
+// StockQuotesList is a list of quotes for a single symbol.
+message StockQuotesList {
+  repeated Quote quotes = 1;
+}
+
+// GetStockQuotesResponse is the response containing stock quotes.
+message GetStockQuotesResponse {
+  // Map of symbol to quotes.
+  map<string, StockQuotesList> quotes = 1;
+
+  // Next page token.
+  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+}
+
+// GetLatestStockQuotesRequest is the request to get the latest stock quotes.
+message GetLatestStockQuotesRequest {
+  // Comma-separated list of symbols.
+  string symbols = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL,TSLA,MSFT"] }
+  ];
+
+  // Data feed (iex, sip).
+  string feed = 2 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["sip"] }
+  ];
+
+  // Currency for the response prices.
+  string currency = 3 [
+    (sebuf.http.query) = { name: "currency" },
+    (sebuf.http.field_examples) = { values: ["USD"] }
+  ];
+}
+
+// GetLatestStockQuotesResponse is the response containing the latest stock quotes.
+message GetLatestStockQuotesResponse {
+  // Map of symbol to latest quote.
+  map<string, Quote> quotes = 1;
+}

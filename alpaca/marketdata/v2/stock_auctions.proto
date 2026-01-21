@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// Auction represents an auction event.
+message Auction {
+  // Timestamp (RFC 3339).
+  string t = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15T09:30:00Z"] }];
+
+  // Auction price.
+  double p = 2 [(sebuf.http.field_examples) = { values: ["150.25"] }];
+
+  // Auction size.
+  int64 s = 3 [(sebuf.http.field_examples) = { values: ["10000"] }];
+
+  // Exchange code.
+  string x = 4 [(sebuf.http.field_examples) = { values: ["Q"] }];
+
+  // Auction condition.
+  string c = 5 [(sebuf.http.field_examples) = { values: ["O"] }];
+}
+
+// DailyAuctions represents opening and closing auctions for a day.
+message DailyAuctions {
+  // Date (YYYY-MM-DD).
+  string d = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
+
+  // Opening auction.
+  repeated Auction o = 2;
+
+  // Closing auction.
+  repeated Auction c = 3;
+}
+
+// GetStockAuctionsRequest is the request to get stock auctions.
+message GetStockAuctionsRequest {
+  // Comma-separated list of symbols.
+  string symbols = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL,TSLA"] }
+  ];
+
+  // Start date (YYYY-MM-DD).
+  string start = 2 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01"] }
+  ];
+
+  // End date (YYYY-MM-DD).
+  string end = 3 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31"] }
+  ];
+
+  // Maximum number of results (1-10000, default 1000).
+  int32 limit = 4 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 10000 },
+    (sebuf.http.field_examples) = { values: ["1000"] }
+  ];
+
+  // Page token for pagination.
+  string page_token = 5 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Sort order (asc, desc).
+  string sort = 6 [
+    (sebuf.http.query) = { name: "sort" },
+    (sebuf.http.field_examples) = { values: ["asc"] }
+  ];
+}
+
+// StockAuctionsList is a list of daily auctions for a single symbol.
+message StockAuctionsList {
+  repeated DailyAuctions auctions = 1;
+}
+
+// GetStockAuctionsResponse is the response containing stock auctions.
+message GetStockAuctionsResponse {
+  // Map of symbol to auctions.
+  map<string, StockAuctionsList> auctions = 1;
+
+  // Next page token.
+  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+}
