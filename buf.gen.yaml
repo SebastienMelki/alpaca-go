@@ -1,0 +1,29 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/sebastienmelki/alpaca-go/api
+    - file_option: go_package_prefix
+      module: buf.build/bufbuild/protovalidate
+      value: ""
+    - file_option: go_package_prefix
+      module: buf.build/sebmelki/sebuf
+      value: ""
+plugins:
+  - local: protoc-gen-go
+    out: ./api
+    opt: module=github.com/sebastienmelki/alpaca-go/api
+
+  - local: protoc-gen-openapiv3
+    out: ./docs
+
+  - local: protoc-gen-openapiv3
+    out: ./docs
+    opt:
+      - format=json
+
+  - local: protoc-gen-go-http
+    out: api
+    opt:
+      - module=github.com/sebastienmelki/alpaca-go/api
