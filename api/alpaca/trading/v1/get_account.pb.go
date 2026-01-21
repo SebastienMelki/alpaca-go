@@ -7,8 +7,6 @@
 package tradingv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -23,11 +21,10 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// GetAccountRequest is the request to get an account.
+// GetAccountRequest is the request to get the account.
+// Account is identified by the API key used for authentication.
 type GetAccountRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The account ID (bound from path variable).
-	AccountId     string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -62,22 +59,12 @@ func (*GetAccountRequest) Descriptor() ([]byte, []int) {
 	return file_alpaca_trading_v1_get_account_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetAccountRequest) GetAccountId() string {
-	if x != nil {
-		return x.AccountId
-	}
-	return ""
-}
-
 var File_alpaca_trading_v1_get_account_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_get_account_proto_rawDesc = "" +
 	"\n" +
-	"#alpaca/trading/v1/get_account.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"i\n" +
-	"\x11GetAccountRequest\x12T\n" +
-	"\n" +
-	"account_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
-	"$904837e3-3b76-47ec-b432-046db621571bR\taccountIdB\xd3\x01\n" +
+	"#alpaca/trading/v1/get_account.proto\x12\x11alpaca.trading.v1\"\x13\n" +
+	"\x11GetAccountRequestB\xd3\x01\n" +
 	"\x15com.alpaca.trading.v1B\x0fGetAccountProtoP\x01ZCgithub.com/sebastienmelki/alpaca-go/api/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (

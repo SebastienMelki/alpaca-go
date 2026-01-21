@@ -26,10 +26,8 @@ const (
 // CancelOrderRequest is the request to cancel an order.
 type CancelOrderRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The account ID (bound from path variable).
-	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// The order ID to cancel (bound from path variable).
-	OrderId       string `protobuf:"bytes,2,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	OrderId       string `protobuf:"bytes,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -62,13 +60,6 @@ func (x *CancelOrderRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CancelOrderRequest.ProtoReflect.Descriptor instead.
 func (*CancelOrderRequest) Descriptor() ([]byte, []int) {
 	return file_alpaca_trading_v1_cancel_order_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *CancelOrderRequest) GetAccountId() string {
-	if x != nil {
-		return x.AccountId
-	}
-	return ""
 }
 
 func (x *CancelOrderRequest) GetOrderId() string {
@@ -137,12 +128,9 @@ var File_alpaca_trading_v1_cancel_order_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_cancel_order_proto_rawDesc = "" +
 	"\n" +
-	"$alpaca/trading/v1/cancel_order.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xbc\x01\n" +
-	"\x12CancelOrderRequest\x12T\n" +
-	"\n" +
-	"account_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
-	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\x12P\n" +
-	"\border_id\x18\x02 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
+	"$alpaca/trading/v1/cancel_order.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"f\n" +
+	"\x12CancelOrderRequest\x12P\n" +
+	"\border_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$61e69015-8549-4bfd-b9c3-01e75843f47dR\aorderId\"\x82\x01\n" +
 	"\x13CancelOrderResponse\x12$\n" +
 	"\asuccess\x18\x01 \x01(\bB\n" +

@@ -213,11 +213,11 @@ type Account struct {
 	// Day trade count.
 	DaytradeCount int32 `protobuf:"varint,33,opt,name=daytrade_count,json=daytradeCount,proto3" json:"daytrade_count,omitempty"`
 	// Options trading level (if options enabled).
-	OptionsTradingLevel *int32 `protobuf:"varint,34,opt,name=options_trading_level,json=optionsTradingLevel,proto3,oneof" json:"options_trading_level,omitempty"`
+	OptionsTradingLevel int32 `protobuf:"varint,34,opt,name=options_trading_level,json=optionsTradingLevel,proto3" json:"options_trading_level,omitempty"`
 	// Options approved level.
-	OptionsApprovedLevel *int32 `protobuf:"varint,35,opt,name=options_approved_level,json=optionsApprovedLevel,proto3,oneof" json:"options_approved_level,omitempty"`
+	OptionsApprovedLevel int32 `protobuf:"varint,35,opt,name=options_approved_level,json=optionsApprovedLevel,proto3" json:"options_approved_level,omitempty"`
 	// Options buying power.
-	OptionsBuyingPower *string `protobuf:"bytes,36,opt,name=options_buying_power,json=optionsBuyingPower,proto3,oneof" json:"options_buying_power,omitempty"`
+	OptionsBuyingPower string `protobuf:"bytes,36,opt,name=options_buying_power,json=optionsBuyingPower,proto3" json:"options_buying_power,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -484,22 +484,22 @@ func (x *Account) GetDaytradeCount() int32 {
 }
 
 func (x *Account) GetOptionsTradingLevel() int32 {
-	if x != nil && x.OptionsTradingLevel != nil {
-		return *x.OptionsTradingLevel
+	if x != nil {
+		return x.OptionsTradingLevel
 	}
 	return 0
 }
 
 func (x *Account) GetOptionsApprovedLevel() int32 {
-	if x != nil && x.OptionsApprovedLevel != nil {
-		return *x.OptionsApprovedLevel
+	if x != nil {
+		return x.OptionsApprovedLevel
 	}
 	return 0
 }
 
 func (x *Account) GetOptionsBuyingPower() string {
-	if x != nil && x.OptionsBuyingPower != nil {
-		return *x.OptionsBuyingPower
+	if x != nil {
+		return x.OptionsBuyingPower
 	}
 	return ""
 }
@@ -508,7 +508,7 @@ var File_alpaca_trading_v1_account_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_account_proto_rawDesc = "" +
 	"\n" +
-	"\x1falpaca/trading/v1/account.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\"\xde\x10\n" +
+	"\x1falpaca/trading/v1/account.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\"\x81\x10\n" +
 	"\aAccount\x12:\n" +
 	"\x02id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
 	"$904837e3-3b76-47ec-b432-046db621571bR\x02id\x127\n" +
@@ -599,17 +599,14 @@ const file_alpaca_trading_v1_account_proto_rawDesc = "" +
 	"\xba\xb5\x18\x06\n" +
 	"\x040.00R\x03sma\x12.\n" +
 	"\x0edaytrade_count\x18! \x01(\x05B\a\xba\xb5\x18\x03\n" +
-	"\x010R\rdaytradeCount\x12@\n" +
+	"\x010R\rdaytradeCount\x12;\n" +
 	"\x15options_trading_level\x18\" \x01(\x05B\a\xba\xb5\x18\x03\n" +
-	"\x012H\x00R\x13optionsTradingLevel\x88\x01\x01\x12B\n" +
+	"\x012R\x13optionsTradingLevel\x12=\n" +
 	"\x16options_approved_level\x18# \x01(\x05B\a\xba\xb5\x18\x03\n" +
-	"\x012H\x01R\x14optionsApprovedLevel\x88\x01\x01\x12E\n" +
+	"\x012R\x14optionsApprovedLevel\x12@\n" +
 	"\x14options_buying_power\x18$ \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\b25000.00H\x02R\x12optionsBuyingPower\x88\x01\x01B\x18\n" +
-	"\x16_options_trading_levelB\x19\n" +
-	"\x17_options_approved_levelB\x17\n" +
-	"\x15_options_buying_power*\xd3\x02\n" +
+	"\b25000.00R\x12optionsBuyingPower*\xd3\x02\n" +
 	"\rAccountStatus\x12\x1e\n" +
 	"\x1aACCOUNT_STATUS_UNSPECIFIED\x10\x00\x12\x1d\n" +
 	"\x19ACCOUNT_STATUS_ONBOARDING\x10\x01\x12$\n" +
@@ -661,7 +658,6 @@ func file_alpaca_trading_v1_account_proto_init() {
 	if File_alpaca_trading_v1_account_proto != nil {
 		return
 	}
-	file_alpaca_trading_v1_account_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

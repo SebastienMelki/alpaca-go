@@ -438,19 +438,19 @@ type Order struct {
 	// Timestamp when the order was submitted.
 	SubmittedAt string `protobuf:"bytes,5,opt,name=submitted_at,json=submittedAt,proto3" json:"submitted_at,omitempty"`
 	// Timestamp when the order was filled.
-	FilledAt *string `protobuf:"bytes,6,opt,name=filled_at,json=filledAt,proto3,oneof" json:"filled_at,omitempty"`
+	FilledAt string `protobuf:"bytes,6,opt,name=filled_at,json=filledAt,proto3" json:"filled_at,omitempty"`
 	// Timestamp when the order expired.
-	ExpiredAt *string `protobuf:"bytes,7,opt,name=expired_at,json=expiredAt,proto3,oneof" json:"expired_at,omitempty"`
+	ExpiredAt string `protobuf:"bytes,7,opt,name=expired_at,json=expiredAt,proto3" json:"expired_at,omitempty"`
 	// Timestamp when the order was canceled.
-	CanceledAt *string `protobuf:"bytes,8,opt,name=canceled_at,json=canceledAt,proto3,oneof" json:"canceled_at,omitempty"`
+	CanceledAt string `protobuf:"bytes,8,opt,name=canceled_at,json=canceledAt,proto3" json:"canceled_at,omitempty"`
 	// Timestamp when the order failed.
-	FailedAt *string `protobuf:"bytes,9,opt,name=failed_at,json=failedAt,proto3,oneof" json:"failed_at,omitempty"`
+	FailedAt string `protobuf:"bytes,9,opt,name=failed_at,json=failedAt,proto3" json:"failed_at,omitempty"`
 	// Timestamp when the order was replaced.
-	ReplacedAt *string `protobuf:"bytes,10,opt,name=replaced_at,json=replacedAt,proto3,oneof" json:"replaced_at,omitempty"`
+	ReplacedAt string `protobuf:"bytes,10,opt,name=replaced_at,json=replacedAt,proto3" json:"replaced_at,omitempty"`
 	// Order ID that replaced this order.
-	ReplacedBy *string `protobuf:"bytes,11,opt,name=replaced_by,json=replacedBy,proto3,oneof" json:"replaced_by,omitempty"`
+	ReplacedBy string `protobuf:"bytes,11,opt,name=replaced_by,json=replacedBy,proto3" json:"replaced_by,omitempty"`
 	// Order ID that this order replaces.
-	Replaces *string `protobuf:"bytes,12,opt,name=replaces,proto3,oneof" json:"replaces,omitempty"`
+	Replaces string `protobuf:"bytes,12,opt,name=replaces,proto3" json:"replaces,omitempty"`
 	// Asset ID.
 	AssetId string `protobuf:"bytes,13,opt,name=asset_id,json=assetId,proto3" json:"asset_id,omitempty"`
 	// Asset symbol.
@@ -458,13 +458,13 @@ type Order struct {
 	// Asset class.
 	AssetClass AssetClass `protobuf:"varint,15,opt,name=asset_class,json=assetClass,proto3,enum=alpaca.trading.v1.AssetClass" json:"asset_class,omitempty"`
 	// Notional value (for fractional orders).
-	Notional *string `protobuf:"bytes,16,opt,name=notional,proto3,oneof" json:"notional,omitempty"`
+	Notional string `protobuf:"bytes,16,opt,name=notional,proto3" json:"notional,omitempty"`
 	// Quantity ordered.
-	Qty *string `protobuf:"bytes,17,opt,name=qty,proto3,oneof" json:"qty,omitempty"`
+	Qty string `protobuf:"bytes,17,opt,name=qty,proto3" json:"qty,omitempty"`
 	// Quantity filled.
 	FilledQty string `protobuf:"bytes,18,opt,name=filled_qty,json=filledQty,proto3" json:"filled_qty,omitempty"`
 	// Average fill price.
-	FilledAvgPrice *string `protobuf:"bytes,19,opt,name=filled_avg_price,json=filledAvgPrice,proto3,oneof" json:"filled_avg_price,omitempty"`
+	FilledAvgPrice string `protobuf:"bytes,19,opt,name=filled_avg_price,json=filledAvgPrice,proto3" json:"filled_avg_price,omitempty"`
 	// Order class.
 	OrderClass OrderClass `protobuf:"varint,20,opt,name=order_class,json=orderClass,proto3,enum=alpaca.trading.v1.OrderClass" json:"order_class,omitempty"`
 	// Order type.
@@ -476,9 +476,9 @@ type Order struct {
 	// Time in force.
 	TimeInForce TimeInForce `protobuf:"varint,24,opt,name=time_in_force,json=timeInForce,proto3,enum=alpaca.trading.v1.TimeInForce" json:"time_in_force,omitempty"`
 	// Limit price (for limit orders).
-	LimitPrice *string `protobuf:"bytes,25,opt,name=limit_price,json=limitPrice,proto3,oneof" json:"limit_price,omitempty"`
+	LimitPrice string `protobuf:"bytes,25,opt,name=limit_price,json=limitPrice,proto3" json:"limit_price,omitempty"`
 	// Stop price (for stop orders).
-	StopPrice *string `protobuf:"bytes,26,opt,name=stop_price,json=stopPrice,proto3,oneof" json:"stop_price,omitempty"`
+	StopPrice string `protobuf:"bytes,26,opt,name=stop_price,json=stopPrice,proto3" json:"stop_price,omitempty"`
 	// Order status.
 	Status OrderStatus `protobuf:"varint,27,opt,name=status,proto3,enum=alpaca.trading.v1.OrderStatus" json:"status,omitempty"`
 	// Whether the order is for extended hours.
@@ -486,11 +486,11 @@ type Order struct {
 	// Leg orders (for bracket orders).
 	Legs []*Order `protobuf:"bytes,29,rep,name=legs,proto3" json:"legs,omitempty"`
 	// Trail percent (for trailing stop orders).
-	TrailPercent *string `protobuf:"bytes,30,opt,name=trail_percent,json=trailPercent,proto3,oneof" json:"trail_percent,omitempty"`
+	TrailPercent string `protobuf:"bytes,30,opt,name=trail_percent,json=trailPercent,proto3" json:"trail_percent,omitempty"`
 	// Trail price (for trailing stop orders).
-	TrailPrice *string `protobuf:"bytes,31,opt,name=trail_price,json=trailPrice,proto3,oneof" json:"trail_price,omitempty"`
+	TrailPrice string `protobuf:"bytes,31,opt,name=trail_price,json=trailPrice,proto3" json:"trail_price,omitempty"`
 	// High water mark (for trailing stop orders).
-	Hwm           *string `protobuf:"bytes,32,opt,name=hwm,proto3,oneof" json:"hwm,omitempty"`
+	Hwm           string `protobuf:"bytes,32,opt,name=hwm,proto3" json:"hwm,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -561,50 +561,50 @@ func (x *Order) GetSubmittedAt() string {
 }
 
 func (x *Order) GetFilledAt() string {
-	if x != nil && x.FilledAt != nil {
-		return *x.FilledAt
+	if x != nil {
+		return x.FilledAt
 	}
 	return ""
 }
 
 func (x *Order) GetExpiredAt() string {
-	if x != nil && x.ExpiredAt != nil {
-		return *x.ExpiredAt
+	if x != nil {
+		return x.ExpiredAt
 	}
 	return ""
 }
 
 func (x *Order) GetCanceledAt() string {
-	if x != nil && x.CanceledAt != nil {
-		return *x.CanceledAt
+	if x != nil {
+		return x.CanceledAt
 	}
 	return ""
 }
 
 func (x *Order) GetFailedAt() string {
-	if x != nil && x.FailedAt != nil {
-		return *x.FailedAt
+	if x != nil {
+		return x.FailedAt
 	}
 	return ""
 }
 
 func (x *Order) GetReplacedAt() string {
-	if x != nil && x.ReplacedAt != nil {
-		return *x.ReplacedAt
+	if x != nil {
+		return x.ReplacedAt
 	}
 	return ""
 }
 
 func (x *Order) GetReplacedBy() string {
-	if x != nil && x.ReplacedBy != nil {
-		return *x.ReplacedBy
+	if x != nil {
+		return x.ReplacedBy
 	}
 	return ""
 }
 
 func (x *Order) GetReplaces() string {
-	if x != nil && x.Replaces != nil {
-		return *x.Replaces
+	if x != nil {
+		return x.Replaces
 	}
 	return ""
 }
@@ -631,15 +631,15 @@ func (x *Order) GetAssetClass() AssetClass {
 }
 
 func (x *Order) GetNotional() string {
-	if x != nil && x.Notional != nil {
-		return *x.Notional
+	if x != nil {
+		return x.Notional
 	}
 	return ""
 }
 
 func (x *Order) GetQty() string {
-	if x != nil && x.Qty != nil {
-		return *x.Qty
+	if x != nil {
+		return x.Qty
 	}
 	return ""
 }
@@ -652,8 +652,8 @@ func (x *Order) GetFilledQty() string {
 }
 
 func (x *Order) GetFilledAvgPrice() string {
-	if x != nil && x.FilledAvgPrice != nil {
-		return *x.FilledAvgPrice
+	if x != nil {
+		return x.FilledAvgPrice
 	}
 	return ""
 }
@@ -694,15 +694,15 @@ func (x *Order) GetTimeInForce() TimeInForce {
 }
 
 func (x *Order) GetLimitPrice() string {
-	if x != nil && x.LimitPrice != nil {
-		return *x.LimitPrice
+	if x != nil {
+		return x.LimitPrice
 	}
 	return ""
 }
 
 func (x *Order) GetStopPrice() string {
-	if x != nil && x.StopPrice != nil {
-		return *x.StopPrice
+	if x != nil {
+		return x.StopPrice
 	}
 	return ""
 }
@@ -729,22 +729,22 @@ func (x *Order) GetLegs() []*Order {
 }
 
 func (x *Order) GetTrailPercent() string {
-	if x != nil && x.TrailPercent != nil {
-		return *x.TrailPercent
+	if x != nil {
+		return x.TrailPercent
 	}
 	return ""
 }
 
 func (x *Order) GetTrailPrice() string {
-	if x != nil && x.TrailPrice != nil {
-		return *x.TrailPrice
+	if x != nil {
+		return x.TrailPrice
 	}
 	return ""
 }
 
 func (x *Order) GetHwm() string {
-	if x != nil && x.Hwm != nil {
-		return *x.Hwm
+	if x != nil {
+		return x.Hwm
 	}
 	return ""
 }
@@ -753,7 +753,7 @@ var File_alpaca_trading_v1_order_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_order_proto_rawDesc = "" +
 	"\n" +
-	"\x1dalpaca/trading/v1/order.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\"\xf8\x0e\n" +
+	"\x1dalpaca/trading/v1/order.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\"\xd2\f\n" +
 	"\x05Order\x12:\n" +
 	"\x02id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
 	"$61e69015-8549-4bfd-b9c3-01e75843f47dR\x02id\x12:\n" +
@@ -766,20 +766,20 @@ const file_alpaca_trading_v1_order_proto_rawDesc = "" +
 	"updated_at\x18\x04 \x01(\tB\x1a\xba\xb5\x18\x16\n" +
 	"\x142024-01-15T10:30:05ZR\tupdatedAt\x12=\n" +
 	"\fsubmitted_at\x18\x05 \x01(\tB\x1a\xba\xb5\x18\x16\n" +
-	"\x142024-01-15T10:30:00ZR\vsubmittedAt\x12<\n" +
+	"\x142024-01-15T10:30:00ZR\vsubmittedAt\x127\n" +
 	"\tfilled_at\x18\x06 \x01(\tB\x1a\xba\xb5\x18\x16\n" +
-	"\x142024-01-15T10:30:05ZH\x00R\bfilledAt\x88\x01\x01\x12\"\n" +
+	"\x142024-01-15T10:30:05ZR\bfilledAt\x12\x1d\n" +
 	"\n" +
-	"expired_at\x18\a \x01(\tH\x01R\texpiredAt\x88\x01\x01\x12$\n" +
-	"\vcanceled_at\x18\b \x01(\tH\x02R\n" +
-	"canceledAt\x88\x01\x01\x12 \n" +
-	"\tfailed_at\x18\t \x01(\tH\x03R\bfailedAt\x88\x01\x01\x12$\n" +
+	"expired_at\x18\a \x01(\tR\texpiredAt\x12\x1f\n" +
+	"\vcanceled_at\x18\b \x01(\tR\n" +
+	"canceledAt\x12\x1b\n" +
+	"\tfailed_at\x18\t \x01(\tR\bfailedAt\x12\x1f\n" +
 	"\vreplaced_at\x18\n" +
-	" \x01(\tH\x04R\n" +
-	"replacedAt\x88\x01\x01\x12$\n" +
-	"\vreplaced_by\x18\v \x01(\tH\x05R\n" +
-	"replacedBy\x88\x01\x01\x12\x1f\n" +
-	"\breplaces\x18\f \x01(\tH\x06R\breplaces\x88\x01\x01\x12E\n" +
+	" \x01(\tR\n" +
+	"replacedAt\x12\x1f\n" +
+	"\vreplaced_by\x18\v \x01(\tR\n" +
+	"replacedBy\x12\x1a\n" +
+	"\breplaces\x18\f \x01(\tR\breplaces\x12E\n" +
 	"\basset_id\x18\r \x01(\tB*\xba\xb5\x18&\n" +
 	"$b0b6dd9d-8b9b-48a9-ba46-b9d54906e415R\aassetId\x12\"\n" +
 	"\x06symbol\x18\x0e \x01(\tB\n" +
@@ -787,16 +787,16 @@ const file_alpaca_trading_v1_order_proto_rawDesc = "" +
 	"\x04AAPLR\x06symbol\x12G\n" +
 	"\vasset_class\x18\x0f \x01(\x0e2\x1d.alpaca.trading.v1.AssetClassB\a\xba\xb5\x18\x03\n" +
 	"\x011R\n" +
-	"assetClass\x12.\n" +
+	"assetClass\x12)\n" +
 	"\bnotional\x18\x10 \x01(\tB\r\xba\xb5\x18\t\n" +
-	"\a1000.00H\aR\bnotional\x88\x01\x01\x12\x1f\n" +
+	"\a1000.00R\bnotional\x12\x1a\n" +
 	"\x03qty\x18\x11 \x01(\tB\b\xba\xb5\x18\x04\n" +
-	"\x0210H\bR\x03qty\x88\x01\x01\x12'\n" +
+	"\x0210R\x03qty\x12'\n" +
 	"\n" +
 	"filled_qty\x18\x12 \x01(\tB\b\xba\xb5\x18\x04\n" +
-	"\x0210R\tfilledQty\x12;\n" +
+	"\x0210R\tfilledQty\x126\n" +
 	"\x10filled_avg_price\x18\x13 \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06150.25H\tR\x0efilledAvgPrice\x88\x01\x01\x12G\n" +
+	"\x06150.25R\x0efilledAvgPrice\x12G\n" +
 	"\vorder_class\x18\x14 \x01(\x0e2\x1d.alpaca.trading.v1.OrderClassB\a\xba\xb5\x18\x03\n" +
 	"\x011R\n" +
 	"orderClass\x12D\n" +
@@ -808,44 +808,26 @@ const file_alpaca_trading_v1_order_proto_rawDesc = "" +
 	"\x04side\x18\x17 \x01(\x0e2\x1c.alpaca.trading.v1.OrderSideB\a\xba\xb5\x18\x03\n" +
 	"\x011R\x04side\x12K\n" +
 	"\rtime_in_force\x18\x18 \x01(\x0e2\x1e.alpaca.trading.v1.TimeInForceB\a\xba\xb5\x18\x03\n" +
-	"\x011R\vtimeInForce\x122\n" +
+	"\x011R\vtimeInForce\x12-\n" +
 	"\vlimit_price\x18\x19 \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06150.00H\n" +
-	"R\n" +
-	"limitPrice\x88\x01\x01\x120\n" +
+	"\x06150.00R\n" +
+	"limitPrice\x12+\n" +
 	"\n" +
 	"stop_price\x18\x1a \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06145.00H\vR\tstopPrice\x88\x01\x01\x12?\n" +
+	"\x06145.00R\tstopPrice\x12?\n" +
 	"\x06status\x18\x1b \x01(\x0e2\x1e.alpaca.trading.v1.OrderStatusB\a\xba\xb5\x18\x03\n" +
 	"\x013R\x06status\x122\n" +
 	"\x0eextended_hours\x18\x1c \x01(\bB\v\xba\xb5\x18\a\n" +
 	"\x05falseR\rextendedHours\x12,\n" +
-	"\x04legs\x18\x1d \x03(\v2\x18.alpaca.trading.v1.OrderR\x04legs\x123\n" +
+	"\x04legs\x18\x1d \x03(\v2\x18.alpaca.trading.v1.OrderR\x04legs\x12.\n" +
 	"\rtrail_percent\x18\x1e \x01(\tB\t\xba\xb5\x18\x05\n" +
-	"\x035.0H\fR\ftrailPercent\x88\x01\x01\x120\n" +
+	"\x035.0R\ftrailPercent\x12+\n" +
 	"\vtrail_price\x18\x1f \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
-	"\x045.00H\rR\n" +
-	"trailPrice\x88\x01\x01\x12#\n" +
+	"\x045.00R\n" +
+	"trailPrice\x12\x1e\n" +
 	"\x03hwm\x18  \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06155.00H\x0eR\x03hwm\x88\x01\x01B\f\n" +
-	"\n" +
-	"_filled_atB\r\n" +
-	"\v_expired_atB\x0e\n" +
-	"\f_canceled_atB\f\n" +
-	"\n" +
-	"_failed_atB\x0e\n" +
-	"\f_replaced_atB\x0e\n" +
-	"\f_replaced_byB\v\n" +
-	"\t_replacesB\v\n" +
-	"\t_notionalB\x06\n" +
-	"\x04_qtyB\x13\n" +
-	"\x11_filled_avg_priceB\x0e\n" +
-	"\f_limit_priceB\r\n" +
-	"\v_stop_priceB\x10\n" +
-	"\x0e_trail_percentB\x0e\n" +
-	"\f_trail_priceB\x06\n" +
-	"\x04_hwm*P\n" +
+	"\x06155.00R\x03hwm*P\n" +
 	"\tOrderSide\x12\x1a\n" +
 	"\x16ORDER_SIDE_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eORDER_SIDE_BUY\x10\x01\x12\x13\n" +
@@ -945,7 +927,6 @@ func file_alpaca_trading_v1_order_proto_init() {
 	if File_alpaca_trading_v1_order_proto != nil {
 		return
 	}
-	file_alpaca_trading_v1_order_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

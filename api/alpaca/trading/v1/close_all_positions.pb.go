@@ -7,7 +7,6 @@
 package tradingv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -26,10 +25,8 @@ const (
 // CloseAllPositionsRequest is the request to close all open positions.
 type CloseAllPositionsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The account ID (bound from path variable).
-	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// Whether to cancel all open orders before closing positions.
-	CancelOrders  bool `protobuf:"varint,2,opt,name=cancel_orders,json=cancelOrders,proto3" json:"cancel_orders,omitempty"`
+	CancelOrders  bool `protobuf:"varint,1,opt,name=cancel_orders,json=cancelOrders,proto3" json:"cancel_orders,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -64,13 +61,6 @@ func (*CloseAllPositionsRequest) Descriptor() ([]byte, []int) {
 	return file_alpaca_trading_v1_close_all_positions_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CloseAllPositionsRequest) GetAccountId() string {
-	if x != nil {
-		return x.AccountId
-	}
-	return ""
-}
-
 func (x *CloseAllPositionsRequest) GetCancelOrders() bool {
 	if x != nil {
 		return x.CancelOrders
@@ -86,7 +76,7 @@ type ClosedPosition struct {
 	// HTTP status code for this close operation.
 	Status int32 `protobuf:"varint,2,opt,name=status,proto3" json:"status,omitempty"`
 	// The closing order if successful.
-	Order         *Order `protobuf:"bytes,3,opt,name=order,proto3,oneof" json:"order,omitempty"`
+	Order         *Order `protobuf:"bytes,3,opt,name=order,proto3" json:"order,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -192,22 +182,18 @@ var File_alpaca_trading_v1_close_all_positions_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_close_all_positions_proto_rawDesc = "" +
 	"\n" +
-	"+alpaca/trading/v1/close_all_positions.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a\x1dalpaca/trading/v1/order.proto\"\xb4\x01\n" +
-	"\x18CloseAllPositionsRequest\x12T\n" +
-	"\n" +
-	"account_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
-	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\x12B\n" +
-	"\rcancel_orders\x18\x02 \x01(\bB\x1d\xba\xb5\x18\x06\n" +
+	"+alpaca/trading/v1/close_all_positions.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\x1a\x1dalpaca/trading/v1/order.proto\"^\n" +
+	"\x18CloseAllPositionsRequest\x12B\n" +
+	"\rcancel_orders\x18\x01 \x01(\bB\x1d\xba\xb5\x18\x06\n" +
 	"\x04trueµ\x18\x0f\n" +
-	"\rcancel_ordersR\fcancelOrders\"\x96\x01\n" +
+	"\rcancel_ordersR\fcancelOrders\"\x87\x01\n" +
 	"\x0eClosedPosition\x12\"\n" +
 	"\x06symbol\x18\x01 \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
 	"\x04AAPLR\x06symbol\x12!\n" +
 	"\x06status\x18\x02 \x01(\x05B\t\xba\xb5\x18\x05\n" +
-	"\x03200R\x06status\x123\n" +
-	"\x05order\x18\x03 \x01(\v2\x18.alpaca.trading.v1.OrderH\x00R\x05order\x88\x01\x01B\b\n" +
-	"\x06_order\"\\\n" +
+	"\x03200R\x06status\x12.\n" +
+	"\x05order\x18\x03 \x01(\v2\x18.alpaca.trading.v1.OrderR\x05order\"\\\n" +
 	"\x19CloseAllPositionsResponse\x12?\n" +
 	"\tpositions\x18\x01 \x03(\v2!.alpaca.trading.v1.ClosedPositionR\tpositionsB\xda\x01\n" +
 	"\x15com.alpaca.trading.v1B\x16CloseAllPositionsProtoP\x01ZCgithub.com/sebastienmelki/alpaca-go/api/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
@@ -247,7 +233,6 @@ func file_alpaca_trading_v1_close_all_positions_proto_init() {
 		return
 	}
 	file_alpaca_trading_v1_order_proto_init()
-	file_alpaca_trading_v1_close_all_positions_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

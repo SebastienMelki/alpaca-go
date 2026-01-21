@@ -26,12 +26,10 @@ const (
 // GetOrderRequest is the request to get an order by ID.
 type GetOrderRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The account ID (bound from path variable).
-	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// The order ID (bound from path variable).
-	OrderId string `protobuf:"bytes,2,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	OrderId string `protobuf:"bytes,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
 	// Whether to include nested leg orders.
-	Nested        bool `protobuf:"varint,3,opt,name=nested,proto3" json:"nested,omitempty"`
+	Nested        bool `protobuf:"varint,2,opt,name=nested,proto3" json:"nested,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -66,13 +64,6 @@ func (*GetOrderRequest) Descriptor() ([]byte, []int) {
 	return file_alpaca_trading_v1_get_order_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetOrderRequest) GetAccountId() string {
-	if x != nil {
-		return x.AccountId
-	}
-	return ""
-}
-
 func (x *GetOrderRequest) GetOrderId() string {
 	if x != nil {
 		return x.OrderId
@@ -91,14 +82,11 @@ var File_alpaca_trading_v1_get_order_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_get_order_proto_rawDesc = "" +
 	"\n" +
-	"!alpaca/trading/v1/get_order.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xea\x01\n" +
-	"\x0fGetOrderRequest\x12T\n" +
-	"\n" +
-	"account_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
-	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\x12P\n" +
-	"\border_id\x18\x02 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
+	"!alpaca/trading/v1/get_order.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\x94\x01\n" +
+	"\x0fGetOrderRequest\x12P\n" +
+	"\border_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$61e69015-8549-4bfd-b9c3-01e75843f47dR\aorderId\x12/\n" +
-	"\x06nested\x18\x03 \x01(\bB\x17\xba\xb5\x18\a\n" +
+	"\x06nested\x18\x02 \x01(\bB\x17\xba\xb5\x18\a\n" +
 	"\x05falseµ\x18\b\n" +
 	"\x06nestedR\x06nestedB\xd1\x01\n" +
 	"\x15com.alpaca.trading.v1B\rGetOrderProtoP\x01ZCgithub.com/sebastienmelki/alpaca-go/api/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"

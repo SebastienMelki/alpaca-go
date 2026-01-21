@@ -75,7 +75,7 @@ type StopLossSpec struct {
 	// Stop price for stop loss.
 	StopPrice string `protobuf:"bytes,1,opt,name=stop_price,json=stopPrice,proto3" json:"stop_price,omitempty"`
 	// Limit price for stop loss (for stop limit orders).
-	LimitPrice    *string `protobuf:"bytes,2,opt,name=limit_price,json=limitPrice,proto3,oneof" json:"limit_price,omitempty"`
+	LimitPrice    string `protobuf:"bytes,2,opt,name=limit_price,json=limitPrice,proto3" json:"limit_price,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -118,8 +118,8 @@ func (x *StopLossSpec) GetStopPrice() string {
 }
 
 func (x *StopLossSpec) GetLimitPrice() string {
-	if x != nil && x.LimitPrice != nil {
-		return *x.LimitPrice
+	if x != nil {
+		return x.LimitPrice
 	}
 	return ""
 }
@@ -127,38 +127,36 @@ func (x *StopLossSpec) GetLimitPrice() string {
 // CreateOrderRequest is the request to create a new order.
 type CreateOrderRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The account ID (bound from path variable).
-	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// Symbol or asset ID to trade.
-	Symbol string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	Symbol string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	// Number of shares to trade. Required if notional is not specified.
-	Qty *string `protobuf:"bytes,3,opt,name=qty,proto3,oneof" json:"qty,omitempty"`
+	Qty string `protobuf:"bytes,2,opt,name=qty,proto3" json:"qty,omitempty"`
 	// Dollar amount to trade. Required if qty is not specified.
-	Notional *string `protobuf:"bytes,4,opt,name=notional,proto3,oneof" json:"notional,omitempty"`
+	Notional string `protobuf:"bytes,3,opt,name=notional,proto3" json:"notional,omitempty"`
 	// Order side (buy or sell).
-	Side OrderSide `protobuf:"varint,5,opt,name=side,proto3,enum=alpaca.trading.v1.OrderSide" json:"side,omitempty"`
+	Side OrderSide `protobuf:"varint,4,opt,name=side,proto3,enum=alpaca.trading.v1.OrderSide" json:"side,omitempty"`
 	// Order type.
-	Type OrderType `protobuf:"varint,6,opt,name=type,proto3,enum=alpaca.trading.v1.OrderType" json:"type,omitempty"`
+	Type OrderType `protobuf:"varint,5,opt,name=type,proto3,enum=alpaca.trading.v1.OrderType" json:"type,omitempty"`
 	// Time in force.
-	TimeInForce TimeInForce `protobuf:"varint,7,opt,name=time_in_force,json=timeInForce,proto3,enum=alpaca.trading.v1.TimeInForce" json:"time_in_force,omitempty"`
+	TimeInForce TimeInForce `protobuf:"varint,6,opt,name=time_in_force,json=timeInForce,proto3,enum=alpaca.trading.v1.TimeInForce" json:"time_in_force,omitempty"`
 	// Limit price (required for limit orders).
-	LimitPrice *string `protobuf:"bytes,8,opt,name=limit_price,json=limitPrice,proto3,oneof" json:"limit_price,omitempty"`
+	LimitPrice string `protobuf:"bytes,7,opt,name=limit_price,json=limitPrice,proto3" json:"limit_price,omitempty"`
 	// Stop price (required for stop orders).
-	StopPrice *string `protobuf:"bytes,9,opt,name=stop_price,json=stopPrice,proto3,oneof" json:"stop_price,omitempty"`
+	StopPrice string `protobuf:"bytes,8,opt,name=stop_price,json=stopPrice,proto3" json:"stop_price,omitempty"`
 	// Trail price (for trailing stop orders).
-	TrailPrice *string `protobuf:"bytes,10,opt,name=trail_price,json=trailPrice,proto3,oneof" json:"trail_price,omitempty"`
+	TrailPrice string `protobuf:"bytes,9,opt,name=trail_price,json=trailPrice,proto3" json:"trail_price,omitempty"`
 	// Trail percent (for trailing stop orders).
-	TrailPercent *string `protobuf:"bytes,11,opt,name=trail_percent,json=trailPercent,proto3,oneof" json:"trail_percent,omitempty"`
+	TrailPercent string `protobuf:"bytes,10,opt,name=trail_percent,json=trailPercent,proto3" json:"trail_percent,omitempty"`
 	// Whether the order is for extended hours.
-	ExtendedHours bool `protobuf:"varint,12,opt,name=extended_hours,json=extendedHours,proto3" json:"extended_hours,omitempty"`
+	ExtendedHours bool `protobuf:"varint,11,opt,name=extended_hours,json=extendedHours,proto3" json:"extended_hours,omitempty"`
 	// Client order ID (user-provided, max 48 characters).
-	ClientOrderId *string `protobuf:"bytes,13,opt,name=client_order_id,json=clientOrderId,proto3,oneof" json:"client_order_id,omitempty"`
+	ClientOrderId string `protobuf:"bytes,12,opt,name=client_order_id,json=clientOrderId,proto3" json:"client_order_id,omitempty"`
 	// Order class.
-	OrderClass OrderClass `protobuf:"varint,14,opt,name=order_class,json=orderClass,proto3,enum=alpaca.trading.v1.OrderClass" json:"order_class,omitempty"`
+	OrderClass OrderClass `protobuf:"varint,13,opt,name=order_class,json=orderClass,proto3,enum=alpaca.trading.v1.OrderClass" json:"order_class,omitempty"`
 	// Take profit spec (for bracket orders).
-	TakeProfit *TakeProfitSpec `protobuf:"bytes,15,opt,name=take_profit,json=takeProfit,proto3,oneof" json:"take_profit,omitempty"`
+	TakeProfit *TakeProfitSpec `protobuf:"bytes,14,opt,name=take_profit,json=takeProfit,proto3" json:"take_profit,omitempty"`
 	// Stop loss spec (for bracket orders).
-	StopLoss      *StopLossSpec `protobuf:"bytes,16,opt,name=stop_loss,json=stopLoss,proto3,oneof" json:"stop_loss,omitempty"`
+	StopLoss      *StopLossSpec `protobuf:"bytes,15,opt,name=stop_loss,json=stopLoss,proto3" json:"stop_loss,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -193,13 +191,6 @@ func (*CreateOrderRequest) Descriptor() ([]byte, []int) {
 	return file_alpaca_trading_v1_create_order_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreateOrderRequest) GetAccountId() string {
-	if x != nil {
-		return x.AccountId
-	}
-	return ""
-}
-
 func (x *CreateOrderRequest) GetSymbol() string {
 	if x != nil {
 		return x.Symbol
@@ -208,15 +199,15 @@ func (x *CreateOrderRequest) GetSymbol() string {
 }
 
 func (x *CreateOrderRequest) GetQty() string {
-	if x != nil && x.Qty != nil {
-		return *x.Qty
+	if x != nil {
+		return x.Qty
 	}
 	return ""
 }
 
 func (x *CreateOrderRequest) GetNotional() string {
-	if x != nil && x.Notional != nil {
-		return *x.Notional
+	if x != nil {
+		return x.Notional
 	}
 	return ""
 }
@@ -243,29 +234,29 @@ func (x *CreateOrderRequest) GetTimeInForce() TimeInForce {
 }
 
 func (x *CreateOrderRequest) GetLimitPrice() string {
-	if x != nil && x.LimitPrice != nil {
-		return *x.LimitPrice
+	if x != nil {
+		return x.LimitPrice
 	}
 	return ""
 }
 
 func (x *CreateOrderRequest) GetStopPrice() string {
-	if x != nil && x.StopPrice != nil {
-		return *x.StopPrice
+	if x != nil {
+		return x.StopPrice
 	}
 	return ""
 }
 
 func (x *CreateOrderRequest) GetTrailPrice() string {
-	if x != nil && x.TrailPrice != nil {
-		return *x.TrailPrice
+	if x != nil {
+		return x.TrailPrice
 	}
 	return ""
 }
 
 func (x *CreateOrderRequest) GetTrailPercent() string {
-	if x != nil && x.TrailPercent != nil {
-		return *x.TrailPercent
+	if x != nil {
+		return x.TrailPercent
 	}
 	return ""
 }
@@ -278,8 +269,8 @@ func (x *CreateOrderRequest) GetExtendedHours() bool {
 }
 
 func (x *CreateOrderRequest) GetClientOrderId() string {
-	if x != nil && x.ClientOrderId != nil {
-		return *x.ClientOrderId
+	if x != nil {
+		return x.ClientOrderId
 	}
 	return ""
 }
@@ -313,64 +304,50 @@ const file_alpaca_trading_v1_create_order_proto_rawDesc = "" +
 	"\x0eTakeProfitSpec\x123\n" +
 	"\vlimit_price\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xba\xb5\x18\b\n" +
 	"\x06160.00R\n" +
-	"limitPrice\"\x85\x01\n" +
+	"limitPrice\"p\n" +
 	"\fStopLossSpec\x121\n" +
 	"\n" +
 	"stop_price\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xba\xb5\x18\b\n" +
-	"\x06140.00R\tstopPrice\x122\n" +
+	"\x06140.00R\tstopPrice\x12-\n" +
 	"\vlimit_price\x18\x02 \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06139.00H\x00R\n" +
-	"limitPrice\x88\x01\x01B\x0e\n" +
-	"\f_limit_price\"\xec\b\n" +
-	"\x12CreateOrderRequest\x12T\n" +
-	"\n" +
-	"account_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
-	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\x12.\n" +
-	"\x06symbol\x18\x02 \x01(\tB\x16\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18\f\xba\xb5\x18\x06\n" +
-	"\x04AAPLR\x06symbol\x12\x1f\n" +
-	"\x03qty\x18\x03 \x01(\tB\b\xba\xb5\x18\x04\n" +
-	"\x0210H\x00R\x03qty\x88\x01\x01\x12.\n" +
-	"\bnotional\x18\x04 \x01(\tB\r\xba\xb5\x18\t\n" +
-	"\a1000.00H\x01R\bnotional\x88\x01\x01\x12A\n" +
-	"\x04side\x18\x05 \x01(\x0e2\x1c.alpaca.trading.v1.OrderSideB\x0f\xbaH\x05\x82\x01\x02 \x00\xba\xb5\x18\x03\n" +
+	"\x06139.00R\n" +
+	"limitPrice\"\xe1\x06\n" +
+	"\x12CreateOrderRequest\x12.\n" +
+	"\x06symbol\x18\x01 \x01(\tB\x16\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18\f\xba\xb5\x18\x06\n" +
+	"\x04AAPLR\x06symbol\x12\x1a\n" +
+	"\x03qty\x18\x02 \x01(\tB\b\xba\xb5\x18\x04\n" +
+	"\x0210R\x03qty\x12)\n" +
+	"\bnotional\x18\x03 \x01(\tB\r\xba\xb5\x18\t\n" +
+	"\a1000.00R\bnotional\x12A\n" +
+	"\x04side\x18\x04 \x01(\x0e2\x1c.alpaca.trading.v1.OrderSideB\x0f\xbaH\x05\x82\x01\x02 \x00\xba\xb5\x18\x03\n" +
 	"\x011R\x04side\x12A\n" +
-	"\x04type\x18\x06 \x01(\x0e2\x1c.alpaca.trading.v1.OrderTypeB\x0f\xbaH\x05\x82\x01\x02 \x00\xba\xb5\x18\x03\n" +
+	"\x04type\x18\x05 \x01(\x0e2\x1c.alpaca.trading.v1.OrderTypeB\x0f\xbaH\x05\x82\x01\x02 \x00\xba\xb5\x18\x03\n" +
 	"\x012R\x04type\x12S\n" +
-	"\rtime_in_force\x18\a \x01(\x0e2\x1e.alpaca.trading.v1.TimeInForceB\x0f\xbaH\x05\x82\x01\x02 \x00\xba\xb5\x18\x03\n" +
-	"\x011R\vtimeInForce\x122\n" +
-	"\vlimit_price\x18\b \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06150.00H\x02R\n" +
-	"limitPrice\x88\x01\x01\x120\n" +
+	"\rtime_in_force\x18\x06 \x01(\x0e2\x1e.alpaca.trading.v1.TimeInForceB\x0f\xbaH\x05\x82\x01\x02 \x00\xba\xb5\x18\x03\n" +
+	"\x011R\vtimeInForce\x12-\n" +
+	"\vlimit_price\x18\a \x01(\tB\f\xba\xb5\x18\b\n" +
+	"\x06150.00R\n" +
+	"limitPrice\x12+\n" +
 	"\n" +
-	"stop_price\x18\t \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06145.00H\x03R\tstopPrice\x88\x01\x01\x120\n" +
-	"\vtrail_price\x18\n" +
-	" \x01(\tB\n" +
+	"stop_price\x18\b \x01(\tB\f\xba\xb5\x18\b\n" +
+	"\x06145.00R\tstopPrice\x12+\n" +
+	"\vtrail_price\x18\t \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
-	"\x045.00H\x04R\n" +
-	"trailPrice\x88\x01\x01\x123\n" +
-	"\rtrail_percent\x18\v \x01(\tB\t\xba\xb5\x18\x05\n" +
-	"\x035.0H\x05R\ftrailPercent\x88\x01\x01\x122\n" +
-	"\x0eextended_hours\x18\f \x01(\bB\v\xba\xb5\x18\a\n" +
-	"\x05falseR\rextendedHours\x12F\n" +
-	"\x0fclient_order_id\x18\r \x01(\tB\x19\xbaH\x04r\x02\x180\xba\xb5\x18\x0e\n" +
-	"\fmy_order_123H\x06R\rclientOrderId\x88\x01\x01\x12G\n" +
-	"\vorder_class\x18\x0e \x01(\x0e2\x1d.alpaca.trading.v1.OrderClassB\a\xba\xb5\x18\x03\n" +
+	"\x045.00R\n" +
+	"trailPrice\x12.\n" +
+	"\rtrail_percent\x18\n" +
+	" \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"\x035.0R\ftrailPercent\x122\n" +
+	"\x0eextended_hours\x18\v \x01(\bB\v\xba\xb5\x18\a\n" +
+	"\x05falseR\rextendedHours\x12A\n" +
+	"\x0fclient_order_id\x18\f \x01(\tB\x19\xbaH\x04r\x02\x180\xba\xb5\x18\x0e\n" +
+	"\fmy_order_123R\rclientOrderId\x12G\n" +
+	"\vorder_class\x18\r \x01(\x0e2\x1d.alpaca.trading.v1.OrderClassB\a\xba\xb5\x18\x03\n" +
 	"\x011R\n" +
-	"orderClass\x12G\n" +
-	"\vtake_profit\x18\x0f \x01(\v2!.alpaca.trading.v1.TakeProfitSpecH\aR\n" +
-	"takeProfit\x88\x01\x01\x12A\n" +
-	"\tstop_loss\x18\x10 \x01(\v2\x1f.alpaca.trading.v1.StopLossSpecH\bR\bstopLoss\x88\x01\x01B\x06\n" +
-	"\x04_qtyB\v\n" +
-	"\t_notionalB\x0e\n" +
-	"\f_limit_priceB\r\n" +
-	"\v_stop_priceB\x0e\n" +
-	"\f_trail_priceB\x10\n" +
-	"\x0e_trail_percentB\x12\n" +
-	"\x10_client_order_idB\x0e\n" +
-	"\f_take_profitB\f\n" +
-	"\n" +
-	"_stop_lossB\xd4\x01\n" +
+	"orderClass\x12B\n" +
+	"\vtake_profit\x18\x0e \x01(\v2!.alpaca.trading.v1.TakeProfitSpecR\n" +
+	"takeProfit\x12<\n" +
+	"\tstop_loss\x18\x0f \x01(\v2\x1f.alpaca.trading.v1.StopLossSpecR\bstopLossB\xd4\x01\n" +
 	"\x15com.alpaca.trading.v1B\x10CreateOrderProtoP\x01ZCgithub.com/sebastienmelki/alpaca-go/api/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (
@@ -415,8 +392,6 @@ func file_alpaca_trading_v1_create_order_proto_init() {
 		return
 	}
 	file_alpaca_trading_v1_order_proto_init()
-	file_alpaca_trading_v1_create_order_proto_msgTypes[1].OneofWrappers = []any{}
-	file_alpaca_trading_v1_create_order_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

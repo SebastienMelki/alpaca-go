@@ -26,24 +26,22 @@ const (
 // ListOrdersRequest is the request to list orders.
 type ListOrdersRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The account ID (bound from path variable).
-	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// Filter by order status (open, closed, all).
-	Status string `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	Status string `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
 	// Maximum number of orders to return (default 50, max 500).
-	Limit int32 `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	Limit int32 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
 	// Cursor for pagination (order ID to start after).
-	After string `protobuf:"bytes,4,opt,name=after,proto3" json:"after,omitempty"`
+	After string `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	// Filter by orders updated before this timestamp.
-	Until string `protobuf:"bytes,5,opt,name=until,proto3" json:"until,omitempty"`
+	Until string `protobuf:"bytes,4,opt,name=until,proto3" json:"until,omitempty"`
 	// Sort direction (asc or desc).
-	Direction string `protobuf:"bytes,6,opt,name=direction,proto3" json:"direction,omitempty"`
+	Direction string `protobuf:"bytes,5,opt,name=direction,proto3" json:"direction,omitempty"`
 	// Whether to include nested leg orders.
-	Nested bool `protobuf:"varint,7,opt,name=nested,proto3" json:"nested,omitempty"`
+	Nested bool `protobuf:"varint,6,opt,name=nested,proto3" json:"nested,omitempty"`
 	// Filter by symbols (comma-separated).
-	Symbols string `protobuf:"bytes,8,opt,name=symbols,proto3" json:"symbols,omitempty"`
+	Symbols string `protobuf:"bytes,7,opt,name=symbols,proto3" json:"symbols,omitempty"`
 	// Filter by side (buy or sell).
-	Side          string `protobuf:"bytes,9,opt,name=side,proto3" json:"side,omitempty"`
+	Side          string `protobuf:"bytes,8,opt,name=side,proto3" json:"side,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -76,13 +74,6 @@ func (x *ListOrdersRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ListOrdersRequest.ProtoReflect.Descriptor instead.
 func (*ListOrdersRequest) Descriptor() ([]byte, []int) {
 	return file_alpaca_trading_v1_list_orders_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *ListOrdersRequest) GetAccountId() string {
-	if x != nil {
-		return x.AccountId
-	}
-	return ""
 }
 
 func (x *ListOrdersRequest) GetStatus() string {
@@ -191,33 +182,30 @@ var File_alpaca_trading_v1_list_orders_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_list_orders_proto_rawDesc = "" +
 	"\n" +
-	"#alpaca/trading/v1/list_orders.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a\x1dalpaca/trading/v1/order.proto\"\xa3\x04\n" +
-	"\x11ListOrdersRequest\x12T\n" +
-	"\n" +
-	"account_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
-	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\x12.\n" +
-	"\x06status\x18\x02 \x01(\tB\x16\xba\xb5\x18\x06\n" +
+	"#alpaca/trading/v1/list_orders.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a\x1dalpaca/trading/v1/order.proto\"\xcd\x03\n" +
+	"\x11ListOrdersRequest\x12.\n" +
+	"\x06status\x18\x01 \x01(\tB\x16\xba\xb5\x18\x06\n" +
 	"\x04openµ\x18\b\n" +
 	"\x06statusR\x06status\x123\n" +
-	"\x05limit\x18\x03 \x01(\x05B\x1d\xbaH\a\x1a\x05\x18\xf4\x03(\x01\xba\xb5\x18\x04\n" +
+	"\x05limit\x18\x02 \x01(\x05B\x1d\xbaH\a\x1a\x05\x18\xf4\x03(\x01\xba\xb5\x18\x04\n" +
 	"\x0250µ\x18\a\n" +
 	"\x05limitR\x05limit\x12K\n" +
-	"\x05after\x18\x04 \x01(\tB5\xba\xb5\x18&\n" +
+	"\x05after\x18\x03 \x01(\tB5\xba\xb5\x18&\n" +
 	"$61e69015-8549-4bfd-b9c3-01e75843f47dµ\x18\a\n" +
 	"\x05afterR\x05after\x12;\n" +
-	"\x05until\x18\x05 \x01(\tB%\xba\xb5\x18\x16\n" +
+	"\x05until\x18\x04 \x01(\tB%\xba\xb5\x18\x16\n" +
 	"\x142024-01-15T10:30:00Zµ\x18\a\n" +
 	"\x05untilR\x05until\x127\n" +
-	"\tdirection\x18\x06 \x01(\tB\x19\xba\xb5\x18\x06\n" +
+	"\tdirection\x18\x05 \x01(\tB\x19\xba\xb5\x18\x06\n" +
 	"\x04descµ\x18\v\n" +
 	"\tdirectionR\tdirection\x12/\n" +
-	"\x06nested\x18\a \x01(\bB\x17\xba\xb5\x18\a\n" +
+	"\x06nested\x18\x06 \x01(\bB\x17\xba\xb5\x18\a\n" +
 	"\x05falseµ\x18\b\n" +
 	"\x06nestedR\x06nested\x126\n" +
-	"\asymbols\x18\b \x01(\tB\x1c\xba\xb5\x18\v\n" +
+	"\asymbols\x18\a \x01(\tB\x1c\xba\xb5\x18\v\n" +
 	"\tAAPL,TSLAµ\x18\t\n" +
 	"\asymbolsR\asymbols\x12'\n" +
-	"\x04side\x18\t \x01(\tB\x13\xba\xb5\x18\x05\n" +
+	"\x04side\x18\b \x01(\tB\x13\xba\xb5\x18\x05\n" +
 	"\x03buyµ\x18\x06\n" +
 	"\x04sideR\x04side\"F\n" +
 	"\x12ListOrdersResponse\x120\n" +

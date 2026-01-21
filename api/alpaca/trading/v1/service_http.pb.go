@@ -12,15 +12,34 @@ import (
 // TradingServiceServer is the server API for TradingService service.
 type TradingServiceServer interface {
 	GetAccount(context.Context, *GetAccountRequest) (*Account, error)
+	GetAccountConfigurations(context.Context, *GetAccountConfigurationsRequest) (*AccountConfigurations, error)
+	UpdateAccountConfigurations(context.Context, *UpdateAccountConfigurationsRequest) (*AccountConfigurations, error)
+	GetPortfolioHistory(context.Context, *GetPortfolioHistoryRequest) (*PortfolioHistory, error)
+	GetAccountActivities(context.Context, *GetAccountActivitiesRequest) (*GetAccountActivitiesResponse, error)
+	GetAccountActivitiesByType(context.Context, *GetAccountActivitiesByTypeRequest) (*GetAccountActivitiesResponse, error)
 	CreateOrder(context.Context, *CreateOrderRequest) (*Order, error)
 	ListOrders(context.Context, *ListOrdersRequest) (*ListOrdersResponse, error)
 	GetOrder(context.Context, *GetOrderRequest) (*Order, error)
+	GetOrderByClientId(context.Context, *GetOrderByClientIdRequest) (*Order, error)
+	ReplaceOrder(context.Context, *ReplaceOrderRequest) (*Order, error)
 	CancelOrder(context.Context, *CancelOrderRequest) (*CancelOrderResponse, error)
 	CancelAllOrders(context.Context, *CancelAllOrdersRequest) (*CancelAllOrdersResponse, error)
 	ListPositions(context.Context, *ListPositionsRequest) (*ListPositionsResponse, error)
 	GetPosition(context.Context, *GetPositionRequest) (*Position, error)
 	ClosePosition(context.Context, *ClosePositionRequest) (*Order, error)
 	CloseAllPositions(context.Context, *CloseAllPositionsRequest) (*CloseAllPositionsResponse, error)
+	ExerciseOption(context.Context, *ExerciseOptionRequest) (*ExerciseOptionResponse, error)
+	ListAssets(context.Context, *ListAssetsRequest) (*ListAssetsResponse, error)
+	GetAsset(context.Context, *GetAssetRequest) (*Asset, error)
+	GetClock(context.Context, *GetClockRequest) (*Clock, error)
+	GetCalendar(context.Context, *GetCalendarRequest) (*GetCalendarResponse, error)
+	ListWatchlists(context.Context, *ListWatchlistsRequest) (*ListWatchlistsResponse, error)
+	CreateWatchlist(context.Context, *CreateWatchlistRequest) (*Watchlist, error)
+	GetWatchlist(context.Context, *GetWatchlistRequest) (*Watchlist, error)
+	UpdateWatchlist(context.Context, *UpdateWatchlistRequest) (*Watchlist, error)
+	DeleteWatchlist(context.Context, *DeleteWatchlistRequest) (*DeleteWatchlistResponse, error)
+	AddWatchlistAsset(context.Context, *AddWatchlistAssetRequest) (*Watchlist, error)
+	RemoveWatchlistAsset(context.Context, *RemoveWatchlistAssetRequest) (*RemoveWatchlistAssetResponse, error)
 }
 
 // RegisterTradingServiceServer registers the HTTP handlers for service TradingService to the given mux.
@@ -36,7 +55,52 @@ func RegisterTradingServiceServer(server TradingServiceServer, opts ...ServerOpt
 		"GET", config.errorHandler,
 	)
 
-	config.mux.Handle("GET /v1/trading/accounts/{account_id}", getAccountHandler)
+	config.mux.Handle("GET /v2/account", getAccountHandler)
+
+	methodHeaders = getGetAccountConfigurationsHeaders()
+	getAccountConfigurationsHandler := BindingMiddleware[GetAccountConfigurationsRequest](
+		genericHandler(server.GetAccountConfigurations, config.errorHandler), serviceHeaders, methodHeaders,
+		getAccountConfigurationsPathParams, getAccountConfigurationsQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v2/account/configurations", getAccountConfigurationsHandler)
+
+	methodHeaders = getUpdateAccountConfigurationsHeaders()
+	updateAccountConfigurationsHandler := BindingMiddleware[UpdateAccountConfigurationsRequest](
+		genericHandler(server.UpdateAccountConfigurations, config.errorHandler), serviceHeaders, methodHeaders,
+		updateAccountConfigurationsPathParams, updateAccountConfigurationsQueryParams,
+		"PATCH", config.errorHandler,
+	)
+
+	config.mux.Handle("PATCH /v2/account/configurations", updateAccountConfigurationsHandler)
+
+	methodHeaders = getGetPortfolioHistoryHeaders()
+	getPortfolioHistoryHandler := BindingMiddleware[GetPortfolioHistoryRequest](
+		genericHandler(server.GetPortfolioHistory, config.errorHandler), serviceHeaders, methodHeaders,
+		getPortfolioHistoryPathParams, getPortfolioHistoryQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v2/account/portfolio/history", getPortfolioHistoryHandler)
+
+	methodHeaders = getGetAccountActivitiesHeaders()
+	getAccountActivitiesHandler := BindingMiddleware[GetAccountActivitiesRequest](
+		genericHandler(server.GetAccountActivities, config.errorHandler), serviceHeaders, methodHeaders,
+		getAccountActivitiesPathParams, getAccountActivitiesQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v2/account/activities", getAccountActivitiesHandler)
+
+	methodHeaders = getGetAccountActivitiesByTypeHeaders()
+	getAccountActivitiesByTypeHandler := BindingMiddleware[GetAccountActivitiesByTypeRequest](
+		genericHandler(server.GetAccountActivitiesByType, config.errorHandler), serviceHeaders, methodHeaders,
+		getAccountActivitiesByTypePathParams, getAccountActivitiesByTypeQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v2/account/activities/{activity_type}", getAccountActivitiesByTypeHandler)
 
 	methodHeaders = getCreateOrderHeaders()
 	createOrderHandler := BindingMiddleware[CreateOrderRequest](
@@ -45,7 +109,7 @@ func RegisterTradingServiceServer(server TradingServiceServer, opts ...ServerOpt
 		"POST", config.errorHandler,
 	)
 
-	config.mux.Handle("POST /v1/trading/accounts/{account_id}/orders", createOrderHandler)
+	config.mux.Handle("POST /v2/orders", createOrderHandler)
 
 	methodHeaders = getListOrdersHeaders()
 	listOrdersHandler := BindingMiddleware[ListOrdersRequest](
@@ -54,7 +118,7 @@ func RegisterTradingServiceServer(server TradingServiceServer, opts ...ServerOpt
 		"GET", config.errorHandler,
 	)
 
-	config.mux.Handle("GET /v1/trading/accounts/{account_id}/orders", listOrdersHandler)
+	config.mux.Handle("GET /v2/orders", listOrdersHandler)
 
 	methodHeaders = getGetOrderHeaders()
 	getOrderHandler := BindingMiddleware[GetOrderRequest](
@@ -63,7 +127,25 @@ func RegisterTradingServiceServer(server TradingServiceServer, opts ...ServerOpt
 		"GET", config.errorHandler,
 	)
 
-	config.mux.Handle("GET /v1/trading/accounts/{account_id}/orders/{order_id}", getOrderHandler)
+	config.mux.Handle("GET /v2/orders/{order_id}", getOrderHandler)
+
+	methodHeaders = getGetOrderByClientIdHeaders()
+	getOrderByClientIdHandler := BindingMiddleware[GetOrderByClientIdRequest](
+		genericHandler(server.GetOrderByClientId, config.errorHandler), serviceHeaders, methodHeaders,
+		getOrderByClientIdPathParams, getOrderByClientIdQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v2/orders:by_client_order_id", getOrderByClientIdHandler)
+
+	methodHeaders = getReplaceOrderHeaders()
+	replaceOrderHandler := BindingMiddleware[ReplaceOrderRequest](
+		genericHandler(server.ReplaceOrder, config.errorHandler), serviceHeaders, methodHeaders,
+		replaceOrderPathParams, replaceOrderQueryParams,
+		"PATCH", config.errorHandler,
+	)
+
+	config.mux.Handle("PATCH /v2/orders/{order_id}", replaceOrderHandler)
 
 	methodHeaders = getCancelOrderHeaders()
 	cancelOrderHandler := BindingMiddleware[CancelOrderRequest](
@@ -72,7 +154,7 @@ func RegisterTradingServiceServer(server TradingServiceServer, opts ...ServerOpt
 		"DELETE", config.errorHandler,
 	)
 
-	config.mux.Handle("DELETE /v1/trading/accounts/{account_id}/orders/{order_id}", cancelOrderHandler)
+	config.mux.Handle("DELETE /v2/orders/{order_id}", cancelOrderHandler)
 
 	methodHeaders = getCancelAllOrdersHeaders()
 	cancelAllOrdersHandler := BindingMiddleware[CancelAllOrdersRequest](
@@ -81,7 +163,7 @@ func RegisterTradingServiceServer(server TradingServiceServer, opts ...ServerOpt
 		"DELETE", config.errorHandler,
 	)
 
-	config.mux.Handle("DELETE /v1/trading/accounts/{account_id}/orders", cancelAllOrdersHandler)
+	config.mux.Handle("DELETE /v2/orders", cancelAllOrdersHandler)
 
 	methodHeaders = getListPositionsHeaders()
 	listPositionsHandler := BindingMiddleware[ListPositionsRequest](
@@ -90,7 +172,7 @@ func RegisterTradingServiceServer(server TradingServiceServer, opts ...ServerOpt
 		"GET", config.errorHandler,
 	)
 
-	config.mux.Handle("GET /v1/trading/accounts/{account_id}/positions", listPositionsHandler)
+	config.mux.Handle("GET /v2/positions", listPositionsHandler)
 
 	methodHeaders = getGetPositionHeaders()
 	getPositionHandler := BindingMiddleware[GetPositionRequest](
@@ -99,7 +181,7 @@ func RegisterTradingServiceServer(server TradingServiceServer, opts ...ServerOpt
 		"GET", config.errorHandler,
 	)
 
-	config.mux.Handle("GET /v1/trading/accounts/{account_id}/positions/{symbol}", getPositionHandler)
+	config.mux.Handle("GET /v2/positions/{symbol}", getPositionHandler)
 
 	methodHeaders = getClosePositionHeaders()
 	closePositionHandler := BindingMiddleware[ClosePositionRequest](
@@ -108,7 +190,7 @@ func RegisterTradingServiceServer(server TradingServiceServer, opts ...ServerOpt
 		"DELETE", config.errorHandler,
 	)
 
-	config.mux.Handle("DELETE /v1/trading/accounts/{account_id}/positions/{symbol}", closePositionHandler)
+	config.mux.Handle("DELETE /v2/positions/{symbol}", closePositionHandler)
 
 	methodHeaders = getCloseAllPositionsHeaders()
 	closeAllPositionsHandler := BindingMiddleware[CloseAllPositionsRequest](
@@ -117,7 +199,115 @@ func RegisterTradingServiceServer(server TradingServiceServer, opts ...ServerOpt
 		"DELETE", config.errorHandler,
 	)
 
-	config.mux.Handle("DELETE /v1/trading/accounts/{account_id}/positions", closeAllPositionsHandler)
+	config.mux.Handle("DELETE /v2/positions", closeAllPositionsHandler)
+
+	methodHeaders = getExerciseOptionHeaders()
+	exerciseOptionHandler := BindingMiddleware[ExerciseOptionRequest](
+		genericHandler(server.ExerciseOption, config.errorHandler), serviceHeaders, methodHeaders,
+		exerciseOptionPathParams, exerciseOptionQueryParams,
+		"POST", config.errorHandler,
+	)
+
+	config.mux.Handle("POST /v2/positions/{symbol_or_contract_id}/exercise", exerciseOptionHandler)
+
+	methodHeaders = getListAssetsHeaders()
+	listAssetsHandler := BindingMiddleware[ListAssetsRequest](
+		genericHandler(server.ListAssets, config.errorHandler), serviceHeaders, methodHeaders,
+		listAssetsPathParams, listAssetsQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v2/assets", listAssetsHandler)
+
+	methodHeaders = getGetAssetHeaders()
+	getAssetHandler := BindingMiddleware[GetAssetRequest](
+		genericHandler(server.GetAsset, config.errorHandler), serviceHeaders, methodHeaders,
+		getAssetPathParams, getAssetQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v2/assets/{symbol_or_id}", getAssetHandler)
+
+	methodHeaders = getGetClockHeaders()
+	getClockHandler := BindingMiddleware[GetClockRequest](
+		genericHandler(server.GetClock, config.errorHandler), serviceHeaders, methodHeaders,
+		getClockPathParams, getClockQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v2/clock", getClockHandler)
+
+	methodHeaders = getGetCalendarHeaders()
+	getCalendarHandler := BindingMiddleware[GetCalendarRequest](
+		genericHandler(server.GetCalendar, config.errorHandler), serviceHeaders, methodHeaders,
+		getCalendarPathParams, getCalendarQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v2/calendar", getCalendarHandler)
+
+	methodHeaders = getListWatchlistsHeaders()
+	listWatchlistsHandler := BindingMiddleware[ListWatchlistsRequest](
+		genericHandler(server.ListWatchlists, config.errorHandler), serviceHeaders, methodHeaders,
+		listWatchlistsPathParams, listWatchlistsQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v2/watchlists", listWatchlistsHandler)
+
+	methodHeaders = getCreateWatchlistHeaders()
+	createWatchlistHandler := BindingMiddleware[CreateWatchlistRequest](
+		genericHandler(server.CreateWatchlist, config.errorHandler), serviceHeaders, methodHeaders,
+		createWatchlistPathParams, createWatchlistQueryParams,
+		"POST", config.errorHandler,
+	)
+
+	config.mux.Handle("POST /v2/watchlists", createWatchlistHandler)
+
+	methodHeaders = getGetWatchlistHeaders()
+	getWatchlistHandler := BindingMiddleware[GetWatchlistRequest](
+		genericHandler(server.GetWatchlist, config.errorHandler), serviceHeaders, methodHeaders,
+		getWatchlistPathParams, getWatchlistQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v2/watchlists/{watchlist_id}", getWatchlistHandler)
+
+	methodHeaders = getUpdateWatchlistHeaders()
+	updateWatchlistHandler := BindingMiddleware[UpdateWatchlistRequest](
+		genericHandler(server.UpdateWatchlist, config.errorHandler), serviceHeaders, methodHeaders,
+		updateWatchlistPathParams, updateWatchlistQueryParams,
+		"PUT", config.errorHandler,
+	)
+
+	config.mux.Handle("PUT /v2/watchlists/{watchlist_id}", updateWatchlistHandler)
+
+	methodHeaders = getDeleteWatchlistHeaders()
+	deleteWatchlistHandler := BindingMiddleware[DeleteWatchlistRequest](
+		genericHandler(server.DeleteWatchlist, config.errorHandler), serviceHeaders, methodHeaders,
+		deleteWatchlistPathParams, deleteWatchlistQueryParams,
+		"DELETE", config.errorHandler,
+	)
+
+	config.mux.Handle("DELETE /v2/watchlists/{watchlist_id}", deleteWatchlistHandler)
+
+	methodHeaders = getAddWatchlistAssetHeaders()
+	addWatchlistAssetHandler := BindingMiddleware[AddWatchlistAssetRequest](
+		genericHandler(server.AddWatchlistAsset, config.errorHandler), serviceHeaders, methodHeaders,
+		addWatchlistAssetPathParams, addWatchlistAssetQueryParams,
+		"POST", config.errorHandler,
+	)
+
+	config.mux.Handle("POST /v2/watchlists/{watchlist_id}", addWatchlistAssetHandler)
+
+	methodHeaders = getRemoveWatchlistAssetHeaders()
+	removeWatchlistAssetHandler := BindingMiddleware[RemoveWatchlistAssetRequest](
+		genericHandler(server.RemoveWatchlistAsset, config.errorHandler), serviceHeaders, methodHeaders,
+		removeWatchlistAssetPathParams, removeWatchlistAssetQueryParams,
+		"DELETE", config.errorHandler,
+	)
+
+	config.mux.Handle("DELETE /v2/watchlists/{watchlist_id}/{symbol}", removeWatchlistAssetHandler)
 
 	return nil
 }
@@ -151,6 +341,31 @@ func getGetAccountHeaders() []*sebufhttp.Header {
 	return nil
 }
 
+// getGetAccountConfigurationsHeaders returns the method-level required headers for GetAccountConfigurations
+func getGetAccountConfigurationsHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getUpdateAccountConfigurationsHeaders returns the method-level required headers for UpdateAccountConfigurations
+func getUpdateAccountConfigurationsHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getGetPortfolioHistoryHeaders returns the method-level required headers for GetPortfolioHistory
+func getGetPortfolioHistoryHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getGetAccountActivitiesHeaders returns the method-level required headers for GetAccountActivities
+func getGetAccountActivitiesHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getGetAccountActivitiesByTypeHeaders returns the method-level required headers for GetAccountActivitiesByType
+func getGetAccountActivitiesByTypeHeaders() []*sebufhttp.Header {
+	return nil
+}
+
 // getCreateOrderHeaders returns the method-level required headers for CreateOrder
 func getCreateOrderHeaders() []*sebufhttp.Header {
 	return nil
@@ -163,6 +378,16 @@ func getListOrdersHeaders() []*sebufhttp.Header {
 
 // getGetOrderHeaders returns the method-level required headers for GetOrder
 func getGetOrderHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getGetOrderByClientIdHeaders returns the method-level required headers for GetOrderByClientId
+func getGetOrderByClientIdHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getReplaceOrderHeaders returns the method-level required headers for ReplaceOrder
+func getReplaceOrderHeaders() []*sebufhttp.Header {
 	return nil
 }
 
@@ -196,26 +421,135 @@ func getCloseAllPositionsHeaders() []*sebufhttp.Header {
 	return nil
 }
 
-// getAccountPathParams contains path parameter configuration for GetAccount
-var getAccountPathParams = []PathParamConfig{
-	{URLParam: "account_id", FieldName: "account_id"},
+// getExerciseOptionHeaders returns the method-level required headers for ExerciseOption
+func getExerciseOptionHeaders() []*sebufhttp.Header {
+	return nil
 }
+
+// getListAssetsHeaders returns the method-level required headers for ListAssets
+func getListAssetsHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getGetAssetHeaders returns the method-level required headers for GetAsset
+func getGetAssetHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getGetClockHeaders returns the method-level required headers for GetClock
+func getGetClockHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getGetCalendarHeaders returns the method-level required headers for GetCalendar
+func getGetCalendarHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getListWatchlistsHeaders returns the method-level required headers for ListWatchlists
+func getListWatchlistsHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getCreateWatchlistHeaders returns the method-level required headers for CreateWatchlist
+func getCreateWatchlistHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getGetWatchlistHeaders returns the method-level required headers for GetWatchlist
+func getGetWatchlistHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getUpdateWatchlistHeaders returns the method-level required headers for UpdateWatchlist
+func getUpdateWatchlistHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getDeleteWatchlistHeaders returns the method-level required headers for DeleteWatchlist
+func getDeleteWatchlistHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getAddWatchlistAssetHeaders returns the method-level required headers for AddWatchlistAsset
+func getAddWatchlistAssetHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getRemoveWatchlistAssetHeaders returns the method-level required headers for RemoveWatchlistAsset
+func getRemoveWatchlistAssetHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getAccountPathParams contains path parameter configuration for GetAccount
+var getAccountPathParams = []PathParamConfig{}
 
 // getAccountQueryParams contains query parameter configuration for GetAccount
 var getAccountQueryParams = []QueryParamConfig{}
 
-// createOrderPathParams contains path parameter configuration for CreateOrder
-var createOrderPathParams = []PathParamConfig{
-	{URLParam: "account_id", FieldName: "account_id"},
+// getAccountConfigurationsPathParams contains path parameter configuration for GetAccountConfigurations
+var getAccountConfigurationsPathParams = []PathParamConfig{}
+
+// getAccountConfigurationsQueryParams contains query parameter configuration for GetAccountConfigurations
+var getAccountConfigurationsQueryParams = []QueryParamConfig{}
+
+// updateAccountConfigurationsPathParams contains path parameter configuration for UpdateAccountConfigurations
+var updateAccountConfigurationsPathParams = []PathParamConfig{}
+
+// updateAccountConfigurationsQueryParams contains query parameter configuration for UpdateAccountConfigurations
+var updateAccountConfigurationsQueryParams = []QueryParamConfig{}
+
+// getPortfolioHistoryPathParams contains path parameter configuration for GetPortfolioHistory
+var getPortfolioHistoryPathParams = []PathParamConfig{}
+
+// getPortfolioHistoryQueryParams contains query parameter configuration for GetPortfolioHistory
+var getPortfolioHistoryQueryParams = []QueryParamConfig{
+	{QueryName: "period", FieldName: "period", Required: false},
+	{QueryName: "timeframe", FieldName: "timeframe", Required: false},
+	{QueryName: "intraday_reporting", FieldName: "intraday_reporting", Required: false},
+	{QueryName: "start", FieldName: "start", Required: false},
+	{QueryName: "end", FieldName: "end", Required: false},
+	{QueryName: "pnl_reset", FieldName: "pnl_reset", Required: false},
+	{QueryName: "extended_hours", FieldName: "extended_hours", Required: false},
 }
+
+// getAccountActivitiesPathParams contains path parameter configuration for GetAccountActivities
+var getAccountActivitiesPathParams = []PathParamConfig{}
+
+// getAccountActivitiesQueryParams contains query parameter configuration for GetAccountActivities
+var getAccountActivitiesQueryParams = []QueryParamConfig{
+	{QueryName: "activity_type", FieldName: "activity_type", Required: false},
+	{QueryName: "after", FieldName: "after", Required: false},
+	{QueryName: "until", FieldName: "until", Required: false},
+	{QueryName: "direction", FieldName: "direction", Required: false},
+	{QueryName: "page_size", FieldName: "page_size", Required: false},
+	{QueryName: "page_token", FieldName: "page_token", Required: false},
+	{QueryName: "date", FieldName: "date", Required: false},
+}
+
+// getAccountActivitiesByTypePathParams contains path parameter configuration for GetAccountActivitiesByType
+var getAccountActivitiesByTypePathParams = []PathParamConfig{
+	{URLParam: "activity_type", FieldName: "activity_type"},
+}
+
+// getAccountActivitiesByTypeQueryParams contains query parameter configuration for GetAccountActivitiesByType
+var getAccountActivitiesByTypeQueryParams = []QueryParamConfig{
+	{QueryName: "after", FieldName: "after", Required: false},
+	{QueryName: "until", FieldName: "until", Required: false},
+	{QueryName: "direction", FieldName: "direction", Required: false},
+	{QueryName: "page_size", FieldName: "page_size", Required: false},
+	{QueryName: "page_token", FieldName: "page_token", Required: false},
+	{QueryName: "date", FieldName: "date", Required: false},
+}
+
+// createOrderPathParams contains path parameter configuration for CreateOrder
+var createOrderPathParams = []PathParamConfig{}
 
 // createOrderQueryParams contains query parameter configuration for CreateOrder
 var createOrderQueryParams = []QueryParamConfig{}
 
 // listOrdersPathParams contains path parameter configuration for ListOrders
-var listOrdersPathParams = []PathParamConfig{
-	{URLParam: "account_id", FieldName: "account_id"},
-}
+var listOrdersPathParams = []PathParamConfig{}
 
 // listOrdersQueryParams contains query parameter configuration for ListOrders
 var listOrdersQueryParams = []QueryParamConfig{
@@ -231,7 +565,6 @@ var listOrdersQueryParams = []QueryParamConfig{
 
 // getOrderPathParams contains path parameter configuration for GetOrder
 var getOrderPathParams = []PathParamConfig{
-	{URLParam: "account_id", FieldName: "account_id"},
 	{URLParam: "order_id", FieldName: "order_id"},
 }
 
@@ -240,9 +573,24 @@ var getOrderQueryParams = []QueryParamConfig{
 	{QueryName: "nested", FieldName: "nested", Required: false},
 }
 
+// getOrderByClientIdPathParams contains path parameter configuration for GetOrderByClientId
+var getOrderByClientIdPathParams = []PathParamConfig{}
+
+// getOrderByClientIdQueryParams contains query parameter configuration for GetOrderByClientId
+var getOrderByClientIdQueryParams = []QueryParamConfig{
+	{QueryName: "client_order_id", FieldName: "client_order_id", Required: false},
+}
+
+// replaceOrderPathParams contains path parameter configuration for ReplaceOrder
+var replaceOrderPathParams = []PathParamConfig{
+	{URLParam: "order_id", FieldName: "order_id"},
+}
+
+// replaceOrderQueryParams contains query parameter configuration for ReplaceOrder
+var replaceOrderQueryParams = []QueryParamConfig{}
+
 // cancelOrderPathParams contains path parameter configuration for CancelOrder
 var cancelOrderPathParams = []PathParamConfig{
-	{URLParam: "account_id", FieldName: "account_id"},
 	{URLParam: "order_id", FieldName: "order_id"},
 }
 
@@ -250,24 +598,19 @@ var cancelOrderPathParams = []PathParamConfig{
 var cancelOrderQueryParams = []QueryParamConfig{}
 
 // cancelAllOrdersPathParams contains path parameter configuration for CancelAllOrders
-var cancelAllOrdersPathParams = []PathParamConfig{
-	{URLParam: "account_id", FieldName: "account_id"},
-}
+var cancelAllOrdersPathParams = []PathParamConfig{}
 
 // cancelAllOrdersQueryParams contains query parameter configuration for CancelAllOrders
 var cancelAllOrdersQueryParams = []QueryParamConfig{}
 
 // listPositionsPathParams contains path parameter configuration for ListPositions
-var listPositionsPathParams = []PathParamConfig{
-	{URLParam: "account_id", FieldName: "account_id"},
-}
+var listPositionsPathParams = []PathParamConfig{}
 
 // listPositionsQueryParams contains query parameter configuration for ListPositions
 var listPositionsQueryParams = []QueryParamConfig{}
 
 // getPositionPathParams contains path parameter configuration for GetPosition
 var getPositionPathParams = []PathParamConfig{
-	{URLParam: "account_id", FieldName: "account_id"},
 	{URLParam: "symbol", FieldName: "symbol"},
 }
 
@@ -276,7 +619,6 @@ var getPositionQueryParams = []QueryParamConfig{}
 
 // closePositionPathParams contains path parameter configuration for ClosePosition
 var closePositionPathParams = []PathParamConfig{
-	{URLParam: "account_id", FieldName: "account_id"},
 	{URLParam: "symbol", FieldName: "symbol"},
 }
 
@@ -287,11 +629,103 @@ var closePositionQueryParams = []QueryParamConfig{
 }
 
 // closeAllPositionsPathParams contains path parameter configuration for CloseAllPositions
-var closeAllPositionsPathParams = []PathParamConfig{
-	{URLParam: "account_id", FieldName: "account_id"},
-}
+var closeAllPositionsPathParams = []PathParamConfig{}
 
 // closeAllPositionsQueryParams contains query parameter configuration for CloseAllPositions
 var closeAllPositionsQueryParams = []QueryParamConfig{
 	{QueryName: "cancel_orders", FieldName: "cancel_orders", Required: false},
 }
+
+// exerciseOptionPathParams contains path parameter configuration for ExerciseOption
+var exerciseOptionPathParams = []PathParamConfig{
+	{URLParam: "symbol_or_contract_id", FieldName: "symbol_or_contract_id"},
+}
+
+// exerciseOptionQueryParams contains query parameter configuration for ExerciseOption
+var exerciseOptionQueryParams = []QueryParamConfig{}
+
+// listAssetsPathParams contains path parameter configuration for ListAssets
+var listAssetsPathParams = []PathParamConfig{}
+
+// listAssetsQueryParams contains query parameter configuration for ListAssets
+var listAssetsQueryParams = []QueryParamConfig{
+	{QueryName: "status", FieldName: "status", Required: false},
+	{QueryName: "asset_class", FieldName: "asset_class", Required: false},
+	{QueryName: "exchange", FieldName: "exchange", Required: false},
+}
+
+// getAssetPathParams contains path parameter configuration for GetAsset
+var getAssetPathParams = []PathParamConfig{
+	{URLParam: "symbol_or_id", FieldName: "symbol_or_id"},
+}
+
+// getAssetQueryParams contains query parameter configuration for GetAsset
+var getAssetQueryParams = []QueryParamConfig{}
+
+// getClockPathParams contains path parameter configuration for GetClock
+var getClockPathParams = []PathParamConfig{}
+
+// getClockQueryParams contains query parameter configuration for GetClock
+var getClockQueryParams = []QueryParamConfig{}
+
+// getCalendarPathParams contains path parameter configuration for GetCalendar
+var getCalendarPathParams = []PathParamConfig{}
+
+// getCalendarQueryParams contains query parameter configuration for GetCalendar
+var getCalendarQueryParams = []QueryParamConfig{
+	{QueryName: "start", FieldName: "start", Required: false},
+	{QueryName: "end", FieldName: "end", Required: false},
+}
+
+// listWatchlistsPathParams contains path parameter configuration for ListWatchlists
+var listWatchlistsPathParams = []PathParamConfig{}
+
+// listWatchlistsQueryParams contains query parameter configuration for ListWatchlists
+var listWatchlistsQueryParams = []QueryParamConfig{}
+
+// createWatchlistPathParams contains path parameter configuration for CreateWatchlist
+var createWatchlistPathParams = []PathParamConfig{}
+
+// createWatchlistQueryParams contains query parameter configuration for CreateWatchlist
+var createWatchlistQueryParams = []QueryParamConfig{}
+
+// getWatchlistPathParams contains path parameter configuration for GetWatchlist
+var getWatchlistPathParams = []PathParamConfig{
+	{URLParam: "watchlist_id", FieldName: "watchlist_id"},
+}
+
+// getWatchlistQueryParams contains query parameter configuration for GetWatchlist
+var getWatchlistQueryParams = []QueryParamConfig{}
+
+// updateWatchlistPathParams contains path parameter configuration for UpdateWatchlist
+var updateWatchlistPathParams = []PathParamConfig{
+	{URLParam: "watchlist_id", FieldName: "watchlist_id"},
+}
+
+// updateWatchlistQueryParams contains query parameter configuration for UpdateWatchlist
+var updateWatchlistQueryParams = []QueryParamConfig{}
+
+// deleteWatchlistPathParams contains path parameter configuration for DeleteWatchlist
+var deleteWatchlistPathParams = []PathParamConfig{
+	{URLParam: "watchlist_id", FieldName: "watchlist_id"},
+}
+
+// deleteWatchlistQueryParams contains query parameter configuration for DeleteWatchlist
+var deleteWatchlistQueryParams = []QueryParamConfig{}
+
+// addWatchlistAssetPathParams contains path parameter configuration for AddWatchlistAsset
+var addWatchlistAssetPathParams = []PathParamConfig{
+	{URLParam: "watchlist_id", FieldName: "watchlist_id"},
+}
+
+// addWatchlistAssetQueryParams contains query parameter configuration for AddWatchlistAsset
+var addWatchlistAssetQueryParams = []QueryParamConfig{}
+
+// removeWatchlistAssetPathParams contains path parameter configuration for RemoveWatchlistAsset
+var removeWatchlistAssetPathParams = []PathParamConfig{
+	{URLParam: "watchlist_id", FieldName: "watchlist_id"},
+	{URLParam: "symbol", FieldName: "symbol"},
+}
+
+// removeWatchlistAssetQueryParams contains query parameter configuration for RemoveWatchlistAsset
+var removeWatchlistAssetQueryParams = []QueryParamConfig{}

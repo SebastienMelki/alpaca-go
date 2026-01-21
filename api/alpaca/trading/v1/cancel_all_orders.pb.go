@@ -7,7 +7,6 @@
 package tradingv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -25,9 +24,7 @@ const (
 
 // CancelAllOrdersRequest is the request to cancel all open orders.
 type CancelAllOrdersRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The account ID (bound from path variable).
-	AccountId     string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -62,13 +59,6 @@ func (*CancelAllOrdersRequest) Descriptor() ([]byte, []int) {
 	return file_alpaca_trading_v1_cancel_all_orders_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CancelAllOrdersRequest) GetAccountId() string {
-	if x != nil {
-		return x.AccountId
-	}
-	return ""
-}
-
 // CanceledOrder represents a canceled order in the response.
 type CanceledOrder struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -77,7 +67,7 @@ type CanceledOrder struct {
 	// HTTP status code for this cancellation.
 	Status int32 `protobuf:"varint,2,opt,name=status,proto3" json:"status,omitempty"`
 	// The order body if cancellation was successful.
-	Body          *string `protobuf:"bytes,3,opt,name=body,proto3,oneof" json:"body,omitempty"`
+	Body          string `protobuf:"bytes,3,opt,name=body,proto3" json:"body,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -127,8 +117,8 @@ func (x *CanceledOrder) GetStatus() int32 {
 }
 
 func (x *CanceledOrder) GetBody() string {
-	if x != nil && x.Body != nil {
-		return *x.Body
+	if x != nil {
+		return x.Body
 	}
 	return ""
 }
@@ -183,18 +173,14 @@ var File_alpaca_trading_v1_cancel_all_orders_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_cancel_all_orders_proto_rawDesc = "" +
 	"\n" +
-	")alpaca/trading/v1/cancel_all_orders.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"n\n" +
-	"\x16CancelAllOrdersRequest\x12T\n" +
-	"\n" +
-	"account_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
-	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\"\x90\x01\n" +
+	")alpaca/trading/v1/cancel_all_orders.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\"\x18\n" +
+	"\x16CancelAllOrdersRequest\"\x82\x01\n" +
 	"\rCanceledOrder\x12:\n" +
 	"\x02id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
 	"$61e69015-8549-4bfd-b9c3-01e75843f47dR\x02id\x12!\n" +
 	"\x06status\x18\x02 \x01(\x05B\t\xba\xb5\x18\x05\n" +
-	"\x03200R\x06status\x12\x17\n" +
-	"\x04body\x18\x03 \x01(\tH\x00R\x04body\x88\x01\x01B\a\n" +
-	"\x05_body\"S\n" +
+	"\x03200R\x06status\x12\x12\n" +
+	"\x04body\x18\x03 \x01(\tR\x04body\"S\n" +
 	"\x17CancelAllOrdersResponse\x128\n" +
 	"\x06orders\x18\x01 \x03(\v2 .alpaca.trading.v1.CanceledOrderR\x06ordersB\xd8\x01\n" +
 	"\x15com.alpaca.trading.v1B\x14CancelAllOrdersProtoP\x01ZCgithub.com/sebastienmelki/alpaca-go/api/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
@@ -231,7 +217,6 @@ func file_alpaca_trading_v1_cancel_all_orders_proto_init() {
 	if File_alpaca_trading_v1_cancel_all_orders_proto != nil {
 		return
 	}
-	file_alpaca_trading_v1_cancel_all_orders_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -26,14 +26,12 @@ const (
 // ClosePositionRequest is the request to close a position.
 type ClosePositionRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The account ID (bound from path variable).
-	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// The symbol of the position to close (bound from path variable).
-	Symbol string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	Symbol string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	// Quantity to close (optional, closes entire position if not specified).
-	Qty *string `protobuf:"bytes,3,opt,name=qty,proto3,oneof" json:"qty,omitempty"`
+	Qty string `protobuf:"bytes,2,opt,name=qty,proto3" json:"qty,omitempty"`
 	// Percentage of position to close (optional, 0-100).
-	Percentage    *string `protobuf:"bytes,4,opt,name=percentage,proto3,oneof" json:"percentage,omitempty"`
+	Percentage    string `protobuf:"bytes,3,opt,name=percentage,proto3" json:"percentage,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -68,13 +66,6 @@ func (*ClosePositionRequest) Descriptor() ([]byte, []int) {
 	return file_alpaca_trading_v1_close_position_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ClosePositionRequest) GetAccountId() string {
-	if x != nil {
-		return x.AccountId
-	}
-	return ""
-}
-
 func (x *ClosePositionRequest) GetSymbol() string {
 	if x != nil {
 		return x.Symbol
@@ -83,15 +74,15 @@ func (x *ClosePositionRequest) GetSymbol() string {
 }
 
 func (x *ClosePositionRequest) GetQty() string {
-	if x != nil && x.Qty != nil {
-		return *x.Qty
+	if x != nil {
+		return x.Qty
 	}
 	return ""
 }
 
 func (x *ClosePositionRequest) GetPercentage() string {
-	if x != nil && x.Percentage != nil {
-		return *x.Percentage
+	if x != nil {
+		return x.Percentage
 	}
 	return ""
 }
@@ -100,24 +91,19 @@ var File_alpaca_trading_v1_close_position_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_close_position_proto_rawDesc = "" +
 	"\n" +
-	"&alpaca/trading/v1/close_position.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\x9c\x02\n" +
-	"\x14ClosePositionRequest\x12T\n" +
-	"\n" +
-	"account_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
-	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\x12.\n" +
-	"\x06symbol\x18\x02 \x01(\tB\x16\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18\f\xba\xb5\x18\x06\n" +
-	"\x04AAPLR\x06symbol\x12(\n" +
-	"\x03qty\x18\x03 \x01(\tB\x11\xba\xb5\x18\x04\n" +
+	"&alpaca/trading/v1/close_position.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xa5\x01\n" +
+	"\x14ClosePositionRequest\x12.\n" +
+	"\x06symbol\x18\x01 \x01(\tB\x16\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18\f\xba\xb5\x18\x06\n" +
+	"\x04AAPLR\x06symbol\x12#\n" +
+	"\x03qty\x18\x02 \x01(\tB\x11\xba\xb5\x18\x04\n" +
 	"\x0250µ\x18\x05\n" +
-	"\x03qtyH\x00R\x03qty\x88\x01\x01\x12=\n" +
+	"\x03qtyR\x03qty\x128\n" +
 	"\n" +
-	"percentage\x18\x04 \x01(\tB\x18\xba\xb5\x18\x04\n" +
+	"percentage\x18\x03 \x01(\tB\x18\xba\xb5\x18\x04\n" +
 	"\x0250µ\x18\f\n" +
 	"\n" +
-	"percentageH\x01R\n" +
-	"percentage\x88\x01\x01B\x06\n" +
-	"\x04_qtyB\r\n" +
-	"\v_percentageB\xd6\x01\n" +
+	"percentageR\n" +
+	"percentageB\xd6\x01\n" +
 	"\x15com.alpaca.trading.v1B\x12ClosePositionProtoP\x01ZCgithub.com/sebastienmelki/alpaca-go/api/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (
@@ -149,7 +135,6 @@ func file_alpaca_trading_v1_close_position_proto_init() {
 	if File_alpaca_trading_v1_close_position_proto != nil {
 		return
 	}
-	file_alpaca_trading_v1_close_position_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
