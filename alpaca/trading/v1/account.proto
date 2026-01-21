@@ -1,0 +1,137 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "sebuf/http/annotations.proto";
+
+// AccountStatus represents the status of an account.
+enum AccountStatus {
+  ACCOUNT_STATUS_UNSPECIFIED = 0;
+  ACCOUNT_STATUS_ONBOARDING = 1;
+  ACCOUNT_STATUS_SUBMISSION_FAILED = 2;
+  ACCOUNT_STATUS_SUBMITTED = 3;
+  ACCOUNT_STATUS_ACCOUNT_UPDATED = 4;
+  ACCOUNT_STATUS_APPROVAL_PENDING = 5;
+  ACCOUNT_STATUS_ACTIVE = 6;
+  ACCOUNT_STATUS_REJECTED = 7;
+  ACCOUNT_STATUS_DISABLED = 8;
+  ACCOUNT_STATUS_ACCOUNT_CLOSED = 9;
+}
+
+// CryptoStatus represents the crypto trading status of an account.
+enum CryptoStatus {
+  CRYPTO_STATUS_UNSPECIFIED = 0;
+  CRYPTO_STATUS_INACTIVE = 1;
+  CRYPTO_STATUS_ACTIVE = 2;
+}
+
+// Account represents an Alpaca trading account.
+message Account {
+  // Account ID (UUID).
+  string id = 1 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Account number.
+  string account_number = 2 [(sebuf.http.field_examples) = { values: ["010203ABCD"] }];
+
+  // Account status.
+  AccountStatus status = 3 [(sebuf.http.field_examples) = { values: ["6"] }];
+
+  // Crypto trading status.
+  CryptoStatus crypto_status = 4 [(sebuf.http.field_examples) = { values: ["2"] }];
+
+  // Currency (USD).
+  string currency = 5 [(sebuf.http.field_examples) = { values: ["USD"] }];
+
+  // Current available buying power (cash + margin).
+  string buying_power = 6 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Buying power for day trading (4x equity for pattern day traders).
+  string regt_buying_power = 7 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Buying power for day trading (4x equity).
+  string daytrading_buying_power = 8 [(sebuf.http.field_examples) = { values: ["200000.00"] }];
+
+  // Effective buying power.
+  string effective_buying_power = 9 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Non-marginable buying power.
+  string non_marginable_buying_power = 10 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Beginning of day day trading buying power.
+  string bod_dtbp = 11 [(sebuf.http.field_examples) = { values: ["200000.00"] }];
+
+  // Cash balance.
+  string cash = 12 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Accrued fees.
+  string accrued_fees = 13 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Pending transfer amount.
+  string pending_transfer_in = 14 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Total portfolio value.
+  string portfolio_value = 15 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Whether the account is a pattern day trader.
+  bool pattern_day_trader = 16 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Whether trading is blocked.
+  bool trading_blocked = 17 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Whether transfers are blocked.
+  bool transfers_blocked = 18 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Whether the account is blocked.
+  bool account_blocked = 19 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Timestamp when the account was created (RFC 3339).
+  string created_at = 20 [(sebuf.http.field_examples) = { values: ["2021-01-01T00:00:00Z"] }];
+
+  // Whether trading is suspended by user.
+  bool trade_suspended_by_user = 21 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Margin multiplier.
+  string multiplier = 22 [(sebuf.http.field_examples) = { values: ["4"] }];
+
+  // Whether shorting is enabled.
+  bool shorting_enabled = 23 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Total equity.
+  string equity = 24 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Last equity value.
+  string last_equity = 25 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Long market value.
+  string long_market_value = 26 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Short market value.
+  string short_market_value = 27 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Position market value.
+  string position_market_value = 28 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Initial margin.
+  string initial_margin = 29 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Maintenance margin.
+  string maintenance_margin = 30 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Last maintenance margin.
+  string last_maintenance_margin = 31 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // SMA (Special Memorandum Account).
+  string sma = 32 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Day trade count.
+  int32 daytrade_count = 33 [(sebuf.http.field_examples) = { values: ["0"] }];
+
+  // Options trading level (if options enabled).
+  optional int32 options_trading_level = 34 [(sebuf.http.field_examples) = { values: ["2"] }];
+
+  // Options approved level.
+  optional int32 options_approved_level = 35 [(sebuf.http.field_examples) = { values: ["2"] }];
+
+  // Options buying power.
+  optional string options_buying_power = 36 [(sebuf.http.field_examples) = { values: ["25000.00"] }];
+}

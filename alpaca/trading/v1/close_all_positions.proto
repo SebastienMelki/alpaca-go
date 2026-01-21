@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/trading/v1/order.proto";
+
+// CloseAllPositionsRequest is the request to close all open positions.
+message CloseAllPositionsRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Whether to cancel all open orders before closing positions.
+  bool cancel_orders = 2 [
+    (sebuf.http.query) = { name: "cancel_orders" },
+    (sebuf.http.field_examples) = { values: ["true"] }
+  ];
+}
+
+// ClosedPosition represents the result of closing a single position.
+message ClosedPosition {
+  // The symbol of the closed position.
+  string symbol = 1 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // HTTP status code for this close operation.
+  int32 status = 2 [(sebuf.http.field_examples) = { values: ["200"] }];
+
+  // The closing order if successful.
+  optional Order order = 3;
+}
+
+// CloseAllPositionsResponse is the response after closing all positions.
+message CloseAllPositionsResponse {
+  // List of closed positions.
+  repeated ClosedPosition positions = 1;
+}

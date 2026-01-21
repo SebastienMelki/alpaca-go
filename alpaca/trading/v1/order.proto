@@ -1,0 +1,198 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "sebuf/http/annotations.proto";
+
+// OrderSide represents the side of an order (buy or sell).
+enum OrderSide {
+  ORDER_SIDE_UNSPECIFIED = 0;
+  ORDER_SIDE_BUY = 1;
+  ORDER_SIDE_SELL = 2;
+}
+
+// OrderType represents the type of order.
+enum OrderType {
+  ORDER_TYPE_UNSPECIFIED = 0;
+  ORDER_TYPE_MARKET = 1;
+  ORDER_TYPE_LIMIT = 2;
+  ORDER_TYPE_STOP = 3;
+  ORDER_TYPE_STOP_LIMIT = 4;
+  ORDER_TYPE_TRAILING_STOP = 5;
+}
+
+// TimeInForce represents the time in force for an order.
+enum TimeInForce {
+  TIME_IN_FORCE_UNSPECIFIED = 0;
+  // Day order - good for the day only.
+  TIME_IN_FORCE_DAY = 1;
+  // Good 'til canceled.
+  TIME_IN_FORCE_GTC = 2;
+  // At the open.
+  TIME_IN_FORCE_OPG = 3;
+  // At the close.
+  TIME_IN_FORCE_CLS = 4;
+  // Immediate or cancel.
+  TIME_IN_FORCE_IOC = 5;
+  // Fill or kill.
+  TIME_IN_FORCE_FOK = 6;
+}
+
+// OrderStatus represents the status of an order.
+enum OrderStatus {
+  ORDER_STATUS_UNSPECIFIED = 0;
+  // Order has been received by Alpaca and routed to exchanges.
+  ORDER_STATUS_NEW = 1;
+  // Order has been partially filled.
+  ORDER_STATUS_PARTIALLY_FILLED = 2;
+  // Order has been completely filled.
+  ORDER_STATUS_FILLED = 3;
+  // Order is done executing for the day.
+  ORDER_STATUS_DONE_FOR_DAY = 4;
+  // Order has been canceled.
+  ORDER_STATUS_CANCELED = 5;
+  // Order has expired.
+  ORDER_STATUS_EXPIRED = 6;
+  // Order was replaced by a new order.
+  ORDER_STATUS_REPLACED = 7;
+  // Order is waiting to be canceled.
+  ORDER_STATUS_PENDING_CANCEL = 8;
+  // Order is waiting to be replaced.
+  ORDER_STATUS_PENDING_REPLACE = 9;
+  // Order has been received but not yet accepted for execution.
+  ORDER_STATUS_PENDING_NEW = 10;
+  // Order has been received and accepted for execution.
+  ORDER_STATUS_ACCEPTED = 11;
+  // Order has been accepted for bidding.
+  ORDER_STATUS_ACCEPTED_FOR_BIDDING = 12;
+  // Order has been stopped.
+  ORDER_STATUS_STOPPED = 13;
+  // Order has been rejected.
+  ORDER_STATUS_REJECTED = 14;
+  // Order has been suspended.
+  ORDER_STATUS_SUSPENDED = 15;
+  // Order has been calculated.
+  ORDER_STATUS_CALCULATED = 16;
+  // Order is held.
+  ORDER_STATUS_HELD = 17;
+}
+
+// OrderClass represents the class of order.
+enum OrderClass {
+  ORDER_CLASS_UNSPECIFIED = 0;
+  // Simple order.
+  ORDER_CLASS_SIMPLE = 1;
+  // Bracket order (entry with take profit and stop loss).
+  ORDER_CLASS_BRACKET = 2;
+  // One-cancels-other order.
+  ORDER_CLASS_OCO = 3;
+  // One-triggers-other order.
+  ORDER_CLASS_OTO = 4;
+}
+
+// AssetClass represents the asset class.
+enum AssetClass {
+  ASSET_CLASS_UNSPECIFIED = 0;
+  ASSET_CLASS_US_EQUITY = 1;
+  ASSET_CLASS_CRYPTO = 2;
+  ASSET_CLASS_US_OPTION = 3;
+}
+
+// Order represents a trading order.
+message Order {
+  // Order ID (UUID).
+  string id = 1 [(sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }];
+
+  // Client order ID (user-provided).
+  string client_order_id = 2 [(sebuf.http.field_examples) = { values: ["my_order_123"] }];
+
+  // Timestamp when the order was created (RFC 3339).
+  string created_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the order was last updated.
+  string updated_at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:05Z"] }];
+
+  // Timestamp when the order was submitted.
+  string submitted_at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the order was filled.
+  optional string filled_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:05Z"] }];
+
+  // Timestamp when the order expired.
+  optional string expired_at = 7;
+
+  // Timestamp when the order was canceled.
+  optional string canceled_at = 8;
+
+  // Timestamp when the order failed.
+  optional string failed_at = 9;
+
+  // Timestamp when the order was replaced.
+  optional string replaced_at = 10;
+
+  // Order ID that replaced this order.
+  optional string replaced_by = 11;
+
+  // Order ID that this order replaces.
+  optional string replaces = 12;
+
+  // Asset ID.
+  string asset_id = 13 [(sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }];
+
+  // Asset symbol.
+  string symbol = 14 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Asset class.
+  AssetClass asset_class = 15 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Notional value (for fractional orders).
+  optional string notional = 16 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
+
+  // Quantity ordered.
+  optional string qty = 17 [(sebuf.http.field_examples) = { values: ["10"] }];
+
+  // Quantity filled.
+  string filled_qty = 18 [(sebuf.http.field_examples) = { values: ["10"] }];
+
+  // Average fill price.
+  optional string filled_avg_price = 19 [(sebuf.http.field_examples) = { values: ["150.25"] }];
+
+  // Order class.
+  OrderClass order_class = 20 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Order type.
+  OrderType order_type = 21 [(sebuf.http.field_examples) = { values: ["2"] }];
+
+  // Deprecated: use order_type instead.
+  OrderType type = 22 [(sebuf.http.field_examples) = { values: ["2"] }];
+
+  // Order side.
+  OrderSide side = 23 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Time in force.
+  TimeInForce time_in_force = 24 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Limit price (for limit orders).
+  optional string limit_price = 25 [(sebuf.http.field_examples) = { values: ["150.00"] }];
+
+  // Stop price (for stop orders).
+  optional string stop_price = 26 [(sebuf.http.field_examples) = { values: ["145.00"] }];
+
+  // Order status.
+  OrderStatus status = 27 [(sebuf.http.field_examples) = { values: ["3"] }];
+
+  // Whether the order is for extended hours.
+  bool extended_hours = 28 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Leg orders (for bracket orders).
+  repeated Order legs = 29;
+
+  // Trail percent (for trailing stop orders).
+  optional string trail_percent = 30 [(sebuf.http.field_examples) = { values: ["5.0"] }];
+
+  // Trail price (for trailing stop orders).
+  optional string trail_price = 31 [(sebuf.http.field_examples) = { values: ["5.00"] }];
+
+  // High water mark (for trailing stop orders).
+  optional string hwm = 32 [(sebuf.http.field_examples) = { values: ["155.00"] }];
+}

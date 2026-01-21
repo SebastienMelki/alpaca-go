@@ -1,0 +1,150 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "sebuf/http/annotations.proto";
+import "sebuf/http/headers.proto";
+import "alpaca/trading/v1/account.proto";
+import "alpaca/trading/v1/get_account.proto";
+import "alpaca/trading/v1/order.proto";
+import "alpaca/trading/v1/create_order.proto";
+import "alpaca/trading/v1/get_order.proto";
+import "alpaca/trading/v1/list_orders.proto";
+import "alpaca/trading/v1/cancel_order.proto";
+import "alpaca/trading/v1/cancel_all_orders.proto";
+import "alpaca/trading/v1/position.proto";
+import "alpaca/trading/v1/list_positions.proto";
+import "alpaca/trading/v1/get_position.proto";
+import "alpaca/trading/v1/close_position.proto";
+import "alpaca/trading/v1/close_all_positions.proto";
+
+// TradingService provides the Alpaca Trading API.
+// Base URL: https://api.alpaca.markets (live) or https://paper-api.alpaca.markets (paper)
+service TradingService {
+  // Base path for all endpoints.
+  option (sebuf.http.service_config) = {
+    base_path: "/v1/trading/accounts"
+  };
+
+  // API key authentication required for all operations.
+  option (sebuf.http.service_headers) = {
+    required_headers: [
+      {
+        name: "APCA-API-KEY-ID"
+        description: "Alpaca API key ID"
+        type: "string"
+        required: true
+        example: "PKXXXXXXXXXXXXXXXXXX"
+      },
+      {
+        name: "APCA-API-SECRET-KEY"
+        description: "Alpaca API secret key"
+        type: "string"
+        required: true
+        example: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+      }
+    ]
+  };
+
+  // ============================================
+  // Account Operations
+  // ============================================
+
+  // GetAccount retrieves the account information.
+  // GET /v1/trading/accounts/{account_id}
+  rpc GetAccount(GetAccountRequest) returns (Account) {
+    option (sebuf.http.config) = {
+      path: "/{account_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Order Operations
+  // ============================================
+
+  // CreateOrder places a new order.
+  // POST /v1/trading/accounts/{account_id}/orders
+  rpc CreateOrder(CreateOrderRequest) returns (Order) {
+    option (sebuf.http.config) = {
+      path: "/{account_id}/orders"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ListOrders retrieves a list of orders.
+  // GET /v1/trading/accounts/{account_id}/orders
+  rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse) {
+    option (sebuf.http.config) = {
+      path: "/{account_id}/orders"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetOrder retrieves a specific order by ID.
+  // GET /v1/trading/accounts/{account_id}/orders/{order_id}
+  rpc GetOrder(GetOrderRequest) returns (Order) {
+    option (sebuf.http.config) = {
+      path: "/{account_id}/orders/{order_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CancelOrder cancels a specific order.
+  // DELETE /v1/trading/accounts/{account_id}/orders/{order_id}
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse) {
+    option (sebuf.http.config) = {
+      path: "/{account_id}/orders/{order_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // CancelAllOrders cancels all open orders.
+  // DELETE /v1/trading/accounts/{account_id}/orders
+  rpc CancelAllOrders(CancelAllOrdersRequest) returns (CancelAllOrdersResponse) {
+    option (sebuf.http.config) = {
+      path: "/{account_id}/orders"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ============================================
+  // Position Operations
+  // ============================================
+
+  // ListPositions retrieves all open positions.
+  // GET /v1/trading/accounts/{account_id}/positions
+  rpc ListPositions(ListPositionsRequest) returns (ListPositionsResponse) {
+    option (sebuf.http.config) = {
+      path: "/{account_id}/positions"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetPosition retrieves a specific position by symbol.
+  // GET /v1/trading/accounts/{account_id}/positions/{symbol}
+  rpc GetPosition(GetPositionRequest) returns (Position) {
+    option (sebuf.http.config) = {
+      path: "/{account_id}/positions/{symbol}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ClosePosition closes a specific position (liquidates).
+  // DELETE /v1/trading/accounts/{account_id}/positions/{symbol}
+  rpc ClosePosition(ClosePositionRequest) returns (Order) {
+    option (sebuf.http.config) = {
+      path: "/{account_id}/positions/{symbol}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // CloseAllPositions closes all open positions.
+  // DELETE /v1/trading/accounts/{account_id}/positions
+  rpc CloseAllPositions(CloseAllPositionsRequest) returns (CloseAllPositionsResponse) {
+    option (sebuf.http.config) = {
+      path: "/{account_id}/positions"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+}

@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "sebuf/http/annotations.proto";
+import "alpaca/trading/v1/order.proto";
+
+// PositionSide represents the side of a position.
+enum PositionSide {
+  POSITION_SIDE_UNSPECIFIED = 0;
+  POSITION_SIDE_LONG = 1;
+  POSITION_SIDE_SHORT = 2;
+}
+
+// Position represents a current holding in a security.
+message Position {
+  // Asset ID (UUID).
+  string asset_id = 1 [(sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }];
+
+  // Asset symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Exchange where the asset is traded.
+  string exchange = 3 [(sebuf.http.field_examples) = { values: ["NASDAQ"] }];
+
+  // Asset class.
+  AssetClass asset_class = 4 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Whether the asset is marginable.
+  bool asset_marginable = 5 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Quantity of shares held.
+  string qty = 6 [(sebuf.http.field_examples) = { values: ["100"] }];
+
+  // Average entry price.
+  string avg_entry_price = 7 [(sebuf.http.field_examples) = { values: ["150.00"] }];
+
+  // Position side (long or short).
+  PositionSide side = 8 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Current market value.
+  string market_value = 9 [(sebuf.http.field_examples) = { values: ["15500.00"] }];
+
+  // Total cost basis.
+  string cost_basis = 10 [(sebuf.http.field_examples) = { values: ["15000.00"] }];
+
+  // Unrealized profit/loss.
+  string unrealized_pl = 11 [(sebuf.http.field_examples) = { values: ["500.00"] }];
+
+  // Unrealized profit/loss percentage.
+  string unrealized_plpc = 12 [(sebuf.http.field_examples) = { values: ["0.0333"] }];
+
+  // Unrealized intraday profit/loss.
+  string unrealized_intraday_pl = 13 [(sebuf.http.field_examples) = { values: ["100.00"] }];
+
+  // Unrealized intraday profit/loss percentage.
+  string unrealized_intraday_plpc = 14 [(sebuf.http.field_examples) = { values: ["0.0065"] }];
+
+  // Current price.
+  string current_price = 15 [(sebuf.http.field_examples) = { values: ["155.00"] }];
+
+  // Last day's closing price.
+  string lastday_price = 16 [(sebuf.http.field_examples) = { values: ["154.00"] }];
+
+  // Change today (percentage).
+  string change_today = 17 [(sebuf.http.field_examples) = { values: ["0.0065"] }];
+
+  // Quantity available for trading (excludes open orders).
+  string qty_available = 18 [(sebuf.http.field_examples) = { values: ["100"] }];
+}
