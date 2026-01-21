@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package alpaca.core.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// AccountID is a unique identifier for an Alpaca trading account.
+message AccountID {
+  string value = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// OrderID is a unique identifier for an order.
+message OrderID {
+  string value = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }
+  ];
+}
+
+// AssetID is a unique identifier for an asset.
+message AssetID {
+  string value = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }
+  ];
+}
+
+// Symbol represents a trading symbol (e.g., AAPL, TSLA, BTC/USD).
+message Symbol {
+  string value = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = { min_len: 1, max_len: 12 },
+    (sebuf.http.field_examples) = { values: ["AAPL", "TSLA", "BTC/USD"] }
+  ];
+}
