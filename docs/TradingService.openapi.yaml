@@ -1,0 +1,1682 @@
+openapi: 3.1.0
+info:
+    title: TradingService API
+    version: 1.0.0
+paths:
+    /v1/trading/accounts/{account_id}:
+        get:
+            tags:
+                - TradingService
+            summary: GetAccount
+            description: |-
+                GetAccount retrieves the account information.
+                 GET /v1/trading/accounts/{account_id}
+            operationId: GetAccount
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Account'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/trading/accounts/{account_id}/orders:
+        get:
+            tags:
+                - TradingService
+            summary: ListOrders
+            description: |-
+                ListOrders retrieves a list of orders.
+                 GET /v1/trading/accounts/{account_id}/orders
+            operationId: ListOrders
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  description: Filter by order status (open, closed, all).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of orders to return (default 50, max 500).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: after
+                  in: query
+                  description: Cursor for pagination (order ID to start after).
+                  required: false
+                  schema:
+                    type: string
+                - name: until
+                  in: query
+                  description: Filter by orders updated before this timestamp.
+                  required: false
+                  schema:
+                    type: string
+                - name: direction
+                  in: query
+                  description: Sort direction (asc or desc).
+                  required: false
+                  schema:
+                    type: string
+                - name: nested
+                  in: query
+                  description: Whether to include nested leg orders.
+                  required: false
+                  schema:
+                    type: boolean
+                - name: symbols
+                  in: query
+                  description: Filter by symbols (comma-separated).
+                  required: false
+                  schema:
+                    type: string
+                - name: side
+                  in: query
+                  description: Filter by side (buy or sell).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListOrdersResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        post:
+            tags:
+                - TradingService
+            summary: CreateOrder
+            description: |-
+                CreateOrder places a new order.
+                 POST /v1/trading/accounts/{account_id}/orders
+            operationId: CreateOrder
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateOrderRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Order'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        delete:
+            tags:
+                - TradingService
+            summary: CancelAllOrders
+            description: |-
+                CancelAllOrders cancels all open orders.
+                 DELETE /v1/trading/accounts/{account_id}/orders
+            operationId: CancelAllOrders
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CancelAllOrdersResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/trading/accounts/{account_id}/orders/{order_id}:
+        get:
+            tags:
+                - TradingService
+            summary: GetOrder
+            description: |-
+                GetOrder retrieves a specific order by ID.
+                 GET /v1/trading/accounts/{account_id}/orders/{order_id}
+            operationId: GetOrder
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: order_id
+                  in: path
+                  description: The order ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: nested
+                  in: query
+                  description: Whether to include nested leg orders.
+                  required: false
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Order'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        delete:
+            tags:
+                - TradingService
+            summary: CancelOrder
+            description: |-
+                CancelOrder cancels a specific order.
+                 DELETE /v1/trading/accounts/{account_id}/orders/{order_id}
+            operationId: CancelOrder
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: order_id
+                  in: path
+                  description: The order ID to cancel (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CancelOrderResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/trading/accounts/{account_id}/positions:
+        get:
+            tags:
+                - TradingService
+            summary: ListPositions
+            description: |-
+                ListPositions retrieves all open positions.
+                 GET /v1/trading/accounts/{account_id}/positions
+            operationId: ListPositions
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListPositionsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        delete:
+            tags:
+                - TradingService
+            summary: CloseAllPositions
+            description: |-
+                CloseAllPositions closes all open positions.
+                 DELETE /v1/trading/accounts/{account_id}/positions
+            operationId: CloseAllPositions
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: cancel_orders
+                  in: query
+                  description: Whether to cancel all open orders before closing positions.
+                  required: false
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CloseAllPositionsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/trading/accounts/{account_id}/positions/{symbol}:
+        get:
+            tags:
+                - TradingService
+            summary: GetPosition
+            description: |-
+                GetPosition retrieves a specific position by symbol.
+                 GET /v1/trading/accounts/{account_id}/positions/{symbol}
+            operationId: GetPosition
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: symbol
+                  in: path
+                  description: The symbol of the position (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Position'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        delete:
+            tags:
+                - TradingService
+            summary: ClosePosition
+            description: |-
+                ClosePosition closes a specific position (liquidates).
+                 DELETE /v1/trading/accounts/{account_id}/positions/{symbol}
+            operationId: ClosePosition
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: symbol
+                  in: path
+                  description: The symbol of the position to close (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: qty
+                  in: query
+                  description: Quantity to close (optional, closes entire position if not specified).
+                  required: false
+                  schema:
+                    type: string
+                - name: percentage
+                  in: query
+                  description: Percentage of position to close (optional, 0-100).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Order'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+components:
+    schemas:
+        FieldViolation:
+            type: object
+            properties:
+                field:
+                    type: string
+                    description: The field path that failed validation (e.g., 'user.email' for nested fields). For header validation, this will be the header name (e.g., 'X-API-Key')
+                description:
+                    type: string
+                    description: Human-readable description of the validation violation (e.g., 'must be a valid email address', 'required field missing')
+            required:
+                - field
+                - description
+            description: FieldViolation describes a single validation error for a specific field.
+        ValidationError:
+            type: object
+            properties:
+                violations:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FieldViolation'
+                    description: List of validation violations
+            required:
+                - violations
+            description: ValidationError is returned when request validation fails. It contains a list of field violations describing what went wrong.
+        GetAccountRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: GetAccountRequest is the request to get an account.
+        Account:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: Account ID (UUID).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                accountNumber:
+                    type: string
+                    examples:
+                        - 010203ABCD
+                    description: Account number.
+                    example: 010203ABCD
+                status:
+                    type: string
+                    enum:
+                        - ACCOUNT_STATUS_UNSPECIFIED
+                        - ACCOUNT_STATUS_ONBOARDING
+                        - ACCOUNT_STATUS_SUBMISSION_FAILED
+                        - ACCOUNT_STATUS_SUBMITTED
+                        - ACCOUNT_STATUS_ACCOUNT_UPDATED
+                        - ACCOUNT_STATUS_APPROVAL_PENDING
+                        - ACCOUNT_STATUS_ACTIVE
+                        - ACCOUNT_STATUS_REJECTED
+                        - ACCOUNT_STATUS_DISABLED
+                        - ACCOUNT_STATUS_ACCOUNT_CLOSED
+                    description: AccountStatus represents the status of an account.
+                cryptoStatus:
+                    type: string
+                    enum:
+                        - CRYPTO_STATUS_UNSPECIFIED
+                        - CRYPTO_STATUS_INACTIVE
+                        - CRYPTO_STATUS_ACTIVE
+                    description: CryptoStatus represents the crypto trading status of an account.
+                currency:
+                    type: string
+                    examples:
+                        - USD
+                    description: Currency (USD).
+                    example: USD
+                buyingPower:
+                    type: string
+                    examples:
+                        - 50000.00
+                    description: Current available buying power (cash + margin).
+                    example: 50000.00
+                regtBuyingPower:
+                    type: string
+                    examples:
+                        - 50000.00
+                    description: Buying power for day trading (4x equity for pattern day traders).
+                    example: 50000.00
+                daytradingBuyingPower:
+                    type: string
+                    examples:
+                        - 200000.00
+                    description: Buying power for day trading (4x equity).
+                    example: 200000.00
+                effectiveBuyingPower:
+                    type: string
+                    examples:
+                        - 50000.00
+                    description: Effective buying power.
+                    example: 50000.00
+                nonMarginableBuyingPower:
+                    type: string
+                    examples:
+                        - 50000.00
+                    description: Non-marginable buying power.
+                    example: 50000.00
+                bodDtbp:
+                    type: string
+                    examples:
+                        - 200000.00
+                    description: Beginning of day day trading buying power.
+                    example: 200000.00
+                cash:
+                    type: string
+                    examples:
+                        - 50000.00
+                    description: Cash balance.
+                    example: 50000.00
+                accruedFees:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: Accrued fees.
+                    example: 0.00
+                pendingTransferIn:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: Pending transfer amount.
+                    example: 0.00
+                portfolioValue:
+                    type: string
+                    examples:
+                        - 50000.00
+                    description: Total portfolio value.
+                    example: 50000.00
+                patternDayTrader:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether the account is a pattern day trader.
+                    example: false
+                tradingBlocked:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether trading is blocked.
+                    example: false
+                transfersBlocked:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether transfers are blocked.
+                    example: false
+                accountBlocked:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether the account is blocked.
+                    example: false
+                createdAt:
+                    type: string
+                    examples:
+                        - 2021-01-01T00:00:00Z
+                    description: Timestamp when the account was created (RFC 3339).
+                    example: 2021-01-01T00:00:00Z
+                tradeSuspendedByUser:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether trading is suspended by user.
+                    example: false
+                multiplier:
+                    type: string
+                    examples:
+                        - 4
+                    description: Margin multiplier.
+                    example: 4
+                shortingEnabled:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether shorting is enabled.
+                    example: true
+                equity:
+                    type: string
+                    examples:
+                        - 50000.00
+                    description: Total equity.
+                    example: 50000.00
+                lastEquity:
+                    type: string
+                    examples:
+                        - 50000.00
+                    description: Last equity value.
+                    example: 50000.00
+                longMarketValue:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: Long market value.
+                    example: 0.00
+                shortMarketValue:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: Short market value.
+                    example: 0.00
+                positionMarketValue:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: Position market value.
+                    example: 0.00
+                initialMargin:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: Initial margin.
+                    example: 0.00
+                maintenanceMargin:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: Maintenance margin.
+                    example: 0.00
+                lastMaintenanceMargin:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: Last maintenance margin.
+                    example: 0.00
+                sma:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: SMA (Special Memorandum Account).
+                    example: 0.00
+                daytradeCount:
+                    type: integer
+                    examples:
+                        - 0
+                    format: int32
+                    description: Day trade count.
+                    example: 0
+                optionsTradingLevel:
+                    type: integer
+                    examples:
+                        - 2
+                    format: int32
+                    description: Options trading level (if options enabled).
+                    example: 2
+                optionsApprovedLevel:
+                    type: integer
+                    examples:
+                        - 2
+                    format: int32
+                    description: Options approved level.
+                    example: 2
+                optionsBuyingPower:
+                    type: string
+                    examples:
+                        - 25000.00
+                    description: Options buying power.
+                    example: 25000.00
+            description: Account represents an Alpaca trading account.
+        CreateOrderRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    maxLength: 12
+                    minLength: 1
+                    description: Symbol or asset ID to trade.
+                    example: AAPL
+                qty:
+                    type: string
+                    examples:
+                        - 10
+                    description: Number of shares to trade. Required if notional is not specified.
+                    example: 10
+                notional:
+                    type: string
+                    examples:
+                        - 1000.00
+                    description: Dollar amount to trade. Required if qty is not specified.
+                    example: 1000.00
+                side:
+                    type: string
+                    enum:
+                        - ORDER_SIDE_UNSPECIFIED
+                        - ORDER_SIDE_BUY
+                        - ORDER_SIDE_SELL
+                    description: OrderSide represents the side of an order (buy or sell).
+                type:
+                    type: string
+                    enum:
+                        - ORDER_TYPE_UNSPECIFIED
+                        - ORDER_TYPE_MARKET
+                        - ORDER_TYPE_LIMIT
+                        - ORDER_TYPE_STOP
+                        - ORDER_TYPE_STOP_LIMIT
+                        - ORDER_TYPE_TRAILING_STOP
+                    description: OrderType represents the type of order.
+                timeInForce:
+                    type: string
+                    enum:
+                        - TIME_IN_FORCE_UNSPECIFIED
+                        - TIME_IN_FORCE_DAY
+                        - TIME_IN_FORCE_GTC
+                        - TIME_IN_FORCE_OPG
+                        - TIME_IN_FORCE_CLS
+                        - TIME_IN_FORCE_IOC
+                        - TIME_IN_FORCE_FOK
+                    description: TimeInForce represents the time in force for an order.
+                limitPrice:
+                    type: string
+                    examples:
+                        - 150.00
+                    description: Limit price (required for limit orders).
+                    example: 150.00
+                stopPrice:
+                    type: string
+                    examples:
+                        - 145.00
+                    description: Stop price (required for stop orders).
+                    example: 145.00
+                trailPrice:
+                    type: string
+                    examples:
+                        - 5.00
+                    description: Trail price (for trailing stop orders).
+                    example: 5.00
+                trailPercent:
+                    type: string
+                    examples:
+                        - 5.0
+                    description: Trail percent (for trailing stop orders).
+                    example: 5.0
+                extendedHours:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether the order is for extended hours.
+                    example: false
+                clientOrderId:
+                    type: string
+                    examples:
+                        - my_order_123
+                    maxLength: 48
+                    description: Client order ID (user-provided, max 48 characters).
+                    example: my_order_123
+                orderClass:
+                    type: string
+                    enum:
+                        - ORDER_CLASS_UNSPECIFIED
+                        - ORDER_CLASS_SIMPLE
+                        - ORDER_CLASS_BRACKET
+                        - ORDER_CLASS_OCO
+                        - ORDER_CLASS_OTO
+                    description: OrderClass represents the class of order.
+                takeProfit:
+                    $ref: '#/components/schemas/TakeProfitSpec'
+                stopLoss:
+                    $ref: '#/components/schemas/StopLossSpec'
+            required:
+                - accountId
+                - symbol
+            description: CreateOrderRequest is the request to create a new order.
+        TakeProfitSpec:
+            type: object
+            properties:
+                limitPrice:
+                    type: string
+                    examples:
+                        - 160.00
+                    description: Limit price for take profit.
+                    example: 160.00
+            required:
+                - limitPrice
+            description: TakeProfitSpec specifies take profit parameters for bracket orders.
+        StopLossSpec:
+            type: object
+            properties:
+                stopPrice:
+                    type: string
+                    examples:
+                        - 140.00
+                    description: Stop price for stop loss.
+                    example: 140.00
+                limitPrice:
+                    type: string
+                    examples:
+                        - 139.00
+                    description: Limit price for stop loss (for stop limit orders).
+                    example: 139.00
+            required:
+                - stopPrice
+            description: StopLossSpec specifies stop loss parameters for bracket orders.
+        Order:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: Order ID (UUID).
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+                clientOrderId:
+                    type: string
+                    examples:
+                        - my_order_123
+                    description: Client order ID (user-provided).
+                    example: my_order_123
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Timestamp when the order was created (RFC 3339).
+                    example: 2024-01-15T10:30:00Z
+                updatedAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:05Z
+                    description: Timestamp when the order was last updated.
+                    example: 2024-01-15T10:30:05Z
+                submittedAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Timestamp when the order was submitted.
+                    example: 2024-01-15T10:30:00Z
+                filledAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:05Z
+                    description: Timestamp when the order was filled.
+                    example: 2024-01-15T10:30:05Z
+                expiredAt:
+                    type: string
+                    description: Timestamp when the order expired.
+                canceledAt:
+                    type: string
+                    description: Timestamp when the order was canceled.
+                failedAt:
+                    type: string
+                    description: Timestamp when the order failed.
+                replacedAt:
+                    type: string
+                    description: Timestamp when the order was replaced.
+                replacedBy:
+                    type: string
+                    description: Order ID that replaced this order.
+                replaces:
+                    type: string
+                    description: Order ID that this order replaces.
+                assetId:
+                    type: string
+                    examples:
+                        - b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                    description: Asset ID.
+                    example: b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Asset symbol.
+                    example: AAPL
+                assetClass:
+                    type: string
+                    enum:
+                        - ASSET_CLASS_UNSPECIFIED
+                        - ASSET_CLASS_US_EQUITY
+                        - ASSET_CLASS_CRYPTO
+                        - ASSET_CLASS_US_OPTION
+                    description: AssetClass represents the asset class.
+                notional:
+                    type: string
+                    examples:
+                        - 1000.00
+                    description: Notional value (for fractional orders).
+                    example: 1000.00
+                qty:
+                    type: string
+                    examples:
+                        - 10
+                    description: Quantity ordered.
+                    example: 10
+                filledQty:
+                    type: string
+                    examples:
+                        - 10
+                    description: Quantity filled.
+                    example: 10
+                filledAvgPrice:
+                    type: string
+                    examples:
+                        - 150.25
+                    description: Average fill price.
+                    example: 150.25
+                orderClass:
+                    type: string
+                    enum:
+                        - ORDER_CLASS_UNSPECIFIED
+                        - ORDER_CLASS_SIMPLE
+                        - ORDER_CLASS_BRACKET
+                        - ORDER_CLASS_OCO
+                        - ORDER_CLASS_OTO
+                    description: OrderClass represents the class of order.
+                orderType:
+                    type: string
+                    enum:
+                        - ORDER_TYPE_UNSPECIFIED
+                        - ORDER_TYPE_MARKET
+                        - ORDER_TYPE_LIMIT
+                        - ORDER_TYPE_STOP
+                        - ORDER_TYPE_STOP_LIMIT
+                        - ORDER_TYPE_TRAILING_STOP
+                    description: OrderType represents the type of order.
+                type:
+                    type: string
+                    enum:
+                        - ORDER_TYPE_UNSPECIFIED
+                        - ORDER_TYPE_MARKET
+                        - ORDER_TYPE_LIMIT
+                        - ORDER_TYPE_STOP
+                        - ORDER_TYPE_STOP_LIMIT
+                        - ORDER_TYPE_TRAILING_STOP
+                    description: OrderType represents the type of order.
+                side:
+                    type: string
+                    enum:
+                        - ORDER_SIDE_UNSPECIFIED
+                        - ORDER_SIDE_BUY
+                        - ORDER_SIDE_SELL
+                    description: OrderSide represents the side of an order (buy or sell).
+                timeInForce:
+                    type: string
+                    enum:
+                        - TIME_IN_FORCE_UNSPECIFIED
+                        - TIME_IN_FORCE_DAY
+                        - TIME_IN_FORCE_GTC
+                        - TIME_IN_FORCE_OPG
+                        - TIME_IN_FORCE_CLS
+                        - TIME_IN_FORCE_IOC
+                        - TIME_IN_FORCE_FOK
+                    description: TimeInForce represents the time in force for an order.
+                limitPrice:
+                    type: string
+                    examples:
+                        - 150.00
+                    description: Limit price (for limit orders).
+                    example: 150.00
+                stopPrice:
+                    type: string
+                    examples:
+                        - 145.00
+                    description: Stop price (for stop orders).
+                    example: 145.00
+                status:
+                    type: string
+                    enum:
+                        - ORDER_STATUS_UNSPECIFIED
+                        - ORDER_STATUS_NEW
+                        - ORDER_STATUS_PARTIALLY_FILLED
+                        - ORDER_STATUS_FILLED
+                        - ORDER_STATUS_DONE_FOR_DAY
+                        - ORDER_STATUS_CANCELED
+                        - ORDER_STATUS_EXPIRED
+                        - ORDER_STATUS_REPLACED
+                        - ORDER_STATUS_PENDING_CANCEL
+                        - ORDER_STATUS_PENDING_REPLACE
+                        - ORDER_STATUS_PENDING_NEW
+                        - ORDER_STATUS_ACCEPTED
+                        - ORDER_STATUS_ACCEPTED_FOR_BIDDING
+                        - ORDER_STATUS_STOPPED
+                        - ORDER_STATUS_REJECTED
+                        - ORDER_STATUS_SUSPENDED
+                        - ORDER_STATUS_CALCULATED
+                        - ORDER_STATUS_HELD
+                    description: OrderStatus represents the status of an order.
+                extendedHours:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether the order is for extended hours.
+                    example: false
+                legs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Order'
+                trailPercent:
+                    type: string
+                    examples:
+                        - 5.0
+                    description: Trail percent (for trailing stop orders).
+                    example: 5.0
+                trailPrice:
+                    type: string
+                    examples:
+                        - 5.00
+                    description: Trail price (for trailing stop orders).
+                    example: 5.00
+                hwm:
+                    type: string
+                    examples:
+                        - 155.00
+                    description: High water mark (for trailing stop orders).
+                    example: 155.00
+            description: Order represents a trading order.
+        ListOrdersRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                status:
+                    type: string
+                    examples:
+                        - open
+                    description: Filter by order status (open, closed, all).
+                    example: open
+                limit:
+                    type: integer
+                    examples:
+                        - 50
+                    maximum: 500
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of orders to return (default 50, max 500).
+                    example: 50
+                after:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: Cursor for pagination (order ID to start after).
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+                until:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Filter by orders updated before this timestamp.
+                    example: 2024-01-15T10:30:00Z
+                direction:
+                    type: string
+                    examples:
+                        - desc
+                    description: Sort direction (asc or desc).
+                    example: desc
+                nested:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether to include nested leg orders.
+                    example: false
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL,TSLA
+                    description: Filter by symbols (comma-separated).
+                    example: AAPL,TSLA
+                side:
+                    type: string
+                    examples:
+                        - buy
+                    description: Filter by side (buy or sell).
+                    example: buy
+            required:
+                - accountId
+            description: ListOrdersRequest is the request to list orders.
+        ListOrdersResponse:
+            type: object
+            properties:
+                orders:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Order'
+            description: ListOrdersResponse is the response containing a list of orders.
+        GetOrderRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                orderId:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    format: uuid
+                    description: The order ID (bound from path variable).
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+                nested:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether to include nested leg orders.
+                    example: false
+            required:
+                - accountId
+                - orderId
+            description: GetOrderRequest is the request to get an order by ID.
+        CancelOrderRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                orderId:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    format: uuid
+                    description: The order ID to cancel (bound from path variable).
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+            required:
+                - accountId
+                - orderId
+            description: CancelOrderRequest is the request to cancel an order.
+        CancelOrderResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the cancellation request was accepted.
+                    example: true
+                orderId:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: The order ID that was canceled.
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+            description: CancelOrderResponse is the response after canceling an order.
+        CancelAllOrdersRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: CancelAllOrdersRequest is the request to cancel all open orders.
+        CancelAllOrdersResponse:
+            type: object
+            properties:
+                orders:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CanceledOrder'
+            description: CancelAllOrdersResponse is the response after canceling all orders.
+        CanceledOrder:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: The order ID that was canceled.
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+                status:
+                    type: integer
+                    examples:
+                        - 200
+                    format: int32
+                    description: HTTP status code for this cancellation.
+                    example: 200
+                body:
+                    type: string
+                    description: The order body if cancellation was successful.
+            description: CanceledOrder represents a canceled order in the response.
+        ListPositionsRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: ListPositionsRequest is the request to list all open positions.
+        ListPositionsResponse:
+            type: object
+            properties:
+                positions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Position'
+            description: ListPositionsResponse is the response containing all open positions.
+        Position:
+            type: object
+            properties:
+                assetId:
+                    type: string
+                    examples:
+                        - b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                    description: Asset ID (UUID).
+                    example: b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Asset symbol.
+                    example: AAPL
+                exchange:
+                    type: string
+                    examples:
+                        - NASDAQ
+                    description: Exchange where the asset is traded.
+                    example: NASDAQ
+                assetClass:
+                    type: string
+                    enum:
+                        - ASSET_CLASS_UNSPECIFIED
+                        - ASSET_CLASS_US_EQUITY
+                        - ASSET_CLASS_CRYPTO
+                        - ASSET_CLASS_US_OPTION
+                    description: AssetClass represents the asset class.
+                assetMarginable:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the asset is marginable.
+                    example: true
+                qty:
+                    type: string
+                    examples:
+                        - 100
+                    description: Quantity of shares held.
+                    example: 100
+                avgEntryPrice:
+                    type: string
+                    examples:
+                        - 150.00
+                    description: Average entry price.
+                    example: 150.00
+                side:
+                    type: string
+                    enum:
+                        - POSITION_SIDE_UNSPECIFIED
+                        - POSITION_SIDE_LONG
+                        - POSITION_SIDE_SHORT
+                    description: PositionSide represents the side of a position.
+                marketValue:
+                    type: string
+                    examples:
+                        - 15500.00
+                    description: Current market value.
+                    example: 15500.00
+                costBasis:
+                    type: string
+                    examples:
+                        - 15000.00
+                    description: Total cost basis.
+                    example: 15000.00
+                unrealizedPl:
+                    type: string
+                    examples:
+                        - 500.00
+                    description: Unrealized profit/loss.
+                    example: 500.00
+                unrealizedPlpc:
+                    type: string
+                    examples:
+                        - 0.0333
+                    description: Unrealized profit/loss percentage.
+                    example: 0.0333
+                unrealizedIntradayPl:
+                    type: string
+                    examples:
+                        - 100.00
+                    description: Unrealized intraday profit/loss.
+                    example: 100.00
+                unrealizedIntradayPlpc:
+                    type: string
+                    examples:
+                        - 0.0065
+                    description: Unrealized intraday profit/loss percentage.
+                    example: 0.0065
+                currentPrice:
+                    type: string
+                    examples:
+                        - 155.00
+                    description: Current price.
+                    example: 155.00
+                lastdayPrice:
+                    type: string
+                    examples:
+                        - 154.00
+                    description: Last day's closing price.
+                    example: 154.00
+                changeToday:
+                    type: string
+                    examples:
+                        - 0.0065
+                    description: Change today (percentage).
+                    example: 0.0065
+                qtyAvailable:
+                    type: string
+                    examples:
+                        - 100
+                    description: Quantity available for trading (excludes open orders).
+                    example: 100
+            description: Position represents a current holding in a security.
+        GetPositionRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    maxLength: 12
+                    minLength: 1
+                    description: The symbol of the position (bound from path variable).
+                    example: AAPL
+            required:
+                - accountId
+                - symbol
+            description: GetPositionRequest is the request to get a position by symbol.
+        ClosePositionRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    maxLength: 12
+                    minLength: 1
+                    description: The symbol of the position to close (bound from path variable).
+                    example: AAPL
+                qty:
+                    type: string
+                    examples:
+                        - 50
+                    description: Quantity to close (optional, closes entire position if not specified).
+                    example: 50
+                percentage:
+                    type: string
+                    examples:
+                        - 50
+                    description: Percentage of position to close (optional, 0-100).
+                    example: 50
+            required:
+                - accountId
+                - symbol
+            description: ClosePositionRequest is the request to close a position.
+        CloseAllPositionsRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                cancelOrders:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether to cancel all open orders before closing positions.
+                    example: true
+            required:
+                - accountId
+            description: CloseAllPositionsRequest is the request to close all open positions.
+        CloseAllPositionsResponse:
+            type: object
+            properties:
+                positions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ClosedPosition'
+            description: CloseAllPositionsResponse is the response after closing all positions.
+        ClosedPosition:
+            type: object
+            properties:
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: The symbol of the closed position.
+                    example: AAPL
+                status:
+                    type: integer
+                    examples:
+                        - 200
+                    format: int32
+                    description: HTTP status code for this close operation.
+                    example: 200
+                order:
+                    $ref: '#/components/schemas/Order'
+            description: ClosedPosition represents the result of closing a single position.
