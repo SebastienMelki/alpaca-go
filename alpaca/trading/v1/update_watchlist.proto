@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// UpdateWatchlistRequest is the request to update a watchlist.
+message UpdateWatchlistRequest {
+  // The watchlist ID (bound from path variable).
+  string watchlist_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["fb306e55-16d3-4f7c-9b2b-dcefc74e31a1"] }
+  ];
+
+  // New watchlist name.
+  string name = 2 [
+    (buf.validate.field).string = { max_len: 64 },
+    (sebuf.http.field_examples) = { values: ["Updated Tech Stocks"] }
+  ];
+
+  // New symbols (replaces existing symbols).
+  repeated string symbols = 3 [(sebuf.http.field_examples) = { values: ["AAPL", "GOOGL", "MSFT"] }];
+}

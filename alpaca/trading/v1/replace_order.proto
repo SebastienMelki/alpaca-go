@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/trading/v1/order.proto";
+
+// ReplaceOrderRequest is the request to replace (modify) an existing order.
+message ReplaceOrderRequest {
+  // The order ID to replace (bound from path variable).
+  string order_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }
+  ];
+
+  // New quantity (optional, keeps original if not specified).
+  string qty = 2 [(sebuf.http.field_examples) = { values: ["15"] }];
+
+  // New time in force (optional).
+  TimeInForce time_in_force = 3 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // New limit price (optional, for limit orders).
+  string limit_price = 4 [(sebuf.http.field_examples) = { values: ["152.00"] }];
+
+  // New stop price (optional, for stop orders).
+  string stop_price = 5 [(sebuf.http.field_examples) = { values: ["148.00"] }];
+
+  // New trail (optional, for trailing stop orders).
+  string trail = 6 [(sebuf.http.field_examples) = { values: ["5.00"] }];
+
+  // New client order ID (optional).
+  string client_order_id = 7 [
+    (buf.validate.field).string = { max_len: 48 },
+    (sebuf.http.field_examples) = { values: ["my_replaced_order_123"] }
+  ];
+}

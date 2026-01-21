@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// DeleteWatchlistRequest is the request to delete a watchlist.
+message DeleteWatchlistRequest {
+  // The watchlist ID (bound from path variable).
+  string watchlist_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["fb306e55-16d3-4f7c-9b2b-dcefc74e31a1"] }
+  ];
+}
+
+// DeleteWatchlistResponse is the response after deleting a watchlist.
+message DeleteWatchlistResponse {
+  // Whether the deletion was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}

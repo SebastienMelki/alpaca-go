@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// GetOrderByClientIdRequest is the request to get an order by client order ID.
+message GetOrderByClientIdRequest {
+  // The client order ID (query parameter).
+  string client_order_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = { max_len: 48 },
+    (sebuf.http.query) = { name: "client_order_id" },
+    (sebuf.http.field_examples) = { values: ["my_order_123"] }
+  ];
+}

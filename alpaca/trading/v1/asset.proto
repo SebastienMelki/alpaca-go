@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "sebuf/http/annotations.proto";
+
+// AssetStatus represents the status of an asset.
+enum AssetStatus {
+  ASSET_STATUS_UNSPECIFIED = 0;
+  ASSET_STATUS_ACTIVE = 1;
+  ASSET_STATUS_INACTIVE = 2;
+}
+
+// AssetExchange represents the exchange where an asset is traded.
+enum AssetExchange {
+  ASSET_EXCHANGE_UNSPECIFIED = 0;
+  ASSET_EXCHANGE_AMEX = 1;
+  ASSET_EXCHANGE_ARCA = 2;
+  ASSET_EXCHANGE_BATS = 3;
+  ASSET_EXCHANGE_NYSE = 4;
+  ASSET_EXCHANGE_NASDAQ = 5;
+  ASSET_EXCHANGE_NYSEARCA = 6;
+  ASSET_EXCHANGE_OTC = 7;
+  ASSET_EXCHANGE_CRYPTO = 8;
+}
+
+// Asset represents a tradeable asset.
+message Asset {
+  // Asset ID (UUID).
+  string id = 1 [(sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }];
+
+  // Asset class (us_equity, crypto, us_option).
+  string class = 2 [(sebuf.http.field_examples) = { values: ["us_equity"] }];
+
+  // Exchange where the asset is traded.
+  string exchange = 3 [(sebuf.http.field_examples) = { values: ["NASDAQ"] }];
+
+  // Asset symbol.
+  string symbol = 4 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Asset name.
+  string name = 5 [(sebuf.http.field_examples) = { values: ["Apple Inc."] }];
+
+  // Asset status.
+  string status = 6 [(sebuf.http.field_examples) = { values: ["active"] }];
+
+  // Whether the asset is tradeable.
+  bool tradable = 7 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether the asset is marginable.
+  bool marginable = 8 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether the asset supports maintenance margin.
+  string maintenance_margin_requirement = 9 [(sebuf.http.field_examples) = { values: ["30"] }];
+
+  // Whether the asset is shortable.
+  bool shortable = 10 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether the asset is easy to borrow.
+  bool easy_to_borrow = 11 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether the asset supports fractional trading.
+  bool fractionable = 12 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Minimum order size.
+  string min_order_size = 13 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Minimum trade increment.
+  string min_trade_increment = 14 [(sebuf.http.field_examples) = { values: ["0.0001"] }];
+
+  // Price increment.
+  string price_increment = 15 [(sebuf.http.field_examples) = { values: ["0.01"] }];
+}

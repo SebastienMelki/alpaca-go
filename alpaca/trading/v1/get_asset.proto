@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// GetAssetRequest is the request to get an asset by symbol or ID.
+message GetAssetRequest {
+  // The symbol or asset ID (bound from path variable).
+  string symbol_or_id = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL", "b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }
+  ];
+}

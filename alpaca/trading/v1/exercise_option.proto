@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// ExerciseOptionRequest is the request to exercise an option position.
+message ExerciseOptionRequest {
+  // The option symbol contract (bound from path variable).
+  string symbol_or_contract_id = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL240119C00150000"] }
+  ];
+}
+
+// ExerciseOptionResponse is the response after exercising an option.
+message ExerciseOptionResponse {
+  // Whether the exercise request was accepted.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // The symbol that was exercised.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["AAPL240119C00150000"] }];
+}

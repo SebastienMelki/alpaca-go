@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "sebuf/http/annotations.proto";
+
+// Clock represents the current market clock status.
+message Clock {
+  // Current timestamp (RFC 3339).
+  string timestamp = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00-05:00"] }];
+
+  // Whether the market is currently open.
+  bool is_open = 2 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Next market open time (RFC 3339).
+  string next_open = 3 [(sebuf.http.field_examples) = { values: ["2024-01-16T09:30:00-05:00"] }];
+
+  // Next market close time (RFC 3339).
+  string next_close = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T16:00:00-05:00"] }];
+}
+
+// GetClockRequest is the request to get the market clock.
+message GetClockRequest {}

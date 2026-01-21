@@ -127,11 +127,11 @@ message Account {
   int32 daytrade_count = 33 [(sebuf.http.field_examples) = { values: ["0"] }];
 
   // Options trading level (if options enabled).
-  optional int32 options_trading_level = 34 [(sebuf.http.field_examples) = { values: ["2"] }];
+  int32 options_trading_level = 34 [(sebuf.http.field_examples) = { values: ["2"] }];
 
   // Options approved level.
-  optional int32 options_approved_level = 35 [(sebuf.http.field_examples) = { values: ["2"] }];
+  int32 options_approved_level = 35 [(sebuf.http.field_examples) = { values: ["2"] }];
 
   // Options buying power.
-  optional string options_buying_power = 36 [(sebuf.http.field_examples) = { values: ["25000.00"] }];
+  string options_buying_power = 36 [(sebuf.http.field_examples) = { values: ["25000.00"] }];
 }

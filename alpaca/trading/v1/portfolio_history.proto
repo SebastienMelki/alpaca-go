@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "sebuf/http/annotations.proto";
+
+// PortfolioHistory represents the historical performance of a portfolio.
+message PortfolioHistory {
+  // Timestamps for each data point (Unix epoch in seconds).
+  repeated int64 timestamp = 1;
+
+  // Portfolio equity values at each timestamp.
+  repeated double equity = 2;
+
+  // Profit/loss values at each timestamp.
+  repeated double profit_loss = 3;
+
+  // Profit/loss percentage at each timestamp.
+  repeated double profit_loss_pct = 4;
+
+  // Base value (starting equity).
+  double base_value = 5 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Time frame (1Min, 5Min, 15Min, 1H, 1D).
+  string timeframe = 6 [(sebuf.http.field_examples) = { values: ["1D"] }];
+}
+
+// GetPortfolioHistoryRequest is the request to get portfolio history.
+message GetPortfolioHistoryRequest {
+  // Period (1D, 1W, 1M, 3M, 1A, all, intraday).
+  string period = 1 [
+    (sebuf.http.query) = { name: "period" },
+    (sebuf.http.field_examples) = { values: ["1M"] }
+  ];
+
+  // Timeframe for data points (1Min, 5Min, 15Min, 1H, 1D).
+  string timeframe = 2 [
+    (sebuf.http.query) = { name: "timeframe" },
+    (sebuf.http.field_examples) = { values: ["1D"] }
+  ];
+
+  // Intraday reporting mode (market_hours or extended_hours).
+  string intraday_reporting = 3 [
+    (sebuf.http.query) = { name: "intraday_reporting" },
+    (sebuf.http.field_examples) = { values: ["market_hours"] }
+  ];
+
+  // Start date/time (RFC-3339 or YYYY-MM-DD).
+  string start = 4 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01"] }
+  ];
+
+  // End date/time (RFC-3339 or YYYY-MM-DD).
+  string end = 5 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31"] }
+  ];
+
+  // Whether to use PnL calculation instead of market value.
+  bool pnl_reset = 6 [
+    (sebuf.http.query) = { name: "pnl_reset" },
+    (sebuf.http.field_examples) = { values: ["false"] }
+  ];
+
+  // Whether to include extended hours data.
+  bool extended_hours = 7 [
+    (sebuf.http.query) = { name: "extended_hours" },
+    (sebuf.http.field_examples) = { values: ["false"] }
+  ];
+}

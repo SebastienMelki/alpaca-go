@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "sebuf/http/annotations.proto";
+import "alpaca/trading/v1/asset.proto";
+
+// ListAssetsRequest is the request to list assets.
+message ListAssetsRequest {
+  // Filter by asset status (active, inactive).
+  string status = 1 [
+    (sebuf.http.query) = { name: "status" },
+    (sebuf.http.field_examples) = { values: ["active"] }
+  ];
+
+  // Filter by asset class (us_equity, crypto).
+  string asset_class = 2 [
+    (sebuf.http.query) = { name: "asset_class" },
+    (sebuf.http.field_examples) = { values: ["us_equity"] }
+  ];
+
+  // Filter by exchange.
+  string exchange = 3 [
+    (sebuf.http.query) = { name: "exchange" },
+    (sebuf.http.field_examples) = { values: ["NASDAQ"] }
+  ];
+}
+
+// ListAssetsResponse is the response containing a list of assets.
+message ListAssetsResponse {
+  // List of assets.
+  repeated Asset assets = 1;
+}

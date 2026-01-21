@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "sebuf/http/annotations.proto";
+
+// CalendarDay represents a market calendar day.
+message CalendarDay {
+  // Date (YYYY-MM-DD).
+  string date = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
+
+  // Market open time (HH:MM).
+  string open = 2 [(sebuf.http.field_examples) = { values: ["09:30"] }];
+
+  // Market close time (HH:MM).
+  string close = 3 [(sebuf.http.field_examples) = { values: ["16:00"] }];
+
+  // Extended session open time (HH:MM).
+  string session_open = 4 [(sebuf.http.field_examples) = { values: ["04:00"] }];
+
+  // Extended session close time (HH:MM).
+  string session_close = 5 [(sebuf.http.field_examples) = { values: ["20:00"] }];
+}
+
+// GetCalendarRequest is the request to get the market calendar.
+message GetCalendarRequest {
+  // Start date (YYYY-MM-DD).
+  string start = 1 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01"] }
+  ];
+
+  // End date (YYYY-MM-DD).
+  string end = 2 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-12-31"] }
+  ];
+}
+
+// GetCalendarResponse is the response containing the market calendar.
+message GetCalendarResponse {
+  // List of calendar days.
+  repeated CalendarDay days = 1;
+}

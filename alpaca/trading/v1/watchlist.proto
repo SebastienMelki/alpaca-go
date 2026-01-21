@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "sebuf/http/annotations.proto";
+import "alpaca/trading/v1/asset.proto";
+
+// Watchlist represents a list of watched assets.
+message Watchlist {
+  // Watchlist ID (UUID).
+  string id = 1 [(sebuf.http.field_examples) = { values: ["fb306e55-16d3-4f7c-9b2b-dcefc74e31a1"] }];
+
+  // Account ID (UUID).
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Watchlist name.
+  string name = 3 [(sebuf.http.field_examples) = { values: ["Tech Stocks"] }];
+
+  // Creation timestamp (RFC 3339).
+  string created_at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Last update timestamp (RFC 3339).
+  string updated_at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Assets in the watchlist.
+  repeated Asset assets = 6;
+}

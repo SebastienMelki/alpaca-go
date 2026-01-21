@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// RemoveWatchlistAssetRequest is the request to remove an asset from a watchlist.
+message RemoveWatchlistAssetRequest {
+  // The watchlist ID (bound from path variable).
+  string watchlist_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["fb306e55-16d3-4f7c-9b2b-dcefc74e31a1"] }
+  ];
+
+  // Symbol to remove (bound from path variable).
+  string symbol = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = { min_len: 1, max_len: 12 },
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+}
+
+// RemoveWatchlistAssetResponse is the response after removing an asset.
+message RemoveWatchlistAssetResponse {
+  // Whether the removal was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}

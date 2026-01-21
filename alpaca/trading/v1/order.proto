@@ -116,25 +116,25 @@ message Order {
   string submitted_at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
 
   // Timestamp when the order was filled.
-  optional string filled_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:05Z"] }];
+  string filled_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:05Z"] }];
 
   // Timestamp when the order expired.
-  optional string expired_at = 7;
+  string expired_at = 7;
 
   // Timestamp when the order was canceled.
-  optional string canceled_at = 8;
+  string canceled_at = 8;
 
   // Timestamp when the order failed.
-  optional string failed_at = 9;
+  string failed_at = 9;
 
   // Timestamp when the order was replaced.
-  optional string replaced_at = 10;
+  string replaced_at = 10;
 
   // Order ID that replaced this order.
-  optional string replaced_by = 11;
+  string replaced_by = 11;
 
   // Order ID that this order replaces.
-  optional string replaces = 12;
+  string replaces = 12;
 
   // Asset ID.
   string asset_id = 13 [(sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }];
@@ -146,16 +146,16 @@ message Order {
   AssetClass asset_class = 15 [(sebuf.http.field_examples) = { values: ["1"] }];
 
   // Notional value (for fractional orders).
-  optional string notional = 16 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
+  string notional = 16 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
 
   // Quantity ordered.
-  optional string qty = 17 [(sebuf.http.field_examples) = { values: ["10"] }];
+  string qty = 17 [(sebuf.http.field_examples) = { values: ["10"] }];
 
   // Quantity filled.
   string filled_qty = 18 [(sebuf.http.field_examples) = { values: ["10"] }];
 
   // Average fill price.
-  optional string filled_avg_price = 19 [(sebuf.http.field_examples) = { values: ["150.25"] }];
+  string filled_avg_price = 19 [(sebuf.http.field_examples) = { values: ["150.25"] }];
 
   // Order class.
   OrderClass order_class = 20 [(sebuf.http.field_examples) = { values: ["1"] }];
@@ -173,10 +173,10 @@ message Order {
   TimeInForce time_in_force = 24 [(sebuf.http.field_examples) = { values: ["1"] }];
 
   // Limit price (for limit orders).
-  optional string limit_price = 25 [(sebuf.http.field_examples) = { values: ["150.00"] }];
+  string limit_price = 25 [(sebuf.http.field_examples) = { values: ["150.00"] }];
 
   // Stop price (for stop orders).
-  optional string stop_price = 26 [(sebuf.http.field_examples) = { values: ["145.00"] }];
+  string stop_price = 26 [(sebuf.http.field_examples) = { values: ["145.00"] }];
 
   // Order status.
   OrderStatus status = 27 [(sebuf.http.field_examples) = { values: ["3"] }];
@@ -188,11 +188,11 @@ message Order {
   repeated Order legs = 29;
 
   // Trail percent (for trailing stop orders).
-  optional string trail_percent = 30 [(sebuf.http.field_examples) = { values: ["5.0"] }];
+  string trail_percent = 30 [(sebuf.http.field_examples) = { values: ["5.0"] }];
 
   // Trail price (for trailing stop orders).
-  optional string trail_price = 31 [(sebuf.http.field_examples) = { values: ["5.00"] }];
+  string trail_price = 31 [(sebuf.http.field_examples) = { values: ["5.00"] }];
 
   // High water mark (for trailing stop orders).
-  optional string hwm = 32 [(sebuf.http.field_examples) = { values: ["155.00"] }];
+  string hwm = 32 [(sebuf.http.field_examples) = { values: ["155.00"] }];
 }

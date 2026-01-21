@@ -2,18 +2,10 @@ syntax = "proto3";
 
 package alpaca.trading.v1;
 
-import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
 // CancelAllOrdersRequest is the request to cancel all open orders.
-message CancelAllOrdersRequest {
-  // The account ID (bound from path variable).
-  string account_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.uuid = true,
-    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
-  ];
-}
+message CancelAllOrdersRequest {}
 
 // CanceledOrder represents a canceled order in the response.
 message CanceledOrder {
@@ -24,7 +16,7 @@ message CanceledOrder {
   int32 status = 2 [(sebuf.http.field_examples) = { values: ["200"] }];
 
   // The order body if cancellation was successful.
-  optional string body = 3;
+  string body = 3;
 }
 
 // CancelAllOrdersResponse is the response after canceling all orders.

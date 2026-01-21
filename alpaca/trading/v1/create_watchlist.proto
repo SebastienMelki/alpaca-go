@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// CreateWatchlistRequest is the request to create a watchlist.
+message CreateWatchlistRequest {
+  // Watchlist name.
+  string name = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = { min_len: 1, max_len: 64 },
+    (sebuf.http.field_examples) = { values: ["Tech Stocks"] }
+  ];
+
+  // Symbols to add to the watchlist.
+  repeated string symbols = 2 [(sebuf.http.field_examples) = { values: ["AAPL", "GOOGL", "MSFT"] }];
+}

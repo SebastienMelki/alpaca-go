@@ -7,22 +7,15 @@ import "sebuf/http/annotations.proto";
 
 // GetOrderRequest is the request to get an order by ID.
 message GetOrderRequest {
-  // The account ID (bound from path variable).
-  string account_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.uuid = true,
-    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
-  ];
-
   // The order ID (bound from path variable).
-  string order_id = 2 [
+  string order_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.uuid = true,
     (sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }
   ];
 
   // Whether to include nested leg orders.
-  bool nested = 3 [
+  bool nested = 2 [
     (sebuf.http.query) = { name: "nested" },
     (sebuf.http.field_examples) = { values: ["false"] }
   ];

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// AddWatchlistAssetRequest is the request to add an asset to a watchlist.
+message AddWatchlistAssetRequest {
+  // The watchlist ID (bound from path variable).
+  string watchlist_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["fb306e55-16d3-4f7c-9b2b-dcefc74e31a1"] }
+  ];
+
+  // Symbol to add.
+  string symbol = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = { min_len: 1, max_len: 12 },
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+}

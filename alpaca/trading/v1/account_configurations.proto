@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "sebuf/http/annotations.proto";
+
+// DtbpCheck represents the day trading buying power check setting.
+enum DtbpCheck {
+  DTBP_CHECK_UNSPECIFIED = 0;
+  DTBP_CHECK_ENTRY = 1;
+  DTBP_CHECK_EXIT = 2;
+  DTBP_CHECK_BOTH = 3;
+}
+
+// TradeConfirmEmail represents the trade confirmation email setting.
+enum TradeConfirmEmail {
+  TRADE_CONFIRM_EMAIL_UNSPECIFIED = 0;
+  TRADE_CONFIRM_EMAIL_ALL = 1;
+  TRADE_CONFIRM_EMAIL_NONE = 2;
+}
+
+// AccountConfigurations represents the account configuration settings.
+message AccountConfigurations {
+  // Day trading buying power check setting.
+  string dtbp_check = 1 [(sebuf.http.field_examples) = { values: ["both"] }];
+
+  // Trade confirmation email setting.
+  string trade_confirm_email = 2 [(sebuf.http.field_examples) = { values: ["all"] }];
+
+  // Whether to suspend trades.
+  bool suspend_trade = 3 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Whether fractional trading is enabled.
+  bool fractional_trading = 4 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Maximum margin multiplier.
+  string max_margin_multiplier = 5 [(sebuf.http.field_examples) = { values: ["4"] }];
+
+  // Maximum options trading level.
+  int32 max_options_trading_level = 6 [(sebuf.http.field_examples) = { values: ["2"] }];
+
+  // Whether PDT protection is enabled (for accounts < $25K).
+  bool pdt_check = 7 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether PTP (Pattern Day Trader) no exceptions mode is enabled.
+  bool ptp_no_exception_entry = 8 [(sebuf.http.field_examples) = { values: ["false"] }];
+}
+
+// GetAccountConfigurationsRequest is the request to get account configurations.
+message GetAccountConfigurationsRequest {}
+
+// UpdateAccountConfigurationsRequest is the request to update account configurations.
+message UpdateAccountConfigurationsRequest {
+  // Day trading buying power check setting (entry, exit, both).
+  string dtbp_check = 1 [(sebuf.http.field_examples) = { values: ["both"] }];
+
+  // Trade confirmation email setting (all, none).
+  string trade_confirm_email = 2 [(sebuf.http.field_examples) = { values: ["all"] }];
+
+  // Whether to suspend trades.
+  bool suspend_trade = 3 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Whether fractional trading is enabled.
+  bool fractional_trading = 4 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Maximum margin multiplier.
+  string max_margin_multiplier = 5 [(sebuf.http.field_examples) = { values: ["4"] }];
+
+  // Whether PDT protection is enabled.
+  bool pdt_check = 6 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether PTP no exceptions mode is enabled.
+  bool ptp_no_exception_entry = 7 [(sebuf.http.field_examples) = { values: ["false"] }];
+}

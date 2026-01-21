@@ -1,0 +1,206 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "sebuf/http/annotations.proto";
+
+// ActivityType represents types of account activities.
+enum ActivityType {
+  ACTIVITY_TYPE_UNSPECIFIED = 0;
+  // Order fills (full or partial).
+  ACTIVITY_TYPE_FILL = 1;
+  // Cash transactions (ACATC, ACATS, CSD, CSR, DIV, etc.).
+  ACTIVITY_TYPE_TRANS = 2;
+  // Miscellaneous or corrections.
+  ACTIVITY_TYPE_MISC = 3;
+  // ACATS IN (from other broker).
+  ACTIVITY_TYPE_ACATC = 4;
+  // ACATS OUT (to other broker).
+  ACTIVITY_TYPE_ACATS = 5;
+  // Cash deposit.
+  ACTIVITY_TYPE_CSD = 6;
+  // Cash withdrawal.
+  ACTIVITY_TYPE_CSW = 7;
+  // Dividend.
+  ACTIVITY_TYPE_DIV = 8;
+  // Dividend (qualified).
+  ACTIVITY_TYPE_DIVCGL = 9;
+  // Dividend (non-qualified).
+  ACTIVITY_TYPE_DIVCGS = 10;
+  // Dividend (return of capital).
+  ACTIVITY_TYPE_DIVNRA = 11;
+  // Dividend tax withholding.
+  ACTIVITY_TYPE_DIVTXEX = 12;
+  // Interest.
+  ACTIVITY_TYPE_INT = 13;
+  // Merger/acquisition.
+  ACTIVITY_TYPE_MA = 14;
+  // Name change.
+  ACTIVITY_TYPE_NC = 15;
+  // Options assignment.
+  ACTIVITY_TYPE_OPASN = 16;
+  // Options expiration.
+  ACTIVITY_TYPE_OPEXP = 17;
+  // Options exercise.
+  ACTIVITY_TYPE_OPXRC = 18;
+  // Pass-through charge.
+  ACTIVITY_TYPE_PTC = 19;
+  // Reorg.
+  ACTIVITY_TYPE_REORG = 20;
+  // Symbol change.
+  ACTIVITY_TYPE_SC = 21;
+  // Stock split.
+  ACTIVITY_TYPE_SSO = 22;
+  // Stock split reverse.
+  ACTIVITY_TYPE_SSP = 23;
+  // Journal entry.
+  ACTIVITY_TYPE_JNLC = 24;
+  // Journal entry (securities).
+  ACTIVITY_TYPE_JNLS = 25;
+  // Fee.
+  ACTIVITY_TYPE_FEE = 26;
+}
+
+// AccountActivity represents an account activity event.
+message AccountActivity {
+  // Activity ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["20210115000000001::aaaa-bbbb-cccc-dddd"] }];
+
+  // Activity type.
+  string activity_type = 2 [(sebuf.http.field_examples) = { values: ["FILL"] }];
+
+  // Transaction time (RFC 3339).
+  string transaction_time = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Type description.
+  string type = 4 [(sebuf.http.field_examples) = { values: ["fill"] }];
+
+  // Price (for fills).
+  string price = 5 [(sebuf.http.field_examples) = { values: ["150.25"] }];
+
+  // Quantity (for fills).
+  string qty = 6 [(sebuf.http.field_examples) = { values: ["10"] }];
+
+  // Side (buy or sell, for fills).
+  string side = 7 [(sebuf.http.field_examples) = { values: ["buy"] }];
+
+  // Symbol (for fills).
+  string symbol = 8 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Leaves quantity (remaining quantity after fill).
+  string leaves_qty = 9 [(sebuf.http.field_examples) = { values: ["0"] }];
+
+  // Order ID (for fills).
+  string order_id = 10 [(sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }];
+
+  // Cumulative quantity filled.
+  string cum_qty = 11 [(sebuf.http.field_examples) = { values: ["10"] }];
+
+  // Order status.
+  string order_status = 12 [(sebuf.http.field_examples) = { values: ["filled"] }];
+
+  // Net amount (for cash transactions).
+  string net_amount = 13 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
+
+  // Description (for cash transactions).
+  string description = 14 [(sebuf.http.field_examples) = { values: ["Dividend payment"] }];
+
+  // Per share amount (for dividends).
+  string per_share_amount = 15 [(sebuf.http.field_examples) = { values: ["0.22"] }];
+
+  // Date (for cash transactions, YYYY-MM-DD).
+  string date = 16 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
+}
+
+// GetAccountActivitiesRequest is the request to get account activities.
+message GetAccountActivitiesRequest {
+  // Filter by activity type.
+  string activity_type = 1 [
+    (sebuf.http.query) = { name: "activity_type" },
+    (sebuf.http.field_examples) = { values: ["FILL"] }
+  ];
+
+  // Filter by activities after this timestamp (RFC 3339).
+  string after = 2 [
+    (sebuf.http.query) = { name: "after" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01T00:00:00Z"] }
+  ];
+
+  // Filter by activities until this timestamp (RFC 3339).
+  string until = 3 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31T23:59:59Z"] }
+  ];
+
+  // Sort direction (asc or desc).
+  string direction = 4 [
+    (sebuf.http.query) = { name: "direction" },
+    (sebuf.http.field_examples) = { values: ["desc"] }
+  ];
+
+  // Maximum number of activities to return.
+  int32 page_size = 5 [
+    (sebuf.http.query) = { name: "page_size" },
+    (sebuf.http.field_examples) = { values: ["100"] }
+  ];
+
+  // Page token for pagination.
+  string page_token = 6 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Filter by date (YYYY-MM-DD).
+  string date = 7 [
+    (sebuf.http.query) = { name: "date" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+}
+
+// GetAccountActivitiesResponse is the response containing account activities.
+message GetAccountActivitiesResponse {
+  // List of activities.
+  repeated AccountActivity activities = 1;
+}
+
+// GetAccountActivitiesByTypeRequest is the request to get account activities of a specific type.
+message GetAccountActivitiesByTypeRequest {
+  // Activity type (path parameter).
+  string activity_type = 1 [(sebuf.http.field_examples) = { values: ["FILL"] }];
+
+  // Filter by activities after this timestamp (RFC 3339).
+  string after = 2 [
+    (sebuf.http.query) = { name: "after" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01T00:00:00Z"] }
+  ];
+
+  // Filter by activities until this timestamp (RFC 3339).
+  string until = 3 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31T23:59:59Z"] }
+  ];
+
+  // Sort direction (asc or desc).
+  string direction = 4 [
+    (sebuf.http.query) = { name: "direction" },
+    (sebuf.http.field_examples) = { values: ["desc"] }
+  ];
+
+  // Maximum number of activities to return.
+  int32 page_size = 5 [
+    (sebuf.http.query) = { name: "page_size" },
+    (sebuf.http.field_examples) = { values: ["100"] }
+  ];
+
+  // Page token for pagination.
+  string page_token = 6 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Filter by date (YYYY-MM-DD).
+  string date = 7 [
+    (sebuf.http.query) = { name: "date" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+}

@@ -12,18 +12,37 @@ import "alpaca/trading/v1/get_order.proto";
 import "alpaca/trading/v1/list_orders.proto";
 import "alpaca/trading/v1/cancel_order.proto";
 import "alpaca/trading/v1/cancel_all_orders.proto";
+import "alpaca/trading/v1/replace_order.proto";
+import "alpaca/trading/v1/get_order_by_client_id.proto";
 import "alpaca/trading/v1/position.proto";
 import "alpaca/trading/v1/list_positions.proto";
 import "alpaca/trading/v1/get_position.proto";
 import "alpaca/trading/v1/close_position.proto";
 import "alpaca/trading/v1/close_all_positions.proto";
+import "alpaca/trading/v1/exercise_option.proto";
+import "alpaca/trading/v1/asset.proto";
+import "alpaca/trading/v1/list_assets.proto";
+import "alpaca/trading/v1/get_asset.proto";
+import "alpaca/trading/v1/clock.proto";
+import "alpaca/trading/v1/calendar.proto";
+import "alpaca/trading/v1/watchlist.proto";
+import "alpaca/trading/v1/list_watchlists.proto";
+import "alpaca/trading/v1/create_watchlist.proto";
+import "alpaca/trading/v1/get_watchlist.proto";
+import "alpaca/trading/v1/update_watchlist.proto";
+import "alpaca/trading/v1/delete_watchlist.proto";
+import "alpaca/trading/v1/add_watchlist_asset.proto";
+import "alpaca/trading/v1/remove_watchlist_asset.proto";
+import "alpaca/trading/v1/account_configurations.proto";
+import "alpaca/trading/v1/portfolio_history.proto";
+import "alpaca/trading/v1/account_activity.proto";
 
 // TradingService provides the Alpaca Trading API.
 // Base URL: https://api.alpaca.markets (live) or https://paper-api.alpaca.markets (paper)
 service TradingService {
   // Base path for all endpoints.
   option (sebuf.http.service_config) = {
-    base_path: "/v1/trading/accounts"
+    base_path: "/v2"
   };
 
   // API key authentication required for all operations.
@@ -51,10 +70,55 @@ service TradingService {
   // ============================================
 
   // GetAccount retrieves the account information.
-  // GET /v1/trading/accounts/{account_id}
+  // GET /v2/account
   rpc GetAccount(GetAccountRequest) returns (Account) {
     option (sebuf.http.config) = {
-      path: "/{account_id}"
+      path: "/account"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetAccountConfigurations retrieves the account configuration settings.
+  // GET /v2/account/configurations
+  rpc GetAccountConfigurations(GetAccountConfigurationsRequest) returns (AccountConfigurations) {
+    option (sebuf.http.config) = {
+      path: "/account/configurations"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // UpdateAccountConfigurations updates the account configuration settings.
+  // PATCH /v2/account/configurations
+  rpc UpdateAccountConfigurations(UpdateAccountConfigurationsRequest) returns (AccountConfigurations) {
+    option (sebuf.http.config) = {
+      path: "/account/configurations"
+      method: HTTP_METHOD_PATCH
+    };
+  }
+
+  // GetPortfolioHistory retrieves the historical portfolio performance.
+  // GET /v2/account/portfolio/history
+  rpc GetPortfolioHistory(GetPortfolioHistoryRequest) returns (PortfolioHistory) {
+    option (sebuf.http.config) = {
+      path: "/account/portfolio/history"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetAccountActivities retrieves account activity events.
+  // GET /v2/account/activities
+  rpc GetAccountActivities(GetAccountActivitiesRequest) returns (GetAccountActivitiesResponse) {
+    option (sebuf.http.config) = {
+      path: "/account/activities"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetAccountActivitiesByType retrieves account activity events of a specific type.
+  // GET /v2/account/activities/{activity_type}
+  rpc GetAccountActivitiesByType(GetAccountActivitiesByTypeRequest) returns (GetAccountActivitiesResponse) {
+    option (sebuf.http.config) = {
+      path: "/account/activities/{activity_type}"
       method: HTTP_METHOD_GET
     };
   }
@@ -64,46 +128,64 @@ service TradingService {
   // ============================================
 
   // CreateOrder places a new order.
-  // POST /v1/trading/accounts/{account_id}/orders
+  // POST /v2/orders
   rpc CreateOrder(CreateOrderRequest) returns (Order) {
     option (sebuf.http.config) = {
-      path: "/{account_id}/orders"
+      path: "/orders"
       method: HTTP_METHOD_POST
     };
   }
 
   // ListOrders retrieves a list of orders.
-  // GET /v1/trading/accounts/{account_id}/orders
+  // GET /v2/orders
   rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse) {
     option (sebuf.http.config) = {
-      path: "/{account_id}/orders"
+      path: "/orders"
       method: HTTP_METHOD_GET
     };
   }
 
   // GetOrder retrieves a specific order by ID.
-  // GET /v1/trading/accounts/{account_id}/orders/{order_id}
+  // GET /v2/orders/{order_id}
   rpc GetOrder(GetOrderRequest) returns (Order) {
     option (sebuf.http.config) = {
-      path: "/{account_id}/orders/{order_id}"
+      path: "/orders/{order_id}"
       method: HTTP_METHOD_GET
     };
   }
 
+  // GetOrderByClientId retrieves an order by client order ID.
+  // GET /v2/orders:by_client_order_id
+  rpc GetOrderByClientId(GetOrderByClientIdRequest) returns (Order) {
+    option (sebuf.http.config) = {
+      path: "/orders:by_client_order_id"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ReplaceOrder replaces (modifies) an existing order.
+  // PATCH /v2/orders/{order_id}
+  rpc ReplaceOrder(ReplaceOrderRequest) returns (Order) {
+    option (sebuf.http.config) = {
+      path: "/orders/{order_id}"
+      method: HTTP_METHOD_PATCH
+    };
+  }
+
   // CancelOrder cancels a specific order.
-  // DELETE /v1/trading/accounts/{account_id}/orders/{order_id}
+  // DELETE /v2/orders/{order_id}
   rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse) {
     option (sebuf.http.config) = {
-      path: "/{account_id}/orders/{order_id}"
+      path: "/orders/{order_id}"
       method: HTTP_METHOD_DELETE
     };
   }
 
   // CancelAllOrders cancels all open orders.
-  // DELETE /v1/trading/accounts/{account_id}/orders
+  // DELETE /v2/orders
   rpc CancelAllOrders(CancelAllOrdersRequest) returns (CancelAllOrdersResponse) {
     option (sebuf.http.config) = {
-      path: "/{account_id}/orders"
+      path: "/orders"
       method: HTTP_METHOD_DELETE
     };
   }
@@ -113,37 +195,157 @@ service TradingService {
   // ============================================
 
   // ListPositions retrieves all open positions.
-  // GET /v1/trading/accounts/{account_id}/positions
+  // GET /v2/positions
   rpc ListPositions(ListPositionsRequest) returns (ListPositionsResponse) {
     option (sebuf.http.config) = {
-      path: "/{account_id}/positions"
+      path: "/positions"
       method: HTTP_METHOD_GET
     };
   }
 
   // GetPosition retrieves a specific position by symbol.
-  // GET /v1/trading/accounts/{account_id}/positions/{symbol}
+  // GET /v2/positions/{symbol}
   rpc GetPosition(GetPositionRequest) returns (Position) {
     option (sebuf.http.config) = {
-      path: "/{account_id}/positions/{symbol}"
+      path: "/positions/{symbol}"
       method: HTTP_METHOD_GET
     };
   }
 
   // ClosePosition closes a specific position (liquidates).
-  // DELETE /v1/trading/accounts/{account_id}/positions/{symbol}
+  // DELETE /v2/positions/{symbol}
   rpc ClosePosition(ClosePositionRequest) returns (Order) {
     option (sebuf.http.config) = {
-      path: "/{account_id}/positions/{symbol}"
+      path: "/positions/{symbol}"
       method: HTTP_METHOD_DELETE
     };
   }
 
   // CloseAllPositions closes all open positions.
-  // DELETE /v1/trading/accounts/{account_id}/positions
+  // DELETE /v2/positions
   rpc CloseAllPositions(CloseAllPositionsRequest) returns (CloseAllPositionsResponse) {
     option (sebuf.http.config) = {
-      path: "/{account_id}/positions"
+      path: "/positions"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ExerciseOption exercises an option position.
+  // POST /v2/positions/{symbol_or_contract_id}/exercise
+  rpc ExerciseOption(ExerciseOptionRequest) returns (ExerciseOptionResponse) {
+    option (sebuf.http.config) = {
+      path: "/positions/{symbol_or_contract_id}/exercise"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ============================================
+  // Asset Operations
+  // ============================================
+
+  // ListAssets retrieves all available assets.
+  // GET /v2/assets
+  rpc ListAssets(ListAssetsRequest) returns (ListAssetsResponse) {
+    option (sebuf.http.config) = {
+      path: "/assets"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetAsset retrieves a specific asset by symbol or ID.
+  // GET /v2/assets/{symbol_or_id}
+  rpc GetAsset(GetAssetRequest) returns (Asset) {
+    option (sebuf.http.config) = {
+      path: "/assets/{symbol_or_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Clock and Calendar
+  // ============================================
+
+  // GetClock retrieves the current market clock status.
+  // GET /v2/clock
+  rpc GetClock(GetClockRequest) returns (Clock) {
+    option (sebuf.http.config) = {
+      path: "/clock"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetCalendar retrieves the market calendar.
+  // GET /v2/calendar
+  rpc GetCalendar(GetCalendarRequest) returns (GetCalendarResponse) {
+    option (sebuf.http.config) = {
+      path: "/calendar"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Watchlist Operations
+  // ============================================
+
+  // ListWatchlists retrieves all watchlists.
+  // GET /v2/watchlists
+  rpc ListWatchlists(ListWatchlistsRequest) returns (ListWatchlistsResponse) {
+    option (sebuf.http.config) = {
+      path: "/watchlists"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateWatchlist creates a new watchlist.
+  // POST /v2/watchlists
+  rpc CreateWatchlist(CreateWatchlistRequest) returns (Watchlist) {
+    option (sebuf.http.config) = {
+      path: "/watchlists"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // GetWatchlist retrieves a specific watchlist by ID.
+  // GET /v2/watchlists/{watchlist_id}
+  rpc GetWatchlist(GetWatchlistRequest) returns (Watchlist) {
+    option (sebuf.http.config) = {
+      path: "/watchlists/{watchlist_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // UpdateWatchlist updates an existing watchlist.
+  // PUT /v2/watchlists/{watchlist_id}
+  rpc UpdateWatchlist(UpdateWatchlistRequest) returns (Watchlist) {
+    option (sebuf.http.config) = {
+      path: "/watchlists/{watchlist_id}"
+      method: HTTP_METHOD_PUT
+    };
+  }
+
+  // DeleteWatchlist deletes a watchlist.
+  // DELETE /v2/watchlists/{watchlist_id}
+  rpc DeleteWatchlist(DeleteWatchlistRequest) returns (DeleteWatchlistResponse) {
+    option (sebuf.http.config) = {
+      path: "/watchlists/{watchlist_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // AddWatchlistAsset adds an asset to a watchlist.
+  // POST /v2/watchlists/{watchlist_id}
+  rpc AddWatchlistAsset(AddWatchlistAssetRequest) returns (Watchlist) {
+    option (sebuf.http.config) = {
+      path: "/watchlists/{watchlist_id}"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // RemoveWatchlistAsset removes an asset from a watchlist.
+  // DELETE /v2/watchlists/{watchlist_id}/{symbol}
+  rpc RemoveWatchlistAsset(RemoveWatchlistAssetRequest) returns (RemoveWatchlistAssetResponse) {
+    option (sebuf.http.config) = {
+      path: "/watchlists/{watchlist_id}/{symbol}"
       method: HTTP_METHOD_DELETE
     };
   }

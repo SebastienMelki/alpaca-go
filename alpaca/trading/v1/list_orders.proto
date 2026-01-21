@@ -8,58 +8,51 @@ import "alpaca/trading/v1/order.proto";
 
 // ListOrdersRequest is the request to list orders.
 message ListOrdersRequest {
-  // The account ID (bound from path variable).
-  string account_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.uuid = true,
-    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
-  ];
-
   // Filter by order status (open, closed, all).
-  string status = 2 [
+  string status = 1 [
     (sebuf.http.query) = { name: "status" },
     (sebuf.http.field_examples) = { values: ["open"] }
   ];
 
   // Maximum number of orders to return (default 50, max 500).
-  int32 limit = 3 [
+  int32 limit = 2 [
     (sebuf.http.query) = { name: "limit" },
     (buf.validate.field).int32 = { gte: 1, lte: 500 },
     (sebuf.http.field_examples) = { values: ["50"] }
   ];
 
   // Cursor for pagination (order ID to start after).
-  string after = 4 [
+  string after = 3 [
     (sebuf.http.query) = { name: "after" },
     (sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }
   ];
 
   // Filter by orders updated before this timestamp.
-  string until = 5 [
+  string until = 4 [
     (sebuf.http.query) = { name: "until" },
     (sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }
   ];
 
   // Sort direction (asc or desc).
-  string direction = 6 [
+  string direction = 5 [
     (sebuf.http.query) = { name: "direction" },
     (sebuf.http.field_examples) = { values: ["desc"] }
   ];
 
   // Whether to include nested leg orders.
-  bool nested = 7 [
+  bool nested = 6 [
     (sebuf.http.query) = { name: "nested" },
     (sebuf.http.field_examples) = { values: ["false"] }
   ];
 
   // Filter by symbols (comma-separated).
-  string symbols = 8 [
+  string symbols = 7 [
     (sebuf.http.query) = { name: "symbols" },
     (sebuf.http.field_examples) = { values: ["AAPL,TSLA"] }
   ];
 
   // Filter by side (buy or sell).
-  string side = 9 [
+  string side = 8 [
     (sebuf.http.query) = { name: "side" },
     (sebuf.http.field_examples) = { values: ["buy"] }
   ];

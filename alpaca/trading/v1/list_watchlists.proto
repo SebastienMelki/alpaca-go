@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "alpaca/trading/v1/watchlist.proto";
+
+// ListWatchlistsRequest is the request to list watchlists.
+message ListWatchlistsRequest {}
+
+// ListWatchlistsResponse is the response containing a list of watchlists.
+message ListWatchlistsResponse {
+  // List of watchlists.
+  repeated Watchlist watchlists = 1;
+}
