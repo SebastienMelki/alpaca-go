@@ -1,0 +1,4188 @@
+openapi: 3.1.0
+info:
+    title: MarketDataService API
+    version: 1.0.0
+paths:
+    /v2/stocks/bars:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetStockBars
+            description: |-
+                GetStockBars retrieves historical stock bars.
+                 GET /v2/stocks/bars
+            operationId: GetStockBars
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: timeframe
+                  in: query
+                  description: Bar timeframe (1Min, 5Min, 15Min, 30Min, 1Hour, 4Hour, 1Day, 1Week, 1Month).
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of bars to return (1-10000, default 1000).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: adjustment
+                  in: query
+                  description: Adjustment type (raw, split, dividend, all).
+                  required: false
+                  schema:
+                    type: string
+                - name: feed
+                  in: query
+                  description: Data feed (iex, sip).
+                  required: false
+                  schema:
+                    type: string
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: sort
+                  in: query
+                  description: Sort order (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetStockBarsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/stocks/bars/latest:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetLatestStockBars
+            description: |-
+                GetLatestStockBars retrieves the latest stock bars.
+                 GET /v2/stocks/bars/latest
+            operationId: GetLatestStockBars
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: feed
+                  in: query
+                  description: Data feed (iex, sip).
+                  required: false
+                  schema:
+                    type: string
+                - name: currency
+                  in: query
+                  description: Currency for the response prices.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetLatestStockBarsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/stocks/trades:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetStockTrades
+            description: |-
+                GetStockTrades retrieves historical stock trades.
+                 GET /v2/stocks/trades
+            operationId: GetStockTrades
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of trades to return (1-10000, default 1000).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: feed
+                  in: query
+                  description: Data feed (iex, sip).
+                  required: false
+                  schema:
+                    type: string
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: sort
+                  in: query
+                  description: Sort order (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetStockTradesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/stocks/trades/latest:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetLatestStockTrades
+            description: |-
+                GetLatestStockTrades retrieves the latest stock trades.
+                 GET /v2/stocks/trades/latest
+            operationId: GetLatestStockTrades
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: feed
+                  in: query
+                  description: Data feed (iex, sip).
+                  required: false
+                  schema:
+                    type: string
+                - name: currency
+                  in: query
+                  description: Currency for the response prices.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetLatestStockTradesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/stocks/quotes:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetStockQuotes
+            description: |-
+                GetStockQuotes retrieves historical stock quotes.
+                 GET /v2/stocks/quotes
+            operationId: GetStockQuotes
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of quotes to return (1-10000, default 1000).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: feed
+                  in: query
+                  description: Data feed (iex, sip).
+                  required: false
+                  schema:
+                    type: string
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: sort
+                  in: query
+                  description: Sort order (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetStockQuotesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/stocks/quotes/latest:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetLatestStockQuotes
+            description: |-
+                GetLatestStockQuotes retrieves the latest stock quotes.
+                 GET /v2/stocks/quotes/latest
+            operationId: GetLatestStockQuotes
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: feed
+                  in: query
+                  description: Data feed (iex, sip).
+                  required: false
+                  schema:
+                    type: string
+                - name: currency
+                  in: query
+                  description: Currency for the response prices.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetLatestStockQuotesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/stocks/snapshots:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetStockSnapshots
+            description: |-
+                GetStockSnapshots retrieves stock snapshots for multiple symbols.
+                 GET /v2/stocks/snapshots
+            operationId: GetStockSnapshots
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: feed
+                  in: query
+                  description: Data feed (iex, sip).
+                  required: false
+                  schema:
+                    type: string
+                - name: currency
+                  in: query
+                  description: Currency for the response prices.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetStockSnapshotsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/stocks/{symbol}/snapshot:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetStockSnapshot
+            description: |-
+                GetStockSnapshot retrieves a single stock snapshot.
+                 GET /v2/stocks/{symbol}/snapshot
+            operationId: GetStockSnapshot
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbol
+                  in: path
+                  description: Symbol (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: feed
+                  in: query
+                  description: Data feed (iex, sip).
+                  required: false
+                  schema:
+                    type: string
+                - name: currency
+                  in: query
+                  description: Currency for the response prices.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Snapshot'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/stocks/auctions:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetStockAuctions
+            description: |-
+                GetStockAuctions retrieves stock auction data.
+                 GET /v2/stocks/auctions
+            operationId: GetStockAuctions
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start date (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End date (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of results (1-10000, default 1000).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: sort
+                  in: query
+                  description: Sort order (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetStockAuctionsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta3/crypto/{loc}/bars:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetCryptoBars
+            description: |-
+                GetCryptoBars retrieves historical crypto bars.
+                 GET /v1beta3/crypto/{loc}/bars
+            operationId: GetCryptoBars
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: loc
+                  in: path
+                  description: Crypto location (us).
+                  required: true
+                  schema:
+                    type: string
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols (e.g., BTC/USD,ETH/USD).
+                  required: false
+                  schema:
+                    type: string
+                - name: timeframe
+                  in: query
+                  description: Bar timeframe.
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of bars to return (1-10000, default 1000).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: sort
+                  in: query
+                  description: Sort order (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetCryptoBarsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta3/crypto/{loc}/latest/bars:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetLatestCryptoBars
+            description: |-
+                GetLatestCryptoBars retrieves the latest crypto bars.
+                 GET /v1beta3/crypto/{loc}/latest/bars
+            operationId: GetLatestCryptoBars
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: loc
+                  in: path
+                  description: Crypto location (us).
+                  required: true
+                  schema:
+                    type: string
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetLatestCryptoBarsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta3/crypto/{loc}/trades:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetCryptoTrades
+            description: |-
+                GetCryptoTrades retrieves historical crypto trades.
+                 GET /v1beta3/crypto/{loc}/trades
+            operationId: GetCryptoTrades
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: loc
+                  in: path
+                  description: Crypto location (us).
+                  required: true
+                  schema:
+                    type: string
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of trades to return (1-10000, default 1000).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: sort
+                  in: query
+                  description: Sort order (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetCryptoTradesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta3/crypto/{loc}/latest/trades:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetLatestCryptoTrades
+            description: |-
+                GetLatestCryptoTrades retrieves the latest crypto trades.
+                 GET /v1beta3/crypto/{loc}/latest/trades
+            operationId: GetLatestCryptoTrades
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: loc
+                  in: path
+                  description: Crypto location (us).
+                  required: true
+                  schema:
+                    type: string
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetLatestCryptoTradesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta3/crypto/{loc}/quotes:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetCryptoQuotes
+            description: |-
+                GetCryptoQuotes retrieves historical crypto quotes.
+                 GET /v1beta3/crypto/{loc}/quotes
+            operationId: GetCryptoQuotes
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: loc
+                  in: path
+                  description: Crypto location (us).
+                  required: true
+                  schema:
+                    type: string
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of quotes to return (1-10000, default 1000).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: sort
+                  in: query
+                  description: Sort order (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetCryptoQuotesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta3/crypto/{loc}/latest/quotes:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetLatestCryptoQuotes
+            description: |-
+                GetLatestCryptoQuotes retrieves the latest crypto quotes.
+                 GET /v1beta3/crypto/{loc}/latest/quotes
+            operationId: GetLatestCryptoQuotes
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: loc
+                  in: path
+                  description: Crypto location (us).
+                  required: true
+                  schema:
+                    type: string
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetLatestCryptoQuotesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta3/crypto/{loc}/snapshots:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetCryptoSnapshots
+            description: |-
+                GetCryptoSnapshots retrieves crypto snapshots.
+                 GET /v1beta3/crypto/{loc}/snapshots
+            operationId: GetCryptoSnapshots
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: loc
+                  in: path
+                  description: Crypto location (us).
+                  required: true
+                  schema:
+                    type: string
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetCryptoSnapshotsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta1/options/bars:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetOptionBars
+            description: |-
+                GetOptionBars retrieves historical option bars.
+                 GET /v1beta1/options/bars
+            operationId: GetOptionBars
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of option symbols (OCC format).
+                  required: false
+                  schema:
+                    type: string
+                - name: timeframe
+                  in: query
+                  description: Bar timeframe.
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of bars to return (1-10000, default 1000).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: sort
+                  in: query
+                  description: Sort order (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetOptionBarsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta1/options/bars/latest:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetLatestOptionBars
+            description: |-
+                GetLatestOptionBars retrieves the latest option bars.
+                 GET /v1beta1/options/bars/latest
+            operationId: GetLatestOptionBars
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of option symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: feed
+                  in: query
+                  description: Data feed (indicative, opra).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetLatestOptionBarsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta1/options/trades:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetOptionTrades
+            description: |-
+                GetOptionTrades retrieves historical option trades.
+                 GET /v1beta1/options/trades
+            operationId: GetOptionTrades
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of option symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of trades to return (1-10000, default 1000).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: sort
+                  in: query
+                  description: Sort order (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetOptionTradesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta1/options/trades/latest:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetLatestOptionTrades
+            description: |-
+                GetLatestOptionTrades retrieves the latest option trades.
+                 GET /v1beta1/options/trades/latest
+            operationId: GetLatestOptionTrades
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of option symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: feed
+                  in: query
+                  description: Data feed (indicative, opra).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetLatestOptionTradesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta1/options/quotes:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetOptionQuotes
+            description: |-
+                GetOptionQuotes retrieves historical option quotes.
+                 GET /v1beta1/options/quotes
+            operationId: GetOptionQuotes
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of option symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of quotes to return (1-10000, default 1000).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: sort
+                  in: query
+                  description: Sort order (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetOptionQuotesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta1/options/quotes/latest:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetLatestOptionQuotes
+            description: |-
+                GetLatestOptionQuotes retrieves the latest option quotes.
+                 GET /v1beta1/options/quotes/latest
+            operationId: GetLatestOptionQuotes
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of option symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: feed
+                  in: query
+                  description: Data feed (indicative, opra).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetLatestOptionQuotesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta1/options/snapshots:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetOptionSnapshots
+            description: |-
+                GetOptionSnapshots retrieves option snapshots.
+                 GET /v1beta1/options/snapshots
+            operationId: GetOptionSnapshots
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of option symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: feed
+                  in: query
+                  description: Data feed (indicative, opra).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetOptionSnapshotsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta1/options/snapshots/{underlying_symbol}:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetOptionChain
+            description: |-
+                GetOptionChain retrieves the option chain for an underlying.
+                 GET /v1beta1/options/snapshots/{underlying_symbol}
+            operationId: GetOptionChain
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: underlying_symbol
+                  in: path
+                  description: Underlying symbol (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: feed
+                  in: query
+                  description: Data feed (indicative, opra).
+                  required: false
+                  schema:
+                    type: string
+                - name: type
+                  in: query
+                  description: Filter by option type (call, put).
+                  required: false
+                  schema:
+                    type: string
+                - name: strike_price_gte
+                  in: query
+                  description: Filter by strike price greater than or equal to.
+                  required: false
+                  schema:
+                    type: number
+                    format: double
+                - name: strike_price_lte
+                  in: query
+                  description: Filter by strike price less than or equal to.
+                  required: false
+                  schema:
+                    type: number
+                    format: double
+                - name: expiration_date_gte
+                  in: query
+                  description: Filter by expiration date greater than or equal to (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: expiration_date_lte
+                  in: query
+                  description: Filter by expiration date less than or equal to (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of results (default 100).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetOptionChainResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta1/news:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetNews
+            description: |-
+                GetNews retrieves news articles.
+                 GET /v1beta1/news
+            operationId: GetNews
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbols
+                  in: query
+                  description: Comma-separated list of symbols to filter by.
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start timestamp (RFC 3339).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End timestamp (RFC 3339).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of articles to return (1-50, default 10).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: sort
+                  in: query
+                  description: Sort order (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+                - name: include_content
+                  in: query
+                  description: Whether to include full content.
+                  required: false
+                  schema:
+                    type: boolean
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: exclude_contentless
+                  in: query
+                  description: Exclude content without symbols.
+                  required: false
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetNewsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta1/screener/stocks/most-actives:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetMostActives
+            description: |-
+                GetMostActives retrieves the most active stocks.
+                 GET /v1beta1/screener/stocks/most-actives
+            operationId: GetMostActives
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: top
+                  in: query
+                  description: Number of results to return (default 10, max 100).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: by
+                  in: query
+                  description: Ranking criteria (volume, trades).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetMostActivesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta1/screener/{market_type}/movers:
+        get:
+            tags:
+                - MarketDataService
+            summary: GetMovers
+            description: |-
+                GetMovers retrieves the top market movers.
+                 GET /v1beta1/screener/{market_type}/movers
+            operationId: GetMovers
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: market_type
+                  in: path
+                  description: Market type (stocks, crypto).
+                  required: true
+                  schema:
+                    type: string
+                - name: top
+                  in: query
+                  description: Number of results to return (default 10, max 50).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetMoversResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+components:
+    schemas:
+        FieldViolation:
+            type: object
+            properties:
+                field:
+                    type: string
+                    description: The field path that failed validation (e.g., 'user.email' for nested fields). For header validation, this will be the header name (e.g., 'X-API-Key')
+                description:
+                    type: string
+                    description: Human-readable description of the validation violation (e.g., 'must be a valid email address', 'required field missing')
+            required:
+                - field
+                - description
+            description: FieldViolation describes a single validation error for a specific field.
+        ValidationError:
+            type: object
+            properties:
+                violations:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FieldViolation'
+                    description: List of validation violations
+            required:
+                - violations
+            description: ValidationError is returned when request validation fails. It contains a list of field violations describing what went wrong.
+        GetStockBarsRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL,TSLA,MSFT
+                    description: Comma-separated list of symbols.
+                    example: AAPL,TSLA,MSFT
+                timeframe:
+                    type: string
+                    examples:
+                        - 1Day
+                    description: Bar timeframe (1Min, 5Min, 15Min, 30Min, 1Hour, 4Hour, 1Day, 1Week, 1Month).
+                    example: 1Day
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-01
+                    description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-01
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-31
+                    description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-31
+                limit:
+                    type: integer
+                    examples:
+                        - 1000
+                    maximum: 10000
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of bars to return (1-10000, default 1000).
+                    example: 1000
+                adjustment:
+                    type: string
+                    examples:
+                        - raw
+                    description: Adjustment type (raw, split, dividend, all).
+                    example: raw
+                feed:
+                    type: string
+                    examples:
+                        - sip
+                    description: Data feed (iex, sip).
+                    example: sip
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                sort:
+                    type: string
+                    examples:
+                        - asc
+                    description: Sort order (asc, desc).
+                    example: asc
+            required:
+                - symbols
+                - timeframe
+            description: GetStockBarsRequest is the request to get historical stock bars.
+        GetStockBarsResponse:
+            type: object
+            properties:
+                bars:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/StockBarsList'
+                    description: Map of symbol to bars.
+                nextPageToken:
+                    type: string
+                    examples:
+                        - YWJjZGVm
+                    description: Next page token.
+                    example: YWJjZGVm
+            description: GetStockBarsResponse is the response containing stock bars.
+        BarsEntry:
+            type: object
+            properties:
+                key:
+                    type: string
+                value:
+                    $ref: '#/components/schemas/OptionBar'
+        StockBarsList:
+            type: object
+            properties:
+                bars:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Bar'
+            description: StockBarsList is a list of bars for a single symbol.
+        Bar:
+            type: object
+            properties:
+                t:
+                    type: string
+                    examples:
+                        - 2024-01-15T09:30:00Z
+                    description: Timestamp (RFC 3339).
+                    example: 2024-01-15T09:30:00Z
+                o:
+                    type: number
+                    examples:
+                        - 150.00
+                    format: double
+                    description: Open price.
+                    example: 150.00
+                h:
+                    type: number
+                    examples:
+                        - 152.50
+                    format: double
+                    description: High price.
+                    example: 152.50
+                l:
+                    type: number
+                    examples:
+                        - 149.75
+                    format: double
+                    description: Low price.
+                    example: 149.75
+                c:
+                    type: number
+                    examples:
+                        - 151.25
+                    format: double
+                    description: Close price.
+                    example: 151.25
+                v:
+                    type: integer
+                    examples:
+                        - 1234567
+                    format: int64
+                    description: Volume.
+                    example: 1234567
+                n:
+                    type: integer
+                    examples:
+                        - 5432
+                    format: int64
+                    description: Number of trades.
+                    example: 5432
+                vw:
+                    type: number
+                    examples:
+                        - 150.85
+                    format: double
+                    description: Volume weighted average price.
+                    example: 150.85
+            description: Bar represents an OHLCV candlestick bar.
+        GetLatestStockBarsRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL,TSLA,MSFT
+                    description: Comma-separated list of symbols.
+                    example: AAPL,TSLA,MSFT
+                feed:
+                    type: string
+                    examples:
+                        - sip
+                    description: Data feed (iex, sip).
+                    example: sip
+                currency:
+                    type: string
+                    examples:
+                        - USD
+                    description: Currency for the response prices.
+                    example: USD
+            required:
+                - symbols
+            description: GetLatestStockBarsRequest is the request to get the latest stock bars.
+        GetLatestStockBarsResponse:
+            type: object
+            properties:
+                bars:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/Bar'
+                    description: Map of symbol to latest bar.
+            description: GetLatestStockBarsResponse is the response containing the latest stock bars.
+        GetStockTradesRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL,TSLA
+                    description: Comma-separated list of symbols.
+                    example: AAPL,TSLA
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-15T09:30:00Z
+                    description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-15T09:30:00Z
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-15T16:00:00Z
+                    description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-15T16:00:00Z
+                limit:
+                    type: integer
+                    examples:
+                        - 1000
+                    maximum: 10000
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of trades to return (1-10000, default 1000).
+                    example: 1000
+                feed:
+                    type: string
+                    examples:
+                        - sip
+                    description: Data feed (iex, sip).
+                    example: sip
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                sort:
+                    type: string
+                    examples:
+                        - asc
+                    description: Sort order (asc, desc).
+                    example: asc
+            required:
+                - symbols
+            description: GetStockTradesRequest is the request to get historical stock trades.
+        GetStockTradesResponse:
+            type: object
+            properties:
+                trades:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/StockTradesList'
+                    description: Map of symbol to trades.
+                nextPageToken:
+                    type: string
+                    examples:
+                        - YWJjZGVm
+                    description: Next page token.
+                    example: YWJjZGVm
+            description: GetStockTradesResponse is the response containing stock trades.
+        TradesEntry:
+            type: object
+            properties:
+                key:
+                    type: string
+                value:
+                    $ref: '#/components/schemas/OptionTrade'
+        StockTradesList:
+            type: object
+            properties:
+                trades:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Trade'
+            description: StockTradesList is a list of trades for a single symbol.
+        Trade:
+            type: object
+            properties:
+                t:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00.123456Z
+                    description: Timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00.123456Z
+                x:
+                    type: string
+                    examples:
+                        - Q
+                    description: Exchange code.
+                    example: Q
+                p:
+                    type: number
+                    examples:
+                        - 150.25
+                    format: double
+                    description: Trade price.
+                    example: 150.25
+                s:
+                    type: integer
+                    examples:
+                        - 100
+                    format: int64
+                    description: Trade size.
+                    example: 100
+                i:
+                    type: integer
+                    examples:
+                        - 12345678901
+                    format: int64
+                    description: Trade ID.
+                    example: 12345678901
+                c:
+                    type: array
+                    items:
+                        type: string
+                        examples:
+                            - '@'
+                        description: Trade conditions.
+                        example: '@'
+                z:
+                    type: string
+                    examples:
+                        - C
+                    description: Tape (A = NYSE, B = ARCA, C = NASDAQ).
+                    example: C
+            description: Trade represents a single trade execution.
+        GetLatestStockTradesRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL,TSLA,MSFT
+                    description: Comma-separated list of symbols.
+                    example: AAPL,TSLA,MSFT
+                feed:
+                    type: string
+                    examples:
+                        - sip
+                    description: Data feed (iex, sip).
+                    example: sip
+                currency:
+                    type: string
+                    examples:
+                        - USD
+                    description: Currency for the response prices.
+                    example: USD
+            required:
+                - symbols
+            description: GetLatestStockTradesRequest is the request to get the latest stock trades.
+        GetLatestStockTradesResponse:
+            type: object
+            properties:
+                trades:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/Trade'
+                    description: Map of symbol to latest trade.
+            description: GetLatestStockTradesResponse is the response containing the latest stock trades.
+        GetStockQuotesRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL,TSLA
+                    description: Comma-separated list of symbols.
+                    example: AAPL,TSLA
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-15T09:30:00Z
+                    description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-15T09:30:00Z
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-15T16:00:00Z
+                    description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-15T16:00:00Z
+                limit:
+                    type: integer
+                    examples:
+                        - 1000
+                    maximum: 10000
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of quotes to return (1-10000, default 1000).
+                    example: 1000
+                feed:
+                    type: string
+                    examples:
+                        - sip
+                    description: Data feed (iex, sip).
+                    example: sip
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                sort:
+                    type: string
+                    examples:
+                        - asc
+                    description: Sort order (asc, desc).
+                    example: asc
+            required:
+                - symbols
+            description: GetStockQuotesRequest is the request to get historical stock quotes.
+        GetStockQuotesResponse:
+            type: object
+            properties:
+                quotes:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/StockQuotesList'
+                    description: Map of symbol to quotes.
+                nextPageToken:
+                    type: string
+                    examples:
+                        - YWJjZGVm
+                    description: Next page token.
+                    example: YWJjZGVm
+            description: GetStockQuotesResponse is the response containing stock quotes.
+        QuotesEntry:
+            type: object
+            properties:
+                key:
+                    type: string
+                value:
+                    $ref: '#/components/schemas/OptionQuote'
+        StockQuotesList:
+            type: object
+            properties:
+                quotes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Quote'
+            description: StockQuotesList is a list of quotes for a single symbol.
+        Quote:
+            type: object
+            properties:
+                t:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00.123456Z
+                    description: Timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00.123456Z
+                ax:
+                    type: string
+                    examples:
+                        - Q
+                    description: Ask exchange code.
+                    example: Q
+                ap:
+                    type: number
+                    examples:
+                        - 150.30
+                    format: double
+                    description: Ask price.
+                    example: 150.30
+                as:
+                    type: integer
+                    examples:
+                        - 500
+                    format: int64
+                    description: Ask size.
+                    example: 500
+                bx:
+                    type: string
+                    examples:
+                        - P
+                    description: Bid exchange code.
+                    example: P
+                bp:
+                    type: number
+                    examples:
+                        - 150.25
+                    format: double
+                    description: Bid price.
+                    example: 150.25
+                bs:
+                    type: integer
+                    examples:
+                        - 300
+                    format: int64
+                    description: Bid size.
+                    example: 300
+                c:
+                    type: array
+                    items:
+                        type: string
+                        examples:
+                            - R
+                        description: Quote conditions.
+                        example: R
+                z:
+                    type: string
+                    examples:
+                        - C
+                    description: Tape.
+                    example: C
+            description: Quote represents a bid/ask quote.
+        GetLatestStockQuotesRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL,TSLA,MSFT
+                    description: Comma-separated list of symbols.
+                    example: AAPL,TSLA,MSFT
+                feed:
+                    type: string
+                    examples:
+                        - sip
+                    description: Data feed (iex, sip).
+                    example: sip
+                currency:
+                    type: string
+                    examples:
+                        - USD
+                    description: Currency for the response prices.
+                    example: USD
+            required:
+                - symbols
+            description: GetLatestStockQuotesRequest is the request to get the latest stock quotes.
+        GetLatestStockQuotesResponse:
+            type: object
+            properties:
+                quotes:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/Quote'
+                    description: Map of symbol to latest quote.
+            description: GetLatestStockQuotesResponse is the response containing the latest stock quotes.
+        GetStockSnapshotsRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL,TSLA,MSFT
+                    description: Comma-separated list of symbols.
+                    example: AAPL,TSLA,MSFT
+                feed:
+                    type: string
+                    examples:
+                        - sip
+                    description: Data feed (iex, sip).
+                    example: sip
+                currency:
+                    type: string
+                    examples:
+                        - USD
+                    description: Currency for the response prices.
+                    example: USD
+            required:
+                - symbols
+            description: GetStockSnapshotsRequest is the request to get stock snapshots.
+        GetStockSnapshotsResponse:
+            type: object
+            properties:
+                snapshots:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/Snapshot'
+                    description: Map of symbol to snapshot.
+            description: GetStockSnapshotsResponse is the response containing stock snapshots.
+        SnapshotsEntry:
+            type: object
+            properties:
+                key:
+                    type: string
+                value:
+                    $ref: '#/components/schemas/OptionSnapshot'
+        Snapshot:
+            type: object
+            properties:
+                latestTrade:
+                    $ref: '#/components/schemas/Trade'
+                latestQuote:
+                    $ref: '#/components/schemas/Quote'
+                minuteBar:
+                    $ref: '#/components/schemas/Bar'
+                dailyBar:
+                    $ref: '#/components/schemas/Bar'
+                prevDailyBar:
+                    $ref: '#/components/schemas/Bar'
+            description: Snapshot represents a point-in-time market data snapshot.
+        GetStockSnapshotRequest:
+            type: object
+            properties:
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Symbol (bound from path variable).
+                    example: AAPL
+                feed:
+                    type: string
+                    examples:
+                        - sip
+                    description: Data feed (iex, sip).
+                    example: sip
+                currency:
+                    type: string
+                    examples:
+                        - USD
+                    description: Currency for the response prices.
+                    example: USD
+            required:
+                - symbol
+            description: GetStockSnapshotRequest is the request to get a single stock snapshot.
+        GetStockAuctionsRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL,TSLA
+                    description: Comma-separated list of symbols.
+                    example: AAPL,TSLA
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-01
+                    description: Start date (YYYY-MM-DD).
+                    example: 2024-01-01
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-31
+                    description: End date (YYYY-MM-DD).
+                    example: 2024-01-31
+                limit:
+                    type: integer
+                    examples:
+                        - 1000
+                    maximum: 10000
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of results (1-10000, default 1000).
+                    example: 1000
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                sort:
+                    type: string
+                    examples:
+                        - asc
+                    description: Sort order (asc, desc).
+                    example: asc
+            required:
+                - symbols
+            description: GetStockAuctionsRequest is the request to get stock auctions.
+        GetStockAuctionsResponse:
+            type: object
+            properties:
+                auctions:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/StockAuctionsList'
+                    description: Map of symbol to auctions.
+                nextPageToken:
+                    type: string
+                    examples:
+                        - YWJjZGVm
+                    description: Next page token.
+                    example: YWJjZGVm
+            description: GetStockAuctionsResponse is the response containing stock auctions.
+        AuctionsEntry:
+            type: object
+            properties:
+                key:
+                    type: string
+                value:
+                    $ref: '#/components/schemas/StockAuctionsList'
+        StockAuctionsList:
+            type: object
+            properties:
+                auctions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/DailyAuctions'
+            description: StockAuctionsList is a list of daily auctions for a single symbol.
+        DailyAuctions:
+            type: object
+            properties:
+                d:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Date (YYYY-MM-DD).
+                    example: 2024-01-15
+                o:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Auction'
+                c:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Auction'
+            description: DailyAuctions represents opening and closing auctions for a day.
+        Auction:
+            type: object
+            properties:
+                t:
+                    type: string
+                    examples:
+                        - 2024-01-15T09:30:00Z
+                    description: Timestamp (RFC 3339).
+                    example: 2024-01-15T09:30:00Z
+                p:
+                    type: number
+                    examples:
+                        - 150.25
+                    format: double
+                    description: Auction price.
+                    example: 150.25
+                s:
+                    type: integer
+                    examples:
+                        - 10000
+                    format: int64
+                    description: Auction size.
+                    example: 10000
+                x:
+                    type: string
+                    examples:
+                        - Q
+                    description: Exchange code.
+                    example: Q
+                c:
+                    type: string
+                    examples:
+                        - O
+                    description: Auction condition.
+                    example: O
+            description: Auction represents an auction event.
+        GetCryptoBarsRequest:
+            type: object
+            properties:
+                loc:
+                    type: string
+                    examples:
+                        - us
+                    description: Crypto location (us).
+                    example: us
+                symbols:
+                    type: string
+                    examples:
+                        - BTC/USD,ETH/USD
+                    description: Comma-separated list of symbols (e.g., BTC/USD,ETH/USD).
+                    example: BTC/USD,ETH/USD
+                timeframe:
+                    type: string
+                    examples:
+                        - 1Hour
+                    description: Bar timeframe.
+                    example: 1Hour
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-01
+                    description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-01
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-31
+                    description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-31
+                limit:
+                    type: integer
+                    examples:
+                        - 1000
+                    maximum: 10000
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of bars to return (1-10000, default 1000).
+                    example: 1000
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                sort:
+                    type: string
+                    examples:
+                        - asc
+                    description: Sort order (asc, desc).
+                    example: asc
+            required:
+                - symbols
+                - timeframe
+            description: GetCryptoBarsRequest is the request to get historical crypto bars.
+        GetCryptoBarsResponse:
+            type: object
+            properties:
+                bars:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/CryptoBarsList'
+                    description: Map of symbol to bars.
+                nextPageToken:
+                    type: string
+                    examples:
+                        - YWJjZGVm
+                    description: Next page token.
+                    example: YWJjZGVm
+            description: GetCryptoBarsResponse is the response containing crypto bars.
+        CryptoBarsList:
+            type: object
+            properties:
+                bars:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CryptoBar'
+            description: CryptoBarsList is a list of bars for a single symbol.
+        CryptoBar:
+            type: object
+            properties:
+                t:
+                    type: string
+                    examples:
+                        - 2024-01-15T09:30:00Z
+                    description: Timestamp (RFC 3339).
+                    example: 2024-01-15T09:30:00Z
+                o:
+                    type: number
+                    examples:
+                        - 42000.00
+                    format: double
+                    description: Open price.
+                    example: 42000.00
+                h:
+                    type: number
+                    examples:
+                        - 42500.00
+                    format: double
+                    description: High price.
+                    example: 42500.00
+                l:
+                    type: number
+                    examples:
+                        - 41800.00
+                    format: double
+                    description: Low price.
+                    example: 41800.00
+                c:
+                    type: number
+                    examples:
+                        - 42250.00
+                    format: double
+                    description: Close price.
+                    example: 42250.00
+                v:
+                    type: number
+                    examples:
+                        - 123.456789
+                    format: double
+                    description: Volume.
+                    example: 123.456789
+                n:
+                    type: integer
+                    examples:
+                        - 5432
+                    format: int64
+                    description: Number of trades.
+                    example: 5432
+                vw:
+                    type: number
+                    examples:
+                        - 42150.00
+                    format: double
+                    description: Volume weighted average price.
+                    example: 42150.00
+            description: CryptoBar represents a crypto OHLCV bar.
+        GetLatestCryptoBarsRequest:
+            type: object
+            properties:
+                loc:
+                    type: string
+                    examples:
+                        - us
+                    description: Crypto location (us).
+                    example: us
+                symbols:
+                    type: string
+                    examples:
+                        - BTC/USD,ETH/USD
+                    description: Comma-separated list of symbols.
+                    example: BTC/USD,ETH/USD
+            required:
+                - symbols
+            description: GetLatestCryptoBarsRequest is the request to get the latest crypto bars.
+        GetLatestCryptoBarsResponse:
+            type: object
+            properties:
+                bars:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/CryptoBar'
+                    description: Map of symbol to latest bar.
+            description: GetLatestCryptoBarsResponse is the response containing the latest crypto bars.
+        GetCryptoTradesRequest:
+            type: object
+            properties:
+                loc:
+                    type: string
+                    examples:
+                        - us
+                    description: Crypto location (us).
+                    example: us
+                symbols:
+                    type: string
+                    examples:
+                        - BTC/USD,ETH/USD
+                    description: Comma-separated list of symbols.
+                    example: BTC/USD,ETH/USD
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-15T00:00:00Z
+                    description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-15T00:00:00Z
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-15T23:59:59Z
+                    description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-15T23:59:59Z
+                limit:
+                    type: integer
+                    examples:
+                        - 1000
+                    maximum: 10000
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of trades to return (1-10000, default 1000).
+                    example: 1000
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                sort:
+                    type: string
+                    examples:
+                        - asc
+                    description: Sort order (asc, desc).
+                    example: asc
+            required:
+                - symbols
+            description: GetCryptoTradesRequest is the request to get historical crypto trades.
+        GetCryptoTradesResponse:
+            type: object
+            properties:
+                trades:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/CryptoTradesList'
+                    description: Map of symbol to trades.
+                nextPageToken:
+                    type: string
+                    examples:
+                        - YWJjZGVm
+                    description: Next page token.
+                    example: YWJjZGVm
+            description: GetCryptoTradesResponse is the response containing crypto trades.
+        CryptoTradesList:
+            type: object
+            properties:
+                trades:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CryptoTrade'
+            description: CryptoTradesList is a list of trades for a single symbol.
+        CryptoTrade:
+            type: object
+            properties:
+                t:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00.123456Z
+                    description: Timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00.123456Z
+                p:
+                    type: number
+                    examples:
+                        - 42000.00
+                    format: double
+                    description: Trade price.
+                    example: 42000.00
+                s:
+                    type: number
+                    examples:
+                        - 0.5
+                    format: double
+                    description: Trade size.
+                    example: 0.5
+                i:
+                    type: integer
+                    examples:
+                        - 12345678901
+                    format: int64
+                    description: Trade ID.
+                    example: 12345678901
+                tks:
+                    type: string
+                    examples:
+                        - B
+                    description: Taker side (B = buy, S = sell).
+                    example: B
+            description: CryptoTrade represents a crypto trade.
+        GetLatestCryptoTradesRequest:
+            type: object
+            properties:
+                loc:
+                    type: string
+                    examples:
+                        - us
+                    description: Crypto location (us).
+                    example: us
+                symbols:
+                    type: string
+                    examples:
+                        - BTC/USD,ETH/USD
+                    description: Comma-separated list of symbols.
+                    example: BTC/USD,ETH/USD
+            required:
+                - symbols
+            description: GetLatestCryptoTradesRequest is the request to get the latest crypto trades.
+        GetLatestCryptoTradesResponse:
+            type: object
+            properties:
+                trades:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/CryptoTrade'
+                    description: Map of symbol to latest trade.
+            description: GetLatestCryptoTradesResponse is the response containing the latest crypto trades.
+        GetCryptoQuotesRequest:
+            type: object
+            properties:
+                loc:
+                    type: string
+                    examples:
+                        - us
+                    description: Crypto location (us).
+                    example: us
+                symbols:
+                    type: string
+                    examples:
+                        - BTC/USD,ETH/USD
+                    description: Comma-separated list of symbols.
+                    example: BTC/USD,ETH/USD
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-15T00:00:00Z
+                    description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-15T00:00:00Z
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-15T23:59:59Z
+                    description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-15T23:59:59Z
+                limit:
+                    type: integer
+                    examples:
+                        - 1000
+                    maximum: 10000
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of quotes to return (1-10000, default 1000).
+                    example: 1000
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                sort:
+                    type: string
+                    examples:
+                        - asc
+                    description: Sort order (asc, desc).
+                    example: asc
+            required:
+                - symbols
+            description: GetCryptoQuotesRequest is the request to get historical crypto quotes.
+        GetCryptoQuotesResponse:
+            type: object
+            properties:
+                quotes:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/CryptoQuotesList'
+                    description: Map of symbol to quotes.
+                nextPageToken:
+                    type: string
+                    examples:
+                        - YWJjZGVm
+                    description: Next page token.
+                    example: YWJjZGVm
+            description: GetCryptoQuotesResponse is the response containing crypto quotes.
+        CryptoQuotesList:
+            type: object
+            properties:
+                quotes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CryptoQuote'
+            description: CryptoQuotesList is a list of quotes for a single symbol.
+        CryptoQuote:
+            type: object
+            properties:
+                t:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00.123456Z
+                    description: Timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00.123456Z
+                ap:
+                    type: number
+                    examples:
+                        - 42010.00
+                    format: double
+                    description: Ask price.
+                    example: 42010.00
+                as:
+                    type: number
+                    examples:
+                        - 1.5
+                    format: double
+                    description: Ask size.
+                    example: 1.5
+                bp:
+                    type: number
+                    examples:
+                        - 42000.00
+                    format: double
+                    description: Bid price.
+                    example: 42000.00
+                bs:
+                    type: number
+                    examples:
+                        - 2.0
+                    format: double
+                    description: Bid size.
+                    example: 2.0
+            description: CryptoQuote represents a crypto bid/ask quote.
+        GetLatestCryptoQuotesRequest:
+            type: object
+            properties:
+                loc:
+                    type: string
+                    examples:
+                        - us
+                    description: Crypto location (us).
+                    example: us
+                symbols:
+                    type: string
+                    examples:
+                        - BTC/USD,ETH/USD
+                    description: Comma-separated list of symbols.
+                    example: BTC/USD,ETH/USD
+            required:
+                - symbols
+            description: GetLatestCryptoQuotesRequest is the request to get the latest crypto quotes.
+        GetLatestCryptoQuotesResponse:
+            type: object
+            properties:
+                quotes:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/CryptoQuote'
+                    description: Map of symbol to latest quote.
+            description: GetLatestCryptoQuotesResponse is the response containing the latest crypto quotes.
+        GetCryptoSnapshotsRequest:
+            type: object
+            properties:
+                loc:
+                    type: string
+                    examples:
+                        - us
+                    description: Crypto location (us).
+                    example: us
+                symbols:
+                    type: string
+                    examples:
+                        - BTC/USD,ETH/USD
+                    description: Comma-separated list of symbols.
+                    example: BTC/USD,ETH/USD
+            required:
+                - symbols
+            description: GetCryptoSnapshotsRequest is the request to get crypto snapshots.
+        GetCryptoSnapshotsResponse:
+            type: object
+            properties:
+                snapshots:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/CryptoSnapshot'
+                    description: Map of symbol to snapshot.
+            description: GetCryptoSnapshotsResponse is the response containing crypto snapshots.
+        CryptoSnapshot:
+            type: object
+            properties:
+                latestTrade:
+                    $ref: '#/components/schemas/CryptoTrade'
+                latestQuote:
+                    $ref: '#/components/schemas/CryptoQuote'
+                minuteBar:
+                    $ref: '#/components/schemas/CryptoBar'
+                dailyBar:
+                    $ref: '#/components/schemas/CryptoBar'
+                prevDailyBar:
+                    $ref: '#/components/schemas/CryptoBar'
+            description: CryptoSnapshot represents a point-in-time crypto market data snapshot.
+        GetOptionBarsRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL240119C00150000,AAPL240119P00145000
+                    description: Comma-separated list of option symbols (OCC format).
+                    example: AAPL240119C00150000,AAPL240119P00145000
+                timeframe:
+                    type: string
+                    examples:
+                        - 1Day
+                    description: Bar timeframe.
+                    example: 1Day
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-01
+                    description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-01
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-31
+                    description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-31
+                limit:
+                    type: integer
+                    examples:
+                        - 1000
+                    maximum: 10000
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of bars to return (1-10000, default 1000).
+                    example: 1000
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                sort:
+                    type: string
+                    examples:
+                        - asc
+                    description: Sort order (asc, desc).
+                    example: asc
+            required:
+                - symbols
+                - timeframe
+            description: GetOptionBarsRequest is the request to get historical option bars.
+        GetOptionBarsResponse:
+            type: object
+            properties:
+                bars:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/OptionBarsList'
+                    description: Map of symbol to bars.
+                nextPageToken:
+                    type: string
+                    examples:
+                        - YWJjZGVm
+                    description: Next page token.
+                    example: YWJjZGVm
+            description: GetOptionBarsResponse is the response containing option bars.
+        OptionBarsList:
+            type: object
+            properties:
+                bars:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/OptionBar'
+            description: OptionBarsList is a list of bars for a single option symbol.
+        OptionBar:
+            type: object
+            properties:
+                t:
+                    type: string
+                    examples:
+                        - 2024-01-15T09:30:00Z
+                    description: Timestamp (RFC 3339).
+                    example: 2024-01-15T09:30:00Z
+                o:
+                    type: number
+                    examples:
+                        - 5.25
+                    format: double
+                    description: Open price.
+                    example: 5.25
+                h:
+                    type: number
+                    examples:
+                        - 5.50
+                    format: double
+                    description: High price.
+                    example: 5.50
+                l:
+                    type: number
+                    examples:
+                        - 5.00
+                    format: double
+                    description: Low price.
+                    example: 5.00
+                c:
+                    type: number
+                    examples:
+                        - 5.40
+                    format: double
+                    description: Close price.
+                    example: 5.40
+                v:
+                    type: integer
+                    examples:
+                        - 1234
+                    format: int64
+                    description: Volume.
+                    example: 1234
+                n:
+                    type: integer
+                    examples:
+                        - 56
+                    format: int64
+                    description: Number of trades.
+                    example: 56
+                vw:
+                    type: number
+                    examples:
+                        - 5.35
+                    format: double
+                    description: Volume weighted average price.
+                    example: 5.35
+            description: OptionBar represents an option OHLCV bar.
+        GetLatestOptionBarsRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL240119C00150000
+                    description: Comma-separated list of option symbols.
+                    example: AAPL240119C00150000
+                feed:
+                    type: string
+                    examples:
+                        - opra
+                    description: Data feed (indicative, opra).
+                    example: opra
+            required:
+                - symbols
+            description: GetLatestOptionBarsRequest is the request to get the latest option bars.
+        GetLatestOptionBarsResponse:
+            type: object
+            properties:
+                bars:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/OptionBar'
+                    description: Map of symbol to latest bar.
+            description: GetLatestOptionBarsResponse is the response containing the latest option bars.
+        GetOptionTradesRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL240119C00150000
+                    description: Comma-separated list of option symbols.
+                    example: AAPL240119C00150000
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-15T09:30:00Z
+                    description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-15T09:30:00Z
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-15T16:00:00Z
+                    description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-15T16:00:00Z
+                limit:
+                    type: integer
+                    examples:
+                        - 1000
+                    maximum: 10000
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of trades to return (1-10000, default 1000).
+                    example: 1000
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                sort:
+                    type: string
+                    examples:
+                        - asc
+                    description: Sort order (asc, desc).
+                    example: asc
+            required:
+                - symbols
+            description: GetOptionTradesRequest is the request to get historical option trades.
+        GetOptionTradesResponse:
+            type: object
+            properties:
+                trades:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/OptionTradesList'
+                    description: Map of symbol to trades.
+                nextPageToken:
+                    type: string
+                    examples:
+                        - YWJjZGVm
+                    description: Next page token.
+                    example: YWJjZGVm
+            description: GetOptionTradesResponse is the response containing option trades.
+        OptionTradesList:
+            type: object
+            properties:
+                trades:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/OptionTrade'
+            description: OptionTradesList is a list of trades for a single option symbol.
+        OptionTrade:
+            type: object
+            properties:
+                t:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00.123456Z
+                    description: Timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00.123456Z
+                x:
+                    type: string
+                    examples:
+                        - C
+                    description: Exchange code.
+                    example: C
+                p:
+                    type: number
+                    examples:
+                        - 5.25
+                    format: double
+                    description: Trade price.
+                    example: 5.25
+                s:
+                    type: integer
+                    examples:
+                        - 10
+                    format: int64
+                    description: Trade size.
+                    example: 10
+                c:
+                    type: array
+                    items:
+                        type: string
+                        examples:
+                            - '@'
+                        description: Trade conditions.
+                        example: '@'
+            description: OptionTrade represents an option trade.
+        GetLatestOptionTradesRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL240119C00150000
+                    description: Comma-separated list of option symbols.
+                    example: AAPL240119C00150000
+                feed:
+                    type: string
+                    examples:
+                        - opra
+                    description: Data feed (indicative, opra).
+                    example: opra
+            required:
+                - symbols
+            description: GetLatestOptionTradesRequest is the request to get the latest option trades.
+        GetLatestOptionTradesResponse:
+            type: object
+            properties:
+                trades:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/OptionTrade'
+                    description: Map of symbol to latest trade.
+            description: GetLatestOptionTradesResponse is the response containing the latest option trades.
+        GetOptionQuotesRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL240119C00150000
+                    description: Comma-separated list of option symbols.
+                    example: AAPL240119C00150000
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-15T09:30:00Z
+                    description: Start timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-15T09:30:00Z
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-15T16:00:00Z
+                    description: End timestamp (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-15T16:00:00Z
+                limit:
+                    type: integer
+                    examples:
+                        - 1000
+                    maximum: 10000
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of quotes to return (1-10000, default 1000).
+                    example: 1000
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                sort:
+                    type: string
+                    examples:
+                        - asc
+                    description: Sort order (asc, desc).
+                    example: asc
+            required:
+                - symbols
+            description: GetOptionQuotesRequest is the request to get historical option quotes.
+        GetOptionQuotesResponse:
+            type: object
+            properties:
+                quotes:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/OptionQuotesList'
+                    description: Map of symbol to quotes.
+                nextPageToken:
+                    type: string
+                    examples:
+                        - YWJjZGVm
+                    description: Next page token.
+                    example: YWJjZGVm
+            description: GetOptionQuotesResponse is the response containing option quotes.
+        OptionQuotesList:
+            type: object
+            properties:
+                quotes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/OptionQuote'
+            description: OptionQuotesList is a list of quotes for a single option symbol.
+        OptionQuote:
+            type: object
+            properties:
+                t:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00.123456Z
+                    description: Timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00.123456Z
+                ax:
+                    type: string
+                    examples:
+                        - C
+                    description: Ask exchange code.
+                    example: C
+                ap:
+                    type: number
+                    examples:
+                        - 5.30
+                    format: double
+                    description: Ask price.
+                    example: 5.30
+                as:
+                    type: integer
+                    examples:
+                        - 50
+                    format: int64
+                    description: Ask size.
+                    example: 50
+                bx:
+                    type: string
+                    examples:
+                        - P
+                    description: Bid exchange code.
+                    example: P
+                bp:
+                    type: number
+                    examples:
+                        - 5.20
+                    format: double
+                    description: Bid price.
+                    example: 5.20
+                bs:
+                    type: integer
+                    examples:
+                        - 30
+                    format: int64
+                    description: Bid size.
+                    example: 30
+                c:
+                    type: string
+                    examples:
+                        - R
+                    description: Quote condition.
+                    example: R
+            description: OptionQuote represents an option bid/ask quote.
+        GetLatestOptionQuotesRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL240119C00150000
+                    description: Comma-separated list of option symbols.
+                    example: AAPL240119C00150000
+                feed:
+                    type: string
+                    examples:
+                        - opra
+                    description: Data feed (indicative, opra).
+                    example: opra
+            required:
+                - symbols
+            description: GetLatestOptionQuotesRequest is the request to get the latest option quotes.
+        GetLatestOptionQuotesResponse:
+            type: object
+            properties:
+                quotes:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/OptionQuote'
+                    description: Map of symbol to latest quote.
+            description: GetLatestOptionQuotesResponse is the response containing the latest option quotes.
+        GetOptionSnapshotsRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL240119C00150000
+                    description: Comma-separated list of option symbols.
+                    example: AAPL240119C00150000
+                feed:
+                    type: string
+                    examples:
+                        - opra
+                    description: Data feed (indicative, opra).
+                    example: opra
+            required:
+                - symbols
+            description: GetOptionSnapshotsRequest is the request to get option snapshots.
+        GetOptionSnapshotsResponse:
+            type: object
+            properties:
+                snapshots:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/OptionSnapshot'
+                    description: Map of symbol to snapshot.
+            description: GetOptionSnapshotsResponse is the response containing option snapshots.
+        OptionSnapshot:
+            type: object
+            properties:
+                latestTrade:
+                    $ref: '#/components/schemas/OptionTrade'
+                latestQuote:
+                    $ref: '#/components/schemas/OptionQuote'
+                impliedVolatility:
+                    type: number
+                    examples:
+                        - 0.35
+                    format: double
+                    description: Implied volatility.
+                    example: 0.35
+                greeks:
+                    $ref: '#/components/schemas/OptionGreeks'
+            description: OptionSnapshot represents a point-in-time option market data snapshot.
+        OptionGreeks:
+            type: object
+            properties:
+                delta:
+                    type: number
+                    examples:
+                        - 0.65
+                    format: double
+                    description: Delta.
+                    example: 0.65
+                gamma:
+                    type: number
+                    examples:
+                        - 0.05
+                    format: double
+                    description: Gamma.
+                    example: 0.05
+                theta:
+                    type: number
+                    examples:
+                        - -0.10
+                    format: double
+                    description: Theta.
+                    example: -0.10
+                vega:
+                    type: number
+                    examples:
+                        - 0.15
+                    format: double
+                    description: Vega.
+                    example: 0.15
+                rho:
+                    type: number
+                    examples:
+                        - 0.02
+                    format: double
+                    description: Rho.
+                    example: 0.02
+            description: OptionGreeks represents the option Greeks.
+        GetOptionChainRequest:
+            type: object
+            properties:
+                underlyingSymbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Underlying symbol (bound from path variable).
+                    example: AAPL
+                feed:
+                    type: string
+                    examples:
+                        - opra
+                    description: Data feed (indicative, opra).
+                    example: opra
+                type:
+                    type: string
+                    examples:
+                        - call
+                    description: Filter by option type (call, put).
+                    example: call
+                strikePriceGte:
+                    type: number
+                    examples:
+                        - 140.00
+                    format: double
+                    description: Filter by strike price greater than or equal to.
+                    example: 140.00
+                strikePriceLte:
+                    type: number
+                    examples:
+                        - 160.00
+                    format: double
+                    description: Filter by strike price less than or equal to.
+                    example: 160.00
+                expirationDateGte:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Filter by expiration date greater than or equal to (YYYY-MM-DD).
+                    example: 2024-01-15
+                expirationDateLte:
+                    type: string
+                    examples:
+                        - 2024-03-15
+                    description: Filter by expiration date less than or equal to (YYYY-MM-DD).
+                    example: 2024-03-15
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                limit:
+                    type: integer
+                    examples:
+                        - 100
+                    format: int32
+                    description: Maximum number of results (default 100).
+                    example: 100
+            required:
+                - underlyingSymbol
+            description: GetOptionChainRequest is the request to get an option chain for an underlying.
+        GetOptionChainResponse:
+            type: object
+            properties:
+                snapshots:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/OptionSnapshot'
+                    description: Map of option symbol to snapshot.
+                nextPageToken:
+                    type: string
+                    examples:
+                        - YWJjZGVm
+                    description: Next page token.
+                    example: YWJjZGVm
+            description: GetOptionChainResponse is the response containing an option chain.
+        GetNewsRequest:
+            type: object
+            properties:
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL,TSLA,MSFT
+                    description: Comma-separated list of symbols to filter by.
+                    example: AAPL,TSLA,MSFT
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-01T00:00:00Z
+                    description: Start timestamp (RFC 3339).
+                    example: 2024-01-01T00:00:00Z
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-31T23:59:59Z
+                    description: End timestamp (RFC 3339).
+                    example: 2024-01-31T23:59:59Z
+                limit:
+                    type: integer
+                    examples:
+                        - 10
+                    maximum: 50
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of articles to return (1-50, default 10).
+                    example: 10
+                sort:
+                    type: string
+                    examples:
+                        - desc
+                    description: Sort order (asc, desc).
+                    example: desc
+                includeContent:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether to include full content.
+                    example: false
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                excludeContentless:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Exclude content without symbols.
+                    example: true
+            description: GetNewsRequest is the request to get news articles.
+        GetNewsResponse:
+            type: object
+            properties:
+                news:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/NewsArticle'
+                nextPageToken:
+                    type: string
+                    examples:
+                        - YWJjZGVm
+                    description: Next page token.
+                    example: YWJjZGVm
+            description: GetNewsResponse is the response containing news articles.
+        NewsArticle:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    examples:
+                        - 12345678
+                    format: int64
+                    description: Article ID.
+                    example: 12345678
+                headline:
+                    type: string
+                    examples:
+                        - Apple Reports Record Q4 Earnings
+                    description: Headline.
+                    example: Apple Reports Record Q4 Earnings
+                author:
+                    type: string
+                    examples:
+                        - John Smith
+                    description: Author.
+                    example: John Smith
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Creation timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00Z
+                updatedAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T11:00:00Z
+                    description: Update timestamp (RFC 3339).
+                    example: 2024-01-15T11:00:00Z
+                summary:
+                    type: string
+                    examples:
+                        - Apple Inc. announced record-breaking earnings for the fourth quarter...
+                    description: Article summary.
+                    example: Apple Inc. announced record-breaking earnings for the fourth quarter...
+                content:
+                    type: string
+                    description: Full article content (if include_content is true).
+                url:
+                    type: string
+                    examples:
+                        - https://news.example.com/article/12345
+                    description: Article URL.
+                    example: https://news.example.com/article/12345
+                images:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/NewsImage'
+                symbols:
+                    type: array
+                    items:
+                        type: string
+                        examples:
+                            - AAPL
+                        description: Related symbols.
+                        example: AAPL
+                source:
+                    type: string
+                    examples:
+                        - Benzinga
+                    description: News source.
+                    example: Benzinga
+            description: NewsArticle represents a news article.
+        NewsImage:
+            type: object
+            properties:
+                size:
+                    type: string
+                    examples:
+                        - large
+                    description: Image size category.
+                    example: large
+                url:
+                    type: string
+                    examples:
+                        - https://example.com/image.jpg
+                    description: Image URL.
+                    example: https://example.com/image.jpg
+            description: NewsImage represents an image associated with a news article.
+        GetMostActivesRequest:
+            type: object
+            properties:
+                top:
+                    type: integer
+                    examples:
+                        - 10
+                    maximum: 100
+                    minimum: 1
+                    format: int32
+                    description: Number of results to return (default 10, max 100).
+                    example: 10
+                by:
+                    type: string
+                    examples:
+                        - volume
+                    description: Ranking criteria (volume, trades).
+                    example: volume
+            description: GetMostActivesRequest is the request to get most active stocks.
+        GetMostActivesResponse:
+            type: object
+            properties:
+                mostActives:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MostActive'
+                lastUpdated:
+                    type: string
+                    examples:
+                        - 2024-01-15T16:00:00Z
+                    description: Timestamp when this data was last updated (RFC 3339).
+                    example: 2024-01-15T16:00:00Z
+            description: GetMostActivesResponse is the response containing most active stocks.
+        MostActive:
+            type: object
+            properties:
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Symbol.
+                    example: AAPL
+                volume:
+                    type: integer
+                    examples:
+                        - 123456789
+                    format: int64
+                    description: Trading volume.
+                    example: 123456789
+                tradeCount:
+                    type: integer
+                    examples:
+                        - 54321
+                    format: int64
+                    description: Trade count.
+                    example: 54321
+            description: MostActive represents a most active stock.
+        GetMoversRequest:
+            type: object
+            properties:
+                marketType:
+                    type: string
+                    examples:
+                        - stocks
+                    description: Market type (stocks, crypto).
+                    example: stocks
+                top:
+                    type: integer
+                    examples:
+                        - 10
+                    maximum: 50
+                    minimum: 1
+                    format: int32
+                    description: Number of results to return (default 10, max 50).
+                    example: 10
+            required:
+                - marketType
+            description: GetMoversRequest is the request to get top movers.
+        GetMoversResponse:
+            type: object
+            properties:
+                gainers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Mover'
+                losers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Mover'
+                marketType:
+                    type: string
+                    examples:
+                        - stocks
+                    description: Market type.
+                    example: stocks
+                lastUpdated:
+                    type: string
+                    examples:
+                        - 2024-01-15T16:00:00Z
+                    description: Timestamp when this data was last updated (RFC 3339).
+                    example: 2024-01-15T16:00:00Z
+            description: GetMoversResponse is the response containing top movers.
+        Mover:
+            type: object
+            properties:
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Symbol.
+                    example: AAPL
+                percentChange:
+                    type: number
+                    examples:
+                        - 5.25
+                    format: double
+                    description: Percent change.
+                    example: 5.25
+                change:
+                    type: number
+                    examples:
+                        - 7.50
+                    format: double
+                    description: Price change.
+                    example: 7.50
+                price:
+                    type: number
+                    examples:
+                        - 150.25
+                    format: double
+                    description: Current price.
+                    example: 150.25
+            description: Mover represents a top mover stock.

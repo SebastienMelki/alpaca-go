@@ -1,0 +1,2862 @@
+openapi: 3.1.0
+info:
+    title: BrokerService API
+    version: 1.0.0
+paths:
+    /v1/accounts:
+        get:
+            tags:
+                - BrokerService
+            summary: ListAccounts
+            description: |-
+                ListAccounts retrieves a list of broker accounts.
+                 GET /v1/accounts
+            operationId: ListAccounts
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: query
+                  in: query
+                  description: Filter by query string (searches across fields).
+                  required: false
+                  schema:
+                    type: string
+                - name: created_after
+                  in: query
+                  description: Filter by creation date after (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: created_before
+                  in: query
+                  description: Filter by creation date before (RFC 3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  description: Filter by account status.
+                  required: false
+                  schema:
+                    type: string
+                - name: sort
+                  in: query
+                  description: Sort order (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+                - name: entities
+                  in: query
+                  description: Comma-separated list of entities to include (contact, identity, etc.).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListAccountsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        post:
+            tags:
+                - BrokerService
+            summary: CreateAccount
+            description: |-
+                CreateAccount creates a new broker-managed account.
+                 POST /v1/accounts
+            operationId: CreateAccount
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateAccountRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BrokerAccount'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/accounts/{account_id}:
+        get:
+            tags:
+                - BrokerService
+            summary: GetAccount
+            description: |-
+                GetAccount retrieves a specific broker account.
+                 GET /v1/accounts/{account_id}
+            operationId: GetAccount
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BrokerAccount'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        delete:
+            tags:
+                - BrokerService
+            summary: CloseAccount
+            description: |-
+                CloseAccount closes a broker account.
+                 DELETE /v1/accounts/{account_id}
+            operationId: CloseAccount
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CloseBrokerAccountResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        patch:
+            tags:
+                - BrokerService
+            summary: UpdateAccount
+            description: |-
+                UpdateAccount updates a broker account.
+                 PATCH /v1/accounts/{account_id}
+            operationId: UpdateAccount
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateBrokerAccountRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BrokerAccount'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/accounts/{account_id}/ach_relationships:
+        get:
+            tags:
+                - BrokerService
+            summary: ListACHRelationships
+            description: |-
+                ListACHRelationships retrieves ACH relationships for an account.
+                 GET /v1/accounts/{account_id}/ach_relationships
+            operationId: ListACHRelationships
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: statuses
+                  in: query
+                  description: Filter by statuses (comma-separated).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListACHRelationshipsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        post:
+            tags:
+                - BrokerService
+            summary: CreateACHRelationship
+            description: |-
+                CreateACHRelationship creates an ACH relationship for an account.
+                 POST /v1/accounts/{account_id}/ach_relationships
+            operationId: CreateACHRelationship
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateACHRelationshipRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ACHRelationship'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/accounts/{account_id}/ach_relationships/{ach_relationship_id}:
+        delete:
+            tags:
+                - BrokerService
+            summary: DeleteACHRelationship
+            description: |-
+                DeleteACHRelationship deletes an ACH relationship.
+                 DELETE /v1/accounts/{account_id}/ach_relationships/{ach_relationship_id}
+            operationId: DeleteACHRelationship
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: ach_relationship_id
+                  in: path
+                  description: The ACH relationship ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteACHRelationshipResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/accounts/{account_id}/transfers:
+        get:
+            tags:
+                - BrokerService
+            summary: ListTransfers
+            description: |-
+                ListTransfers retrieves transfers for an account.
+                 GET /v1/accounts/{account_id}/transfers
+            operationId: ListTransfers
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: direction
+                  in: query
+                  description: Filter by direction (INCOMING, OUTGOING).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Filter by limit.
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: offset
+                  in: query
+                  description: Filter by offset.
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListTransfersResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        post:
+            tags:
+                - BrokerService
+            summary: CreateTransfer
+            description: |-
+                CreateTransfer creates a fund transfer for an account.
+                 POST /v1/accounts/{account_id}/transfers
+            operationId: CreateTransfer
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateTransferRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Transfer'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/accounts/{account_id}/transfers/{transfer_id}:
+        get:
+            tags:
+                - BrokerService
+            summary: GetTransfer
+            description: |-
+                GetTransfer retrieves a specific transfer.
+                 GET /v1/accounts/{account_id}/transfers/{transfer_id}
+            operationId: GetTransfer
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: transfer_id
+                  in: path
+                  description: The transfer ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Transfer'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        delete:
+            tags:
+                - BrokerService
+            summary: CancelTransfer
+            description: |-
+                CancelTransfer cancels a pending transfer.
+                 DELETE /v1/accounts/{account_id}/transfers/{transfer_id}
+            operationId: CancelTransfer
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: transfer_id
+                  in: path
+                  description: The transfer ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CancelTransferResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/trading/accounts/{account_id}/orders:
+        get:
+            tags:
+                - BrokerService
+            summary: ListTradingOrders
+            description: |-
+                ListTradingOrders retrieves orders for an account.
+                 GET /v1/trading/accounts/{account_id}/orders
+            operationId: ListTradingOrders
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  description: Filter by status (open, closed, all).
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of orders to return.
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: after
+                  in: query
+                  description: Cursor for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: until
+                  in: query
+                  description: Filter by orders updated until this timestamp.
+                  required: false
+                  schema:
+                    type: string
+                - name: direction
+                  in: query
+                  description: Sort direction (asc, desc).
+                  required: false
+                  schema:
+                    type: string
+                - name: nested
+                  in: query
+                  description: Whether to include nested leg orders.
+                  required: false
+                  schema:
+                    type: boolean
+                - name: symbols
+                  in: query
+                  description: Filter by symbols (comma-separated).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListTradingOrdersResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        post:
+            tags:
+                - BrokerService
+            summary: CreateTradingOrder
+            description: |-
+                CreateTradingOrder creates a trading order for an account.
+                 POST /v1/trading/accounts/{account_id}/orders
+            operationId: CreateTradingOrder
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateTradingOrderRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BrokerOrder'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/trading/accounts/{account_id}/orders/{order_id}:
+        get:
+            tags:
+                - BrokerService
+            summary: GetTradingOrder
+            description: |-
+                GetTradingOrder retrieves a specific order.
+                 GET /v1/trading/accounts/{account_id}/orders/{order_id}
+            operationId: GetTradingOrder
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: order_id
+                  in: path
+                  description: The order ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: nested
+                  in: query
+                  description: Whether to include nested leg orders.
+                  required: false
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BrokerOrder'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        delete:
+            tags:
+                - BrokerService
+            summary: CancelTradingOrder
+            description: |-
+                CancelTradingOrder cancels an order.
+                 DELETE /v1/trading/accounts/{account_id}/orders/{order_id}
+            operationId: CancelTradingOrder
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: order_id
+                  in: path
+                  description: The order ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CancelTradingOrderResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/trading/accounts/{account_id}/positions:
+        get:
+            tags:
+                - BrokerService
+            summary: ListTradingPositions
+            description: |-
+                ListTradingPositions retrieves positions for an account.
+                 GET /v1/trading/accounts/{account_id}/positions
+            operationId: ListTradingPositions
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListTradingPositionsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        delete:
+            tags:
+                - BrokerService
+            summary: CloseAllTradingPositions
+            description: |-
+                CloseAllTradingPositions closes all positions for an account.
+                 DELETE /v1/trading/accounts/{account_id}/positions
+            operationId: CloseAllTradingPositions
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: cancel_orders
+                  in: query
+                  description: Whether to cancel all open orders first.
+                  required: false
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CloseAllTradingPositionsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1/trading/accounts/{account_id}/positions/{symbol}:
+        get:
+            tags:
+                - BrokerService
+            summary: GetTradingPosition
+            description: |-
+                GetTradingPosition retrieves a specific position.
+                 GET /v1/trading/accounts/{account_id}/positions/{symbol}
+            operationId: GetTradingPosition
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: symbol
+                  in: path
+                  description: The symbol (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BrokerPosition'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        delete:
+            tags:
+                - BrokerService
+            summary: CloseTradingPosition
+            description: |-
+                CloseTradingPosition closes a specific position.
+                 DELETE /v1/trading/accounts/{account_id}/positions/{symbol}
+            operationId: CloseTradingPosition
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: symbol
+                  in: path
+                  description: The symbol (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: qty
+                  in: query
+                  description: Quantity to close (optional).
+                  required: false
+                  schema:
+                    type: string
+                - name: percentage
+                  in: query
+                  description: Percentage to close (optional).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BrokerOrder'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+components:
+    schemas:
+        FieldViolation:
+            type: object
+            properties:
+                field:
+                    type: string
+                    description: The field path that failed validation (e.g., 'user.email' for nested fields). For header validation, this will be the header name (e.g., 'X-API-Key')
+                description:
+                    type: string
+                    description: Human-readable description of the validation violation (e.g., 'must be a valid email address', 'required field missing')
+            required:
+                - field
+                - description
+            description: FieldViolation describes a single validation error for a specific field.
+        ValidationError:
+            type: object
+            properties:
+                violations:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FieldViolation'
+                    description: List of validation violations
+            required:
+                - violations
+            description: ValidationError is returned when request validation fails. It contains a list of field violations describing what went wrong.
+        CreateAccountRequest:
+            type: object
+            properties:
+                contact:
+                    $ref: '#/components/schemas/Contact'
+                identity:
+                    $ref: '#/components/schemas/Identity'
+                disclosures:
+                    $ref: '#/components/schemas/Disclosures'
+                agreements:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Agreement'
+                    minItems: 1
+                trustedContact:
+                    $ref: '#/components/schemas/TrustedContact'
+                accountType:
+                    type: string
+                    examples:
+                        - trading
+                    description: Account type (trading, custodial).
+                    example: trading
+                enabledAssetsMargin:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether to enable margin for assets.
+                    example: true
+            required:
+                - contact
+                - identity
+                - disclosures
+            description: CreateAccountRequest is the request to create a new broker account.
+        Contact:
+            type: object
+            properties:
+                emailAddress:
+                    type: string
+                    examples:
+                        - john.doe@example.com
+                    description: Email address.
+                    example: john.doe@example.com
+                phoneNumber:
+                    type: string
+                    examples:
+                        - +1-555-123-4567
+                    description: Phone number.
+                    example: +1-555-123-4567
+                streetAddress:
+                    type: array
+                    items:
+                        type: string
+                        examples:
+                            - 123 Main St
+                            - Apt 4B
+                        description: Street address lines.
+                        example: 123 Main St
+                unit:
+                    type: string
+                    examples:
+                        - 4B
+                    description: Unit number.
+                    example: 4B
+                city:
+                    type: string
+                    examples:
+                        - New York
+                    description: City.
+                    example: New York
+                state:
+                    type: string
+                    examples:
+                        - NY
+                    description: State/Province (2-letter code for US).
+                    example: NY
+                postalCode:
+                    type: string
+                    examples:
+                        - 10001
+                    description: Postal code.
+                    example: 10001
+                country:
+                    type: string
+                    examples:
+                        - USA
+                    description: Country (ISO 3166-1 alpha-3).
+                    example: USA
+            description: Contact represents contact information.
+        Identity:
+            type: object
+            properties:
+                givenName:
+                    type: string
+                    examples:
+                        - John
+                    description: Given/first name.
+                    example: John
+                middleName:
+                    type: string
+                    examples:
+                        - William
+                    description: Middle name.
+                    example: William
+                familyName:
+                    type: string
+                    examples:
+                        - Doe
+                    description: Family/last name.
+                    example: Doe
+                dateOfBirth:
+                    type: string
+                    examples:
+                        - 1990-01-15
+                    description: Date of birth (YYYY-MM-DD).
+                    example: 1990-01-15
+                taxId:
+                    type: string
+                    examples:
+                        - 123-45-6789
+                    description: Tax ID (SSN for US).
+                    example: 123-45-6789
+                taxIdType:
+                    type: string
+                    enum:
+                        - TAX_ID_TYPE_UNSPECIFIED
+                        - TAX_ID_TYPE_USA_SSN
+                        - TAX_ID_TYPE_ARG_AR_CUIT
+                        - TAX_ID_TYPE_AUS_TFN
+                        - TAX_ID_TYPE_DEU_TAX_ID
+                        - TAX_ID_TYPE_NOT_SPECIFIED
+                    description: TaxIdType represents the type of tax ID.
+                countryOfCitizenship:
+                    type: string
+                    examples:
+                        - USA
+                    description: Country of citizenship (ISO 3166-1 alpha-3).
+                    example: USA
+                countryOfBirth:
+                    type: string
+                    examples:
+                        - USA
+                    description: Country of birth (ISO 3166-1 alpha-3).
+                    example: USA
+                countryOfTaxResidence:
+                    type: string
+                    examples:
+                        - USA
+                    description: Country of tax residence (ISO 3166-1 alpha-3).
+                    example: USA
+                visaType:
+                    type: string
+                    examples:
+                        - H1B
+                    description: Visa type (if applicable).
+                    example: H1B
+                visaExpirationDate:
+                    type: string
+                    examples:
+                        - 2025-12-31
+                    description: Visa expiration date (YYYY-MM-DD).
+                    example: 2025-12-31
+                dateOfDepartureFromHomeCountry:
+                    type: string
+                    examples:
+                        - 2020-01-01
+                    description: Date of departure from home country (YYYY-MM-DD).
+                    example: 2020-01-01
+                permanentResident:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Permanent resident.
+                    example: false
+                fundingSource:
+                    type: array
+                    items:
+                        type: string
+                        enum:
+                            - FUNDING_SOURCE_UNSPECIFIED
+                            - FUNDING_SOURCE_EMPLOYMENT_INCOME
+                            - FUNDING_SOURCE_INVESTMENTS
+                            - FUNDING_SOURCE_INHERITANCE
+                            - FUNDING_SOURCE_BUSINESS_INCOME
+                            - FUNDING_SOURCE_SAVINGS
+                            - FUNDING_SOURCE_FAMILY
+                        description: FundingSource represents the source of funding.
+                liquidNetWorthMin:
+                    type: string
+                    examples:
+                        - 100000
+                    description: Liquid net worth minimum.
+                    example: 100000
+                liquidNetWorthMax:
+                    type: string
+                    examples:
+                        - 500000
+                    description: Liquid net worth maximum.
+                    example: 500000
+                annualIncomeMin:
+                    type: string
+                    examples:
+                        - 50000
+                    description: Annual income minimum.
+                    example: 50000
+                annualIncomeMax:
+                    type: string
+                    examples:
+                        - 100000
+                    description: Annual income maximum.
+                    example: 100000
+                totalNetWorthMin:
+                    type: string
+                    examples:
+                        - 200000
+                    description: Total net worth minimum.
+                    example: 200000
+                totalNetWorthMax:
+                    type: string
+                    examples:
+                        - 1000000
+                    description: Total net worth maximum.
+                    example: 1000000
+            description: Identity represents identity information.
+        Disclosures:
+            type: object
+            properties:
+                isControlPerson:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether the user is a control person.
+                    example: false
+                isAffiliatedExchangeOrFinra:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether the user is affiliated with an exchange or FINRA.
+                    example: false
+                isPoliticallyExposed:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether the user is a politically exposed person.
+                    example: false
+                immediateFamilyExposed:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether the user has an immediate family member that is politically exposed.
+                    example: false
+                employmentStatus:
+                    type: string
+                    examples:
+                        - employed
+                    description: Employment status (employed, unemployed, student, retired).
+                    example: employed
+                employerName:
+                    type: string
+                    examples:
+                        - Acme Corp
+                    description: Employer name.
+                    example: Acme Corp
+                employerAddress:
+                    type: string
+                    examples:
+                        - 456 Business Ave, San Francisco, CA 94107
+                    description: Employer address.
+                    example: 456 Business Ave, San Francisco, CA 94107
+                employmentPosition:
+                    type: string
+                    examples:
+                        - Software Engineer
+                    description: Employment position.
+                    example: Software Engineer
+            description: Disclosures represents regulatory disclosures.
+        Agreement:
+            type: object
+            properties:
+                agreement:
+                    type: string
+                    examples:
+                        - customer_agreement
+                    description: Agreement type (margin_agreement, account_agreement, customer_agreement, crypto_agreement).
+                    example: customer_agreement
+                signedAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Timestamp when signed (RFC 3339).
+                    example: 2024-01-15T10:30:00Z
+                ipAddress:
+                    type: string
+                    examples:
+                        - 192.168.1.1
+                    description: IP address when signed.
+                    example: 192.168.1.1
+                revision:
+                    type: string
+                    examples:
+                        - 2024.01
+                    description: Revision of the agreement.
+                    example: 2024.01
+            description: Agreement represents a signed agreement.
+        TrustedContact:
+            type: object
+            properties:
+                givenName:
+                    type: string
+                    examples:
+                        - Jane
+                    description: Given/first name.
+                    example: Jane
+                familyName:
+                    type: string
+                    examples:
+                        - Doe
+                    description: Family/last name.
+                    example: Doe
+                emailAddress:
+                    type: string
+                    examples:
+                        - jane.doe@example.com
+                    description: Email address.
+                    example: jane.doe@example.com
+                phoneNumber:
+                    type: string
+                    examples:
+                        - +1-555-987-6543
+                    description: Phone number.
+                    example: +1-555-987-6543
+                streetAddress:
+                    type: string
+                    examples:
+                        - 789 Oak Lane, Chicago, IL 60601
+                    description: Street address.
+                    example: 789 Oak Lane, Chicago, IL 60601
+                city:
+                    type: string
+                    examples:
+                        - Chicago
+                    description: City.
+                    example: Chicago
+                state:
+                    type: string
+                    examples:
+                        - IL
+                    description: State.
+                    example: IL
+                postalCode:
+                    type: string
+                    examples:
+                        - 60601
+                    description: Postal code.
+                    example: 60601
+                country:
+                    type: string
+                    examples:
+                        - USA
+                    description: Country.
+                    example: USA
+            description: TrustedContact represents a trusted contact.
+        BrokerAccount:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: Account ID (UUID).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                accountNumber:
+                    type: string
+                    examples:
+                        - 010203ABCD
+                    description: Account number.
+                    example: 010203ABCD
+                status:
+                    type: string
+                    enum:
+                        - BROKER_ACCOUNT_STATUS_UNSPECIFIED
+                        - BROKER_ACCOUNT_STATUS_ONBOARDING
+                        - BROKER_ACCOUNT_STATUS_SUBMISSION_FAILED
+                        - BROKER_ACCOUNT_STATUS_SUBMITTED
+                        - BROKER_ACCOUNT_STATUS_ACCOUNT_UPDATED
+                        - BROKER_ACCOUNT_STATUS_APPROVAL_PENDING
+                        - BROKER_ACCOUNT_STATUS_ACTIVE
+                        - BROKER_ACCOUNT_STATUS_REJECTED
+                        - BROKER_ACCOUNT_STATUS_DISABLED
+                        - BROKER_ACCOUNT_STATUS_ACCOUNT_CLOSED
+                    description: BrokerAccountStatus represents the status of a broker account.
+                cryptoStatus:
+                    type: string
+                    examples:
+                        - ACTIVE
+                    description: Crypto status.
+                    example: ACTIVE
+                currency:
+                    type: string
+                    examples:
+                        - USD
+                    description: Currency (USD).
+                    example: USD
+                lastEquity:
+                    type: string
+                    examples:
+                        - 50000.00
+                    description: Last equity value.
+                    example: 50000.00
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-01T00:00:00Z
+                    description: Creation timestamp (RFC 3339).
+                    example: 2024-01-01T00:00:00Z
+                contact:
+                    $ref: '#/components/schemas/Contact'
+                identity:
+                    $ref: '#/components/schemas/Identity'
+                disclosures:
+                    $ref: '#/components/schemas/Disclosures'
+                agreements:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Agreement'
+                trustedContact:
+                    $ref: '#/components/schemas/TrustedContact'
+                accountType:
+                    type: string
+                    examples:
+                        - trading
+                    description: Account type (trading, custodial).
+                    example: trading
+                tradingConfigurations:
+                    $ref: '#/components/schemas/BrokerAccountTradingConfigurations'
+                enabledAssetsMargin:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether margin trading is enabled.
+                    example: true
+            description: BrokerAccount represents a broker-managed trading account.
+        BrokerAccountTradingConfigurations:
+            type: object
+            properties:
+                dtbpCheck:
+                    type: string
+                    examples:
+                        - both
+                    description: Day trading buying power check setting.
+                    example: both
+                fractionalTrading:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether fractional trading is enabled.
+                    example: true
+                maxMarginMultiplier:
+                    type: string
+                    examples:
+                        - 4
+                    description: Maximum margin multiplier.
+                    example: 4
+                pdtCheck:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether PDT protection is enabled.
+                    example: true
+                tradeConfirmEmail:
+                    type: string
+                    examples:
+                        - all
+                    description: Trade confirmation email setting.
+                    example: all
+                suspendTrade:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether trading is suspended.
+                    example: false
+            description: BrokerAccountTradingConfigurations represents trading configurations for a broker account.
+        ListAccountsRequest:
+            type: object
+            properties:
+                query:
+                    type: string
+                    examples:
+                        - john
+                    description: Filter by query string (searches across fields).
+                    example: john
+                createdAfter:
+                    type: string
+                    examples:
+                        - 2024-01-01
+                    description: Filter by creation date after (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-01-01
+                createdBefore:
+                    type: string
+                    examples:
+                        - 2024-12-31
+                    description: Filter by creation date before (RFC 3339 or YYYY-MM-DD).
+                    example: 2024-12-31
+                status:
+                    type: string
+                    examples:
+                        - ACTIVE
+                    description: Filter by account status.
+                    example: ACTIVE
+                sort:
+                    type: string
+                    examples:
+                        - desc
+                    description: Sort order (asc, desc).
+                    example: desc
+                entities:
+                    type: string
+                    examples:
+                        - contact,identity
+                    description: Comma-separated list of entities to include (contact, identity, etc.).
+                    example: contact,identity
+            description: ListAccountsRequest is the request to list broker accounts.
+        ListAccountsResponse:
+            type: object
+            properties:
+                accounts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/BrokerAccount'
+            description: ListAccountsResponse is the response containing a list of broker accounts.
+        GetBrokerAccountRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: GetBrokerAccountRequest is the request to get a broker account.
+        UpdateBrokerAccountRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                contact:
+                    $ref: '#/components/schemas/Contact'
+                identity:
+                    $ref: '#/components/schemas/Identity'
+                disclosures:
+                    $ref: '#/components/schemas/Disclosures'
+                trustedContact:
+                    $ref: '#/components/schemas/TrustedContact'
+            required:
+                - accountId
+            description: UpdateBrokerAccountRequest is the request to update a broker account.
+        CloseBrokerAccountRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: CloseBrokerAccountRequest is the request to close a broker account.
+        CloseBrokerAccountResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the close request was accepted.
+                    example: true
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: The account ID that was closed.
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            description: CloseBrokerAccountResponse is the response after closing a broker account.
+        CreateACHRelationshipRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                accountOwnerName:
+                    type: string
+                    examples:
+                        - John Doe
+                    description: Account owner name.
+                    example: John Doe
+                bankAccountType:
+                    type: string
+                    examples:
+                        - CHECKING
+                    description: Bank account type (CHECKING, SAVINGS).
+                    example: CHECKING
+                bankAccountNumber:
+                    type: string
+                    examples:
+                        - 123456789
+                    description: Bank account number.
+                    example: 123456789
+                bankRoutingNumber:
+                    type: string
+                    examples:
+                        - 121000358
+                    description: Bank routing number.
+                    example: 121000358
+                nickname:
+                    type: string
+                    examples:
+                        - My Checking
+                    description: Nickname for the relationship.
+                    example: My Checking
+                processorToken:
+                    type: string
+                    description: Plaid processor token (alternative to bank account details).
+            required:
+                - accountId
+                - accountOwnerName
+                - bankAccountType
+                - bankAccountNumber
+                - bankRoutingNumber
+            description: CreateACHRelationshipRequest is the request to create an ACH relationship.
+        ACHRelationship:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - f5fbd77f-7b7e-4b91-8e8a-aaaa00000001
+                    description: Relationship ID (UUID).
+                    example: f5fbd77f-7b7e-4b91-8e8a-aaaa00000001
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: Account ID (UUID).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Creation timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00Z
+                updatedAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Last update timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00Z
+                status:
+                    type: string
+                    enum:
+                        - ACH_RELATIONSHIP_STATUS_UNSPECIFIED
+                        - ACH_RELATIONSHIP_STATUS_QUEUED
+                        - ACH_RELATIONSHIP_STATUS_SENT_TO_CLEARING
+                        - ACH_RELATIONSHIP_STATUS_APPROVED
+                        - ACH_RELATIONSHIP_STATUS_CANCELED
+                    description: ACHRelationshipStatus represents the status of an ACH relationship.
+                accountOwnerName:
+                    type: string
+                    examples:
+                        - John Doe
+                    description: Account owner name.
+                    example: John Doe
+                bankAccountType:
+                    type: string
+                    examples:
+                        - CHECKING
+                    description: Bank account type (CHECKING, SAVINGS).
+                    example: CHECKING
+                bankAccountNumber:
+                    type: string
+                    examples:
+                        - '*****6789'
+                    description: Bank account number (masked).
+                    example: '*****6789'
+                bankRoutingNumber:
+                    type: string
+                    examples:
+                        - 121000358
+                    description: Bank routing number.
+                    example: 121000358
+                nickname:
+                    type: string
+                    examples:
+                        - My Checking
+                    description: Nickname for the relationship.
+                    example: My Checking
+                processorToken:
+                    type: string
+                    description: Processor token (if using Plaid).
+            description: ACHRelationship represents a bank account connection for ACH transfers.
+        ListACHRelationshipsRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                statuses:
+                    type: string
+                    examples:
+                        - APPROVED,QUEUED
+                    description: Filter by statuses (comma-separated).
+                    example: APPROVED,QUEUED
+            required:
+                - accountId
+            description: ListACHRelationshipsRequest is the request to list ACH relationships.
+        ListACHRelationshipsResponse:
+            type: object
+            properties:
+                achRelationships:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ACHRelationship'
+            description: ListACHRelationshipsResponse is the response containing ACH relationships.
+        DeleteACHRelationshipRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                achRelationshipId:
+                    type: string
+                    examples:
+                        - f5fbd77f-7b7e-4b91-8e8a-aaaa00000001
+                    format: uuid
+                    description: The ACH relationship ID (bound from path variable).
+                    example: f5fbd77f-7b7e-4b91-8e8a-aaaa00000001
+            required:
+                - accountId
+                - achRelationshipId
+            description: DeleteACHRelationshipRequest is the request to delete an ACH relationship.
+        DeleteACHRelationshipResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the deletion was successful.
+                    example: true
+            description: DeleteACHRelationshipResponse is the response after deleting an ACH relationship.
+        CreateTransferRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                transferType:
+                    type: string
+                    examples:
+                        - ach
+                    description: Transfer type (ach, wire).
+                    example: ach
+                relationshipId:
+                    type: string
+                    examples:
+                        - f5fbd77f-7b7e-4b91-8e8a-aaaa00000001
+                    description: ACH relationship ID (required for ACH transfers).
+                    example: f5fbd77f-7b7e-4b91-8e8a-aaaa00000001
+                bankId:
+                    type: string
+                    description: Bank ID (required for wire transfers).
+                amount:
+                    type: string
+                    examples:
+                        - 1000.00
+                    description: Transfer amount.
+                    example: 1000.00
+                direction:
+                    type: string
+                    examples:
+                        - INCOMING
+                    description: Transfer direction (INCOMING, OUTGOING).
+                    example: INCOMING
+                additionalInformation:
+                    type: string
+                    description: Additional information.
+            required:
+                - accountId
+                - transferType
+                - amount
+                - direction
+            description: CreateTransferRequest is the request to create a transfer.
+        Transfer:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    description: Transfer ID (UUID).
+                    example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: Account ID (UUID).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                relationshipId:
+                    type: string
+                    examples:
+                        - f5fbd77f-7b7e-4b91-8e8a-aaaa00000001
+                    description: ACH relationship ID (if ACH transfer).
+                    example: f5fbd77f-7b7e-4b91-8e8a-aaaa00000001
+                bankId:
+                    type: string
+                    description: Bank ID (if wire transfer).
+                type:
+                    type: string
+                    enum:
+                        - TRANSFER_TYPE_UNSPECIFIED
+                        - TRANSFER_TYPE_ACH
+                        - TRANSFER_TYPE_WIRE
+                    description: TransferType represents the type of transfer.
+                status:
+                    type: string
+                    enum:
+                        - TRANSFER_STATUS_UNSPECIFIED
+                        - TRANSFER_STATUS_QUEUED
+                        - TRANSFER_STATUS_PENDING
+                        - TRANSFER_STATUS_SENT_TO_CLEARING
+                        - TRANSFER_STATUS_APPROVED
+                        - TRANSFER_STATUS_COMPLETE
+                        - TRANSFER_STATUS_CANCELED
+                        - TRANSFER_STATUS_REJECTED
+                        - TRANSFER_STATUS_RETURNED
+                    description: TransferStatus represents the status of a transfer.
+                direction:
+                    type: string
+                    enum:
+                        - TRANSFER_DIRECTION_UNSPECIFIED
+                        - TRANSFER_DIRECTION_INCOMING
+                        - TRANSFER_DIRECTION_OUTGOING
+                    description: TransferDirection represents the direction of a transfer.
+                amount:
+                    type: string
+                    examples:
+                        - 1000.00
+                    description: Transfer amount.
+                    example: 1000.00
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Creation timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00Z
+                updatedAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Last update timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00Z
+                expiresAt:
+                    type: string
+                    examples:
+                        - 2024-01-22T10:30:00Z
+                    description: Expiration date (RFC 3339).
+                    example: 2024-01-22T10:30:00Z
+                reason:
+                    type: string
+                    description: Reason for cancellation/rejection.
+                additionalInformation:
+                    type: string
+                    description: Additional data.
+                fee:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: Fee associated with the transfer.
+                    example: 0.00
+                requestedAmount:
+                    type: string
+                    examples:
+                        - 1000.00
+                    description: Requested amount (before fees).
+                    example: 1000.00
+            description: Transfer represents a fund transfer.
+        ListTransfersRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                direction:
+                    type: string
+                    examples:
+                        - INCOMING
+                    description: Filter by direction (INCOMING, OUTGOING).
+                    example: INCOMING
+                limit:
+                    type: integer
+                    examples:
+                        - 50
+                    format: int32
+                    description: Filter by limit.
+                    example: 50
+                offset:
+                    type: integer
+                    examples:
+                        - 0
+                    format: int32
+                    description: Filter by offset.
+                    example: 0
+            required:
+                - accountId
+            description: ListTransfersRequest is the request to list transfers.
+        ListTransfersResponse:
+            type: object
+            properties:
+                transfers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Transfer'
+            description: ListTransfersResponse is the response containing transfers.
+        GetTransferRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                transferId:
+                    type: string
+                    examples:
+                        - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    format: uuid
+                    description: The transfer ID (bound from path variable).
+                    example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+            required:
+                - accountId
+                - transferId
+            description: GetTransferRequest is the request to get a transfer.
+        CancelTransferRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                transferId:
+                    type: string
+                    examples:
+                        - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    format: uuid
+                    description: The transfer ID (bound from path variable).
+                    example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+            required:
+                - accountId
+                - transferId
+            description: CancelTransferRequest is the request to cancel a transfer.
+        CancelTransferResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the cancellation was successful.
+                    example: true
+            description: CancelTransferResponse is the response after canceling a transfer.
+        CreateTradingOrderRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Symbol or asset ID to trade.
+                    example: AAPL
+                qty:
+                    type: string
+                    examples:
+                        - 10
+                    description: Quantity to trade (required if notional not specified).
+                    example: 10
+                notional:
+                    type: string
+                    examples:
+                        - 1000.00
+                    description: Notional value to trade (required if qty not specified).
+                    example: 1000.00
+                side:
+                    type: string
+                    enum:
+                        - BROKER_ORDER_SIDE_UNSPECIFIED
+                        - BROKER_ORDER_SIDE_BUY
+                        - BROKER_ORDER_SIDE_SELL
+                    description: BrokerOrderSide represents the side of an order.
+                type:
+                    type: string
+                    enum:
+                        - BROKER_ORDER_TYPE_UNSPECIFIED
+                        - BROKER_ORDER_TYPE_MARKET
+                        - BROKER_ORDER_TYPE_LIMIT
+                        - BROKER_ORDER_TYPE_STOP
+                        - BROKER_ORDER_TYPE_STOP_LIMIT
+                        - BROKER_ORDER_TYPE_TRAILING_STOP
+                    description: BrokerOrderType represents the type of order.
+                timeInForce:
+                    type: string
+                    enum:
+                        - BROKER_TIME_IN_FORCE_UNSPECIFIED
+                        - BROKER_TIME_IN_FORCE_DAY
+                        - BROKER_TIME_IN_FORCE_GTC
+                        - BROKER_TIME_IN_FORCE_OPG
+                        - BROKER_TIME_IN_FORCE_CLS
+                        - BROKER_TIME_IN_FORCE_IOC
+                        - BROKER_TIME_IN_FORCE_FOK
+                    description: BrokerTimeInForce represents the time in force.
+                limitPrice:
+                    type: string
+                    examples:
+                        - 150.00
+                    description: Limit price (for limit orders).
+                    example: 150.00
+                stopPrice:
+                    type: string
+                    examples:
+                        - 145.00
+                    description: Stop price (for stop orders).
+                    example: 145.00
+                trailPrice:
+                    type: string
+                    examples:
+                        - 5.00
+                    description: Trail price (for trailing stop orders).
+                    example: 5.00
+                trailPercent:
+                    type: string
+                    examples:
+                        - 5.0
+                    description: Trail percent (for trailing stop orders).
+                    example: 5.0
+                extendedHours:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Extended hours trading.
+                    example: false
+                clientOrderId:
+                    type: string
+                    examples:
+                        - my_order_123
+                    maxLength: 48
+                    description: Client order ID.
+                    example: my_order_123
+                orderClass:
+                    type: string
+                    enum:
+                        - BROKER_ORDER_CLASS_UNSPECIFIED
+                        - BROKER_ORDER_CLASS_SIMPLE
+                        - BROKER_ORDER_CLASS_BRACKET
+                        - BROKER_ORDER_CLASS_OCO
+                        - BROKER_ORDER_CLASS_OTO
+                    description: BrokerOrderClass represents the class of order.
+                takeProfit:
+                    $ref: '#/components/schemas/BrokerTakeProfitSpec'
+                stopLoss:
+                    $ref: '#/components/schemas/BrokerStopLossSpec'
+                commission:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: Commission to charge.
+                    example: 0.00
+            required:
+                - accountId
+                - symbol
+            description: CreateTradingOrderRequest is the request to create a trading order for a broker account.
+        BrokerTakeProfitSpec:
+            type: object
+            properties:
+                limitPrice:
+                    type: string
+                    examples:
+                        - 160.00
+                    description: Limit price for take profit.
+                    example: 160.00
+            required:
+                - limitPrice
+            description: BrokerTakeProfitSpec specifies take profit parameters for bracket orders.
+        BrokerStopLossSpec:
+            type: object
+            properties:
+                stopPrice:
+                    type: string
+                    examples:
+                        - 140.00
+                    description: Stop price for stop loss.
+                    example: 140.00
+                limitPrice:
+                    type: string
+                    examples:
+                        - 139.00
+                    description: Limit price for stop loss.
+                    example: 139.00
+            required:
+                - stopPrice
+            description: BrokerStopLossSpec specifies stop loss parameters for bracket orders.
+        BrokerOrder:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: Order ID (UUID).
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+                clientOrderId:
+                    type: string
+                    examples:
+                        - my_order_123
+                    description: Client order ID.
+                    example: my_order_123
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Creation timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00Z
+                updatedAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:05Z
+                    description: Last update timestamp.
+                    example: 2024-01-15T10:30:05Z
+                submittedAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Submission timestamp.
+                    example: 2024-01-15T10:30:00Z
+                filledAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:05Z
+                    description: Fill timestamp.
+                    example: 2024-01-15T10:30:05Z
+                expiredAt:
+                    type: string
+                    description: Expiration timestamp.
+                canceledAt:
+                    type: string
+                    description: Cancellation timestamp.
+                failedAt:
+                    type: string
+                    description: Failure timestamp.
+                replacedAt:
+                    type: string
+                    description: Replacement timestamp.
+                replacedBy:
+                    type: string
+                    description: Order ID that replaced this order.
+                replaces:
+                    type: string
+                    description: Order ID that this order replaces.
+                assetId:
+                    type: string
+                    examples:
+                        - b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                    description: Asset ID.
+                    example: b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Symbol.
+                    example: AAPL
+                assetClass:
+                    type: string
+                    examples:
+                        - us_equity
+                    description: Asset class.
+                    example: us_equity
+                notional:
+                    type: string
+                    examples:
+                        - 1000.00
+                    description: Notional value (for fractional orders).
+                    example: 1000.00
+                qty:
+                    type: string
+                    examples:
+                        - 10
+                    description: Quantity ordered.
+                    example: 10
+                filledQty:
+                    type: string
+                    examples:
+                        - 10
+                    description: Quantity filled.
+                    example: 10
+                filledAvgPrice:
+                    type: string
+                    examples:
+                        - 150.25
+                    description: Average fill price.
+                    example: 150.25
+                orderClass:
+                    type: string
+                    enum:
+                        - BROKER_ORDER_CLASS_UNSPECIFIED
+                        - BROKER_ORDER_CLASS_SIMPLE
+                        - BROKER_ORDER_CLASS_BRACKET
+                        - BROKER_ORDER_CLASS_OCO
+                        - BROKER_ORDER_CLASS_OTO
+                    description: BrokerOrderClass represents the class of order.
+                type:
+                    type: string
+                    enum:
+                        - BROKER_ORDER_TYPE_UNSPECIFIED
+                        - BROKER_ORDER_TYPE_MARKET
+                        - BROKER_ORDER_TYPE_LIMIT
+                        - BROKER_ORDER_TYPE_STOP
+                        - BROKER_ORDER_TYPE_STOP_LIMIT
+                        - BROKER_ORDER_TYPE_TRAILING_STOP
+                    description: BrokerOrderType represents the type of order.
+                side:
+                    type: string
+                    enum:
+                        - BROKER_ORDER_SIDE_UNSPECIFIED
+                        - BROKER_ORDER_SIDE_BUY
+                        - BROKER_ORDER_SIDE_SELL
+                    description: BrokerOrderSide represents the side of an order.
+                timeInForce:
+                    type: string
+                    enum:
+                        - BROKER_TIME_IN_FORCE_UNSPECIFIED
+                        - BROKER_TIME_IN_FORCE_DAY
+                        - BROKER_TIME_IN_FORCE_GTC
+                        - BROKER_TIME_IN_FORCE_OPG
+                        - BROKER_TIME_IN_FORCE_CLS
+                        - BROKER_TIME_IN_FORCE_IOC
+                        - BROKER_TIME_IN_FORCE_FOK
+                    description: BrokerTimeInForce represents the time in force.
+                limitPrice:
+                    type: string
+                    examples:
+                        - 150.00
+                    description: Limit price.
+                    example: 150.00
+                stopPrice:
+                    type: string
+                    examples:
+                        - 145.00
+                    description: Stop price.
+                    example: 145.00
+                status:
+                    type: string
+                    enum:
+                        - BROKER_ORDER_STATUS_UNSPECIFIED
+                        - BROKER_ORDER_STATUS_NEW
+                        - BROKER_ORDER_STATUS_PARTIALLY_FILLED
+                        - BROKER_ORDER_STATUS_FILLED
+                        - BROKER_ORDER_STATUS_DONE_FOR_DAY
+                        - BROKER_ORDER_STATUS_CANCELED
+                        - BROKER_ORDER_STATUS_EXPIRED
+                        - BROKER_ORDER_STATUS_REPLACED
+                        - BROKER_ORDER_STATUS_PENDING_CANCEL
+                        - BROKER_ORDER_STATUS_PENDING_REPLACE
+                        - BROKER_ORDER_STATUS_PENDING_NEW
+                        - BROKER_ORDER_STATUS_ACCEPTED
+                        - BROKER_ORDER_STATUS_REJECTED
+                        - BROKER_ORDER_STATUS_HELD
+                    description: BrokerOrderStatus represents the status of an order.
+                extendedHours:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Extended hours trading.
+                    example: false
+                legs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/BrokerOrder'
+                trailPercent:
+                    type: string
+                    examples:
+                        - 5.0
+                    description: Trail percent.
+                    example: 5.0
+                trailPrice:
+                    type: string
+                    examples:
+                        - 5.00
+                    description: Trail price.
+                    example: 5.00
+                hwm:
+                    type: string
+                    examples:
+                        - 155.00
+                    description: High water mark.
+                    example: 155.00
+                commission:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: Commission charged.
+                    example: 0.00
+            description: BrokerOrder represents a trading order for a broker account.
+        ListTradingOrdersRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                status:
+                    type: string
+                    examples:
+                        - open
+                    description: Filter by status (open, closed, all).
+                    example: open
+                limit:
+                    type: integer
+                    examples:
+                        - 50
+                    maximum: 500
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of orders to return.
+                    example: 50
+                after:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: Cursor for pagination.
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+                until:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Filter by orders updated until this timestamp.
+                    example: 2024-01-15T10:30:00Z
+                direction:
+                    type: string
+                    examples:
+                        - desc
+                    description: Sort direction (asc, desc).
+                    example: desc
+                nested:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether to include nested leg orders.
+                    example: false
+                symbols:
+                    type: string
+                    examples:
+                        - AAPL,TSLA
+                    description: Filter by symbols (comma-separated).
+                    example: AAPL,TSLA
+            required:
+                - accountId
+            description: ListTradingOrdersRequest is the request to list orders for a broker account.
+        ListTradingOrdersResponse:
+            type: object
+            properties:
+                orders:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/BrokerOrder'
+            description: ListTradingOrdersResponse is the response containing trading orders.
+        GetTradingOrderRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                orderId:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    format: uuid
+                    description: The order ID (bound from path variable).
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+                nested:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether to include nested leg orders.
+                    example: false
+            required:
+                - accountId
+                - orderId
+            description: GetTradingOrderRequest is the request to get a trading order for a broker account.
+        CancelTradingOrderRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                orderId:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    format: uuid
+                    description: The order ID (bound from path variable).
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+            required:
+                - accountId
+                - orderId
+            description: CancelTradingOrderRequest is the request to cancel a trading order for a broker account.
+        CancelTradingOrderResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the cancellation was successful.
+                    example: true
+                orderId:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: The order ID that was canceled.
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+            description: CancelTradingOrderResponse is the response after canceling a trading order.
+        ListTradingPositionsRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: ListTradingPositionsRequest is the request to list positions for a broker account.
+        ListTradingPositionsResponse:
+            type: object
+            properties:
+                positions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/BrokerPosition'
+            description: ListTradingPositionsResponse is the response containing trading positions.
+        BrokerPosition:
+            type: object
+            properties:
+                assetId:
+                    type: string
+                    examples:
+                        - b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                    description: Asset ID (UUID).
+                    example: b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Symbol.
+                    example: AAPL
+                exchange:
+                    type: string
+                    examples:
+                        - NASDAQ
+                    description: Exchange.
+                    example: NASDAQ
+                assetClass:
+                    type: string
+                    examples:
+                        - us_equity
+                    description: Asset class.
+                    example: us_equity
+                assetMarginable:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the asset is marginable.
+                    example: true
+                qty:
+                    type: string
+                    examples:
+                        - 100
+                    description: Quantity.
+                    example: 100
+                avgEntryPrice:
+                    type: string
+                    examples:
+                        - 150.00
+                    description: Average entry price.
+                    example: 150.00
+                side:
+                    type: string
+                    enum:
+                        - BROKER_POSITION_SIDE_UNSPECIFIED
+                        - BROKER_POSITION_SIDE_LONG
+                        - BROKER_POSITION_SIDE_SHORT
+                    description: BrokerPositionSide represents the side of a position.
+                marketValue:
+                    type: string
+                    examples:
+                        - 15500.00
+                    description: Current market value.
+                    example: 15500.00
+                costBasis:
+                    type: string
+                    examples:
+                        - 15000.00
+                    description: Cost basis.
+                    example: 15000.00
+                unrealizedPl:
+                    type: string
+                    examples:
+                        - 500.00
+                    description: Unrealized P/L.
+                    example: 500.00
+                unrealizedPlpc:
+                    type: string
+                    examples:
+                        - 0.0333
+                    description: Unrealized P/L percentage.
+                    example: 0.0333
+                unrealizedIntradayPl:
+                    type: string
+                    examples:
+                        - 100.00
+                    description: Unrealized intraday P/L.
+                    example: 100.00
+                unrealizedIntradayPlpc:
+                    type: string
+                    examples:
+                        - 0.0065
+                    description: Unrealized intraday P/L percentage.
+                    example: 0.0065
+                currentPrice:
+                    type: string
+                    examples:
+                        - 155.00
+                    description: Current price.
+                    example: 155.00
+                lastdayPrice:
+                    type: string
+                    examples:
+                        - 154.00
+                    description: Last day price.
+                    example: 154.00
+                changeToday:
+                    type: string
+                    examples:
+                        - 0.0065
+                    description: Change today.
+                    example: 0.0065
+                qtyAvailable:
+                    type: string
+                    examples:
+                        - 100
+                    description: Quantity available.
+                    example: 100
+            description: BrokerPosition represents a position in a broker account.
+        GetTradingPositionRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: The symbol (bound from path variable).
+                    example: AAPL
+            required:
+                - accountId
+                - symbol
+            description: GetTradingPositionRequest is the request to get a position for a broker account.
+        CloseTradingPositionRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: The symbol (bound from path variable).
+                    example: AAPL
+                qty:
+                    type: string
+                    examples:
+                        - 50
+                    description: Quantity to close (optional).
+                    example: 50
+                percentage:
+                    type: string
+                    examples:
+                        - 50
+                    description: Percentage to close (optional).
+                    example: 50
+            required:
+                - accountId
+                - symbol
+            description: CloseTradingPositionRequest is the request to close a position for a broker account.
+        CloseAllTradingPositionsRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (bound from path variable).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                cancelOrders:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether to cancel all open orders first.
+                    example: true
+            required:
+                - accountId
+            description: CloseAllTradingPositionsRequest is the request to close all positions for a broker account.
+        CloseAllTradingPositionsResponse:
+            type: object
+            properties:
+                positions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ClosedTradingPosition'
+            description: CloseAllTradingPositionsResponse is the response after closing all positions.
+        ClosedTradingPosition:
+            type: object
+            properties:
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Symbol.
+                    example: AAPL
+                status:
+                    type: integer
+                    examples:
+                        - 200
+                    format: int32
+                    description: HTTP status code.
+                    example: 200
+                order:
+                    $ref: '#/components/schemas/BrokerOrder'
+            description: ClosedTradingPosition represents the result of closing a position.

@@ -3,14 +3,14 @@ info:
     title: TradingService API
     version: 1.0.0
 paths:
-    /v1/trading/accounts/{account_id}:
+    /v2/account:
         get:
             tags:
                 - TradingService
             summary: GetAccount
             description: |-
                 GetAccount retrieves the account information.
-                 GET /v1/trading/accounts/{account_id}
+                 GET /v2/account
             operationId: GetAccount
             parameters:
                 - name: APCA-API-KEY-ID
@@ -27,12 +27,6 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: account_id
-                  in: path
-                  description: The account ID (bound from path variable).
-                  required: true
-                  schema:
-                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -57,14 +51,387 @@ paths:
                                         type: string
                                     code:
                                         type: integer
-    /v1/trading/accounts/{account_id}/orders:
+    /v2/account/configurations:
+        get:
+            tags:
+                - TradingService
+            summary: GetAccountConfigurations
+            description: |-
+                GetAccountConfigurations retrieves the account configuration settings.
+                 GET /v2/account/configurations
+            operationId: GetAccountConfigurations
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccountConfigurations'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        patch:
+            tags:
+                - TradingService
+            summary: UpdateAccountConfigurations
+            description: |-
+                UpdateAccountConfigurations updates the account configuration settings.
+                 PATCH /v2/account/configurations
+            operationId: UpdateAccountConfigurations
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateAccountConfigurationsRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccountConfigurations'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/account/portfolio/history:
+        get:
+            tags:
+                - TradingService
+            summary: GetPortfolioHistory
+            description: |-
+                GetPortfolioHistory retrieves the historical portfolio performance.
+                 GET /v2/account/portfolio/history
+            operationId: GetPortfolioHistory
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: period
+                  in: query
+                  description: Period (1D, 1W, 1M, 3M, 1A, all, intraday).
+                  required: false
+                  schema:
+                    type: string
+                - name: timeframe
+                  in: query
+                  description: Timeframe for data points (1Min, 5Min, 15Min, 1H, 1D).
+                  required: false
+                  schema:
+                    type: string
+                - name: intraday_reporting
+                  in: query
+                  description: Intraday reporting mode (market_hours or extended_hours).
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start date/time (RFC-3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End date/time (RFC-3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: pnl_reset
+                  in: query
+                  description: Whether to use PnL calculation instead of market value.
+                  required: false
+                  schema:
+                    type: boolean
+                - name: extended_hours
+                  in: query
+                  description: Whether to include extended hours data.
+                  required: false
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PortfolioHistory'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/account/activities:
+        get:
+            tags:
+                - TradingService
+            summary: GetAccountActivities
+            description: |-
+                GetAccountActivities retrieves account activity events.
+                 GET /v2/account/activities
+            operationId: GetAccountActivities
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: activity_type
+                  in: query
+                  description: Filter by activity type.
+                  required: false
+                  schema:
+                    type: string
+                - name: after
+                  in: query
+                  description: Filter by activities after this timestamp (RFC 3339).
+                  required: false
+                  schema:
+                    type: string
+                - name: until
+                  in: query
+                  description: Filter by activities until this timestamp (RFC 3339).
+                  required: false
+                  schema:
+                    type: string
+                - name: direction
+                  in: query
+                  description: Sort direction (asc or desc).
+                  required: false
+                  schema:
+                    type: string
+                - name: page_size
+                  in: query
+                  description: Maximum number of activities to return.
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: date
+                  in: query
+                  description: Filter by date (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetAccountActivitiesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/account/activities/{activity_type}:
+        get:
+            tags:
+                - TradingService
+            summary: GetAccountActivitiesByType
+            description: |-
+                GetAccountActivitiesByType retrieves account activity events of a specific type.
+                 GET /v2/account/activities/{activity_type}
+            operationId: GetAccountActivitiesByType
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: activity_type
+                  in: path
+                  description: Activity type (path parameter).
+                  required: true
+                  schema:
+                    type: string
+                - name: after
+                  in: query
+                  description: Filter by activities after this timestamp (RFC 3339).
+                  required: false
+                  schema:
+                    type: string
+                - name: until
+                  in: query
+                  description: Filter by activities until this timestamp (RFC 3339).
+                  required: false
+                  schema:
+                    type: string
+                - name: direction
+                  in: query
+                  description: Sort direction (asc or desc).
+                  required: false
+                  schema:
+                    type: string
+                - name: page_size
+                  in: query
+                  description: Maximum number of activities to return.
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: Page token for pagination.
+                  required: false
+                  schema:
+                    type: string
+                - name: date
+                  in: query
+                  description: Filter by date (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetAccountActivitiesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/orders:
         get:
             tags:
                 - TradingService
             summary: ListOrders
             description: |-
                 ListOrders retrieves a list of orders.
-                 GET /v1/trading/accounts/{account_id}/orders
+                 GET /v2/orders
             operationId: ListOrders
             parameters:
                 - name: APCA-API-KEY-ID
@@ -81,12 +448,6 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: account_id
-                  in: path
-                  description: The account ID (bound from path variable).
-                  required: true
-                  schema:
-                    type: string
                 - name: status
                   in: query
                   description: Filter by order status (open, closed, all).
@@ -166,7 +527,7 @@ paths:
             summary: CreateOrder
             description: |-
                 CreateOrder places a new order.
-                 POST /v1/trading/accounts/{account_id}/orders
+                 POST /v2/orders
             operationId: CreateOrder
             parameters:
                 - name: APCA-API-KEY-ID
@@ -183,12 +544,6 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: account_id
-                  in: path
-                  description: The account ID (bound from path variable).
-                  required: true
-                  schema:
-                    type: string
             requestBody:
                 content:
                     application/json:
@@ -225,7 +580,7 @@ paths:
             summary: CancelAllOrders
             description: |-
                 CancelAllOrders cancels all open orders.
-                 DELETE /v1/trading/accounts/{account_id}/orders
+                 DELETE /v2/orders
             operationId: CancelAllOrders
             parameters:
                 - name: APCA-API-KEY-ID
@@ -242,12 +597,6 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: account_id
-                  in: path
-                  description: The account ID (bound from path variable).
-                  required: true
-                  schema:
-                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -272,14 +621,14 @@ paths:
                                         type: string
                                     code:
                                         type: integer
-    /v1/trading/accounts/{account_id}/orders/{order_id}:
+    /v2/orders/{order_id}:
         get:
             tags:
                 - TradingService
             summary: GetOrder
             description: |-
                 GetOrder retrieves a specific order by ID.
-                 GET /v1/trading/accounts/{account_id}/orders/{order_id}
+                 GET /v2/orders/{order_id}
             operationId: GetOrder
             parameters:
                 - name: APCA-API-KEY-ID
@@ -296,12 +645,6 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: account_id
-                  in: path
-                  description: The account ID (bound from path variable).
-                  required: true
-                  schema:
-                    type: string
                 - name: order_id
                   in: path
                   description: The order ID (bound from path variable).
@@ -344,7 +687,7 @@ paths:
             summary: CancelOrder
             description: |-
                 CancelOrder cancels a specific order.
-                 DELETE /v1/trading/accounts/{account_id}/orders/{order_id}
+                 DELETE /v2/orders/{order_id}
             operationId: CancelOrder
             parameters:
                 - name: APCA-API-KEY-ID
@@ -361,12 +704,6 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: account_id
-                  in: path
-                  description: The account ID (bound from path variable).
-                  required: true
-                  schema:
-                    type: string
                 - name: order_id
                   in: path
                   description: The order ID to cancel (bound from path variable).
@@ -397,14 +734,127 @@ paths:
                                         type: string
                                     code:
                                         type: integer
-    /v1/trading/accounts/{account_id}/positions:
+        patch:
+            tags:
+                - TradingService
+            summary: ReplaceOrder
+            description: |-
+                ReplaceOrder replaces (modifies) an existing order.
+                 PATCH /v2/orders/{order_id}
+            operationId: ReplaceOrder
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: order_id
+                  in: path
+                  description: The order ID to replace (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReplaceOrderRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Order'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/orders:by_client_order_id:
+        get:
+            tags:
+                - TradingService
+            summary: GetOrderByClientId
+            description: |-
+                GetOrderByClientId retrieves an order by client order ID.
+                 GET /v2/orders:by_client_order_id
+            operationId: GetOrderByClientId
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: client_order_id
+                  in: query
+                  description: The client order ID (query parameter).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Order'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/positions:
         get:
             tags:
                 - TradingService
             summary: ListPositions
             description: |-
                 ListPositions retrieves all open positions.
-                 GET /v1/trading/accounts/{account_id}/positions
+                 GET /v2/positions
             operationId: ListPositions
             parameters:
                 - name: APCA-API-KEY-ID
@@ -421,12 +871,6 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: account_id
-                  in: path
-                  description: The account ID (bound from path variable).
-                  required: true
-                  schema:
-                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -457,7 +901,7 @@ paths:
             summary: CloseAllPositions
             description: |-
                 CloseAllPositions closes all open positions.
-                 DELETE /v1/trading/accounts/{account_id}/positions
+                 DELETE /v2/positions
             operationId: CloseAllPositions
             parameters:
                 - name: APCA-API-KEY-ID
@@ -474,12 +918,6 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: account_id
-                  in: path
-                  description: The account ID (bound from path variable).
-                  required: true
-                  schema:
-                    type: string
                 - name: cancel_orders
                   in: query
                   description: Whether to cancel all open orders before closing positions.
@@ -510,14 +948,14 @@ paths:
                                         type: string
                                     code:
                                         type: integer
-    /v1/trading/accounts/{account_id}/positions/{symbol}:
+    /v2/positions/{symbol}:
         get:
             tags:
                 - TradingService
             summary: GetPosition
             description: |-
                 GetPosition retrieves a specific position by symbol.
-                 GET /v1/trading/accounts/{account_id}/positions/{symbol}
+                 GET /v2/positions/{symbol}
             operationId: GetPosition
             parameters:
                 - name: APCA-API-KEY-ID
@@ -534,12 +972,6 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: account_id
-                  in: path
-                  description: The account ID (bound from path variable).
-                  required: true
-                  schema:
-                    type: string
                 - name: symbol
                   in: path
                   description: The symbol of the position (bound from path variable).
@@ -576,7 +1008,7 @@ paths:
             summary: ClosePosition
             description: |-
                 ClosePosition closes a specific position (liquidates).
-                 DELETE /v1/trading/accounts/{account_id}/positions/{symbol}
+                 DELETE /v2/positions/{symbol}
             operationId: ClosePosition
             parameters:
                 - name: APCA-API-KEY-ID
@@ -593,12 +1025,6 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: account_id
-                  in: path
-                  description: The account ID (bound from path variable).
-                  required: true
-                  schema:
-                    type: string
                 - name: symbol
                   in: path
                   description: The symbol of the position to close (bound from path variable).
@@ -624,6 +1050,680 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Order'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/positions/{symbol_or_contract_id}/exercise:
+        post:
+            tags:
+                - TradingService
+            summary: ExerciseOption
+            description: |-
+                ExerciseOption exercises an option position.
+                 POST /v2/positions/{symbol_or_contract_id}/exercise
+            operationId: ExerciseOption
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbol_or_contract_id
+                  in: path
+                  description: The option symbol contract (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ExerciseOptionRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ExerciseOptionResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/assets:
+        get:
+            tags:
+                - TradingService
+            summary: ListAssets
+            description: |-
+                ListAssets retrieves all available assets.
+                 GET /v2/assets
+            operationId: ListAssets
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: status
+                  in: query
+                  description: Filter by asset status (active, inactive).
+                  required: false
+                  schema:
+                    type: string
+                - name: asset_class
+                  in: query
+                  description: Filter by asset class (us_equity, crypto).
+                  required: false
+                  schema:
+                    type: string
+                - name: exchange
+                  in: query
+                  description: Filter by exchange.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListAssetsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/assets/{symbol_or_id}:
+        get:
+            tags:
+                - TradingService
+            summary: GetAsset
+            description: |-
+                GetAsset retrieves a specific asset by symbol or ID.
+                 GET /v2/assets/{symbol_or_id}
+            operationId: GetAsset
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbol_or_id
+                  in: path
+                  description: The symbol or asset ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Asset'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/clock:
+        get:
+            tags:
+                - TradingService
+            summary: GetClock
+            description: |-
+                GetClock retrieves the current market clock status.
+                 GET /v2/clock
+            operationId: GetClock
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Clock'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/calendar:
+        get:
+            tags:
+                - TradingService
+            summary: GetCalendar
+            description: |-
+                GetCalendar retrieves the market calendar.
+                 GET /v2/calendar
+            operationId: GetCalendar
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: start
+                  in: query
+                  description: Start date (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End date (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetCalendarResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/watchlists:
+        get:
+            tags:
+                - TradingService
+            summary: ListWatchlists
+            description: |-
+                ListWatchlists retrieves all watchlists.
+                 GET /v2/watchlists
+            operationId: ListWatchlists
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListWatchlistsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        post:
+            tags:
+                - TradingService
+            summary: CreateWatchlist
+            description: |-
+                CreateWatchlist creates a new watchlist.
+                 POST /v2/watchlists
+            operationId: CreateWatchlist
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateWatchlistRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Watchlist'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/watchlists/{watchlist_id}:
+        get:
+            tags:
+                - TradingService
+            summary: GetWatchlist
+            description: |-
+                GetWatchlist retrieves a specific watchlist by ID.
+                 GET /v2/watchlists/{watchlist_id}
+            operationId: GetWatchlist
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: watchlist_id
+                  in: path
+                  description: The watchlist ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Watchlist'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        put:
+            tags:
+                - TradingService
+            summary: UpdateWatchlist
+            description: |-
+                UpdateWatchlist updates an existing watchlist.
+                 PUT /v2/watchlists/{watchlist_id}
+            operationId: UpdateWatchlist
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: watchlist_id
+                  in: path
+                  description: The watchlist ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateWatchlistRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Watchlist'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        post:
+            tags:
+                - TradingService
+            summary: AddWatchlistAsset
+            description: |-
+                AddWatchlistAsset adds an asset to a watchlist.
+                 POST /v2/watchlists/{watchlist_id}
+            operationId: AddWatchlistAsset
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: watchlist_id
+                  in: path
+                  description: The watchlist ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AddWatchlistAssetRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Watchlist'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        delete:
+            tags:
+                - TradingService
+            summary: DeleteWatchlist
+            description: |-
+                DeleteWatchlist deletes a watchlist.
+                 DELETE /v2/watchlists/{watchlist_id}
+            operationId: DeleteWatchlist
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: watchlist_id
+                  in: path
+                  description: The watchlist ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteWatchlistResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/watchlists/{watchlist_id}/{symbol}:
+        delete:
+            tags:
+                - TradingService
+            summary: RemoveWatchlistAsset
+            description: |-
+                RemoveWatchlistAsset removes an asset from a watchlist.
+                 DELETE /v2/watchlists/{watchlist_id}/{symbol}
+            operationId: RemoveWatchlistAsset
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: watchlist_id
+                  in: path
+                  description: The watchlist ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+                - name: symbol
+                  in: path
+                  description: Symbol to remove (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RemoveWatchlistAssetResponse'
                 "400":
                     description: Validation error
                     content:
@@ -669,17 +1769,9 @@ components:
             description: ValidationError is returned when request validation fails. It contains a list of field violations describing what went wrong.
         GetAccountRequest:
             type: object
-            properties:
-                accountId:
-                    type: string
-                    examples:
-                        - 904837e3-3b76-47ec-b432-046db621571b
-                    format: uuid
-                    description: The account ID (bound from path variable).
-                    example: 904837e3-3b76-47ec-b432-046db621571b
-            required:
-                - accountId
-            description: GetAccountRequest is the request to get an account.
+            description: |-
+                GetAccountRequest is the request to get the account.
+                 Account is identified by the API key used for authentication.
         Account:
             type: object
             properties:
@@ -912,16 +2004,400 @@ components:
                     description: Options buying power.
                     example: 25000.00
             description: Account represents an Alpaca trading account.
+        GetAccountConfigurationsRequest:
+            type: object
+            description: GetAccountConfigurationsRequest is the request to get account configurations.
+        AccountConfigurations:
+            type: object
+            properties:
+                dtbpCheck:
+                    type: string
+                    examples:
+                        - both
+                    description: Day trading buying power check setting.
+                    example: both
+                tradeConfirmEmail:
+                    type: string
+                    examples:
+                        - all
+                    description: Trade confirmation email setting.
+                    example: all
+                suspendTrade:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether to suspend trades.
+                    example: false
+                fractionalTrading:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether fractional trading is enabled.
+                    example: true
+                maxMarginMultiplier:
+                    type: string
+                    examples:
+                        - 4
+                    description: Maximum margin multiplier.
+                    example: 4
+                maxOptionsTradingLevel:
+                    type: integer
+                    examples:
+                        - 2
+                    format: int32
+                    description: Maximum options trading level.
+                    example: 2
+                pdtCheck:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether PDT protection is enabled (for accounts < $25K).
+                    example: true
+                ptpNoExceptionEntry:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether PTP (Pattern Day Trader) no exceptions mode is enabled.
+                    example: false
+            description: AccountConfigurations represents the account configuration settings.
+        UpdateAccountConfigurationsRequest:
+            type: object
+            properties:
+                dtbpCheck:
+                    type: string
+                    examples:
+                        - both
+                    description: Day trading buying power check setting (entry, exit, both).
+                    example: both
+                tradeConfirmEmail:
+                    type: string
+                    examples:
+                        - all
+                    description: Trade confirmation email setting (all, none).
+                    example: all
+                suspendTrade:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether to suspend trades.
+                    example: false
+                fractionalTrading:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether fractional trading is enabled.
+                    example: true
+                maxMarginMultiplier:
+                    type: string
+                    examples:
+                        - 4
+                    description: Maximum margin multiplier.
+                    example: 4
+                pdtCheck:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether PDT protection is enabled.
+                    example: true
+                ptpNoExceptionEntry:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether PTP no exceptions mode is enabled.
+                    example: false
+            description: UpdateAccountConfigurationsRequest is the request to update account configurations.
+        GetPortfolioHistoryRequest:
+            type: object
+            properties:
+                period:
+                    type: string
+                    examples:
+                        - 1M
+                    description: Period (1D, 1W, 1M, 3M, 1A, all, intraday).
+                    example: 1M
+                timeframe:
+                    type: string
+                    examples:
+                        - 1D
+                    description: Timeframe for data points (1Min, 5Min, 15Min, 1H, 1D).
+                    example: 1D
+                intradayReporting:
+                    type: string
+                    examples:
+                        - market_hours
+                    description: Intraday reporting mode (market_hours or extended_hours).
+                    example: market_hours
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-01
+                    description: Start date/time (RFC-3339 or YYYY-MM-DD).
+                    example: 2024-01-01
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-31
+                    description: End date/time (RFC-3339 or YYYY-MM-DD).
+                    example: 2024-01-31
+                pnlReset:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether to use PnL calculation instead of market value.
+                    example: false
+                extendedHours:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether to include extended hours data.
+                    example: false
+            description: GetPortfolioHistoryRequest is the request to get portfolio history.
+        PortfolioHistory:
+            type: object
+            properties:
+                timestamp:
+                    type: array
+                    items:
+                        type: integer
+                        format: int64
+                        description: Timestamps for each data point (Unix epoch in seconds).
+                equity:
+                    type: array
+                    items:
+                        type: number
+                        format: double
+                        description: Portfolio equity values at each timestamp.
+                profitLoss:
+                    type: array
+                    items:
+                        type: number
+                        format: double
+                        description: Profit/loss values at each timestamp.
+                profitLossPct:
+                    type: array
+                    items:
+                        type: number
+                        format: double
+                        description: Profit/loss percentage at each timestamp.
+                baseValue:
+                    type: number
+                    examples:
+                        - 50000.00
+                    format: double
+                    description: Base value (starting equity).
+                    example: 50000.00
+                timeframe:
+                    type: string
+                    examples:
+                        - 1D
+                    description: Time frame (1Min, 5Min, 15Min, 1H, 1D).
+                    example: 1D
+            description: PortfolioHistory represents the historical performance of a portfolio.
+        GetAccountActivitiesRequest:
+            type: object
+            properties:
+                activityType:
+                    type: string
+                    examples:
+                        - FILL
+                    description: Filter by activity type.
+                    example: FILL
+                after:
+                    type: string
+                    examples:
+                        - 2024-01-01T00:00:00Z
+                    description: Filter by activities after this timestamp (RFC 3339).
+                    example: 2024-01-01T00:00:00Z
+                until:
+                    type: string
+                    examples:
+                        - 2024-01-31T23:59:59Z
+                    description: Filter by activities until this timestamp (RFC 3339).
+                    example: 2024-01-31T23:59:59Z
+                direction:
+                    type: string
+                    examples:
+                        - desc
+                    description: Sort direction (asc or desc).
+                    example: desc
+                pageSize:
+                    type: integer
+                    examples:
+                        - 100
+                    format: int32
+                    description: Maximum number of activities to return.
+                    example: 100
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                date:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Filter by date (YYYY-MM-DD).
+                    example: 2024-01-15
+            description: GetAccountActivitiesRequest is the request to get account activities.
+        GetAccountActivitiesResponse:
+            type: object
+            properties:
+                activities:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AccountActivity'
+            description: GetAccountActivitiesResponse is the response containing account activities.
+        AccountActivity:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - 20210115000000001::aaaa-bbbb-cccc-dddd
+                    description: Activity ID.
+                    example: 20210115000000001::aaaa-bbbb-cccc-dddd
+                activityType:
+                    type: string
+                    examples:
+                        - FILL
+                    description: Activity type.
+                    example: FILL
+                transactionTime:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Transaction time (RFC 3339).
+                    example: 2024-01-15T10:30:00Z
+                type:
+                    type: string
+                    examples:
+                        - fill
+                    description: Type description.
+                    example: fill
+                price:
+                    type: string
+                    examples:
+                        - 150.25
+                    description: Price (for fills).
+                    example: 150.25
+                qty:
+                    type: string
+                    examples:
+                        - 10
+                    description: Quantity (for fills).
+                    example: 10
+                side:
+                    type: string
+                    examples:
+                        - buy
+                    description: Side (buy or sell, for fills).
+                    example: buy
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Symbol (for fills).
+                    example: AAPL
+                leavesQty:
+                    type: string
+                    examples:
+                        - 0
+                    description: Leaves quantity (remaining quantity after fill).
+                    example: 0
+                orderId:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: Order ID (for fills).
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+                cumQty:
+                    type: string
+                    examples:
+                        - 10
+                    description: Cumulative quantity filled.
+                    example: 10
+                orderStatus:
+                    type: string
+                    examples:
+                        - filled
+                    description: Order status.
+                    example: filled
+                netAmount:
+                    type: string
+                    examples:
+                        - 1000.00
+                    description: Net amount (for cash transactions).
+                    example: 1000.00
+                description:
+                    type: string
+                    examples:
+                        - Dividend payment
+                    description: Description (for cash transactions).
+                    example: Dividend payment
+                perShareAmount:
+                    type: string
+                    examples:
+                        - 0.22
+                    description: Per share amount (for dividends).
+                    example: 0.22
+                date:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Date (for cash transactions, YYYY-MM-DD).
+                    example: 2024-01-15
+            description: AccountActivity represents an account activity event.
+        GetAccountActivitiesByTypeRequest:
+            type: object
+            properties:
+                activityType:
+                    type: string
+                    examples:
+                        - FILL
+                    description: Activity type (path parameter).
+                    example: FILL
+                after:
+                    type: string
+                    examples:
+                        - 2024-01-01T00:00:00Z
+                    description: Filter by activities after this timestamp (RFC 3339).
+                    example: 2024-01-01T00:00:00Z
+                until:
+                    type: string
+                    examples:
+                        - 2024-01-31T23:59:59Z
+                    description: Filter by activities until this timestamp (RFC 3339).
+                    example: 2024-01-31T23:59:59Z
+                direction:
+                    type: string
+                    examples:
+                        - desc
+                    description: Sort direction (asc or desc).
+                    example: desc
+                pageSize:
+                    type: integer
+                    examples:
+                        - 100
+                    format: int32
+                    description: Maximum number of activities to return.
+                    example: 100
+                pageToken:
+                    type: string
+                    examples:
+                        - token123
+                    description: Page token for pagination.
+                    example: token123
+                date:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Filter by date (YYYY-MM-DD).
+                    example: 2024-01-15
+            description: GetAccountActivitiesByTypeRequest is the request to get account activities of a specific type.
         CreateOrderRequest:
             type: object
             properties:
-                accountId:
-                    type: string
-                    examples:
-                        - 904837e3-3b76-47ec-b432-046db621571b
-                    format: uuid
-                    description: The account ID (bound from path variable).
-                    example: 904837e3-3b76-47ec-b432-046db621571b
                 symbol:
                     type: string
                     examples:
@@ -1021,7 +2497,6 @@ components:
                 stopLoss:
                     $ref: '#/components/schemas/StopLossSpec'
             required:
-                - accountId
                 - symbol
             description: CreateOrderRequest is the request to create a new order.
         TakeProfitSpec:
@@ -1268,13 +2743,6 @@ components:
         ListOrdersRequest:
             type: object
             properties:
-                accountId:
-                    type: string
-                    examples:
-                        - 904837e3-3b76-47ec-b432-046db621571b
-                    format: uuid
-                    description: The account ID (bound from path variable).
-                    example: 904837e3-3b76-47ec-b432-046db621571b
                 status:
                     type: string
                     examples:
@@ -1326,8 +2794,6 @@ components:
                         - buy
                     description: Filter by side (buy or sell).
                     example: buy
-            required:
-                - accountId
             description: ListOrdersRequest is the request to list orders.
         ListOrdersResponse:
             type: object
@@ -1340,13 +2806,6 @@ components:
         GetOrderRequest:
             type: object
             properties:
-                accountId:
-                    type: string
-                    examples:
-                        - 904837e3-3b76-47ec-b432-046db621571b
-                    format: uuid
-                    description: The account ID (bound from path variable).
-                    example: 904837e3-3b76-47ec-b432-046db621571b
                 orderId:
                     type: string
                     examples:
@@ -1361,19 +2820,79 @@ components:
                     description: Whether to include nested leg orders.
                     example: false
             required:
-                - accountId
                 - orderId
             description: GetOrderRequest is the request to get an order by ID.
+        GetOrderByClientIdRequest:
+            type: object
+            properties:
+                clientOrderId:
+                    type: string
+                    examples:
+                        - my_order_123
+                    maxLength: 48
+                    description: The client order ID (query parameter).
+                    example: my_order_123
+            required:
+                - clientOrderId
+            description: GetOrderByClientIdRequest is the request to get an order by client order ID.
+        ReplaceOrderRequest:
+            type: object
+            properties:
+                orderId:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    format: uuid
+                    description: The order ID to replace (bound from path variable).
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+                qty:
+                    type: string
+                    examples:
+                        - 15
+                    description: New quantity (optional, keeps original if not specified).
+                    example: 15
+                timeInForce:
+                    type: string
+                    enum:
+                        - TIME_IN_FORCE_UNSPECIFIED
+                        - TIME_IN_FORCE_DAY
+                        - TIME_IN_FORCE_GTC
+                        - TIME_IN_FORCE_OPG
+                        - TIME_IN_FORCE_CLS
+                        - TIME_IN_FORCE_IOC
+                        - TIME_IN_FORCE_FOK
+                    description: TimeInForce represents the time in force for an order.
+                limitPrice:
+                    type: string
+                    examples:
+                        - 152.00
+                    description: New limit price (optional, for limit orders).
+                    example: 152.00
+                stopPrice:
+                    type: string
+                    examples:
+                        - 148.00
+                    description: New stop price (optional, for stop orders).
+                    example: 148.00
+                trail:
+                    type: string
+                    examples:
+                        - 5.00
+                    description: New trail (optional, for trailing stop orders).
+                    example: 5.00
+                clientOrderId:
+                    type: string
+                    examples:
+                        - my_replaced_order_123
+                    maxLength: 48
+                    description: New client order ID (optional).
+                    example: my_replaced_order_123
+            required:
+                - orderId
+            description: ReplaceOrderRequest is the request to replace (modify) an existing order.
         CancelOrderRequest:
             type: object
             properties:
-                accountId:
-                    type: string
-                    examples:
-                        - 904837e3-3b76-47ec-b432-046db621571b
-                    format: uuid
-                    description: The account ID (bound from path variable).
-                    example: 904837e3-3b76-47ec-b432-046db621571b
                 orderId:
                     type: string
                     examples:
@@ -1382,7 +2901,6 @@ components:
                     description: The order ID to cancel (bound from path variable).
                     example: 61e69015-8549-4bfd-b9c3-01e75843f47d
             required:
-                - accountId
                 - orderId
             description: CancelOrderRequest is the request to cancel an order.
         CancelOrderResponse:
@@ -1403,16 +2921,6 @@ components:
             description: CancelOrderResponse is the response after canceling an order.
         CancelAllOrdersRequest:
             type: object
-            properties:
-                accountId:
-                    type: string
-                    examples:
-                        - 904837e3-3b76-47ec-b432-046db621571b
-                    format: uuid
-                    description: The account ID (bound from path variable).
-                    example: 904837e3-3b76-47ec-b432-046db621571b
-            required:
-                - accountId
             description: CancelAllOrdersRequest is the request to cancel all open orders.
         CancelAllOrdersResponse:
             type: object
@@ -1444,16 +2952,6 @@ components:
             description: CanceledOrder represents a canceled order in the response.
         ListPositionsRequest:
             type: object
-            properties:
-                accountId:
-                    type: string
-                    examples:
-                        - 904837e3-3b76-47ec-b432-046db621571b
-                    format: uuid
-                    description: The account ID (bound from path variable).
-                    example: 904837e3-3b76-47ec-b432-046db621571b
-            required:
-                - accountId
             description: ListPositionsRequest is the request to list all open positions.
         ListPositionsResponse:
             type: object
@@ -1581,13 +3079,6 @@ components:
         GetPositionRequest:
             type: object
             properties:
-                accountId:
-                    type: string
-                    examples:
-                        - 904837e3-3b76-47ec-b432-046db621571b
-                    format: uuid
-                    description: The account ID (bound from path variable).
-                    example: 904837e3-3b76-47ec-b432-046db621571b
                 symbol:
                     type: string
                     examples:
@@ -1597,19 +3088,11 @@ components:
                     description: The symbol of the position (bound from path variable).
                     example: AAPL
             required:
-                - accountId
                 - symbol
             description: GetPositionRequest is the request to get a position by symbol.
         ClosePositionRequest:
             type: object
             properties:
-                accountId:
-                    type: string
-                    examples:
-                        - 904837e3-3b76-47ec-b432-046db621571b
-                    format: uuid
-                    description: The account ID (bound from path variable).
-                    example: 904837e3-3b76-47ec-b432-046db621571b
                 symbol:
                     type: string
                     examples:
@@ -1631,27 +3114,17 @@ components:
                     description: Percentage of position to close (optional, 0-100).
                     example: 50
             required:
-                - accountId
                 - symbol
             description: ClosePositionRequest is the request to close a position.
         CloseAllPositionsRequest:
             type: object
             properties:
-                accountId:
-                    type: string
-                    examples:
-                        - 904837e3-3b76-47ec-b432-046db621571b
-                    format: uuid
-                    description: The account ID (bound from path variable).
-                    example: 904837e3-3b76-47ec-b432-046db621571b
                 cancelOrders:
                     type: boolean
                     examples:
                         - true
                     description: Whether to cancel all open orders before closing positions.
                     example: true
-            required:
-                - accountId
             description: CloseAllPositionsRequest is the request to close all open positions.
         CloseAllPositionsResponse:
             type: object
@@ -1680,3 +3153,450 @@ components:
                 order:
                     $ref: '#/components/schemas/Order'
             description: ClosedPosition represents the result of closing a single position.
+        ExerciseOptionRequest:
+            type: object
+            properties:
+                symbolOrContractId:
+                    type: string
+                    examples:
+                        - AAPL240119C00150000
+                    description: The option symbol contract (bound from path variable).
+                    example: AAPL240119C00150000
+            required:
+                - symbolOrContractId
+            description: ExerciseOptionRequest is the request to exercise an option position.
+        ExerciseOptionResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the exercise request was accepted.
+                    example: true
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL240119C00150000
+                    description: The symbol that was exercised.
+                    example: AAPL240119C00150000
+            description: ExerciseOptionResponse is the response after exercising an option.
+        ListAssetsRequest:
+            type: object
+            properties:
+                status:
+                    type: string
+                    examples:
+                        - active
+                    description: Filter by asset status (active, inactive).
+                    example: active
+                assetClass:
+                    type: string
+                    examples:
+                        - us_equity
+                    description: Filter by asset class (us_equity, crypto).
+                    example: us_equity
+                exchange:
+                    type: string
+                    examples:
+                        - NASDAQ
+                    description: Filter by exchange.
+                    example: NASDAQ
+            description: ListAssetsRequest is the request to list assets.
+        ListAssetsResponse:
+            type: object
+            properties:
+                assets:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Asset'
+            description: ListAssetsResponse is the response containing a list of assets.
+        Asset:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                    description: Asset ID (UUID).
+                    example: b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                class:
+                    type: string
+                    examples:
+                        - us_equity
+                    description: Asset class (us_equity, crypto, us_option).
+                    example: us_equity
+                exchange:
+                    type: string
+                    examples:
+                        - NASDAQ
+                    description: Exchange where the asset is traded.
+                    example: NASDAQ
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Asset symbol.
+                    example: AAPL
+                name:
+                    type: string
+                    examples:
+                        - Apple Inc.
+                    description: Asset name.
+                    example: Apple Inc.
+                status:
+                    type: string
+                    examples:
+                        - active
+                    description: Asset status.
+                    example: active
+                tradable:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the asset is tradeable.
+                    example: true
+                marginable:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the asset is marginable.
+                    example: true
+                maintenanceMarginRequirement:
+                    type: string
+                    examples:
+                        - 30
+                    description: Whether the asset supports maintenance margin.
+                    example: 30
+                shortable:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the asset is shortable.
+                    example: true
+                easyToBorrow:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the asset is easy to borrow.
+                    example: true
+                fractionable:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the asset supports fractional trading.
+                    example: true
+                minOrderSize:
+                    type: string
+                    examples:
+                        - 1
+                    description: Minimum order size.
+                    example: 1
+                minTradeIncrement:
+                    type: string
+                    examples:
+                        - 0.0001
+                    description: Minimum trade increment.
+                    example: 0.0001
+                priceIncrement:
+                    type: string
+                    examples:
+                        - 0.01
+                    description: Price increment.
+                    example: 0.01
+            description: Asset represents a tradeable asset.
+        GetAssetRequest:
+            type: object
+            properties:
+                symbolOrId:
+                    type: string
+                    examples:
+                        - AAPL
+                        - b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                    description: The symbol or asset ID (bound from path variable).
+                    example: AAPL
+            required:
+                - symbolOrId
+            description: GetAssetRequest is the request to get an asset by symbol or ID.
+        GetClockRequest:
+            type: object
+            description: GetClockRequest is the request to get the market clock.
+        Clock:
+            type: object
+            properties:
+                timestamp:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00-05:00
+                    description: Current timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00-05:00
+                isOpen:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the market is currently open.
+                    example: true
+                nextOpen:
+                    type: string
+                    examples:
+                        - 2024-01-16T09:30:00-05:00
+                    description: Next market open time (RFC 3339).
+                    example: 2024-01-16T09:30:00-05:00
+                nextClose:
+                    type: string
+                    examples:
+                        - 2024-01-15T16:00:00-05:00
+                    description: Next market close time (RFC 3339).
+                    example: 2024-01-15T16:00:00-05:00
+            description: Clock represents the current market clock status.
+        GetCalendarRequest:
+            type: object
+            properties:
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-01
+                    description: Start date (YYYY-MM-DD).
+                    example: 2024-01-01
+                end:
+                    type: string
+                    examples:
+                        - 2024-12-31
+                    description: End date (YYYY-MM-DD).
+                    example: 2024-12-31
+            description: GetCalendarRequest is the request to get the market calendar.
+        GetCalendarResponse:
+            type: object
+            properties:
+                days:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CalendarDay'
+            description: GetCalendarResponse is the response containing the market calendar.
+        CalendarDay:
+            type: object
+            properties:
+                date:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Date (YYYY-MM-DD).
+                    example: 2024-01-15
+                open:
+                    type: string
+                    examples:
+                        - 09:30
+                    description: Market open time (HH:MM).
+                    example: 09:30
+                close:
+                    type: string
+                    examples:
+                        - 16:00
+                    description: Market close time (HH:MM).
+                    example: 16:00
+                sessionOpen:
+                    type: string
+                    examples:
+                        - 04:00
+                    description: Extended session open time (HH:MM).
+                    example: 04:00
+                sessionClose:
+                    type: string
+                    examples:
+                        - 20:00
+                    description: Extended session close time (HH:MM).
+                    example: 20:00
+            description: CalendarDay represents a market calendar day.
+        ListWatchlistsRequest:
+            type: object
+            description: ListWatchlistsRequest is the request to list watchlists.
+        ListWatchlistsResponse:
+            type: object
+            properties:
+                watchlists:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Watchlist'
+            description: ListWatchlistsResponse is the response containing a list of watchlists.
+        Watchlist:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+                    description: Watchlist ID (UUID).
+                    example: fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: Account ID (UUID).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                name:
+                    type: string
+                    examples:
+                        - Tech Stocks
+                    description: Watchlist name.
+                    example: Tech Stocks
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Creation timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00Z
+                updatedAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Last update timestamp (RFC 3339).
+                    example: 2024-01-15T10:30:00Z
+                assets:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Asset'
+            description: Watchlist represents a list of watched assets.
+        CreateWatchlistRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                    examples:
+                        - Tech Stocks
+                    maxLength: 64
+                    minLength: 1
+                    description: Watchlist name.
+                    example: Tech Stocks
+                symbols:
+                    type: array
+                    items:
+                        type: string
+                        examples:
+                            - AAPL
+                            - GOOGL
+                            - MSFT
+                        description: Symbols to add to the watchlist.
+                        example: AAPL
+            required:
+                - name
+            description: CreateWatchlistRequest is the request to create a watchlist.
+        GetWatchlistRequest:
+            type: object
+            properties:
+                watchlistId:
+                    type: string
+                    examples:
+                        - fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+                    format: uuid
+                    description: The watchlist ID (bound from path variable).
+                    example: fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+            required:
+                - watchlistId
+            description: GetWatchlistRequest is the request to get a watchlist by ID.
+        UpdateWatchlistRequest:
+            type: object
+            properties:
+                watchlistId:
+                    type: string
+                    examples:
+                        - fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+                    format: uuid
+                    description: The watchlist ID (bound from path variable).
+                    example: fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+                name:
+                    type: string
+                    examples:
+                        - Updated Tech Stocks
+                    maxLength: 64
+                    description: New watchlist name.
+                    example: Updated Tech Stocks
+                symbols:
+                    type: array
+                    items:
+                        type: string
+                        examples:
+                            - AAPL
+                            - GOOGL
+                            - MSFT
+                        description: New symbols (replaces existing symbols).
+                        example: AAPL
+            required:
+                - watchlistId
+            description: UpdateWatchlistRequest is the request to update a watchlist.
+        DeleteWatchlistRequest:
+            type: object
+            properties:
+                watchlistId:
+                    type: string
+                    examples:
+                        - fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+                    format: uuid
+                    description: The watchlist ID (bound from path variable).
+                    example: fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+            required:
+                - watchlistId
+            description: DeleteWatchlistRequest is the request to delete a watchlist.
+        DeleteWatchlistResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the deletion was successful.
+                    example: true
+            description: DeleteWatchlistResponse is the response after deleting a watchlist.
+        AddWatchlistAssetRequest:
+            type: object
+            properties:
+                watchlistId:
+                    type: string
+                    examples:
+                        - fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+                    format: uuid
+                    description: The watchlist ID (bound from path variable).
+                    example: fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    maxLength: 12
+                    minLength: 1
+                    description: Symbol to add.
+                    example: AAPL
+            required:
+                - watchlistId
+                - symbol
+            description: AddWatchlistAssetRequest is the request to add an asset to a watchlist.
+        RemoveWatchlistAssetRequest:
+            type: object
+            properties:
+                watchlistId:
+                    type: string
+                    examples:
+                        - fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+                    format: uuid
+                    description: The watchlist ID (bound from path variable).
+                    example: fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    maxLength: 12
+                    minLength: 1
+                    description: Symbol to remove (bound from path variable).
+                    example: AAPL
+            required:
+                - watchlistId
+                - symbol
+            description: RemoveWatchlistAssetRequest is the request to remove an asset from a watchlist.
+        RemoveWatchlistAssetResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the removal was successful.
+                    example: true
+            description: RemoveWatchlistAssetResponse is the response after removing an asset.
