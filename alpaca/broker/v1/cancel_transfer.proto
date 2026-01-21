@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// CancelTransferRequest is the request to cancel a transfer.
+message CancelTransferRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The transfer ID (bound from path variable).
+  string transfer_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["a1b2c3d4-e5f6-7890-abcd-ef1234567890"] }
+  ];
+}
+
+// CancelTransferResponse is the response after canceling a transfer.
+message CancelTransferResponse {
+  // Whether the cancellation was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}

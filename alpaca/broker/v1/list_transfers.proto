@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/broker/v1/transfer.proto";
+
+// ListTransfersRequest is the request to list transfers.
+message ListTransfersRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Filter by direction (INCOMING, OUTGOING).
+  string direction = 2 [
+    (sebuf.http.query) = { name: "direction" },
+    (sebuf.http.field_examples) = { values: ["INCOMING"] }
+  ];
+
+  // Filter by limit.
+  int32 limit = 3 [
+    (sebuf.http.query) = { name: "limit" },
+    (sebuf.http.field_examples) = { values: ["50"] }
+  ];
+
+  // Filter by offset.
+  int32 offset = 4 [
+    (sebuf.http.query) = { name: "offset" },
+    (sebuf.http.field_examples) = { values: ["0"] }
+  ];
+}
+
+// ListTransfersResponse is the response containing transfers.
+message ListTransfersResponse {
+  // List of transfers.
+  repeated Transfer transfers = 1;
+}

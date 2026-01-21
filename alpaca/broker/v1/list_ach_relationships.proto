@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/broker/v1/ach_relationship.proto";
+
+// ListACHRelationshipsRequest is the request to list ACH relationships.
+message ListACHRelationshipsRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Filter by statuses (comma-separated).
+  string statuses = 2 [
+    (sebuf.http.query) = { name: "statuses" },
+    (sebuf.http.field_examples) = { values: ["APPROVED,QUEUED"] }
+  ];
+}
+
+// ListACHRelationshipsResponse is the response containing ACH relationships.
+message ListACHRelationshipsResponse {
+  // List of ACH relationships.
+  repeated ACHRelationship ach_relationships = 1;
+}

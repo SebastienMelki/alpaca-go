@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// CreateACHRelationshipRequest is the request to create an ACH relationship.
+message CreateACHRelationshipRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Account owner name.
+  string account_owner_name = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["John Doe"] }
+  ];
+
+  // Bank account type (CHECKING, SAVINGS).
+  string bank_account_type = 3 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["CHECKING"] }
+  ];
+
+  // Bank account number.
+  string bank_account_number = 4 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["123456789"] }
+  ];
+
+  // Bank routing number.
+  string bank_routing_number = 5 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["121000358"] }
+  ];
+
+  // Nickname for the relationship.
+  string nickname = 6 [(sebuf.http.field_examples) = { values: ["My Checking"] }];
+
+  // Plaid processor token (alternative to bank account details).
+  string processor_token = 7;
+}

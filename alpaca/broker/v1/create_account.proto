@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/broker/v1/broker_account.proto";
+
+// CreateAccountRequest is the request to create a new broker account.
+message CreateAccountRequest {
+  // Contact information.
+  Contact contact = 1 [(buf.validate.field).required = true];
+
+  // Identity information.
+  Identity identity = 2 [(buf.validate.field).required = true];
+
+  // Disclosures.
+  Disclosures disclosures = 3 [(buf.validate.field).required = true];
+
+  // Signed agreements.
+  repeated Agreement agreements = 4 [(buf.validate.field).repeated = { min_items: 1 }];
+
+  // Optional trusted contact.
+  TrustedContact trusted_contact = 5;
+
+  // Account type (trading, custodial).
+  string account_type = 6 [(sebuf.http.field_examples) = { values: ["trading"] }];
+
+  // Whether to enable margin for assets.
+  bool enabled_assets_margin = 7 [(sebuf.http.field_examples) = { values: ["true"] }];
+}

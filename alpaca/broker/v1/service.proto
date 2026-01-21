@@ -1,0 +1,250 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "sebuf/http/annotations.proto";
+import "sebuf/http/headers.proto";
+import "alpaca/broker/v1/broker_account.proto";
+import "alpaca/broker/v1/create_account.proto";
+import "alpaca/broker/v1/list_accounts.proto";
+import "alpaca/broker/v1/get_account.proto";
+import "alpaca/broker/v1/update_account.proto";
+import "alpaca/broker/v1/close_account.proto";
+import "alpaca/broker/v1/ach_relationship.proto";
+import "alpaca/broker/v1/create_ach_relationship.proto";
+import "alpaca/broker/v1/list_ach_relationships.proto";
+import "alpaca/broker/v1/delete_ach_relationship.proto";
+import "alpaca/broker/v1/transfer.proto";
+import "alpaca/broker/v1/create_transfer.proto";
+import "alpaca/broker/v1/list_transfers.proto";
+import "alpaca/broker/v1/get_transfer.proto";
+import "alpaca/broker/v1/cancel_transfer.proto";
+import "alpaca/broker/v1/trading_order.proto";
+import "alpaca/broker/v1/create_trading_order.proto";
+import "alpaca/broker/v1/list_trading_orders.proto";
+import "alpaca/broker/v1/get_trading_order.proto";
+import "alpaca/broker/v1/cancel_trading_order.proto";
+import "alpaca/broker/v1/trading_position.proto";
+
+// BrokerService provides the Alpaca Broker API for B2B operations.
+// Base URL: https://broker-api.alpaca.markets
+// Authentication: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+service BrokerService {
+  // Base path for all endpoints.
+  option (sebuf.http.service_config) = {
+    base_path: "/v1"
+  };
+
+  // HTTP Basic authentication required for all operations.
+  option (sebuf.http.service_headers) = {
+    required_headers: [
+      {
+        name: "Authorization"
+        description: "HTTP Basic Auth with base64 encoded API_KEY:API_SECRET"
+        type: "string"
+        required: true
+        example: "Basic QVBJLUtFWTpBUEktU0VDUkVU"
+      }
+    ]
+  };
+
+  // ============================================
+  // Account Operations
+  // ============================================
+
+  // CreateAccount creates a new broker-managed account.
+  // POST /v1/accounts
+  rpc CreateAccount(CreateAccountRequest) returns (BrokerAccount) {
+    option (sebuf.http.config) = {
+      path: "/accounts"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ListAccounts retrieves a list of broker accounts.
+  // GET /v1/accounts
+  rpc ListAccounts(ListAccountsRequest) returns (ListAccountsResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetAccount retrieves a specific broker account.
+  // GET /v1/accounts/{account_id}
+  rpc GetAccount(GetBrokerAccountRequest) returns (BrokerAccount) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // UpdateAccount updates a broker account.
+  // PATCH /v1/accounts/{account_id}
+  rpc UpdateAccount(UpdateBrokerAccountRequest) returns (BrokerAccount) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}"
+      method: HTTP_METHOD_PATCH
+    };
+  }
+
+  // CloseAccount closes a broker account.
+  // DELETE /v1/accounts/{account_id}
+  rpc CloseAccount(CloseBrokerAccountRequest) returns (CloseBrokerAccountResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ============================================
+  // ACH Relationship Operations
+  // ============================================
+
+  // CreateACHRelationship creates an ACH relationship for an account.
+  // POST /v1/accounts/{account_id}/ach_relationships
+  rpc CreateACHRelationship(CreateACHRelationshipRequest) returns (ACHRelationship) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/ach_relationships"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ListACHRelationships retrieves ACH relationships for an account.
+  // GET /v1/accounts/{account_id}/ach_relationships
+  rpc ListACHRelationships(ListACHRelationshipsRequest) returns (ListACHRelationshipsResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/ach_relationships"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // DeleteACHRelationship deletes an ACH relationship.
+  // DELETE /v1/accounts/{account_id}/ach_relationships/{ach_relationship_id}
+  rpc DeleteACHRelationship(DeleteACHRelationshipRequest) returns (DeleteACHRelationshipResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/ach_relationships/{ach_relationship_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ============================================
+  // Transfer Operations
+  // ============================================
+
+  // CreateTransfer creates a fund transfer for an account.
+  // POST /v1/accounts/{account_id}/transfers
+  rpc CreateTransfer(CreateTransferRequest) returns (Transfer) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/transfers"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ListTransfers retrieves transfers for an account.
+  // GET /v1/accounts/{account_id}/transfers
+  rpc ListTransfers(ListTransfersRequest) returns (ListTransfersResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/transfers"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetTransfer retrieves a specific transfer.
+  // GET /v1/accounts/{account_id}/transfers/{transfer_id}
+  rpc GetTransfer(GetTransferRequest) returns (Transfer) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/transfers/{transfer_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CancelTransfer cancels a pending transfer.
+  // DELETE /v1/accounts/{account_id}/transfers/{transfer_id}
+  rpc CancelTransfer(CancelTransferRequest) returns (CancelTransferResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/transfers/{transfer_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ============================================
+  // Trading Order Operations
+  // ============================================
+
+  // CreateTradingOrder creates a trading order for an account.
+  // POST /v1/trading/accounts/{account_id}/orders
+  rpc CreateTradingOrder(CreateTradingOrderRequest) returns (BrokerOrder) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/orders"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ListTradingOrders retrieves orders for an account.
+  // GET /v1/trading/accounts/{account_id}/orders
+  rpc ListTradingOrders(ListTradingOrdersRequest) returns (ListTradingOrdersResponse) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/orders"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetTradingOrder retrieves a specific order.
+  // GET /v1/trading/accounts/{account_id}/orders/{order_id}
+  rpc GetTradingOrder(GetTradingOrderRequest) returns (BrokerOrder) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/orders/{order_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CancelTradingOrder cancels an order.
+  // DELETE /v1/trading/accounts/{account_id}/orders/{order_id}
+  rpc CancelTradingOrder(CancelTradingOrderRequest) returns (CancelTradingOrderResponse) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/orders/{order_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ============================================
+  // Trading Position Operations
+  // ============================================
+
+  // ListTradingPositions retrieves positions for an account.
+  // GET /v1/trading/accounts/{account_id}/positions
+  rpc ListTradingPositions(ListTradingPositionsRequest) returns (ListTradingPositionsResponse) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/positions"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetTradingPosition retrieves a specific position.
+  // GET /v1/trading/accounts/{account_id}/positions/{symbol}
+  rpc GetTradingPosition(GetTradingPositionRequest) returns (BrokerPosition) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/positions/{symbol}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CloseTradingPosition closes a specific position.
+  // DELETE /v1/trading/accounts/{account_id}/positions/{symbol}
+  rpc CloseTradingPosition(CloseTradingPositionRequest) returns (BrokerOrder) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/positions/{symbol}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // CloseAllTradingPositions closes all positions for an account.
+  // DELETE /v1/trading/accounts/{account_id}/positions
+  rpc CloseAllTradingPositions(CloseAllTradingPositionsRequest) returns (CloseAllTradingPositionsResponse) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/positions"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+}

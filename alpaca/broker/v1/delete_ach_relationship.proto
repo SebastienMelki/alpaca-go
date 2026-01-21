@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// DeleteACHRelationshipRequest is the request to delete an ACH relationship.
+message DeleteACHRelationshipRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The ACH relationship ID (bound from path variable).
+  string ach_relationship_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f5fbd77f-7b7e-4b91-8e8a-aaaa00000001"] }
+  ];
+}
+
+// DeleteACHRelationshipResponse is the response after deleting an ACH relationship.
+message DeleteACHRelationshipResponse {
+  // Whether the deletion was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}

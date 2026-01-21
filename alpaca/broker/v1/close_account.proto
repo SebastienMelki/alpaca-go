@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// CloseBrokerAccountRequest is the request to close a broker account.
+message CloseBrokerAccountRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// CloseBrokerAccountResponse is the response after closing a broker account.
+message CloseBrokerAccountResponse {
+  // Whether the close request was accepted.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // The account ID that was closed.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+}

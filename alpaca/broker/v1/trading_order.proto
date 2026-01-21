@@ -1,0 +1,159 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "sebuf/http/annotations.proto";
+
+// BrokerOrderSide represents the side of an order.
+enum BrokerOrderSide {
+  BROKER_ORDER_SIDE_UNSPECIFIED = 0;
+  BROKER_ORDER_SIDE_BUY = 1;
+  BROKER_ORDER_SIDE_SELL = 2;
+}
+
+// BrokerOrderType represents the type of order.
+enum BrokerOrderType {
+  BROKER_ORDER_TYPE_UNSPECIFIED = 0;
+  BROKER_ORDER_TYPE_MARKET = 1;
+  BROKER_ORDER_TYPE_LIMIT = 2;
+  BROKER_ORDER_TYPE_STOP = 3;
+  BROKER_ORDER_TYPE_STOP_LIMIT = 4;
+  BROKER_ORDER_TYPE_TRAILING_STOP = 5;
+}
+
+// BrokerTimeInForce represents the time in force.
+enum BrokerTimeInForce {
+  BROKER_TIME_IN_FORCE_UNSPECIFIED = 0;
+  BROKER_TIME_IN_FORCE_DAY = 1;
+  BROKER_TIME_IN_FORCE_GTC = 2;
+  BROKER_TIME_IN_FORCE_OPG = 3;
+  BROKER_TIME_IN_FORCE_CLS = 4;
+  BROKER_TIME_IN_FORCE_IOC = 5;
+  BROKER_TIME_IN_FORCE_FOK = 6;
+}
+
+// BrokerOrderStatus represents the status of an order.
+enum BrokerOrderStatus {
+  BROKER_ORDER_STATUS_UNSPECIFIED = 0;
+  BROKER_ORDER_STATUS_NEW = 1;
+  BROKER_ORDER_STATUS_PARTIALLY_FILLED = 2;
+  BROKER_ORDER_STATUS_FILLED = 3;
+  BROKER_ORDER_STATUS_DONE_FOR_DAY = 4;
+  BROKER_ORDER_STATUS_CANCELED = 5;
+  BROKER_ORDER_STATUS_EXPIRED = 6;
+  BROKER_ORDER_STATUS_REPLACED = 7;
+  BROKER_ORDER_STATUS_PENDING_CANCEL = 8;
+  BROKER_ORDER_STATUS_PENDING_REPLACE = 9;
+  BROKER_ORDER_STATUS_PENDING_NEW = 10;
+  BROKER_ORDER_STATUS_ACCEPTED = 11;
+  BROKER_ORDER_STATUS_REJECTED = 14;
+  BROKER_ORDER_STATUS_HELD = 17;
+}
+
+// BrokerOrderClass represents the class of order.
+enum BrokerOrderClass {
+  BROKER_ORDER_CLASS_UNSPECIFIED = 0;
+  BROKER_ORDER_CLASS_SIMPLE = 1;
+  BROKER_ORDER_CLASS_BRACKET = 2;
+  BROKER_ORDER_CLASS_OCO = 3;
+  BROKER_ORDER_CLASS_OTO = 4;
+}
+
+// BrokerOrder represents a trading order for a broker account.
+message BrokerOrder {
+  // Order ID (UUID).
+  string id = 1 [(sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }];
+
+  // Client order ID.
+  string client_order_id = 2 [(sebuf.http.field_examples) = { values: ["my_order_123"] }];
+
+  // Creation timestamp (RFC 3339).
+  string created_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Last update timestamp.
+  string updated_at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:05Z"] }];
+
+  // Submission timestamp.
+  string submitted_at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Fill timestamp.
+  string filled_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:05Z"] }];
+
+  // Expiration timestamp.
+  string expired_at = 7;
+
+  // Cancellation timestamp.
+  string canceled_at = 8;
+
+  // Failure timestamp.
+  string failed_at = 9;
+
+  // Replacement timestamp.
+  string replaced_at = 10;
+
+  // Order ID that replaced this order.
+  string replaced_by = 11;
+
+  // Order ID that this order replaces.
+  string replaces = 12;
+
+  // Asset ID.
+  string asset_id = 13 [(sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }];
+
+  // Symbol.
+  string symbol = 14 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Asset class.
+  string asset_class = 15 [(sebuf.http.field_examples) = { values: ["us_equity"] }];
+
+  // Notional value (for fractional orders).
+  string notional = 16 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
+
+  // Quantity ordered.
+  string qty = 17 [(sebuf.http.field_examples) = { values: ["10"] }];
+
+  // Quantity filled.
+  string filled_qty = 18 [(sebuf.http.field_examples) = { values: ["10"] }];
+
+  // Average fill price.
+  string filled_avg_price = 19 [(sebuf.http.field_examples) = { values: ["150.25"] }];
+
+  // Order class.
+  BrokerOrderClass order_class = 20 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Order type.
+  BrokerOrderType type = 21 [(sebuf.http.field_examples) = { values: ["2"] }];
+
+  // Order side.
+  BrokerOrderSide side = 22 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Time in force.
+  BrokerTimeInForce time_in_force = 23 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Limit price.
+  string limit_price = 24 [(sebuf.http.field_examples) = { values: ["150.00"] }];
+
+  // Stop price.
+  string stop_price = 25 [(sebuf.http.field_examples) = { values: ["145.00"] }];
+
+  // Order status.
+  BrokerOrderStatus status = 26 [(sebuf.http.field_examples) = { values: ["3"] }];
+
+  // Extended hours trading.
+  bool extended_hours = 27 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Leg orders.
+  repeated BrokerOrder legs = 28;
+
+  // Trail percent.
+  string trail_percent = 29 [(sebuf.http.field_examples) = { values: ["5.0"] }];
+
+  // Trail price.
+  string trail_price = 30 [(sebuf.http.field_examples) = { values: ["5.00"] }];
+
+  // High water mark.
+  string hwm = 31 [(sebuf.http.field_examples) = { values: ["155.00"] }];
+
+  // Commission charged.
+  string commission = 32 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+}

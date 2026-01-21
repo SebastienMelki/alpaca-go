@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// CreateTransferRequest is the request to create a transfer.
+message CreateTransferRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Transfer type (ach, wire).
+  string transfer_type = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["ach"] }
+  ];
+
+  // ACH relationship ID (required for ACH transfers).
+  string relationship_id = 3 [(sebuf.http.field_examples) = { values: ["f5fbd77f-7b7e-4b91-8e8a-aaaa00000001"] }];
+
+  // Bank ID (required for wire transfers).
+  string bank_id = 4;
+
+  // Transfer amount.
+  string amount = 5 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["1000.00"] }
+  ];
+
+  // Transfer direction (INCOMING, OUTGOING).
+  string direction = 6 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["INCOMING"] }
+  ];
+
+  // Additional information.
+  string additional_information = 7;
+}

@@ -1,0 +1,165 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/broker/v1/trading_order.proto";
+
+// BrokerPositionSide represents the side of a position.
+enum BrokerPositionSide {
+  BROKER_POSITION_SIDE_UNSPECIFIED = 0;
+  BROKER_POSITION_SIDE_LONG = 1;
+  BROKER_POSITION_SIDE_SHORT = 2;
+}
+
+// BrokerPosition represents a position in a broker account.
+message BrokerPosition {
+  // Asset ID (UUID).
+  string asset_id = 1 [(sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }];
+
+  // Symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Exchange.
+  string exchange = 3 [(sebuf.http.field_examples) = { values: ["NASDAQ"] }];
+
+  // Asset class.
+  string asset_class = 4 [(sebuf.http.field_examples) = { values: ["us_equity"] }];
+
+  // Whether the asset is marginable.
+  bool asset_marginable = 5 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Quantity.
+  string qty = 6 [(sebuf.http.field_examples) = { values: ["100"] }];
+
+  // Average entry price.
+  string avg_entry_price = 7 [(sebuf.http.field_examples) = { values: ["150.00"] }];
+
+  // Position side.
+  BrokerPositionSide side = 8 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Current market value.
+  string market_value = 9 [(sebuf.http.field_examples) = { values: ["15500.00"] }];
+
+  // Cost basis.
+  string cost_basis = 10 [(sebuf.http.field_examples) = { values: ["15000.00"] }];
+
+  // Unrealized P/L.
+  string unrealized_pl = 11 [(sebuf.http.field_examples) = { values: ["500.00"] }];
+
+  // Unrealized P/L percentage.
+  string unrealized_plpc = 12 [(sebuf.http.field_examples) = { values: ["0.0333"] }];
+
+  // Unrealized intraday P/L.
+  string unrealized_intraday_pl = 13 [(sebuf.http.field_examples) = { values: ["100.00"] }];
+
+  // Unrealized intraday P/L percentage.
+  string unrealized_intraday_plpc = 14 [(sebuf.http.field_examples) = { values: ["0.0065"] }];
+
+  // Current price.
+  string current_price = 15 [(sebuf.http.field_examples) = { values: ["155.00"] }];
+
+  // Last day price.
+  string lastday_price = 16 [(sebuf.http.field_examples) = { values: ["154.00"] }];
+
+  // Change today.
+  string change_today = 17 [(sebuf.http.field_examples) = { values: ["0.0065"] }];
+
+  // Quantity available.
+  string qty_available = 18 [(sebuf.http.field_examples) = { values: ["100"] }];
+}
+
+// ListTradingPositionsRequest is the request to list positions for a broker account.
+message ListTradingPositionsRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// ListTradingPositionsResponse is the response containing trading positions.
+message ListTradingPositionsResponse {
+  // List of positions.
+  repeated BrokerPosition positions = 1;
+}
+
+// GetTradingPositionRequest is the request to get a position for a broker account.
+message GetTradingPositionRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The symbol (bound from path variable).
+  string symbol = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+}
+
+// CloseTradingPositionRequest is the request to close a position for a broker account.
+message CloseTradingPositionRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The symbol (bound from path variable).
+  string symbol = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Quantity to close (optional).
+  string qty = 3 [
+    (sebuf.http.query) = { name: "qty" },
+    (sebuf.http.field_examples) = { values: ["50"] }
+  ];
+
+  // Percentage to close (optional).
+  string percentage = 4 [
+    (sebuf.http.query) = { name: "percentage" },
+    (sebuf.http.field_examples) = { values: ["50"] }
+  ];
+}
+
+// CloseAllTradingPositionsRequest is the request to close all positions for a broker account.
+message CloseAllTradingPositionsRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Whether to cancel all open orders first.
+  bool cancel_orders = 2 [
+    (sebuf.http.query) = { name: "cancel_orders" },
+    (sebuf.http.field_examples) = { values: ["true"] }
+  ];
+}
+
+// ClosedTradingPosition represents the result of closing a position.
+message ClosedTradingPosition {
+  // Symbol.
+  string symbol = 1 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // HTTP status code.
+  int32 status = 2 [(sebuf.http.field_examples) = { values: ["200"] }];
+
+  // The closing order.
+  BrokerOrder order = 3;
+}
+
+// CloseAllTradingPositionsResponse is the response after closing all positions.
+message CloseAllTradingPositionsResponse {
+  // List of closed positions.
+  repeated ClosedTradingPosition positions = 1;
+}

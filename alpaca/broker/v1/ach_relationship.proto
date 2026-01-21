@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "sebuf/http/annotations.proto";
+
+// ACHRelationshipStatus represents the status of an ACH relationship.
+enum ACHRelationshipStatus {
+  ACH_RELATIONSHIP_STATUS_UNSPECIFIED = 0;
+  ACH_RELATIONSHIP_STATUS_QUEUED = 1;
+  ACH_RELATIONSHIP_STATUS_SENT_TO_CLEARING = 2;
+  ACH_RELATIONSHIP_STATUS_APPROVED = 3;
+  ACH_RELATIONSHIP_STATUS_CANCELED = 4;
+}
+
+// ACHRelationship represents a bank account connection for ACH transfers.
+message ACHRelationship {
+  // Relationship ID (UUID).
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f5fbd77f-7b7e-4b91-8e8a-aaaa00000001"] }];
+
+  // Account ID (UUID).
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Creation timestamp (RFC 3339).
+  string created_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Last update timestamp (RFC 3339).
+  string updated_at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Relationship status.
+  ACHRelationshipStatus status = 5 [(sebuf.http.field_examples) = { values: ["3"] }];
+
+  // Account owner name.
+  string account_owner_name = 6 [(sebuf.http.field_examples) = { values: ["John Doe"] }];
+
+  // Bank account type (CHECKING, SAVINGS).
+  string bank_account_type = 7 [(sebuf.http.field_examples) = { values: ["CHECKING"] }];
+
+  // Bank account number (masked).
+  string bank_account_number = 8 [(sebuf.http.field_examples) = { values: ["*****6789"] }];
+
+  // Bank routing number.
+  string bank_routing_number = 9 [(sebuf.http.field_examples) = { values: ["121000358"] }];
+
+  // Nickname for the relationship.
+  string nickname = 10 [(sebuf.http.field_examples) = { values: ["My Checking"] }];
+
+  // Processor token (if using Plaid).
+  string processor_token = 11;
+}

@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "sebuf/http/annotations.proto";
+
+// TransferDirection represents the direction of a transfer.
+enum TransferDirection {
+  TRANSFER_DIRECTION_UNSPECIFIED = 0;
+  TRANSFER_DIRECTION_INCOMING = 1;
+  TRANSFER_DIRECTION_OUTGOING = 2;
+}
+
+// TransferType represents the type of transfer.
+enum TransferType {
+  TRANSFER_TYPE_UNSPECIFIED = 0;
+  TRANSFER_TYPE_ACH = 1;
+  TRANSFER_TYPE_WIRE = 2;
+}
+
+// TransferStatus represents the status of a transfer.
+enum TransferStatus {
+  TRANSFER_STATUS_UNSPECIFIED = 0;
+  TRANSFER_STATUS_QUEUED = 1;
+  TRANSFER_STATUS_PENDING = 2;
+  TRANSFER_STATUS_SENT_TO_CLEARING = 3;
+  TRANSFER_STATUS_APPROVED = 4;
+  TRANSFER_STATUS_COMPLETE = 5;
+  TRANSFER_STATUS_CANCELED = 6;
+  TRANSFER_STATUS_REJECTED = 7;
+  TRANSFER_STATUS_RETURNED = 8;
+}
+
+// Transfer represents a fund transfer.
+message Transfer {
+  // Transfer ID (UUID).
+  string id = 1 [(sebuf.http.field_examples) = { values: ["a1b2c3d4-e5f6-7890-abcd-ef1234567890"] }];
+
+  // Account ID (UUID).
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // ACH relationship ID (if ACH transfer).
+  string relationship_id = 3 [(sebuf.http.field_examples) = { values: ["f5fbd77f-7b7e-4b91-8e8a-aaaa00000001"] }];
+
+  // Bank ID (if wire transfer).
+  string bank_id = 4;
+
+  // Transfer type.
+  TransferType type = 5 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Transfer status.
+  TransferStatus status = 6 [(sebuf.http.field_examples) = { values: ["5"] }];
+
+  // Transfer direction.
+  TransferDirection direction = 7 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Transfer amount.
+  string amount = 8 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
+
+  // Creation timestamp (RFC 3339).
+  string created_at = 9 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Last update timestamp (RFC 3339).
+  string updated_at = 10 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Expiration date (RFC 3339).
+  string expires_at = 11 [(sebuf.http.field_examples) = { values: ["2024-01-22T10:30:00Z"] }];
+
+  // Reason for cancellation/rejection.
+  string reason = 12;
+
+  // Additional data.
+  string additional_information = 13;
+
+  // Fee associated with the transfer.
+  string fee = 14 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Requested amount (before fees).
+  string requested_amount = 15 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
+}

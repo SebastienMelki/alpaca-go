@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/broker/v1/trading_order.proto";
+
+// BrokerTakeProfitSpec specifies take profit parameters for bracket orders.
+message BrokerTakeProfitSpec {
+  // Limit price for take profit.
+  string limit_price = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["160.00"] }
+  ];
+}
+
+// BrokerStopLossSpec specifies stop loss parameters for bracket orders.
+message BrokerStopLossSpec {
+  // Stop price for stop loss.
+  string stop_price = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["140.00"] }
+  ];
+
+  // Limit price for stop loss.
+  string limit_price = 2 [(sebuf.http.field_examples) = { values: ["139.00"] }];
+}
+
+// CreateTradingOrderRequest is the request to create a trading order for a broker account.
+message CreateTradingOrderRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Symbol or asset ID to trade.
+  string symbol = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Quantity to trade (required if notional not specified).
+  string qty = 3 [(sebuf.http.field_examples) = { values: ["10"] }];
+
+  // Notional value to trade (required if qty not specified).
+  string notional = 4 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
+
+  // Order side.
+  BrokerOrderSide side = 5 [
+    (buf.validate.field).enum = { not_in: [0] },
+    (sebuf.http.field_examples) = { values: ["1"] }
+  ];
+
+  // Order type.
+  BrokerOrderType type = 6 [
+    (buf.validate.field).enum = { not_in: [0] },
+    (sebuf.http.field_examples) = { values: ["2"] }
+  ];
+
+  // Time in force.
+  BrokerTimeInForce time_in_force = 7 [
+    (buf.validate.field).enum = { not_in: [0] },
+    (sebuf.http.field_examples) = { values: ["1"] }
+  ];
+
+  // Limit price (for limit orders).
+  string limit_price = 8 [(sebuf.http.field_examples) = { values: ["150.00"] }];
+
+  // Stop price (for stop orders).
+  string stop_price = 9 [(sebuf.http.field_examples) = { values: ["145.00"] }];
+
+  // Trail price (for trailing stop orders).
+  string trail_price = 10 [(sebuf.http.field_examples) = { values: ["5.00"] }];
+
+  // Trail percent (for trailing stop orders).
+  string trail_percent = 11 [(sebuf.http.field_examples) = { values: ["5.0"] }];
+
+  // Extended hours trading.
+  bool extended_hours = 12 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Client order ID.
+  string client_order_id = 13 [
+    (buf.validate.field).string = { max_len: 48 },
+    (sebuf.http.field_examples) = { values: ["my_order_123"] }
+  ];
+
+  // Order class.
+  BrokerOrderClass order_class = 14 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Take profit spec (for bracket orders).
+  BrokerTakeProfitSpec take_profit = 15;
+
+  // Stop loss spec (for bracket orders).
+  BrokerStopLossSpec stop_loss = 16;
+
+  // Commission to charge.
+  string commission = 17 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+}

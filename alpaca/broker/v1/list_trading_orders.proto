@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/broker/v1/trading_order.proto";
+
+// ListTradingOrdersRequest is the request to list orders for a broker account.
+message ListTradingOrdersRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Filter by status (open, closed, all).
+  string status = 2 [
+    (sebuf.http.query) = { name: "status" },
+    (sebuf.http.field_examples) = { values: ["open"] }
+  ];
+
+  // Maximum number of orders to return.
+  int32 limit = 3 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 500 },
+    (sebuf.http.field_examples) = { values: ["50"] }
+  ];
+
+  // Cursor for pagination.
+  string after = 4 [
+    (sebuf.http.query) = { name: "after" },
+    (sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }
+  ];
+
+  // Filter by orders updated until this timestamp.
+  string until = 5 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }
+  ];
+
+  // Sort direction (asc, desc).
+  string direction = 6 [
+    (sebuf.http.query) = { name: "direction" },
+    (sebuf.http.field_examples) = { values: ["desc"] }
+  ];
+
+  // Whether to include nested leg orders.
+  bool nested = 7 [
+    (sebuf.http.query) = { name: "nested" },
+    (sebuf.http.field_examples) = { values: ["false"] }
+  ];
+
+  // Filter by symbols (comma-separated).
+  string symbols = 8 [
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL,TSLA"] }
+  ];
+}
+
+// ListTradingOrdersResponse is the response containing trading orders.
+message ListTradingOrdersResponse {
+  // List of orders.
+  repeated BrokerOrder orders = 1;
+}

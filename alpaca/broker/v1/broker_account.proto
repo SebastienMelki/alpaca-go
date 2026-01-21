@@ -1,0 +1,271 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "sebuf/http/annotations.proto";
+
+// BrokerAccountStatus represents the status of a broker account.
+enum BrokerAccountStatus {
+  BROKER_ACCOUNT_STATUS_UNSPECIFIED = 0;
+  BROKER_ACCOUNT_STATUS_ONBOARDING = 1;
+  BROKER_ACCOUNT_STATUS_SUBMISSION_FAILED = 2;
+  BROKER_ACCOUNT_STATUS_SUBMITTED = 3;
+  BROKER_ACCOUNT_STATUS_ACCOUNT_UPDATED = 4;
+  BROKER_ACCOUNT_STATUS_APPROVAL_PENDING = 5;
+  BROKER_ACCOUNT_STATUS_ACTIVE = 6;
+  BROKER_ACCOUNT_STATUS_REJECTED = 7;
+  BROKER_ACCOUNT_STATUS_DISABLED = 8;
+  BROKER_ACCOUNT_STATUS_ACCOUNT_CLOSED = 9;
+}
+
+// TaxIdType represents the type of tax ID.
+enum TaxIdType {
+  TAX_ID_TYPE_UNSPECIFIED = 0;
+  TAX_ID_TYPE_USA_SSN = 1;
+  TAX_ID_TYPE_ARG_AR_CUIT = 2;
+  TAX_ID_TYPE_AUS_TFN = 3;
+  TAX_ID_TYPE_DEU_TAX_ID = 4;
+  TAX_ID_TYPE_NOT_SPECIFIED = 5;
+}
+
+// FundingSource represents the source of funding.
+enum FundingSource {
+  FUNDING_SOURCE_UNSPECIFIED = 0;
+  FUNDING_SOURCE_EMPLOYMENT_INCOME = 1;
+  FUNDING_SOURCE_INVESTMENTS = 2;
+  FUNDING_SOURCE_INHERITANCE = 3;
+  FUNDING_SOURCE_BUSINESS_INCOME = 4;
+  FUNDING_SOURCE_SAVINGS = 5;
+  FUNDING_SOURCE_FAMILY = 6;
+}
+
+// Contact represents contact information.
+message Contact {
+  // Email address.
+  string email_address = 1 [(sebuf.http.field_examples) = { values: ["john.doe@example.com"] }];
+
+  // Phone number.
+  string phone_number = 2 [(sebuf.http.field_examples) = { values: ["+1-555-123-4567"] }];
+
+  // Street address lines.
+  repeated string street_address = 3 [(sebuf.http.field_examples) = { values: ["123 Main St", "Apt 4B"] }];
+
+  // Unit number.
+  string unit = 4 [(sebuf.http.field_examples) = { values: ["4B"] }];
+
+  // City.
+  string city = 5 [(sebuf.http.field_examples) = { values: ["New York"] }];
+
+  // State/Province (2-letter code for US).
+  string state = 6 [(sebuf.http.field_examples) = { values: ["NY"] }];
+
+  // Postal code.
+  string postal_code = 7 [(sebuf.http.field_examples) = { values: ["10001"] }];
+
+  // Country (ISO 3166-1 alpha-3).
+  string country = 8 [(sebuf.http.field_examples) = { values: ["USA"] }];
+}
+
+// Identity represents identity information.
+message Identity {
+  // Given/first name.
+  string given_name = 1 [(sebuf.http.field_examples) = { values: ["John"] }];
+
+  // Middle name.
+  string middle_name = 2 [(sebuf.http.field_examples) = { values: ["William"] }];
+
+  // Family/last name.
+  string family_name = 3 [(sebuf.http.field_examples) = { values: ["Doe"] }];
+
+  // Date of birth (YYYY-MM-DD).
+  string date_of_birth = 4 [(sebuf.http.field_examples) = { values: ["1990-01-15"] }];
+
+  // Tax ID (SSN for US).
+  string tax_id = 5 [(sebuf.http.field_examples) = { values: ["123-45-6789"] }];
+
+  // Tax ID type.
+  TaxIdType tax_id_type = 6 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Country of citizenship (ISO 3166-1 alpha-3).
+  string country_of_citizenship = 7 [(sebuf.http.field_examples) = { values: ["USA"] }];
+
+  // Country of birth (ISO 3166-1 alpha-3).
+  string country_of_birth = 8 [(sebuf.http.field_examples) = { values: ["USA"] }];
+
+  // Country of tax residence (ISO 3166-1 alpha-3).
+  string country_of_tax_residence = 9 [(sebuf.http.field_examples) = { values: ["USA"] }];
+
+  // Visa type (if applicable).
+  string visa_type = 10 [(sebuf.http.field_examples) = { values: ["H1B"] }];
+
+  // Visa expiration date (YYYY-MM-DD).
+  string visa_expiration_date = 11 [(sebuf.http.field_examples) = { values: ["2025-12-31"] }];
+
+  // Date of departure from home country (YYYY-MM-DD).
+  string date_of_departure_from_home_country = 12 [(sebuf.http.field_examples) = { values: ["2020-01-01"] }];
+
+  // Permanent resident.
+  bool permanent_resident = 13 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Funding source.
+  repeated FundingSource funding_source = 14 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Liquid net worth minimum.
+  string liquid_net_worth_min = 15 [(sebuf.http.field_examples) = { values: ["100000"] }];
+
+  // Liquid net worth maximum.
+  string liquid_net_worth_max = 16 [(sebuf.http.field_examples) = { values: ["500000"] }];
+
+  // Annual income minimum.
+  string annual_income_min = 17 [(sebuf.http.field_examples) = { values: ["50000"] }];
+
+  // Annual income maximum.
+  string annual_income_max = 18 [(sebuf.http.field_examples) = { values: ["100000"] }];
+
+  // Total net worth minimum.
+  string total_net_worth_min = 19 [(sebuf.http.field_examples) = { values: ["200000"] }];
+
+  // Total net worth maximum.
+  string total_net_worth_max = 20 [(sebuf.http.field_examples) = { values: ["1000000"] }];
+}
+
+// Disclosures represents regulatory disclosures.
+message Disclosures {
+  // Whether the user is a control person.
+  bool is_control_person = 1 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Whether the user is affiliated with an exchange or FINRA.
+  bool is_affiliated_exchange_or_finra = 2 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Whether the user is a politically exposed person.
+  bool is_politically_exposed = 3 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Whether the user has an immediate family member that is politically exposed.
+  bool immediate_family_exposed = 4 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Employment status (employed, unemployed, student, retired).
+  string employment_status = 5 [(sebuf.http.field_examples) = { values: ["employed"] }];
+
+  // Employer name.
+  string employer_name = 6 [(sebuf.http.field_examples) = { values: ["Acme Corp"] }];
+
+  // Employer address.
+  string employer_address = 7 [(sebuf.http.field_examples) = { values: ["456 Business Ave, San Francisco, CA 94107"] }];
+
+  // Employment position.
+  string employment_position = 8 [(sebuf.http.field_examples) = { values: ["Software Engineer"] }];
+}
+
+// Agreement represents a signed agreement.
+message Agreement {
+  // Agreement type (margin_agreement, account_agreement, customer_agreement, crypto_agreement).
+  string agreement = 1 [(sebuf.http.field_examples) = { values: ["customer_agreement"] }];
+
+  // Timestamp when signed (RFC 3339).
+  string signed_at = 2 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // IP address when signed.
+  string ip_address = 3 [(sebuf.http.field_examples) = { values: ["192.168.1.1"] }];
+
+  // Revision of the agreement.
+  string revision = 4 [(sebuf.http.field_examples) = { values: ["2024.01"] }];
+}
+
+// TrustedContact represents a trusted contact.
+message TrustedContact {
+  // Given/first name.
+  string given_name = 1 [(sebuf.http.field_examples) = { values: ["Jane"] }];
+
+  // Family/last name.
+  string family_name = 2 [(sebuf.http.field_examples) = { values: ["Doe"] }];
+
+  // Email address.
+  string email_address = 3 [(sebuf.http.field_examples) = { values: ["jane.doe@example.com"] }];
+
+  // Phone number.
+  string phone_number = 4 [(sebuf.http.field_examples) = { values: ["+1-555-987-6543"] }];
+
+  // Street address.
+  string street_address = 5 [(sebuf.http.field_examples) = { values: ["789 Oak Lane, Chicago, IL 60601"] }];
+
+  // City.
+  string city = 6 [(sebuf.http.field_examples) = { values: ["Chicago"] }];
+
+  // State.
+  string state = 7 [(sebuf.http.field_examples) = { values: ["IL"] }];
+
+  // Postal code.
+  string postal_code = 8 [(sebuf.http.field_examples) = { values: ["60601"] }];
+
+  // Country.
+  string country = 9 [(sebuf.http.field_examples) = { values: ["USA"] }];
+}
+
+// BrokerAccount represents a broker-managed trading account.
+message BrokerAccount {
+  // Account ID (UUID).
+  string id = 1 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Account number.
+  string account_number = 2 [(sebuf.http.field_examples) = { values: ["010203ABCD"] }];
+
+  // Account status.
+  BrokerAccountStatus status = 3 [(sebuf.http.field_examples) = { values: ["6"] }];
+
+  // Crypto status.
+  string crypto_status = 4 [(sebuf.http.field_examples) = { values: ["ACTIVE"] }];
+
+  // Currency (USD).
+  string currency = 5 [(sebuf.http.field_examples) = { values: ["USD"] }];
+
+  // Last equity value.
+  string last_equity = 6 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Creation timestamp (RFC 3339).
+  string created_at = 7 [(sebuf.http.field_examples) = { values: ["2024-01-01T00:00:00Z"] }];
+
+  // Contact information.
+  Contact contact = 8;
+
+  // Identity information.
+  Identity identity = 9;
+
+  // Disclosures.
+  Disclosures disclosures = 10;
+
+  // Signed agreements.
+  repeated Agreement agreements = 11;
+
+  // Trusted contact.
+  TrustedContact trusted_contact = 12;
+
+  // Account type (trading, custodial).
+  string account_type = 13 [(sebuf.http.field_examples) = { values: ["trading"] }];
+
+  // Trading configurations.
+  BrokerAccountTradingConfigurations trading_configurations = 14;
+
+  // Whether margin trading is enabled.
+  bool enabled_assets_margin = 15 [(sebuf.http.field_examples) = { values: ["true"] }];
+}
+
+// BrokerAccountTradingConfigurations represents trading configurations for a broker account.
+message BrokerAccountTradingConfigurations {
+  // Day trading buying power check setting.
+  string dtbp_check = 1 [(sebuf.http.field_examples) = { values: ["both"] }];
+
+  // Whether fractional trading is enabled.
+  bool fractional_trading = 2 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Maximum margin multiplier.
+  string max_margin_multiplier = 3 [(sebuf.http.field_examples) = { values: ["4"] }];
+
+  // Whether PDT protection is enabled.
+  bool pdt_check = 4 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Trade confirmation email setting.
+  string trade_confirm_email = 5 [(sebuf.http.field_examples) = { values: ["all"] }];
+
+  // Whether trading is suspended.
+  bool suspend_trade = 6 [(sebuf.http.field_examples) = { values: ["false"] }];
+}

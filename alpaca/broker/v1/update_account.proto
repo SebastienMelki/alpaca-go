@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+import "alpaca/broker/v1/broker_account.proto";
+
+// UpdateBrokerAccountRequest is the request to update a broker account.
+message UpdateBrokerAccountRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Updated contact information.
+  Contact contact = 2;
+
+  // Updated identity information.
+  Identity identity = 3;
+
+  // Updated disclosures.
+  Disclosures disclosures = 4;
+
+  // Updated trusted contact.
+  TrustedContact trusted_contact = 5;
+}

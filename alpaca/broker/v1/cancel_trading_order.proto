@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// CancelTradingOrderRequest is the request to cancel a trading order for a broker account.
+message CancelTradingOrderRequest {
+  // The account ID (bound from path variable).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The order ID (bound from path variable).
+  string order_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }
+  ];
+}
+
+// CancelTradingOrderResponse is the response after canceling a trading order.
+message CancelTradingOrderResponse {
+  // Whether the cancellation was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // The order ID that was canceled.
+  string order_id = 2 [(sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }];
+}

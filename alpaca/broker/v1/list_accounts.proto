@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "sebuf/http/annotations.proto";
+import "alpaca/broker/v1/broker_account.proto";
+
+// ListAccountsRequest is the request to list broker accounts.
+message ListAccountsRequest {
+  // Filter by query string (searches across fields).
+  string query = 1 [
+    (sebuf.http.query) = { name: "query" },
+    (sebuf.http.field_examples) = { values: ["john"] }
+  ];
+
+  // Filter by creation date after (RFC 3339 or YYYY-MM-DD).
+  string created_after = 2 [
+    (sebuf.http.query) = { name: "created_after" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01"] }
+  ];
+
+  // Filter by creation date before (RFC 3339 or YYYY-MM-DD).
+  string created_before = 3 [
+    (sebuf.http.query) = { name: "created_before" },
+    (sebuf.http.field_examples) = { values: ["2024-12-31"] }
+  ];
+
+  // Filter by account status.
+  string status = 4 [
+    (sebuf.http.query) = { name: "status" },
+    (sebuf.http.field_examples) = { values: ["ACTIVE"] }
+  ];
+
+  // Sort order (asc, desc).
+  string sort = 5 [
+    (sebuf.http.query) = { name: "sort" },
+    (sebuf.http.field_examples) = { values: ["desc"] }
+  ];
+
+  // Comma-separated list of entities to include (contact, identity, etc.).
+  string entities = 6 [
+    (sebuf.http.query) = { name: "entities" },
+    (sebuf.http.field_examples) = { values: ["contact,identity"] }
+  ];
+}
+
+// ListAccountsResponse is the response containing a list of broker accounts.
+message ListAccountsResponse {
+  // List of accounts.
+  repeated BrokerAccount accounts = 1;
+}
