@@ -4,17 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Go SDK for the Alpaca Trading API, built using [sebuf](https://github.com/sebastienmelki/sebuf) to generate HTTP handlers and OpenAPI documentation from Protocol Buffer definitions.
+This is a Go SDK for the Alpaca Trading API, built using [sebuf](https://github.com/sebastienmelki/sebuf) to generate HTTP clients and OpenAPI documentation from Protocol Buffer definitions.
 
 ## Build Commands
 
 ```bash
-# Install sebuf code generators
-go install github.com/SebastienMelki/sebuf/cmd/protoc-gen-go-http@latest
-go install github.com/SebastienMelki/sebuf/cmd/protoc-gen-openapiv3@latest
+# Install all required tools (code generators + linter)
+make install-tools
 
 # Generate Go code from proto files
-buf generate
+make generate
+
+# Build
+make build
 
 # Run tests
 go test ./...
@@ -22,8 +24,17 @@ go test ./...
 # Run a single test
 go test -run TestName ./path/to/package
 
-# Build
-go build ./...
+# Run linter
+make lint
+
+# Run linter with auto-fix
+make lint-fix
+
+# Lint proto files
+make buf-lint
+
+# Run all checks (buf-lint, lint, generate, build, test)
+make check
 ```
 
 ## Architecture
@@ -31,7 +42,7 @@ go build ./...
 ### Protobuf-First Design
 
 All API definitions live in `.proto` files. The sebuf generators produce:
-- HTTP request/response handlers with automatic JSON serialization
+- HTTP client code with automatic JSON serialization
 - Request validation using `buf.validate` annotations
 - OpenAPI 3.1 documentation per service
 
@@ -59,18 +70,24 @@ Define these as required service headers in proto files using `sebuf.http.servic
 alpaca/
 ├── core/v1/              # Shared types (identifiers)
 │   └── identifiers.proto
-└── trading/v1/           # Trading API (orders, positions, account)
-    ├── service.proto     # TradingService definition
-    ├── account.proto     # Account model
-    ├── order.proto       # Order model + enums
-    ├── position.proto    # Position model
-    └── *.proto           # Request/response per operation
+├── trading/v1/           # Trading API (orders, positions, account)
+│   ├── service.proto     # TradingService definition
+│   ├── account.proto     # Account model
+│   ├── order.proto       # Order model + enums
+│   ├── position.proto    # Position model
+│   └── *.proto           # Request/response per operation
+├── marketdata/v2/        # Market Data API (stocks, crypto, options)
+└── broker/v1/            # Broker API (multi-account management)
 ```
 
 ### Generated Code Structure
 
 ```
-api/                      # Generated Go handlers and types
+internal/gen/             # Generated Go clients (private)
+pkg/                      # Public client wrappers
+├── trading/              # Trading API client
+├── marketdata/           # Market Data API client
+└── broker/               # Broker API client
 docs/                     # Generated OpenAPI 3.1 specs per service
 ```
 
