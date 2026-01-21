@@ -1,13 +1,14 @@
-.PHONY: all generate build lint test clean release install-tools deps check
+.PHONY: all generate build lint lint-fix buf-lint test clean release install-tools deps check
 
 # Default target
 all: generate build
 
 # Install required tools
 install-tools:
-	go install github.com/SebastienMelki/sebuf/cmd/protoc-gen-go-http@latest
+	go install github.com/SebastienMelki/sebuf/cmd/protoc-gen-go-client@latest
 	go install github.com/SebastienMelki/sebuf/cmd/protoc-gen-openapiv3@latest
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 
 # Update buf dependencies
 deps:
@@ -21,8 +22,18 @@ generate:
 build:
 	go build ./...
 
-# Run buf lint on proto files
+# Run Go linter
 lint:
+	@echo "Running linter..."
+	@golangci-lint run ./...
+
+# Run Go linter with auto-fix
+lint-fix:
+	@echo "Running linter with auto-fix..."
+	@golangci-lint run --fix ./...
+
+# Run buf lint on proto files
+buf-lint:
 	buf lint
 
 # Run tests
@@ -31,7 +42,7 @@ test:
 
 # Clean generated files
 clean:
-	rm -rf api/ docs/
+	rm -rf internal/gen/ docs/
 
 # Release - creates a new git tag and pushes it
 # Usage: make release VERSION=v1.0.0
@@ -44,5 +55,5 @@ endif
 	git push origin $(VERSION)
 	@echo "Release $(VERSION) created and pushed."
 
-# Run all checks (lint, generate, build, test)
-check: lint generate build test
+# Run all checks (buf-lint, lint, generate, build, test)
+check: buf-lint lint generate build test
