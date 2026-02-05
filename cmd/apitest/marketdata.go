@@ -166,7 +166,7 @@ func testMarketData() {
 
 func testGetStockBars(ctx context.Context, client *marketdata.Client, start, end string) TestResult {
 	result := TestResult{Name: "GetStockBars"}
-	resp, err := client.GetStockBars(ctx, &marketdata.GetStockBarsRequest{
+	resp, err := client.V2.GetStockBars(ctx, &marketdata.GetStockBarsRequest{
 		Symbols:   stockSymbols,
 		Timeframe: defaultTF,
 		Start:     start,
@@ -187,7 +187,7 @@ func testGetStockBars(ctx context.Context, client *marketdata.Client, start, end
 
 func testGetLatestStockBars(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLatestStockBars"}
-	resp, err := client.GetLatestStockBars(ctx, &marketdata.GetLatestStockBarsRequest{
+	resp, err := client.V2.GetLatestStockBars(ctx, &marketdata.GetLatestStockBarsRequest{
 		Symbols: stockSymbols,
 		Feed:    "iex",
 	})
@@ -204,7 +204,7 @@ func testGetLatestStockBars(ctx context.Context, client *marketdata.Client) Test
 
 func testGetStockBarsSingle(ctx context.Context, client *marketdata.Client, start, end string) TestResult {
 	result := TestResult{Name: "GetStockBarsSingle"}
-	resp, err := client.GetStockBarsSingle(ctx, &marketdata.GetStockBarsSingleRequest{
+	resp, err := client.V2.GetStockBarsSingle(ctx, &marketdata.GetStockBarsSingleRequest{
 		Symbol:    stockSymbol,
 		Timeframe: defaultTF,
 		Start:     start,
@@ -225,7 +225,7 @@ func testGetStockBarsSingle(ctx context.Context, client *marketdata.Client, star
 
 func testGetLatestStockBarSingle(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLatestStockBarSingle"}
-	resp, err := client.GetLatestStockBarSingle(ctx, &marketdata.GetLatestStockBarSingleRequest{
+	resp, err := client.V2.GetLatestStockBarSingle(ctx, &marketdata.GetLatestStockBarSingleRequest{
 		Symbol: stockSymbol,
 		Feed:   "iex",
 	})
@@ -242,7 +242,7 @@ func testGetLatestStockBarSingle(ctx context.Context, client *marketdata.Client)
 
 func testGetStockTrades(ctx context.Context, client *marketdata.Client, start string) TestResult {
 	result := TestResult{Name: "GetStockTrades"}
-	resp, err := client.GetStockTrades(ctx, &marketdata.GetStockTradesRequest{
+	resp, err := client.V2.GetStockTrades(ctx, &marketdata.GetStockTradesRequest{
 		Symbols: stockSymbols,
 		Start:   start,
 		Limit:   10,
@@ -265,7 +265,7 @@ func testGetStockTrades(ctx context.Context, client *marketdata.Client, start st
 
 func testGetLatestStockTrades(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLatestStockTrades"}
-	resp, err := client.GetLatestStockTrades(ctx, &marketdata.GetLatestStockTradesRequest{
+	resp, err := client.V2.GetLatestStockTrades(ctx, &marketdata.GetLatestStockTradesRequest{
 		Symbols: stockSymbols,
 		Feed:    "iex",
 	})
@@ -282,7 +282,7 @@ func testGetLatestStockTrades(ctx context.Context, client *marketdata.Client) Te
 
 func testGetStockTradesSingle(ctx context.Context, client *marketdata.Client, start string) TestResult {
 	result := TestResult{Name: "GetStockTradesSingle"}
-	resp, err := client.GetStockTradesSingle(ctx, &marketdata.GetStockTradesSingleRequest{
+	resp, err := client.V2.GetStockTradesSingle(ctx, &marketdata.GetStockTradesSingleRequest{
 		Symbol: stockSymbol,
 		Start:  start,
 		Limit:  10,
@@ -301,7 +301,7 @@ func testGetStockTradesSingle(ctx context.Context, client *marketdata.Client, st
 
 func testGetLatestStockTradeSingle(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLatestStockTradeSingle"}
-	resp, err := client.GetLatestStockTradeSingle(ctx, &marketdata.GetLatestStockTradeSingleRequest{
+	resp, err := client.V2.GetLatestStockTradeSingle(ctx, &marketdata.GetLatestStockTradeSingleRequest{
 		Symbol: stockSymbol,
 		Feed:   "iex",
 	})
@@ -318,7 +318,7 @@ func testGetLatestStockTradeSingle(ctx context.Context, client *marketdata.Clien
 
 func testGetStockQuotes(ctx context.Context, client *marketdata.Client, start string) TestResult {
 	result := TestResult{Name: "GetStockQuotes"}
-	resp, err := client.GetStockQuotes(ctx, &marketdata.GetStockQuotesRequest{
+	resp, err := client.V2.GetStockQuotes(ctx, &marketdata.GetStockQuotesRequest{
 		Symbols: stockSymbols,
 		Start:   start,
 		Limit:   10,
@@ -341,7 +341,7 @@ func testGetStockQuotes(ctx context.Context, client *marketdata.Client, start st
 
 func testGetLatestStockQuotes(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLatestStockQuotes"}
-	resp, err := client.GetLatestStockQuotes(ctx, &marketdata.GetLatestStockQuotesRequest{
+	resp, err := client.V2.GetLatestStockQuotes(ctx, &marketdata.GetLatestStockQuotesRequest{
 		Symbols: stockSymbols,
 		Feed:    "iex",
 	})
@@ -358,7 +358,7 @@ func testGetLatestStockQuotes(ctx context.Context, client *marketdata.Client) Te
 
 func testGetStockQuotesSingle(ctx context.Context, client *marketdata.Client, start string) TestResult {
 	result := TestResult{Name: "GetStockQuotesSingle"}
-	resp, err := client.GetStockQuotesSingle(ctx, &marketdata.GetStockQuotesSingleRequest{
+	resp, err := client.V2.GetStockQuotesSingle(ctx, &marketdata.GetStockQuotesSingleRequest{
 		Symbol: stockSymbol,
 		Start:  start,
 		Limit:  10,
@@ -377,7 +377,7 @@ func testGetStockQuotesSingle(ctx context.Context, client *marketdata.Client, st
 
 func testGetLatestStockQuoteSingle(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLatestStockQuoteSingle"}
-	resp, err := client.GetLatestStockQuoteSingle(ctx, &marketdata.GetLatestStockQuoteSingleRequest{
+	resp, err := client.V2.GetLatestStockQuoteSingle(ctx, &marketdata.GetLatestStockQuoteSingleRequest{
 		Symbol: stockSymbol,
 		Feed:   "iex",
 	})
@@ -394,7 +394,7 @@ func testGetLatestStockQuoteSingle(ctx context.Context, client *marketdata.Clien
 
 func testGetStockSnapshots(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetStockSnapshots"}
-	resp, err := client.GetStockSnapshots(ctx, &marketdata.GetStockSnapshotsRequest{
+	resp, err := client.V2.GetStockSnapshots(ctx, &marketdata.GetStockSnapshotsRequest{
 		Symbols: stockSymbols,
 		Feed:    "iex",
 	})
@@ -411,7 +411,7 @@ func testGetStockSnapshots(ctx context.Context, client *marketdata.Client) TestR
 
 func testGetStockSnapshot(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetStockSnapshot"}
-	resp, err := client.GetStockSnapshot(ctx, &marketdata.GetStockSnapshotRequest{
+	resp, err := client.V2.GetStockSnapshot(ctx, &marketdata.GetStockSnapshotRequest{
 		Symbol: stockSymbol,
 		Feed:   "iex",
 	})
@@ -428,7 +428,7 @@ func testGetStockSnapshot(ctx context.Context, client *marketdata.Client) TestRe
 
 func testGetStockAuctions(ctx context.Context, client *marketdata.Client, start string) TestResult {
 	result := TestResult{Name: "GetStockAuctions"}
-	resp, err := client.GetStockAuctions(ctx, &marketdata.GetStockAuctionsRequest{
+	resp, err := client.V2.GetStockAuctions(ctx, &marketdata.GetStockAuctionsRequest{
 		Symbols: stockSymbols,
 		Start:   start,
 		Limit:   10,
@@ -450,7 +450,7 @@ func testGetStockAuctions(ctx context.Context, client *marketdata.Client, start 
 
 func testGetStockAuctionsSingle(ctx context.Context, client *marketdata.Client, start string) TestResult {
 	result := TestResult{Name: "GetStockAuctionsSingle"}
-	resp, err := client.GetStockAuctionsSingle(ctx, &marketdata.GetStockAuctionsSingleRequest{
+	resp, err := client.V2.GetStockAuctionsSingle(ctx, &marketdata.GetStockAuctionsSingleRequest{
 		Symbol: stockSymbol,
 		Start:  start,
 		Limit:  10,
@@ -468,7 +468,7 @@ func testGetStockAuctionsSingle(ctx context.Context, client *marketdata.Client, 
 
 func testGetStockMetaConditions(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetStockMetaConditions"}
-	resp, err := client.GetStockMetaConditions(ctx, &marketdata.GetStockMetaConditionsRequest{
+	resp, err := client.V2.GetStockMetaConditions(ctx, &marketdata.GetStockMetaConditionsRequest{
 		Ticktype: "trade",
 		Tape:     "A",
 	})
@@ -485,7 +485,7 @@ func testGetStockMetaConditions(ctx context.Context, client *marketdata.Client) 
 
 func testGetStockMetaExchanges(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetStockMetaExchanges"}
-	resp, err := client.GetStockMetaExchanges(ctx, &marketdata.GetStockMetaExchangesRequest{})
+	resp, err := client.V2.GetStockMetaExchanges(ctx, &marketdata.GetStockMetaExchangesRequest{})
 	if err != nil {
 		result.Error = err
 		printResult(result)
@@ -503,7 +503,7 @@ func testGetStockMetaExchanges(ctx context.Context, client *marketdata.Client) T
 
 func testGetCryptoBars(ctx context.Context, client *marketdata.Client, start string) TestResult {
 	result := TestResult{Name: "GetCryptoBars"}
-	resp, err := client.GetCryptoBars(ctx, &marketdata.GetCryptoBarsRequest{
+	resp, err := client.V1Beta.GetCryptoBars(ctx, &marketdata.GetCryptoBarsRequest{
 		Loc:       cryptoLoc,
 		Symbols:   cryptoSymbols,
 		Timeframe: "1Hour",
@@ -527,7 +527,7 @@ func testGetCryptoBars(ctx context.Context, client *marketdata.Client, start str
 
 func testGetLatestCryptoBars(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLatestCryptoBars"}
-	resp, err := client.GetLatestCryptoBars(ctx, &marketdata.GetLatestCryptoBarsRequest{
+	resp, err := client.V1Beta.GetLatestCryptoBars(ctx, &marketdata.GetLatestCryptoBarsRequest{
 		Loc:     cryptoLoc,
 		Symbols: cryptoSymbols,
 	})
@@ -544,7 +544,7 @@ func testGetLatestCryptoBars(ctx context.Context, client *marketdata.Client) Tes
 
 func testGetCryptoTrades(ctx context.Context, client *marketdata.Client, start string) TestResult {
 	result := TestResult{Name: "GetCryptoTrades"}
-	resp, err := client.GetCryptoTrades(ctx, &marketdata.GetCryptoTradesRequest{
+	resp, err := client.V1Beta.GetCryptoTrades(ctx, &marketdata.GetCryptoTradesRequest{
 		Loc:     cryptoLoc,
 		Symbols: cryptoSymbols,
 		Start:   start,
@@ -567,7 +567,7 @@ func testGetCryptoTrades(ctx context.Context, client *marketdata.Client, start s
 
 func testGetLatestCryptoTrades(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLatestCryptoTrades"}
-	resp, err := client.GetLatestCryptoTrades(ctx, &marketdata.GetLatestCryptoTradesRequest{
+	resp, err := client.V1Beta.GetLatestCryptoTrades(ctx, &marketdata.GetLatestCryptoTradesRequest{
 		Loc:     cryptoLoc,
 		Symbols: cryptoSymbols,
 	})
@@ -584,7 +584,7 @@ func testGetLatestCryptoTrades(ctx context.Context, client *marketdata.Client) T
 
 func testGetCryptoQuotes(ctx context.Context, client *marketdata.Client, start string) TestResult {
 	result := TestResult{Name: "GetCryptoQuotes"}
-	resp, err := client.GetCryptoQuotes(ctx, &marketdata.GetCryptoQuotesRequest{
+	resp, err := client.V1Beta.GetCryptoQuotes(ctx, &marketdata.GetCryptoQuotesRequest{
 		Loc:     cryptoLoc,
 		Symbols: cryptoSymbols,
 		Start:   start,
@@ -607,7 +607,7 @@ func testGetCryptoQuotes(ctx context.Context, client *marketdata.Client, start s
 
 func testGetLatestCryptoQuotes(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLatestCryptoQuotes"}
-	resp, err := client.GetLatestCryptoQuotes(ctx, &marketdata.GetLatestCryptoQuotesRequest{
+	resp, err := client.V1Beta.GetLatestCryptoQuotes(ctx, &marketdata.GetLatestCryptoQuotesRequest{
 		Loc:     cryptoLoc,
 		Symbols: cryptoSymbols,
 	})
@@ -624,7 +624,7 @@ func testGetLatestCryptoQuotes(ctx context.Context, client *marketdata.Client) T
 
 func testGetCryptoSnapshots(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetCryptoSnapshots"}
-	resp, err := client.GetCryptoSnapshots(ctx, &marketdata.GetCryptoSnapshotsRequest{
+	resp, err := client.V1Beta.GetCryptoSnapshots(ctx, &marketdata.GetCryptoSnapshotsRequest{
 		Loc:     cryptoLoc,
 		Symbols: cryptoSymbols,
 	})
@@ -641,7 +641,7 @@ func testGetCryptoSnapshots(ctx context.Context, client *marketdata.Client) Test
 
 func testGetCryptoOrderbooks(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetCryptoOrderbooks"}
-	resp, err := client.GetCryptoOrderbooks(ctx, &marketdata.GetCryptoOrderbooksRequest{
+	resp, err := client.V1Beta.GetCryptoOrderbooks(ctx, &marketdata.GetCryptoOrderbooksRequest{
 		Loc:     cryptoLoc,
 		Symbols: cryptoSymbols,
 	})
@@ -662,7 +662,7 @@ func testGetCryptoOrderbooks(ctx context.Context, client *marketdata.Client) Tes
 
 func testGetOptionBars(ctx context.Context, client *marketdata.Client, start string) TestResult {
 	result := TestResult{Name: "GetOptionBars"}
-	resp, err := client.GetOptionBars(ctx, &marketdata.GetOptionBarsRequest{
+	resp, err := client.V1Beta.GetOptionBars(ctx, &marketdata.GetOptionBarsRequest{
 		Symbols:   optionSymbol,
 		Timeframe: defaultTF,
 		Start:     start,
@@ -685,7 +685,7 @@ func testGetOptionBars(ctx context.Context, client *marketdata.Client, start str
 
 func testGetOptionTrades(ctx context.Context, client *marketdata.Client, start string) TestResult {
 	result := TestResult{Name: "GetOptionTrades"}
-	resp, err := client.GetOptionTrades(ctx, &marketdata.GetOptionTradesRequest{
+	resp, err := client.V1Beta.GetOptionTrades(ctx, &marketdata.GetOptionTradesRequest{
 		Symbols: optionSymbol,
 		Start:   start,
 		Limit:   10,
@@ -707,7 +707,7 @@ func testGetOptionTrades(ctx context.Context, client *marketdata.Client, start s
 
 func testGetLatestOptionTrades(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLatestOptionTrades"}
-	resp, err := client.GetLatestOptionTrades(ctx, &marketdata.GetLatestOptionTradesRequest{
+	resp, err := client.V1Beta.GetLatestOptionTrades(ctx, &marketdata.GetLatestOptionTradesRequest{
 		Symbols: optionSymbol,
 	})
 	if err != nil {
@@ -723,7 +723,7 @@ func testGetLatestOptionTrades(ctx context.Context, client *marketdata.Client) T
 
 func testGetLatestOptionQuotes(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLatestOptionQuotes"}
-	resp, err := client.GetLatestOptionQuotes(ctx, &marketdata.GetLatestOptionQuotesRequest{
+	resp, err := client.V1Beta.GetLatestOptionQuotes(ctx, &marketdata.GetLatestOptionQuotesRequest{
 		Symbols: optionSymbol,
 	})
 	if err != nil {
@@ -739,7 +739,7 @@ func testGetLatestOptionQuotes(ctx context.Context, client *marketdata.Client) T
 
 func testGetOptionSnapshots(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetOptionSnapshots"}
-	resp, err := client.GetOptionSnapshots(ctx, &marketdata.GetOptionSnapshotsRequest{
+	resp, err := client.V1Beta.GetOptionSnapshots(ctx, &marketdata.GetOptionSnapshotsRequest{
 		Symbols: optionSymbol,
 	})
 	if err != nil {
@@ -755,7 +755,7 @@ func testGetOptionSnapshots(ctx context.Context, client *marketdata.Client) Test
 
 func testGetOptionChain(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetOptionChain"}
-	resp, err := client.GetOptionChain(ctx, &marketdata.GetOptionChainRequest{
+	resp, err := client.V1Beta.GetOptionChain(ctx, &marketdata.GetOptionChainRequest{
 		UnderlyingSymbol: stockSymbol,
 	})
 	if err != nil {
@@ -771,7 +771,9 @@ func testGetOptionChain(ctx context.Context, client *marketdata.Client) TestResu
 
 func testGetOptionMetaConditions(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetOptionMetaConditions"}
-	resp, err := client.GetOptionMetaConditions(ctx, &marketdata.GetOptionMetaConditionsRequest{})
+	resp, err := client.V1Beta.GetOptionMetaConditions(ctx, &marketdata.GetOptionMetaConditionsRequest{
+		Ticktype: "trade",
+	})
 	if err != nil {
 		result.Error = err
 		printResult(result)
@@ -785,7 +787,7 @@ func testGetOptionMetaConditions(ctx context.Context, client *marketdata.Client)
 
 func testGetOptionMetaExchanges(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetOptionMetaExchanges"}
-	resp, err := client.GetOptionMetaExchanges(ctx, &marketdata.GetOptionMetaExchangesRequest{})
+	resp, err := client.V1Beta.GetOptionMetaExchanges(ctx, &marketdata.GetOptionMetaExchangesRequest{})
 	if err != nil {
 		result.Error = err
 		printResult(result)
@@ -803,7 +805,7 @@ func testGetOptionMetaExchanges(ctx context.Context, client *marketdata.Client) 
 
 func testGetNews(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetNews"}
-	resp, err := client.GetNews(ctx, &marketdata.GetNewsRequest{
+	resp, err := client.V1Beta.GetNews(ctx, &marketdata.GetNewsRequest{
 		Symbols: stockSymbol,
 		Limit:   10,
 	})
@@ -824,7 +826,7 @@ func testGetNews(ctx context.Context, client *marketdata.Client) TestResult {
 
 func testGetMostActives(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetMostActives"}
-	resp, err := client.GetMostActives(ctx, &marketdata.GetMostActivesRequest{})
+	resp, err := client.V1Beta.GetMostActives(ctx, &marketdata.GetMostActivesRequest{})
 	if err != nil {
 		result.Error = err
 		printResult(result)
@@ -838,7 +840,7 @@ func testGetMostActives(ctx context.Context, client *marketdata.Client) TestResu
 
 func testGetMovers(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetMovers"}
-	resp, err := client.GetMovers(ctx, &marketdata.GetMoversRequest{
+	resp, err := client.V1Beta.GetMovers(ctx, &marketdata.GetMoversRequest{
 		MarketType: "stocks",
 	})
 	if err != nil {
@@ -858,7 +860,7 @@ func testGetMovers(ctx context.Context, client *marketdata.Client) TestResult {
 
 func testGetCorporateActions(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetCorporateActions"}
-	resp, err := client.GetCorporateActions(ctx, &marketdata.GetCorporateActionsRequest{
+	resp, err := client.V1Beta.GetCorporateActions(ctx, &marketdata.GetCorporateActionsRequest{
 		Symbols: stockSymbol,
 	})
 	if err != nil {
@@ -880,7 +882,7 @@ func testGetCorporateActions(ctx context.Context, client *marketdata.Client) Tes
 
 func testGetForexRates(ctx context.Context, client *marketdata.Client, start string) TestResult {
 	result := TestResult{Name: "GetForexRates"}
-	resp, err := client.GetForexRates(ctx, &marketdata.GetForexRatesRequest{
+	resp, err := client.V1Beta.GetForexRates(ctx, &marketdata.GetForexRatesRequest{
 		CurrencyPairs: "EUR/USD",
 		Timeframe:     "1Day",
 		Start:         start,
@@ -899,7 +901,7 @@ func testGetForexRates(ctx context.Context, client *marketdata.Client, start str
 
 func testGetLatestForexRates(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLatestForexRates"}
-	resp, err := client.GetLatestForexRates(ctx, &marketdata.GetLatestForexRatesRequest{
+	resp, err := client.V1Beta.GetLatestForexRates(ctx, &marketdata.GetLatestForexRatesRequest{
 		CurrencyPairs: "EUR/USD",
 	})
 	if err != nil {
@@ -919,7 +921,7 @@ func testGetLatestForexRates(ctx context.Context, client *marketdata.Client) Tes
 
 func testGetFixedIncomeLatestPrices(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetFixedIncomeLatestPrices"}
-	resp, err := client.GetFixedIncomeLatestPrices(ctx, &marketdata.GetFixedIncomeLatestPricesRequest{
+	resp, err := client.V1Beta.GetFixedIncomeLatestPrices(ctx, &marketdata.GetFixedIncomeLatestPricesRequest{
 		Isins: "912797HE8", // US Treasury Bill ISIN
 	})
 	if err != nil {
@@ -940,7 +942,8 @@ func testGetFixedIncomeLatestPrices(ctx context.Context, client *marketdata.Clie
 func testGetLogo(ctx context.Context, client *marketdata.Client) TestResult {
 	result := TestResult{Name: "GetLogo"}
 	resp, err := client.GetLogo(ctx, &marketdata.GetLogoRequest{
-		Symbol: stockSymbol,
+		Symbol:      stockSymbol,
+		Placeholder: true,
 	})
 	if err != nil {
 		result.Error = err
@@ -948,7 +951,7 @@ func testGetLogo(ctx context.Context, client *marketdata.Client) TestResult {
 		return result
 	}
 	result.Success = true
-	result.Details = fmt.Sprintf("Got logo (%d bytes)", len(resp.GetImage()))
+	result.Details = fmt.Sprintf("Got logo (%d bytes, %s)", len(resp.Image), resp.ContentType)
 	printResult(result)
 	return result
 }
