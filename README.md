@@ -250,6 +250,29 @@ alpaca-go/
 └── docs/                   # Generated OpenAPI specs
 ```
 
+## API Testing Tool
+
+The `cmd/apitest` directory contains a test harness for validating generated API clients and showcasing SDK usage. This is primarily used to verify that proto files generate proper Go code.
+
+```bash
+# Test Market Data APIs
+make test-marketdata
+
+# Test Broker APIs
+make test-broker
+
+# Test Trading APIs
+make test-trading
+```
+
+Set your credentials in a `.env` file or environment variables:
+
+```bash
+ALPACA_API_KEY=your_api_key
+ALPACA_API_SECRET=your_api_secret
+TEST_ACCOUNT_ID=your_test_account_id  # For broker tests
+```
+
 ## Development
 
 ### Prerequisites
