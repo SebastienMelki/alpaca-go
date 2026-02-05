@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+#### Auth API (`pkg/auth`)
+- New `IssueToken` endpoint for OAuth2 client credentials flow
+
+#### Trading API (`pkg/trading`)
+- Option contract endpoints: `ListOptionContracts`, `GetOptionContract`
+- Crypto funding endpoints: `ListCryptoWallets`, `GetCryptoWallet`, `ListCryptoTransfers`, `CreateCryptoWithdrawal`
+
+#### Market Data API (`pkg/marketdata`)
+- **Reorganized into V2 (stable) and V1Beta (beta) clients**
+- V2 (stocks): Stock bars, trades, quotes, snapshots, auctions, metadata
+- V1Beta (beta features):
+  - Crypto: bars, trades, quotes, snapshots, orderbooks
+  - Options: bars, trades, quotes, snapshots, chains, metadata
+  - News and screener endpoints
+  - Corporate actions
+  - Forex rates
+  - Company logos
+
+#### Broker API (`pkg/broker`)
+- **Reorganized into V1 (core), V1Beta (beta), and V2 (events) clients**
+- V1 new endpoints:
+  - Documents: `ListAccountDocuments`, `DownloadAccountDocument`, `DownloadW8BenDocument`
+  - Watchlists: Full CRUD for broker-managed watchlists
+  - Journals: `CreateJournal`, `ListJournals`, `GetJournal`, `DeleteJournal`, `CreateBatchJournal`, `ReverseBatchJournal`
+  - Rebalancing: Portfolios, subscriptions, and runs management
+  - CIP/KYC: `GetCIPInfo`, `UpdateCIPInfo`
+  - Onfido integration: Applicants, checks, SDK tokens, documents
+  - OAuth: Token issuance, authorization, client management
+  - Options: Approval requests and contract listing
+  - Crypto: Wallet management, transfers, whitelisted addresses
+  - FPSL (Fully Paid Securities Lending): Loans, tiers, APR tiers
+  - JIT (Just-In-Time): Ledgers, balances, limits, settlements
+  - Instant Funding: Listings, deletions, settlements
+  - IRA: Excess contribution tracking
+  - Calendar: Market calendar and clock endpoints
+- V1Beta: Funding wallets and recipient bank management
+- V2: SSE event streaming for trades, journals, system events, admin actions, funding status
+
+### Changed
+- Market Data client now exposes `V2` and `V1Beta` sub-clients for clear API versioning
+- Broker client now exposes `V1`, `V1Beta`, and `V2` sub-clients for clear API versioning
+- Moved crypto, options, news, and screener endpoints from Market Data v2 to v1beta
+- Enhanced proto definitions with improved validation annotations
+
+### Infrastructure
+- Added `cmd/apitest` test harness for validating generated API clients
+- Added Make targets: `test-marketdata`, `test-broker`, `test-trading`
+- Updated golangci-lint configuration
+- Added goimports to code generation pipeline
+
 ## [1.0.0] - 2026-01-21
 
 ### Added
@@ -40,4 +94,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Makefile with `generate`, `build`, `lint`, `lint-fix`, `buf-lint`, `check`, and `release` targets
 - golangci-lint configuration for code quality
 
+[unreleased]: https://github.com/sebastienmelki/alpaca-go/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/sebastienmelki/alpaca-go/releases/tag/v1.0.0
