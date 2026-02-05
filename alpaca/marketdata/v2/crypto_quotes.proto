@@ -69,7 +69,7 @@ message GetCryptoQuotesRequest {
 
 // CryptoQuotesList is a list of quotes for a single symbol.
 message CryptoQuotesList {
-  repeated CryptoQuote quotes = 1;
+  repeated CryptoQuote quotes = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetCryptoQuotesResponse is the response containing crypto quotes.

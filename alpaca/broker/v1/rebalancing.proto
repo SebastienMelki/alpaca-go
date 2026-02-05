@@ -1,0 +1,371 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+
+// PortfolioStatus represents the status of a rebalancing portfolio.
+enum PortfolioStatus {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  PORTFOLIO_STATUS_UNSPECIFIED = 0;
+  PORTFOLIO_STATUS_ACTIVE = 1; // [(sebuf.http.enum_value) = "active"];
+  PORTFOLIO_STATUS_INACTIVE = 2; // [(sebuf.http.enum_value) = "inactive"];
+  PORTFOLIO_STATUS_NEEDS_ADJUSTMENT = 3; // [(sebuf.http.enum_value) = "needs_adjustment"];
+}
+
+// SubscriptionStatus represents the status of a rebalancing subscription.
+enum SubscriptionStatus {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  SUBSCRIPTION_STATUS_UNSPECIFIED = 0;
+  SUBSCRIPTION_STATUS_ACTIVE = 1; // [(sebuf.http.enum_value) = "active"];
+  SUBSCRIPTION_STATUS_INACTIVE = 2; // [(sebuf.http.enum_value) = "inactive"];
+}
+
+// RunStatus represents the status of a rebalancing run.
+enum RunStatus {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  RUN_STATUS_UNSPECIFIED = 0;
+  RUN_STATUS_QUEUED = 1; // [(sebuf.http.enum_value) = "QUEUED"];
+  RUN_STATUS_IN_PROGRESS = 2; // [(sebuf.http.enum_value) = "IN_PROGRESS"];
+  RUN_STATUS_COMPLETED = 3; // [(sebuf.http.enum_value) = "COMPLETED"];
+  RUN_STATUS_COMPLETED_WITH_ERRORS = 4; // [(sebuf.http.enum_value) = "COMPLETED_WITH_ERRORS"];
+  RUN_STATUS_CANCELED = 5; // [(sebuf.http.enum_value) = "CANCELED"];
+}
+
+// PortfolioWeight represents a weight allocation in a portfolio.
+message PortfolioWeight {
+  // Type of weight (cash or asset).
+  string type = 1 [(sebuf.http.field_examples) = { values: ["asset"] }];
+
+  // Symbol (only for type = asset).
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Percentage allocation (up to two decimal places).
+  string percent = 3 [(sebuf.http.field_examples) = { values: ["25.00"] }];
+}
+
+// RebalancingPortfolio represents a rebalancing portfolio configuration.
+message RebalancingPortfolio {
+  // Portfolio ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Portfolio name.
+  string name = 2 [(sebuf.http.field_examples) = { values: ["Tech Growth Portfolio"] }];
+
+  // Portfolio status.
+  string status = 3 [(sebuf.http.field_examples) = { values: ["active"] }];
+
+  // Portfolio description.
+  string description = 4 [(sebuf.http.field_examples) = { values: ["A portfolio focused on tech growth stocks"] }];
+
+  // Weight allocations (must sum to 100.00).
+  repeated PortfolioWeight weights = 5;
+
+  // Cooldown days after rebalance before next rebalance is eligible.
+  int32 cooldown_days = 6 [(sebuf.http.field_examples) = { values: ["30"] }];
+
+  // Rebalancing conditions.
+  string rebalancing_conditions = 7 [(sebuf.http.field_examples) = { values: ["drift_band"] }];
+
+  // Timestamp when portfolio was created.
+  string created_at = 8 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when portfolio was last updated.
+  string updated_at = 9 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// RebalancingSubscription represents an account's subscription to a portfolio.
+message RebalancingSubscription {
+  // Subscription ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Account ID.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Portfolio ID.
+  string portfolio_id = 3 [(sebuf.http.field_examples) = { values: ["a1b2c3d4-5678-90ab-cdef-1234567890ab"] }];
+
+  // Subscription status.
+  string status = 4 [(sebuf.http.field_examples) = { values: ["active"] }];
+
+  // Last rebalanced timestamp.
+  string last_rebalanced_at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when subscription was created.
+  string created_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// RebalancingRun represents a rebalancing run execution.
+message RebalancingRun {
+  // Run ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Run type.
+  string type = 2 [(sebuf.http.field_examples) = { values: ["full_rebalance"] }];
+
+  // Run status.
+  string status = 3 [(sebuf.http.field_examples) = { values: ["COMPLETED"] }];
+
+  // Number of accounts affected.
+  int32 account_count = 4 [(sebuf.http.field_examples) = { values: ["150"] }];
+
+  // Number of orders created.
+  int32 order_count = 5 [(sebuf.http.field_examples) = { values: ["450"] }];
+
+  // Timestamp when run was initiated.
+  string initiated_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when run was completed.
+  string completed_at = 7 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:45:00Z"] }];
+}
+
+// ListPortfoliosRequest is the request to list rebalancing portfolios.
+message ListPortfoliosRequest {
+  // Filter by portfolio name.
+  string name = 1 [
+    (sebuf.http.query) = { name: "name" },
+    (sebuf.http.field_examples) = { values: ["Tech Growth Portfolio"] }
+  ];
+
+  // Filter by description.
+  string description = 2 [
+    (sebuf.http.query) = { name: "description" },
+    (sebuf.http.field_examples) = { values: ["tech"] }
+  ];
+
+  // Filter by symbol included in portfolio.
+  string symbol = 3 [
+    (sebuf.http.query) = { name: "symbol" },
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Filter by portfolio ID.
+  string portfolio_id = 4 [
+    (sebuf.http.query) = { name: "portfolio_id" },
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+
+  // Filter by status.
+  string status = 5 [
+    (sebuf.http.query) = { name: "status" },
+    (sebuf.http.field_examples) = { values: ["active"] }
+  ];
+}
+
+// ListPortfoliosResponse is the response containing portfolios.
+message ListPortfoliosResponse {
+  // List of portfolios.
+  repeated RebalancingPortfolio portfolios = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// CreatePortfolioRequest is the request to create a portfolio.
+message CreatePortfolioRequest {
+  // Portfolio name (required).
+  string name = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["Tech Growth Portfolio"] }
+  ];
+
+  // Portfolio description.
+  string description = 2 [
+    (sebuf.http.field_examples) = { values: ["A portfolio focused on tech growth stocks"] }
+  ];
+
+  // Weight allocations (must sum to 100.00).
+  repeated PortfolioWeight weights = 3;
+
+  // Cooldown days after rebalance.
+  int32 cooldown_days = 4 [
+    (sebuf.http.field_examples) = { values: ["30"] }
+  ];
+
+  // Rebalancing conditions.
+  string rebalancing_conditions = 5 [
+    (sebuf.http.field_examples) = { values: ["drift_band"] }
+  ];
+}
+
+// GetPortfolioRequest is the request to get a specific portfolio.
+message GetPortfolioRequest {
+  // The portfolio ID (required).
+  string portfolio_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// UpdatePortfolioRequest is the request to update a portfolio.
+message UpdatePortfolioRequest {
+  // The portfolio ID (required).
+  string portfolio_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+
+  // Portfolio name.
+  string name = 2 [
+    (sebuf.http.field_examples) = { values: ["Updated Tech Portfolio"] }
+  ];
+
+  // Portfolio description.
+  string description = 3 [
+    (sebuf.http.field_examples) = { values: ["Updated description"] }
+  ];
+
+  // Updated weight allocations.
+  repeated PortfolioWeight weights = 4;
+
+  // Updated cooldown days.
+  int32 cooldown_days = 5 [
+    (sebuf.http.field_examples) = { values: ["30"] }
+  ];
+
+  // Updated rebalancing conditions.
+  string rebalancing_conditions = 6 [
+    (sebuf.http.field_examples) = { values: ["drift_band"] }
+  ];
+}
+
+// DeletePortfolioRequest is the request to delete a portfolio.
+message DeletePortfolioRequest {
+  // The portfolio ID (required).
+  string portfolio_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// DeletePortfolioResponse is the response for deleting a portfolio.
+message DeletePortfolioResponse {
+  // Whether the deletion was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}
+
+// ListSubscriptionsRequest is the request to list subscriptions.
+message ListSubscriptionsRequest {
+  // Filter by account ID.
+  string account_id = 1 [
+    (sebuf.http.query) = { name: "account_id" },
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Filter by portfolio ID.
+  string portfolio_id = 2 [
+    (sebuf.http.query) = { name: "portfolio_id" },
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// ListSubscriptionsResponse is the response containing subscriptions.
+message ListSubscriptionsResponse {
+  // List of subscriptions.
+  repeated RebalancingSubscription subscriptions = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// CreateSubscriptionRequest is the request to create a subscription.
+message CreateSubscriptionRequest {
+  // Account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Portfolio ID (required).
+  string portfolio_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// GetSubscriptionRequest is the request to get a specific subscription.
+message GetSubscriptionRequest {
+  // The subscription ID (required).
+  string subscription_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// DeleteSubscriptionRequest is the request to delete a subscription.
+message DeleteSubscriptionRequest {
+  // The subscription ID (required).
+  string subscription_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// DeleteSubscriptionResponse is the response for deleting a subscription.
+message DeleteSubscriptionResponse {
+  // Whether the deletion was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}
+
+// ListRunsRequest is the request to list rebalancing runs.
+message ListRunsRequest {
+  // Filter by portfolio ID.
+  string portfolio_id = 1 [
+    (sebuf.http.query) = { name: "portfolio_id" },
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+
+  // Filter by status.
+  string status = 2 [
+    (sebuf.http.query) = { name: "status" },
+    (sebuf.http.field_examples) = { values: ["COMPLETED"] }
+  ];
+}
+
+// ListRunsResponse is the response containing runs.
+message ListRunsResponse {
+  // List of runs.
+  repeated RebalancingRun runs = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// CreateRunRequest is the request to create/initiate a rebalancing run.
+message CreateRunRequest {
+  // Portfolio ID (required).
+  string portfolio_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+
+  // Optional list of specific account IDs to rebalance.
+  repeated string account_ids = 2;
+}
+
+// GetRunRequest is the request to get a specific run.
+message GetRunRequest {
+  // The run ID (required).
+  string run_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// CancelRunRequest is the request to cancel a run.
+message CancelRunRequest {
+  // The run ID (required).
+  string run_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// CancelRunResponse is the response for canceling a run.
+message CancelRunResponse {
+  // Whether the cancellation was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}

@@ -1,0 +1,141 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "sebuf/http/annotations.proto";
+
+
+// FPSLTier represents a Fully Paid Securities Lending (FPSL) tier.
+message FPSLTier {
+  // Tier ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Tier name.
+  string name = 2 [(sebuf.http.field_examples) = { values: ["Standard"] }];
+
+  // Tier description.
+  string description = 3 [(sebuf.http.field_examples) = { values: ["Standard FPSL tier for retail accounts"] }];
+
+  // Revenue share percentage.
+  string revenue_share = 4 [(sebuf.http.field_examples) = { values: ["50.00"] }];
+
+  // Minimum balance required.
+  string min_balance = 5 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Maximum balance allowed.
+  string max_balance = 6 [(sebuf.http.field_examples) = { values: ["1000000.00"] }];
+
+  // Whether the tier is active.
+  bool active = 7 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Timestamp when the tier was created.
+  string created_at = 8 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the tier was last updated.
+  string updated_at = 9 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// FPSLLoan represents a Fully Paid Securities Lending loan.
+message FPSLLoan {
+  // Loan ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Account ID.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Symbol of the loaned security.
+  string symbol = 3 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Quantity of shares loaned.
+  string qty = 4 [(sebuf.http.field_examples) = { values: ["100"] }];
+
+  // Daily rate.
+  string rate = 5 [(sebuf.http.field_examples) = { values: ["0.05"] }];
+
+  // Loan status.
+  string status = 6 [(sebuf.http.field_examples) = { values: ["active"] }];
+
+  // Collateral amount.
+  string collateral = 7 [(sebuf.http.field_examples) = { values: ["15000.00"] }];
+
+  // Accrued interest.
+  string accrued_interest = 8 [(sebuf.http.field_examples) = { values: ["2.50"] }];
+
+  // Loan start date.
+  string start_date = 9 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
+
+  // Loan end date (if closed).
+  string end_date = 10 [(sebuf.http.field_examples) = { values: ["2024-02-15"] }];
+
+  // Timestamp when the loan was created.
+  string created_at = 11 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the loan was last updated.
+  string updated_at = 12 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// APRTier represents an Annual Percentage Rate tier.
+message APRTier {
+  // Tier ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Tier name.
+  string name = 2 [(sebuf.http.field_examples) = { values: ["Standard"] }];
+
+  // APR percentage.
+  string apr = 3 [(sebuf.http.field_examples) = { values: ["8.50"] }];
+
+  // Minimum balance for this tier.
+  string min_balance = 4 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Maximum balance for this tier.
+  string max_balance = 5 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Whether the tier is active.
+  bool active = 6 [(sebuf.http.field_examples) = { values: ["true"] }];
+}
+
+// ListFPSLTiersRequest is the request to list FPSL tiers.
+message ListFPSLTiersRequest {}
+
+// ListFPSLTiersResponse is the response containing FPSL tiers.
+message ListFPSLTiersResponse {
+  // List of FPSL tiers.
+  repeated FPSLTier tiers = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// ListFPSLLoansRequest is the request to list FPSL loans.
+message ListFPSLLoansRequest {
+  // Filter by account ID.
+  string account_id = 1 [
+    (sebuf.http.query) = { name: "account_id" },
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Filter by symbol.
+  string symbol = 2 [
+    (sebuf.http.query) = { name: "symbol" },
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Filter by status.
+  string status = 3 [
+    (sebuf.http.query) = { name: "status" },
+    (sebuf.http.field_examples) = { values: ["active"] }
+  ];
+}
+
+// ListFPSLLoansResponse is the response containing FPSL loans.
+message ListFPSLLoansResponse {
+  // List of FPSL loans.
+  repeated FPSLLoan loans = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// ListAPRTiersRequest is the request to list APR tiers.
+message ListAPRTiersRequest {}
+
+// ListAPRTiersResponse is the response containing APR tiers.
+message ListAPRTiersResponse {
+  // List of APR tiers.
+  repeated APRTier tiers = 1; // [(sebuf.http.unwrap_root) = true];
+}

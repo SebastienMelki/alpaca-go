@@ -1,0 +1,230 @@
+syntax = "proto3";
+
+package alpaca.trading.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// CryptoTransferDirection represents the direction of a crypto transfer.
+enum CryptoTransferDirection {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  CRYPTO_TRANSFER_DIRECTION_UNSPECIFIED = 0;
+  CRYPTO_TRANSFER_DIRECTION_INCOMING = 1; // [(sebuf.http.enum_value) = "INCOMING"];
+  CRYPTO_TRANSFER_DIRECTION_OUTGOING = 2; // [(sebuf.http.enum_value) = "OUTGOING"];
+}
+
+// CryptoTransferStatus represents the status of a crypto transfer.
+enum CryptoTransferStatus {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  CRYPTO_TRANSFER_STATUS_UNSPECIFIED = 0;
+  CRYPTO_TRANSFER_STATUS_PROCESSING = 1; // [(sebuf.http.enum_value) = "PROCESSING"];
+  CRYPTO_TRANSFER_STATUS_FAILED = 2; // [(sebuf.http.enum_value) = "FAILED"];
+  CRYPTO_TRANSFER_STATUS_COMPLETE = 3; // [(sebuf.http.enum_value) = "COMPLETE"];
+}
+
+// CryptoWallet represents a crypto funding wallet.
+message CryptoWallet {
+  // The blockchain network (e.g., ethereum, solana).
+  string chain = 1 [(sebuf.http.field_examples) = { values: ["ethereum"] }];
+
+  // The wallet address.
+  string address = 2 [(sebuf.http.field_examples) = { values: ["0x1234567890abcdef1234567890abcdef12345678"] }];
+
+  // Timestamp (RFC3339) of wallet creation.
+  string created_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// CryptoTransfer represents a crypto funding transfer.
+message CryptoTransfer {
+  // The crypto transfer ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // On-chain transaction hash.
+  string tx_hash = 2 [(sebuf.http.field_examples) = { values: ["0xabc123..."] }];
+
+  // Transfer direction (INCOMING or OUTGOING).
+  string direction = 3 [(sebuf.http.field_examples) = { values: ["INCOMING"] }];
+
+  // Transfer status (PROCESSING, FAILED, COMPLETE).
+  string status = 4 [(sebuf.http.field_examples) = { values: ["COMPLETE"] }];
+
+  // Amount of transfer denominated in the underlying crypto asset.
+  string amount = 5 [(sebuf.http.field_examples) = { values: ["0.5"] }];
+
+  // Equivalent USD value at time of transfer.
+  string usd_value = 6 [(sebuf.http.field_examples) = { values: ["25000.00"] }];
+
+  // Network fee for the transfer.
+  string network_fee = 7 [(sebuf.http.field_examples) = { values: ["0.001"] }];
+
+  // Additional fees.
+  string fees = 8 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Underlying network for given transfer.
+  string chain = 9 [(sebuf.http.field_examples) = { values: ["ethereum"] }];
+
+  // Symbol of crypto asset for given transfer.
+  string asset = 10 [(sebuf.http.field_examples) = { values: ["BTC"] }];
+
+  // Originating address of the transfer.
+  string from_address = 11 [(sebuf.http.field_examples) = { values: ["0x1234..."] }];
+
+  // Destination address of the transfer.
+  string to_address = 12 [(sebuf.http.field_examples) = { values: ["0x5678..."] }];
+
+  // Timestamp when transfer was created.
+  string created_at = 13 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// WhitelistedAddress represents a whitelisted crypto address.
+message WhitelistedAddress {
+  // The whitelisted address ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // The blockchain network.
+  string chain = 2 [(sebuf.http.field_examples) = { values: ["ethereum"] }];
+
+  // The crypto asset symbol.
+  string asset = 3 [(sebuf.http.field_examples) = { values: ["ETH"] }];
+
+  // The whitelisted address.
+  string address = 4 [(sebuf.http.field_examples) = { values: ["0x1234567890abcdef1234567890abcdef12345678"] }];
+
+  // Status of the whitelisted address (APPROVED or PENDING).
+  string status = 5 [(sebuf.http.field_examples) = { values: ["APPROVED", "PENDING"] }];
+
+  // Timestamp when the address was created.
+  string created_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// CryptoTransferEstimate represents an estimate for a crypto transfer.
+message CryptoTransferEstimate {
+  // Estimated fee for the transfer.
+  string fee = 1 [(sebuf.http.field_examples) = { values: ["0.001"] }];
+}
+
+// ListCryptoWalletsRequest is the request to list crypto funding wallets.
+message ListCryptoWalletsRequest {
+  // Filter by asset symbol.
+  string asset = 1 [
+    (sebuf.http.query) = { name: "asset" },
+    (sebuf.http.field_examples) = { values: ["ETH"] }
+  ];
+
+  // Optional network identifier (ethereum, solana).
+  string network = 2 [
+    (sebuf.http.query) = { name: "network" },
+    (sebuf.http.field_examples) = { values: ["ethereum"] }
+  ];
+}
+
+// ListCryptoWalletsResponse is the response containing crypto wallets.
+message ListCryptoWalletsResponse {
+  // List of crypto wallets.
+  repeated CryptoWallet wallets = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// ListCryptoTransfersRequest is the request to list crypto funding transfers.
+message ListCryptoTransfersRequest {}
+
+// ListCryptoTransfersResponse is the response containing crypto transfers.
+message ListCryptoTransfersResponse {
+  // List of crypto transfers.
+  repeated CryptoTransfer transfers = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// GetCryptoTransferRequest is the request to get a specific crypto transfer.
+message GetCryptoTransferRequest {
+  // The transfer ID (required).
+  string transfer_id = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// CreateCryptoTransferRequest is the request to create a crypto transfer.
+message CreateCryptoTransferRequest {
+  // Amount to transfer.
+  string amount = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["0.5"] }
+  ];
+
+  // The crypto asset symbol.
+  string asset = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["ETH"] }
+  ];
+
+  // The destination address.
+  string address = 3 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["0x1234567890abcdef1234567890abcdef12345678"] }
+  ];
+
+  // The blockchain network.
+  string network = 4 [
+    (sebuf.http.field_examples) = { values: ["ethereum"] }
+  ];
+}
+
+// ListWhitelistedAddressesRequest is the request to list whitelisted addresses.
+message ListWhitelistedAddressesRequest {}
+
+// ListWhitelistedAddressesResponse is the response containing whitelisted addresses.
+message ListWhitelistedAddressesResponse {
+  // List of whitelisted addresses.
+  repeated WhitelistedAddress addresses = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// CreateWhitelistedAddressRequest is the request to create a whitelisted address.
+message CreateWhitelistedAddressRequest {
+  // The address to whitelist.
+  string address = 1 [
+    (sebuf.http.field_examples) = { values: ["0x1234567890abcdef1234567890abcdef12345678"] }
+  ];
+
+  // The crypto asset symbol.
+  string asset = 2 [
+    (sebuf.http.field_examples) = { values: ["ETH"] }
+  ];
+}
+
+// DeleteWhitelistedAddressRequest is the request to delete a whitelisted address.
+message DeleteWhitelistedAddressRequest {
+  // The whitelisted address ID (required).
+  string whitelisted_address_id = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// DeleteWhitelistedAddressResponse is the response for deleting a whitelisted address.
+message DeleteWhitelistedAddressResponse {}
+
+// GetCryptoTransferEstimateRequest is the request to get a crypto transfer estimate.
+message GetCryptoTransferEstimateRequest {
+  // The crypto asset symbol.
+  string asset = 1 [
+    (sebuf.http.query) = { name: "asset" },
+    (sebuf.http.field_examples) = { values: ["ETH"] }
+  ];
+
+  // The originating address of the proposed transaction.
+  string from_address = 2 [
+    (sebuf.http.query) = { name: "from_address" },
+    (sebuf.http.field_examples) = { values: ["0x1234567890abcdef1234567890abcdef12345678"] }
+  ];
+
+  // The destination address of the proposed transaction.
+  string to_address = 3 [
+    (sebuf.http.query) = { name: "to_address" },
+    (sebuf.http.field_examples) = { values: ["0x1234567890abcdef1234567890abcdef12345678"] }
+  ];
+
+  // The amount of the proposed transaction.
+  string amount = 4 [
+    (sebuf.http.query) = { name: "amount" },
+    (sebuf.http.field_examples) = { values: ["0.5"] }
+  ];
+}

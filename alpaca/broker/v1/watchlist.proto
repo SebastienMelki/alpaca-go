@@ -1,0 +1,216 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+
+// BrokerWatchlistAsset represents an asset in a broker watchlist.
+message BrokerWatchlistAsset {
+  // Asset ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Asset class (us_equity, us_option, crypto).
+  string class = 2 [(sebuf.http.field_examples) = { values: ["us_equity"] }];
+
+  // Exchange where the asset is traded.
+  string exchange = 3 [(sebuf.http.field_examples) = { values: ["NASDAQ"] }];
+
+  // Asset symbol.
+  string symbol = 4 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Asset name.
+  string name = 5 [(sebuf.http.field_examples) = { values: ["Apple Inc. Common Stock"] }];
+
+  // Asset status (active, inactive).
+  string status = 6 [(sebuf.http.field_examples) = { values: ["active"] }];
+
+  // Whether the asset is tradable on Alpaca.
+  bool tradable = 7 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether the asset is marginable.
+  bool marginable = 8 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether the asset is shortable.
+  bool shortable = 9 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether the asset is easy to borrow.
+  bool easy_to_borrow = 10 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether the asset is fractionable.
+  bool fractionable = 11 [(sebuf.http.field_examples) = { values: ["true"] }];
+}
+
+// BrokerWatchlist represents a watchlist for a broker account.
+message BrokerWatchlist {
+  // Watchlist ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Account ID that owns this watchlist.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Timestamp when the watchlist was created.
+  string created_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the watchlist was last updated.
+  string updated_at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T12:00:00Z"] }];
+
+  // Watchlist name.
+  string name = 5 [(sebuf.http.field_examples) = { values: ["Tech Stocks"] }];
+
+  // Assets in the watchlist.
+  repeated BrokerWatchlistAsset assets = 6;
+}
+
+// ListBrokerWatchlistsRequest is the request to list watchlists for an account.
+message ListBrokerWatchlistsRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// ListBrokerWatchlistsResponse is the response containing watchlists.
+message ListBrokerWatchlistsResponse {
+  // List of watchlists.
+  repeated BrokerWatchlist watchlists = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// CreateBrokerWatchlistRequest is the request to create a watchlist.
+message CreateBrokerWatchlistRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Watchlist name.
+  string name = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["Tech Stocks"] }
+  ];
+
+  // List of symbols to include.
+  repeated string symbols = 3 [(sebuf.http.field_examples) = { values: ["AAPL", "GOOGL", "MSFT"] }];
+}
+
+// GetBrokerWatchlistRequest is the request to get a specific watchlist.
+message GetBrokerWatchlistRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The watchlist ID (required).
+  string watchlist_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// UpdateBrokerWatchlistRequest is the request to update a watchlist.
+message UpdateBrokerWatchlistRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The watchlist ID (required).
+  string watchlist_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+
+  // New watchlist name.
+  string name = 3 [
+    (sebuf.http.field_examples) = { values: ["Updated Tech Stocks"] }
+  ];
+
+  // New list of symbols (replaces existing).
+  repeated string symbols = 4 [(sebuf.http.field_examples) = { values: ["AAPL", "GOOGL", "MSFT", "NVDA"] }];
+}
+
+// DeleteBrokerWatchlistRequest is the request to delete a watchlist.
+message DeleteBrokerWatchlistRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The watchlist ID (required).
+  string watchlist_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// DeleteBrokerWatchlistResponse is the response for deleting a watchlist.
+message DeleteBrokerWatchlistResponse {
+  // Whether the deletion was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}
+
+// AddBrokerWatchlistAssetRequest is the request to add an asset to a watchlist.
+message AddBrokerWatchlistAssetRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The watchlist ID (required).
+  string watchlist_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+
+  // Symbol to add.
+  string symbol = 3 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["TSLA"] }
+  ];
+}
+
+// RemoveBrokerWatchlistAssetRequest is the request to remove an asset from a watchlist.
+message RemoveBrokerWatchlistAssetRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The watchlist ID (required).
+  string watchlist_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+
+  // Symbol to remove.
+  string symbol = 3 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["TSLA"] }
+  ];
+}
+
+// RemoveBrokerWatchlistAssetResponse is the response for removing an asset from a watchlist.
+message RemoveBrokerWatchlistAssetResponse {
+  // Whether the removal was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}

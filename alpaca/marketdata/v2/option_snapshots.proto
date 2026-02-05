@@ -6,6 +6,7 @@ import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 import "alpaca/marketdata/v2/option_trades.proto";
 import "alpaca/marketdata/v2/option_quotes.proto";
+import "alpaca/marketdata/v2/option_bars.proto";
 
 // OptionGreeks represents the option Greeks.
 message OptionGreeks {
@@ -38,6 +39,15 @@ message OptionSnapshot {
 
   // Option Greeks.
   OptionGreeks greeks = 4;
+
+  // Daily bar.
+  OptionBar daily_bar = 5;
+
+  // Minute bar.
+  OptionBar minute_bar = 6;
+
+  // Previous daily bar.
+  OptionBar prev_daily_bar = 7;
 }
 
 // GetOptionSnapshotsRequest is the request to get option snapshots.
@@ -60,6 +70,9 @@ message GetOptionSnapshotsRequest {
 message GetOptionSnapshotsResponse {
   // Map of symbol to snapshot.
   map<string, OptionSnapshot> snapshots = 1;
+
+  // Next page token.
+  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
 }
 
 // GetOptionChainRequest is the request to get an option chain for an underlying.

@@ -78,7 +78,7 @@ message GetStockAuctionsRequest {
 
 // StockAuctionsList is a list of daily auctions for a single symbol.
 message StockAuctionsList {
-  repeated DailyAuctions auctions = 1;
+  repeated DailyAuctions auctions = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetStockAuctionsResponse is the response containing stock auctions.

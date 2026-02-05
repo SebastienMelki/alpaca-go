@@ -1,0 +1,138 @@
+syntax = "proto3";
+
+package alpaca.broker.v1beta;
+
+import "sebuf/http/annotations.proto";
+import "sebuf/http/headers.proto";
+import "alpaca/broker/v1beta/funding_wallet.proto";
+import "alpaca/broker/v1beta/recipient_bank.proto";
+
+// BrokerV1BetaService provides Broker API v1beta endpoints.
+// These are the funding wallet and recipient bank endpoints.
+// Base URL: https://broker-api.alpaca.markets
+service BrokerV1BetaService {
+  // Base path for all v1beta endpoints.
+  option (sebuf.http.service_config) = {
+    base_path: "/v1beta"
+  };
+
+  // HTTP Basic authentication required for all operations.
+  option (sebuf.http.service_headers) = {
+    required_headers: [
+      {
+        name: "Authorization"
+        description: "HTTP Basic Auth with base64 encoded API_KEY:API_SECRET"
+        type: "string"
+        required: true
+        example: "Basic QVBJLUtFWTpBUEktU0VDUkVU"
+      }
+    ]
+  };
+
+  // ============================================
+  // Funding Wallet Operations
+  // ============================================
+
+  // CreateFundingWallet creates a funding wallet for an account.
+  // POST /v1beta/accounts/{account_id}/funding_wallet
+  rpc CreateFundingWallet(CreateFundingWalletRequest) returns (FundingWallet) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/funding_wallet"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // GetFundingWallet retrieves a funding wallet for an account.
+  // GET /v1beta/accounts/{account_id}/funding_wallet
+  rpc GetFundingWallet(GetFundingWalletRequest) returns (FundingWallet) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/funding_wallet"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // BatchCreateFundingWallets creates funding wallets for multiple accounts.
+  // POST /v1beta/funding_wallets
+  rpc BatchCreateFundingWallets(BatchCreateFundingWalletsRequest) returns (BatchCreateFundingWalletsResponse) {
+    option (sebuf.http.config) = {
+      path: "/funding_wallets"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ListFundingWalletTransfers retrieves transfers for a funding wallet.
+  // GET /v1beta/accounts/{account_id}/funding_wallet/transfers
+  rpc ListFundingWalletTransfers(ListFundingWalletTransfersRequest) returns (ListFundingWalletTransfersResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/funding_wallet/transfers"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetFundingWalletTransfer retrieves a specific funding wallet transfer.
+  // GET /v1beta/accounts/{account_id}/funding_wallet/transfers/{transfer_id}
+  rpc GetFundingWalletTransfer(GetFundingWalletTransferRequest) returns (FundingWalletTransfer) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/funding_wallet/transfers/{transfer_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateFundingWalletWithdrawal creates a withdrawal from a funding wallet.
+  // POST /v1beta/accounts/{account_id}/funding_wallet/withdrawals
+  rpc CreateFundingWalletWithdrawal(CreateFundingWalletWithdrawalRequest) returns (FundingWalletTransfer) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/funding_wallet/withdrawals"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ListFundingDetails retrieves funding details for an account.
+  // GET /v1beta/accounts/{account_id}/funding_wallet/funding_details
+  rpc ListFundingDetails(ListFundingDetailsRequest) returns (ListFundingDetailsResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/funding_wallet/funding_details"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // DemoDeposit creates a demo deposit (sandbox only).
+  // POST /v1beta/accounts/{account_id}/funding_wallet/demo_deposit
+  rpc DemoDeposit(DemoDepositRequest) returns (DemoDepositResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/funding_wallet/demo_deposit"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ============================================
+  // Recipient Bank Operations
+  // ============================================
+
+  // GetRecipientBank retrieves the recipient bank for an account.
+  // GET /v1beta/accounts/{account_id}/funding_wallet/recipient_bank
+  rpc GetRecipientBank(GetRecipientBankRequest) returns (RecipientBank) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/funding_wallet/recipient_bank"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateRecipientBank creates a recipient bank for an account.
+  // POST /v1beta/accounts/{account_id}/funding_wallet/recipient_bank
+  rpc CreateRecipientBank(CreateRecipientBankRequest) returns (RecipientBank) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/funding_wallet/recipient_bank"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // DeleteRecipientBank deletes the recipient bank for an account.
+  // DELETE /v1beta/accounts/{account_id}/funding_wallet/recipient_bank
+  rpc DeleteRecipientBank(DeleteRecipientBankRequest) returns (DeleteRecipientBankResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/funding_wallet/recipient_bank"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+}

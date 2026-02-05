@@ -14,7 +14,10 @@ message MostActive {
   int64 volume = 2 [(sebuf.http.field_examples) = { values: ["123456789"] }];
 
   // Trade count.
-  int64 trade_count = 3 [(sebuf.http.field_examples) = { values: ["54321"] }];
+  int64 trade_count = 3 [
+    json_name = "trade_count",
+    (sebuf.http.field_examples) = { values: ["54321"] }
+  ];
 }
 
 // GetMostActivesRequest is the request to get most active stocks.
@@ -36,10 +39,13 @@ message GetMostActivesRequest {
 // GetMostActivesResponse is the response containing most active stocks.
 message GetMostActivesResponse {
   // List of most active stocks.
-  repeated MostActive most_actives = 1;
+  repeated MostActive most_actives = 1 [json_name = "most_actives"];
 
   // Timestamp when this data was last updated (RFC 3339).
-  string last_updated = 2 [(sebuf.http.field_examples) = { values: ["2024-01-15T16:00:00Z"] }];
+  string last_updated = 2 [
+    json_name = "last_updated",
+    (sebuf.http.field_examples) = { values: ["2024-01-15T16:00:00Z"] }
+  ];
 }
 
 // Mover represents a top mover stock.
@@ -48,7 +54,10 @@ message Mover {
   string symbol = 1 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
 
   // Percent change.
-  double percent_change = 2 [(sebuf.http.field_examples) = { values: ["5.25"] }];
+  double percent_change = 2 [
+    json_name = "percent_change",
+    (sebuf.http.field_examples) = { values: ["5.25"] }
+  ];
 
   // Price change.
   double change = 3 [(sebuf.http.field_examples) = { values: ["7.50"] }];
@@ -82,8 +91,14 @@ message GetMoversResponse {
   repeated Mover losers = 2;
 
   // Market type.
-  string market_type = 3 [(sebuf.http.field_examples) = { values: ["stocks"] }];
+  string market_type = 3 [
+    json_name = "market_type",
+    (sebuf.http.field_examples) = { values: ["stocks"] }
+  ];
 
   // Timestamp when this data was last updated (RFC 3339).
-  string last_updated = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T16:00:00Z"] }];
+  string last_updated = 4 [
+    json_name = "last_updated",
+    (sebuf.http.field_examples) = { values: ["2024-01-15T16:00:00Z"] }
+  ];
 }

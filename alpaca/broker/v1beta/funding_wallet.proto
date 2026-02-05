@@ -1,0 +1,229 @@
+syntax = "proto3";
+
+package alpaca.broker.v1beta;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// FundingWallet represents a funding wallet for an account.
+message FundingWallet {
+  // Account ID associated with the wallet.
+  string account_id = 1 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Wallet status.
+  string status = 2 [(sebuf.http.field_examples) = { values: ["active"] }];
+
+  // Timestamp when the wallet was created.
+  string created_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// TransferFee represents a fee associated with a transfer.
+message TransferFee {
+  // Fee type.
+  string type = 1 [(sebuf.http.field_examples) = { values: ["withdrawal_fee"] }];
+
+  // Fee amount.
+  string amount = 2 [(sebuf.http.field_examples) = { values: ["25.00"] }];
+
+  // Currency of the fee.
+  string currency = 3 [(sebuf.http.field_examples) = { values: ["USD"] }];
+
+  // Payment type for the fee.
+  string payment_type = 4 [(sebuf.http.field_examples) = { values: ["invoice"] }];
+}
+
+// UsdAmount represents a USD amount.
+message UsdAmount {
+  // Amount in USD.
+  string amount = 1 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
+}
+
+// FundingWalletTransfer represents a transfer to/from a funding wallet.
+message FundingWalletTransfer {
+  // Transfer ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Account ID.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Associated fees.
+  repeated TransferFee fees = 3;
+
+  // The amount sent as part of the withdrawal creation.
+  string requested_amount = 4 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
+
+  // The amount expected to receive (requested amount - fees).
+  string original_amount = 5 [(sebuf.http.field_examples) = { values: ["975.00"] }];
+
+  // Currency of the withdrawn amount (3-letter ISO code).
+  string original_currency = 6 [(sebuf.http.field_examples) = { values: ["EUR"] }];
+
+  // Transfer direction.
+  string direction = 7 [(sebuf.http.field_examples) = { values: ["outgoing"] }];
+
+  // Transfer status.
+  string status = 8 [(sebuf.http.field_examples) = { values: ["COMPLETE"] }];
+
+  // Timestamp when the transfer was created.
+  string created_at = 9 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the transfer was last updated.
+  string updated_at = 10 [(sebuf.http.field_examples) = { values: ["2024-01-15T12:00:00Z"] }];
+
+  // USD equivalent amount.
+  UsdAmount usd = 11;
+
+  // Payment type.
+  string payment_type = 12 [(sebuf.http.field_examples) = { values: ["swift_wire"] }];
+}
+
+// FundingDetails represents funding details for an account.
+message FundingDetails {
+  // Account ID.
+  string account_id = 1 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Bank name.
+  string bank_name = 2 [(sebuf.http.field_examples) = { values: ["JPMorgan Chase"] }];
+
+  // Bank address.
+  string bank_address = 3 [(sebuf.http.field_examples) = { values: ["383 Madison Ave, New York, NY 10179"] }];
+
+  // SWIFT/BIC code.
+  string swift_code = 4 [(sebuf.http.field_examples) = { values: ["CHASUS33"] }];
+
+  // Account number.
+  string account_number = 5 [(sebuf.http.field_examples) = { values: ["1234567890"] }];
+
+  // Routing number.
+  string routing_number = 6 [(sebuf.http.field_examples) = { values: ["021000021"] }];
+
+  // Beneficiary name.
+  string beneficiary_name = 7 [(sebuf.http.field_examples) = { values: ["Alpaca Securities LLC"] }];
+
+  // Reference/memo.
+  string reference = 8 [(sebuf.http.field_examples) = { values: ["Account: 904837e3"] }];
+}
+
+// CreateFundingWalletRequest is the request to create a funding wallet.
+message CreateFundingWalletRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// GetFundingWalletRequest is the request to get a funding wallet.
+message GetFundingWalletRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// BatchCreateFundingWalletsRequest is the request to batch create funding wallets.
+message BatchCreateFundingWalletsRequest {
+  // List of account IDs.
+  repeated string account_ids = 1;
+}
+
+// BatchCreateFundingWalletsResponse is the response for batch creating funding wallets.
+message BatchCreateFundingWalletsResponse {
+  // List of created funding wallets.
+  repeated FundingWallet wallets = 1;
+}
+
+// ListFundingWalletTransfersRequest is the request to list funding wallet transfers.
+message ListFundingWalletTransfersRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// ListFundingWalletTransfersResponse is the response containing funding wallet transfers.
+message ListFundingWalletTransfersResponse {
+  // List of transfers.
+  repeated FundingWalletTransfer transfers = 1;
+}
+
+// GetFundingWalletTransferRequest is the request to get a specific funding wallet transfer.
+message GetFundingWalletTransferRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The transfer ID (required).
+  string transfer_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// CreateFundingWalletWithdrawalRequest is the request to create a withdrawal.
+message CreateFundingWalletWithdrawalRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Amount to withdraw.
+  string amount = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["1000.00"] }
+  ];
+
+  // Currency to withdraw.
+  string currency = 3 [
+    (sebuf.http.field_examples) = { values: ["USD"] }
+  ];
+}
+
+// ListFundingDetailsRequest is the request to list funding details.
+message ListFundingDetailsRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// ListFundingDetailsResponse is the response containing funding details.
+message ListFundingDetailsResponse {
+  // List of funding details.
+  repeated FundingDetails funding_details = 1 [(sebuf.http.unwrap) = true];
+}
+
+// DemoDepositRequest is the request to create a demo deposit (sandbox only).
+message DemoDepositRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Amount to deposit.
+  string amount = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["10000.00"] }
+  ];
+}
+
+// DemoDepositResponse is the response for a demo deposit.
+message DemoDepositResponse {
+  // Whether the deposit was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}

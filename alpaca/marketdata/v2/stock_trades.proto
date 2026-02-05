@@ -55,7 +55,7 @@ message GetStockTradesRequest {
 
 // StockTradesList is a list of trades for a single symbol.
 message StockTradesList {
-  repeated Trade trades = 1;
+  repeated Trade trades = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetStockTradesResponse is the response containing stock trades.

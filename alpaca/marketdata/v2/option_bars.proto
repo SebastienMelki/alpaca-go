@@ -82,7 +82,7 @@ message GetOptionBarsRequest {
 
 // OptionBarsList is a list of bars for a single option symbol.
 message OptionBarsList {
-  repeated OptionBar bars = 1;
+  repeated OptionBar bars = 1  [(sebuf.http.unwrap) = true];
 }
 
 // GetOptionBarsResponse is the response containing option bars.

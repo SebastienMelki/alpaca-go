@@ -19,8 +19,8 @@ message OptionTrade {
   // Trade size.
   int64 s = 4 [(sebuf.http.field_examples) = { values: ["10"] }];
 
-  // Trade conditions.
-  repeated string c = 5 [(sebuf.http.field_examples) = { values: ["@"] }];
+  // Trade condition (single character).
+  string c = 5 [(sebuf.http.field_examples) = { values: ["@"] }];
 }
 
 // GetOptionTradesRequest is the request to get historical option trades.
@@ -66,7 +66,7 @@ message GetOptionTradesRequest {
 
 // OptionTradesList is a list of trades for a single option symbol.
 message OptionTradesList {
-  repeated OptionTrade trades = 1;
+  repeated OptionTrade trades = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetOptionTradesResponse is the response containing option trades.

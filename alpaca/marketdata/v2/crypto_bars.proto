@@ -87,7 +87,7 @@ message GetCryptoBarsRequest {
 
 // CryptoBarsList is a list of bars for a single symbol.
 message CryptoBarsList {
-  repeated CryptoBar bars = 1;
+  repeated CryptoBar bars = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetCryptoBarsResponse is the response containing crypto bars.

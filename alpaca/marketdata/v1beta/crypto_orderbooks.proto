@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v1beta;
+
+option go_package = "github.com/sebastienmelki/alpaca-go/internal/gen/alpaca/marketdata/v1beta;marketdatav1beta";
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// CryptoOrderbookEntry represents a single entry in a crypto orderbook.
+message CryptoOrderbookEntry {
+  // Price level.
+  double p = 1 [(sebuf.http.field_examples) = { values: ["20846"] }];
+
+  // Size at this price level.
+  double s = 2 [(sebuf.http.field_examples) = { values: ["0.1902"] }];
+}
+
+// CryptoOrderbook represents a snapshot of the orderbook for a crypto pair.
+message CryptoOrderbook {
+  // Timestamp in RFC-3339 format with nanosecond precision.
+  string t = 1 [(sebuf.http.field_examples) = { values: ["2022-06-24T08:00:14.137774336Z"] }];
+
+  // Bid entries (buy orders).
+  repeated CryptoOrderbookEntry b = 2;
+
+  // Ask entries (sell orders).
+  repeated CryptoOrderbookEntry a = 3;
+}
+
+// GetCryptoOrderbooksRequest is the request to get latest crypto orderbooks.
+message GetCryptoOrderbooksRequest {
+  // Crypto location from where the latest market data is retrieved.
+  // Supported values: us, us-1 (Kraken US), eu-1 (Kraken EU).
+  string loc = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["us"] }
+  ];
+
+  // A comma-separated list of crypto symbols (required).
+  string symbols = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["BTC/USD,LTC/USD"] }
+  ];
+}
+
+// GetCryptoOrderbooksResponse is the response containing latest crypto orderbooks.
+message GetCryptoOrderbooksResponse {
+  // Map of symbol to orderbook snapshot.
+  map<string, CryptoOrderbook> orderbooks = 1;
+}

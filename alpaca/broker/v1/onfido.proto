@@ -1,0 +1,234 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+
+// OnfidoApplicant represents an Onfido applicant.
+message OnfidoApplicant {
+  // Applicant ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["applicant_abc123def456"] }];
+
+  // Applicant's first name.
+  string first_name = 2 [(sebuf.http.field_examples) = { values: ["John"] }];
+
+  // Applicant's last name.
+  string last_name = 3 [(sebuf.http.field_examples) = { values: ["Doe"] }];
+
+  // Applicant's email.
+  string email = 4 [(sebuf.http.field_examples) = { values: ["john.doe@example.com"] }];
+
+  // Date of birth.
+  string dob = 5 [(sebuf.http.field_examples) = { values: ["1990-01-15"] }];
+
+  // Timestamp when applicant was created.
+  string created_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// OnfidoCheck represents an Onfido check.
+message OnfidoCheck {
+  // Check ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["check_abc123def456"] }];
+
+  // Applicant ID.
+  string applicant_id = 2 [(sebuf.http.field_examples) = { values: ["applicant_abc123def456"] }];
+
+  // Check status.
+  string status = 3 [(sebuf.http.field_examples) = { values: ["complete"] }];
+
+  // Check result.
+  string result = 4 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Check reports.
+  repeated OnfidoReport reports = 5;
+
+  // Timestamp when check was created.
+  string created_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// OnfidoReport represents an Onfido report within a check.
+message OnfidoReport {
+  // Report ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["report_abc123def456"] }];
+
+  // Report name/type.
+  string name = 2 [(sebuf.http.field_examples) = { values: ["document"] }];
+
+  // Report status.
+  string status = 3 [(sebuf.http.field_examples) = { values: ["complete"] }];
+
+  // Report result.
+  string result = 4 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Sub-results (breakdown).
+  map<string, string> breakdown = 5;
+}
+
+// OnfidoSDKToken represents an Onfido SDK token for client-side integration.
+message OnfidoSDKToken {
+  // SDK token.
+  string token = 1 [(sebuf.http.field_examples) = { values: ["eyJhbGciOiJFUzUxMiJ9..."] }];
+
+  // Applicant ID.
+  string applicant_id = 2 [(sebuf.http.field_examples) = { values: ["applicant_abc123def456"] }];
+
+  // Token expiration timestamp.
+  string expires_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T11:30:00Z"] }];
+}
+
+// CreateOnfidoApplicantRequest is the request to create an Onfido applicant.
+message CreateOnfidoApplicantRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// GetOnfidoApplicantRequest is the request to get an Onfido applicant.
+message GetOnfidoApplicantRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// GenerateOnfidoSDKTokenRequest is the request to generate an Onfido SDK token.
+message GenerateOnfidoSDKTokenRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Referrer URL for the SDK.
+  string referrer = 2 [
+    (sebuf.http.field_examples) = { values: ["https://myapp.com/*"] }
+  ];
+}
+
+// CreateOnfidoCheckRequest is the request to create an Onfido check.
+message CreateOnfidoCheckRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Report names to include in the check.
+  repeated string report_names = 2;
+}
+
+// GetOnfidoCheckRequest is the request to get an Onfido check.
+message GetOnfidoCheckRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The check ID (required).
+  string check_id = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["check_abc123def456"] }
+  ];
+}
+
+// ListOnfidoChecksRequest is the request to list Onfido checks for an account.
+message ListOnfidoChecksRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// ListOnfidoChecksResponse is the response containing Onfido checks.
+message ListOnfidoChecksResponse {
+  // List of checks.
+  repeated OnfidoCheck checks = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// UploadOnfidoDocumentRequest is the request to upload a document to Onfido.
+message UploadOnfidoDocumentRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Document type (required).
+  string type = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["driving_licence"] }
+  ];
+
+  // Document side (front or back).
+  string side = 3 [
+    (sebuf.http.field_examples) = { values: ["front"] }
+  ];
+
+  // Issuing country (ISO 3166-1 alpha-3).
+  string issuing_country = 4 [
+    (sebuf.http.field_examples) = { values: ["USA"] }
+  ];
+
+  // Document file content (base64 encoded).
+  bytes file = 5;
+}
+
+// OnfidoDocument represents an uploaded Onfido document.
+message OnfidoDocument {
+  // Document ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["doc_abc123def456"] }];
+
+  // Document type.
+  string type = 2 [(sebuf.http.field_examples) = { values: ["driving_licence"] }];
+
+  // Document side.
+  string side = 3 [(sebuf.http.field_examples) = { values: ["front"] }];
+
+  // Issuing country.
+  string issuing_country = 4 [(sebuf.http.field_examples) = { values: ["USA"] }];
+
+  // Applicant ID.
+  string applicant_id = 5 [(sebuf.http.field_examples) = { values: ["applicant_abc123def456"] }];
+
+  // Timestamp when document was created.
+  string created_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// UploadOnfidoPhotoRequest is the request to upload a live photo to Onfido.
+message UploadOnfidoPhotoRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Photo file content (base64 encoded).
+  bytes file = 2;
+}
+
+// OnfidoPhoto represents an uploaded Onfido live photo.
+message OnfidoPhoto {
+  // Photo ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["photo_abc123def456"] }];
+
+  // Applicant ID.
+  string applicant_id = 2 [(sebuf.http.field_examples) = { values: ["applicant_abc123def456"] }];
+
+  // Timestamp when photo was created.
+  string created_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}

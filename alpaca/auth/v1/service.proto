@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package alpaca.auth.v1;
+
+import "sebuf/http/annotations.proto";
+import "alpaca/auth/v1/token.proto";
+
+// AuthService provides the Alpaca OAuth2 Authentication API.
+// Base URL: https://authx.alpaca.markets (production) or https://authx.sandbox.alpaca.markets (sandbox)
+service AuthService {
+  // Base path for all endpoints.
+  option (sebuf.http.service_config) = {
+    base_path: "/v1"
+  };
+
+  // IssueToken exchanges client credentials or an authorization code for token(s).
+  // POST /v1/oauth2/token
+  rpc IssueToken(IssueTokenRequest) returns (IssueTokenResponse) {
+    option (sebuf.http.config) = {
+      path: "/oauth2/token"
+      method: HTTP_METHOD_POST
+    };
+  }
+}

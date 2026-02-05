@@ -1,0 +1,329 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+
+// JournalEntryType represents the type of journal entry.
+enum JournalEntryType {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  JOURNAL_ENTRY_TYPE_UNSPECIFIED = 0;
+  JOURNAL_ENTRY_TYPE_JNLC = 1; // [(sebuf.http.enum_value) = "JNLC"];
+  JOURNAL_ENTRY_TYPE_JNLS = 2; // [(sebuf.http.enum_value) = "JNLS"];
+}
+
+// JournalStatus represents the status of a journal entry.
+enum JournalStatus {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  JOURNAL_STATUS_UNSPECIFIED = 0;
+  JOURNAL_STATUS_QUEUED = 1; // [(sebuf.http.enum_value) = "queued"];
+  JOURNAL_STATUS_SENT_TO_CLEARING = 2; // [(sebuf.http.enum_value) = "sent_to_clearing"];
+  JOURNAL_STATUS_PENDING = 3; // [(sebuf.http.enum_value) = "pending"];
+  JOURNAL_STATUS_EXECUTED = 4; // [(sebuf.http.enum_value) = "executed"];
+  JOURNAL_STATUS_REJECTED = 5; // [(sebuf.http.enum_value) = "rejected"];
+  JOURNAL_STATUS_CANCELED = 6; // [(sebuf.http.enum_value) = "canceled"];
+  JOURNAL_STATUS_REFUSED = 7; // [(sebuf.http.enum_value) = "refused"];
+  JOURNAL_STATUS_DELETED = 8; // [(sebuf.http.enum_value) = "deleted"];
+  JOURNAL_STATUS_CORRECT = 9; // [(sebuf.http.enum_value) = "correct"];
+}
+
+// TransmitterInfo contains information about the transmitter for travel rule compliance.
+message TransmitterInfo {
+  // Full name of the originator.
+  string originator_full_name = 1 [(sebuf.http.field_examples) = { values: ["John Doe"] }];
+
+  // Street address of the originator.
+  string originator_street_address = 2 [(sebuf.http.field_examples) = { values: ["123 Main St"] }];
+
+  // State of the originator.
+  string originator_state = 3 [(sebuf.http.field_examples) = { values: ["NY"] }];
+
+  // City of the originator.
+  string originator_city = 4 [(sebuf.http.field_examples) = { values: ["New York"] }];
+
+  // Postal code of the originator.
+  string originator_postal_code = 5 [(sebuf.http.field_examples) = { values: ["10001"] }];
+
+  // Country of the originator.
+  string originator_country = 6 [(sebuf.http.field_examples) = { values: ["USA"] }];
+
+  // Bank account number of the originator.
+  string originator_bank_account_number = 7 [(sebuf.http.field_examples) = { values: ["1234567890"] }];
+
+  // Bank name of the originator.
+  string originator_bank_name = 8 [(sebuf.http.field_examples) = { values: ["Chase Bank"] }];
+
+  // Other identifying information.
+  string other_identifying_information = 9 [(sebuf.http.field_examples) = { values: ["REF123456"] }];
+}
+
+// Journal represents a cash or security transfer between accounts.
+message Journal {
+  // Journal ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["h7h5g33f-ef01-4458-9a4b-9598727a406f"] }];
+
+  // Entry type (JNLC for cash, JNLS for securities).
+  string entry_type = 2 [(sebuf.http.field_examples) = { values: ["JNLC"] }];
+
+  // Account ID the journal originates from.
+  string from_account = 3 [(sebuf.http.field_examples) = { values: ["8fjkjn-4483-4199-840f-6c5fe0b7ca24"] }];
+
+  // Account ID the journal goes to.
+  string to_account = 4 [(sebuf.http.field_examples) = { values: ["3gtt65jd-6f2a-433c-8c33-17b66b8941fa"] }];
+
+  // Journal status.
+  string status = 5 [(sebuf.http.field_examples) = { values: ["executed"] }];
+
+  // Settlement date (YYYY-MM-DD).
+  string settle_date = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
+
+  // System date (YYYY-MM-DD).
+  string system_date = 7 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
+
+  // Symbol (for JNLS only).
+  string symbol = 8 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Quantity (for JNLS only).
+  string qty = 9 [(sebuf.http.field_examples) = { values: ["10"] }];
+
+  // Price (for JNLS only).
+  string price = 10 [(sebuf.http.field_examples) = { values: ["150.00"] }];
+
+  // Net amount (for JNLC only).
+  string net_amount = 11 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
+
+  // Description.
+  string description = 12 [(sebuf.http.field_examples) = { values: ["Monthly transfer"] }];
+
+  // Currency denomination of the journal.
+  string currency = 13 [(sebuf.http.field_examples) = { values: ["USD"] }];
+
+  // Transmitter information for travel rule compliance.
+  TransmitterInfo transmitter_info = 14;
+
+  // Timestamp when the journal was created.
+  string created_at = 15 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// CreateJournalRequest is the request to create a journal entry.
+message CreateJournalRequest {
+  // Account ID to journal from (required).
+  string from_account = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["8fjkjn-4483-4199-840f-6c5fe0b7ca24"] }
+  ];
+
+  // Account ID to journal to (required).
+  string to_account = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["3gtt65jd-6f2a-433c-8c33-17b66b8941fa"] }
+  ];
+
+  // Entry type (JNLC or JNLS) (required).
+  string entry_type = 3 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["JNLC"] }
+  ];
+
+  // Amount (required for JNLC).
+  string amount = 4 [
+    (sebuf.http.field_examples) = { values: ["1000.00"] }
+  ];
+
+  // Symbol (required for JNLS).
+  string symbol = 5 [
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Quantity (required for JNLS).
+  string qty = 6 [
+    (sebuf.http.field_examples) = { values: ["10"] }
+  ];
+
+  // Description (max 1024 characters).
+  string description = 7 [
+    (sebuf.http.field_examples) = { values: ["Monthly transfer"] }
+  ];
+
+  // Currency denomination.
+  string currency = 8 [
+    (sebuf.http.field_examples) = { values: ["USD"] }
+  ];
+
+  // Transmitter name (for travel rule compliance).
+  string transmitter_name = 9 [
+    (sebuf.http.field_examples) = { values: ["John Doe"] }
+  ];
+
+  // Transmitter account number.
+  string transmitter_account_number = 10 [
+    (sebuf.http.field_examples) = { values: ["1234567890"] }
+  ];
+
+  // Transmitter address.
+  string transmitter_address = 11 [
+    (sebuf.http.field_examples) = { values: ["123 Main St, New York, NY 10001"] }
+  ];
+
+  // Transmitter financial institution.
+  string transmitter_financial_institution = 12 [
+    (sebuf.http.field_examples) = { values: ["Chase Bank"] }
+  ];
+
+  // Transmitter timestamp (RFC 3339).
+  string transmitter_timestamp = 13 [
+    (sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }
+  ];
+}
+
+// ListJournalsRequest is the request to list journals.
+message ListJournalsRequest {
+  // Filter by after date.
+  string after = 1 [
+    (sebuf.http.query) = { name: "after" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01"] }
+  ];
+
+  // Filter by before date.
+  string before = 2 [
+    (sebuf.http.query) = { name: "before" },
+    (sebuf.http.field_examples) = { values: ["2024-12-31"] }
+  ];
+
+  // Filter by status.
+  string status = 3 [
+    (sebuf.http.query) = { name: "status" },
+    (sebuf.http.field_examples) = { values: ["executed"] }
+  ];
+
+  // Filter by entry type.
+  string entry_type = 4 [
+    (sebuf.http.query) = { name: "entry_type" },
+    (sebuf.http.field_examples) = { values: ["JNLC"] }
+  ];
+
+  // Filter by to_account.
+  string to_account = 5 [
+    (sebuf.http.query) = { name: "to_account" },
+    (sebuf.http.field_examples) = { values: ["3gtt65jd-6f2a-433c-8c33-17b66b8941fa"] }
+  ];
+
+  // Filter by from_account.
+  string from_account = 6 [
+    (sebuf.http.query) = { name: "from_account" },
+    (sebuf.http.field_examples) = { values: ["8fjkjn-4483-4199-840f-6c5fe0b7ca24"] }
+  ];
+}
+
+// ListJournalsResponse is the response containing journals.
+message ListJournalsResponse {
+  // List of journals.
+  repeated Journal journals = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// GetJournalRequest is the request to get a specific journal.
+message GetJournalRequest {
+  // The journal ID (required).
+  string journal_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["h7h5g33f-ef01-4458-9a4b-9598727a406f"] }
+  ];
+}
+
+// DeleteJournalRequest is the request to delete/cancel a journal.
+message DeleteJournalRequest {
+  // The journal ID (required).
+  string journal_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["h7h5g33f-ef01-4458-9a4b-9598727a406f"] }
+  ];
+}
+
+// DeleteJournalResponse is the response for deleting a journal.
+message DeleteJournalResponse {
+  // Whether the deletion was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}
+
+// BatchJournalEntry represents a single entry in a batch journal request.
+message BatchJournalEntry {
+  // Account ID to journal to.
+  string to_account = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["3gtt65jd-6f2a-433c-8c33-17b66b8941fa"] }
+  ];
+
+  // Amount (for JNLC).
+  string amount = 2 [
+    (sebuf.http.field_examples) = { values: ["100.00"] }
+  ];
+
+  // Quantity (for JNLS).
+  string qty = 3 [
+    (sebuf.http.field_examples) = { values: ["5"] }
+  ];
+}
+
+// CreateBatchJournalRequest is the request to create batch journals.
+message CreateBatchJournalRequest {
+  // Entry type (JNLC or JNLS) (required).
+  string entry_type = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["JNLC"] }
+  ];
+
+  // Account ID to journal from (required).
+  string from_account = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["8fjkjn-4483-4199-840f-6c5fe0b7ca24"] }
+  ];
+
+  // Symbol (required for JNLS).
+  string symbol = 3 [
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Description.
+  string description = 4 [
+    (sebuf.http.field_examples) = { values: ["Batch distribution"] }
+  ];
+
+  // List of journal entries.
+  repeated BatchJournalEntry entries = 5;
+}
+
+// CreateBatchJournalResponse is the response for batch journal creation.
+message CreateBatchJournalResponse {
+  // List of created journals.
+  repeated Journal journals = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// ReverseBatchJournalRequest is the request to reverse a batch of journals.
+message ReverseBatchJournalRequest {
+  // Entry type (JNLC or JNLS) (required).
+  string entry_type = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["JNLC"] }
+  ];
+
+  // Account ID to reverse to (required).
+  string to_account = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["8fjkjn-4483-4199-840f-6c5fe0b7ca24"] }
+  ];
+
+  // List of account IDs to reverse from.
+  repeated string from_accounts = 3;
+}
+
+// ReverseBatchJournalResponse is the response for batch journal reversal.
+message ReverseBatchJournalResponse {
+  // List of reversed journals.
+  repeated Journal journals = 1; // [(sebuf.http.unwrap_root) = true];
+}

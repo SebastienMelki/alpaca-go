@@ -69,7 +69,7 @@ message GetCryptoTradesRequest {
 
 // CryptoTradesList is a list of trades for a single symbol.
 message CryptoTradesList {
-  repeated CryptoTrade trades = 1;
+  repeated CryptoTrade trades = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetCryptoTradesResponse is the response containing crypto trades.

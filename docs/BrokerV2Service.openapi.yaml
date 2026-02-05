@@ -1,0 +1,1015 @@
+openapi: 3.1.0
+info:
+    title: BrokerV2Service API
+    version: 1.0.0
+paths:
+    /v2/events/trades:
+        get:
+            tags:
+                - BrokerV2Service
+            summary: SubscribeTradeEventsV2
+            description: |-
+                SubscribeTradeEventsV2 subscribes to trade events via SSE (v2).
+                 This endpoint replaces the deprecated /v1/events/trades endpoint.
+                 Provides faster event delivery times and supports MLeg (multi-leg) order events.
+                 GET /v2/events/trades
+            operationId: SubscribeTradeEventsV2
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: since
+                  in: query
+                  description: Starting date filter (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: until
+                  in: query
+                  description: Ending date filter (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: since_id
+                  in: query
+                  description: Starting event ID (ULID).
+                  required: false
+                  schema:
+                    type: string
+                - name: until_id
+                  in: query
+                  description: Ending event ID (ULID).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SubscribeTradeEventsV2Response'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/events/journals/status:
+        get:
+            tags:
+                - BrokerV2Service
+            summary: SubscribeJournalEventsV2
+            description: |-
+                SubscribeJournalEventsV2 subscribes to journal status events via SSE (v2).
+                 This endpoint provides ULID-based event IDs instead of integer IDs.
+                 Note: There is no compatibility between v1 and v2 event IDs.
+                 GET /v2/events/journals/status
+            operationId: SubscribeJournalEventsV2
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: since
+                  in: query
+                  description: Starting date filter (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: until
+                  in: query
+                  description: Ending date filter (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: since_id
+                  in: query
+                  description: Starting event ID (ULID).
+                  required: false
+                  schema:
+                    type: string
+                - name: until_id
+                  in: query
+                  description: Ending event ID (ULID).
+                  required: false
+                  schema:
+                    type: string
+                - name: id
+                  in: query
+                  description: Filter by journal ID.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SubscribeJournalEventsV2Response'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/events/system:
+        get:
+            tags:
+                - BrokerV2Service
+            summary: SubscribeSystemEventsV2
+            description: |-
+                SubscribeSystemEventsV2 subscribes to system events via SSE (v2).
+                 System events notify when end-of-day balances or positions are ready.
+                 GET /v2/events/system
+            operationId: SubscribeSystemEventsV2
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: since
+                  in: query
+                  description: Starting date filter (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: until
+                  in: query
+                  description: Ending date filter (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: since_id
+                  in: query
+                  description: Starting event ID (ULID).
+                  required: false
+                  schema:
+                    type: string
+                - name: until_id
+                  in: query
+                  description: Ending event ID (ULID).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SubscribeSystemEventsV2Response'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/events/admin-actions:
+        get:
+            tags:
+                - BrokerV2Service
+            summary: SubscribeAdminActionsV2
+            description: |-
+                SubscribeAdminActionsV2 subscribes to admin action events via SSE (v2).
+                 Streams events related to administrative actions performed by Alpaca systems.
+                 Event types: LegacyNote, Liquidation, TransactionCancel
+                 GET /v2/events/admin-actions
+            operationId: SubscribeAdminActionsV2
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: since
+                  in: query
+                  description: Starting date filter (RFC3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: until
+                  in: query
+                  description: Ending date filter (RFC3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: since_id
+                  in: query
+                  description: Starting event ID (ULID).
+                  required: false
+                  schema:
+                    type: string
+                - name: until_id
+                  in: query
+                  description: Ending event ID (ULID).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SubscribeAdminActionsV2Response'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/events/funding/status:
+        get:
+            tags:
+                - BrokerV2Service
+            summary: SubscribeFundingStatusV2
+            description: |-
+                SubscribeFundingStatusV2 subscribes to funding status events via SSE (v2).
+                 Streams funding status updates for bank relationships, wire banks, and transfers.
+                 GET /v2/events/funding/status
+            operationId: SubscribeFundingStatusV2
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: since
+                  in: query
+                  description: Starting date filter (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: until
+                  in: query
+                  description: Ending date filter (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: since_id
+                  in: query
+                  description: Starting event ID (integer, legacy).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: until_id
+                  in: query
+                  description: Ending event ID (integer, legacy).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: since_ulid
+                  in: query
+                  description: Starting event ID (ULID).
+                  required: false
+                  schema:
+                    type: string
+                - name: until_ulid
+                  in: query
+                  description: Ending event ID (ULID).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SubscribeFundingStatusV2Response'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+components:
+    schemas:
+        FieldViolation:
+            type: object
+            properties:
+                field:
+                    type: string
+                    description: The field path that failed validation (e.g., 'user.email' for nested fields). For header validation, this will be the header name (e.g., 'X-API-Key')
+                description:
+                    type: string
+                    description: Human-readable description of the validation violation (e.g., 'must be a valid email address', 'required field missing')
+            required:
+                - field
+                - description
+            description: FieldViolation describes a single validation error for a specific field.
+        ValidationError:
+            type: object
+            properties:
+                violations:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FieldViolation'
+                    description: List of validation violations
+            required:
+                - violations
+            description: ValidationError is returned when request validation fails. It contains a list of field violations describing what went wrong.
+        SubscribeTradeEventsV2Request:
+            type: object
+            properties:
+                since:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Starting date filter (YYYY-MM-DD).
+                    example: 2024-01-15
+                until:
+                    type: string
+                    examples:
+                        - 2024-01-31
+                    description: Ending date filter (YYYY-MM-DD).
+                    example: 2024-01-31
+                sinceId:
+                    type: string
+                    examples:
+                        - 01G112NTT0XAXKDZK3AABK68TH
+                    description: Starting event ID (ULID).
+                    example: 01G112NTT0XAXKDZK3AABK68TH
+                untilId:
+                    type: string
+                    examples:
+                        - 01G112NTT0XAXKDZK3AABK68TI
+                    description: Ending event ID (ULID).
+                    example: 01G112NTT0XAXKDZK3AABK68TI
+            description: SubscribeTradeEventsV2Request is the request to subscribe to trade events (v2).
+        SubscribeTradeEventsV2Response:
+            type: object
+            properties:
+                events:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TradeUpdateEventV2'
+            description: SubscribeTradeEventsV2Response is the response stream for trade events (v2).
+        TradeUpdateEventV2:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 529248ad-c4cc-4a50-bea4-6bfd2953f83a
+                    format: uuid
+                    description: Account UUID.
+                    example: 529248ad-c4cc-4a50-bea4-6bfd2953f83a
+                at:
+                    type: string
+                    examples:
+                        - 2022-04-19T14:12:30.656741Z
+                    description: Timestamp of event.
+                    example: 2022-04-19T14:12:30.656741Z
+                event:
+                    type: string
+                    examples:
+                        - fill
+                    description: Event type.
+                    example: fill
+                eventId:
+                    type: string
+                    examples:
+                        - 01G112NTT0XAXKDZK3AABK68TH
+                    description: Event ID (ULID format - lexically sortable, monotonically increasing).
+                    example: 01G112NTT0XAXKDZK3AABK68TH
+                executionId:
+                    type: string
+                    examples:
+                        - 7e544af3-3104-4e1a-8cbc-dab2624949ff
+                    description: Execution ID (not present for MultilegOptions).
+                    example: 7e544af3-3104-4e1a-8cbc-dab2624949ff
+                previousExecutionId:
+                    type: string
+                    examples:
+                        - aeb60660-412f-4537-8d1f-1101b3fc8f64
+                    description: Previous execution ID (present only in trade_bust and trade_correct events).
+                    example: aeb60660-412f-4537-8d1f-1101b3fc8f64
+                order:
+                    type: string
+                    examples:
+                        - '{"id": "...", "symbol": "AAPL"}'
+                    description: Order details (JSON object).
+                    example: '{"id": "...", "symbol": "AAPL"}'
+                timestamp:
+                    type: string
+                    examples:
+                        - 2022-04-19T14:12:30.602193534Z
+                    description: Timestamp of the event.
+                    example: 2022-04-19T14:12:30.602193534Z
+                price:
+                    type: string
+                    examples:
+                        - 150.25
+                    description: Price at execution (for fills).
+                    example: 150.25
+                swapRate:
+                    type: string
+                    examples:
+                        - 1.0
+                    description: Swap rate for local currency/crypto trades.
+                    example: 1.0
+                positionQty:
+                    type: string
+                    examples:
+                        - 200
+                    description: Position quantity after fill (not for MultilegOptions).
+                    example: 200
+                positionQtys:
+                    type: object
+                    additionalProperties:
+                        type: string
+                    description: Position quantities for MultilegOptions (map of symbol to quantity).
+                qty:
+                    type: string
+                    examples:
+                        - 100
+                    description: Quantity filled for this event.
+                    example: 100
+                legs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TradeUpdateEventV2Leg'
+            description: TradeUpdateEventV2 represents a trade update event (v2).
+        PositionQtysEntry:
+            type: object
+            properties:
+                key:
+                    type: string
+                value:
+                    type: string
+        TradeUpdateEventV2Leg:
+            type: object
+            properties:
+                qty:
+                    type: string
+                    examples:
+                        - 1
+                    description: The amount of shares filled for this event.
+                    example: 1
+                price:
+                    type: string
+                    examples:
+                        - 0.04
+                    description: The average price per share for this event.
+                    example: 0.04
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL250117P00200000
+                    description: Symbol of the asset.
+                    example: AAPL250117P00200000
+                orderId:
+                    type: string
+                    examples:
+                        - 8d58279f-7dc8-415f-8495-32f394935509
+                    format: uuid
+                    description: Order ID for this leg.
+                    example: 8d58279f-7dc8-415f-8495-32f394935509
+                timestamp:
+                    type: string
+                    examples:
+                        - 2025-01-14T16:05:51.867802561Z
+                    description: Timestamp of this event leg.
+                    example: 2025-01-14T16:05:51.867802561Z
+                executionId:
+                    type: string
+                    examples:
+                        - ccf7d1dc-78e1-4eb5-92c6-5c86b2bcca8f
+                    format: uuid
+                    description: Execution ID for this leg.
+                    example: ccf7d1dc-78e1-4eb5-92c6-5c86b2bcca8f
+            description: TradeUpdateEventV2Leg represents a leg of a multi-leg order fill event.
+        SubscribeJournalEventsV2Request:
+            type: object
+            properties:
+                since:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Starting date filter (YYYY-MM-DD).
+                    example: 2024-01-15
+                until:
+                    type: string
+                    examples:
+                        - 2024-01-31
+                    description: Ending date filter (YYYY-MM-DD).
+                    example: 2024-01-31
+                sinceId:
+                    type: string
+                    examples:
+                        - 01F535Y1FVY8WZHE763HCNS8SZ
+                    description: Starting event ID (ULID).
+                    example: 01F535Y1FVY8WZHE763HCNS8SZ
+                untilId:
+                    type: string
+                    examples:
+                        - 01F535Y1FVY8WZHE763HCNS8T0
+                    description: Ending event ID (ULID).
+                    example: 01F535Y1FVY8WZHE763HCNS8T0
+                id:
+                    type: string
+                    examples:
+                        - 2f144d2a-91e6-46ff-8e37-959a701cc58d
+                    description: Filter by journal ID.
+                    example: 2f144d2a-91e6-46ff-8e37-959a701cc58d
+            description: SubscribeJournalEventsV2Request is the request to subscribe to journal events (v2).
+        SubscribeJournalEventsV2Response:
+            type: object
+            properties:
+                events:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/JournalStatusEventV2'
+            description: SubscribeJournalEventsV2Response is the response stream for journal events (v2).
+        JournalStatusEventV2:
+            type: object
+            properties:
+                at:
+                    type: string
+                    examples:
+                        - 2021-05-07T10:28:23.163857Z
+                    description: Timestamp of event.
+                    example: 2021-05-07T10:28:23.163857Z
+                entryType:
+                    type: string
+                    examples:
+                        - JNLC
+                    description: Journal entry type (JNLC or JNLS).
+                    example: JNLC
+                eventId:
+                    type: string
+                    examples:
+                        - 01F535Y1FVY8WZHE763HCNS8SZ
+                    description: Event ID (ULID format).
+                    example: 01F535Y1FVY8WZHE763HCNS8SZ
+                journalId:
+                    type: string
+                    examples:
+                        - 2f144d2a-91e6-46ff-8e37-959a701cc58d
+                    format: uuid
+                    description: Journal UUID.
+                    example: 2f144d2a-91e6-46ff-8e37-959a701cc58d
+                statusFrom:
+                    type: string
+                    examples:
+                        - queued
+                    description: Previous status.
+                    example: queued
+                statusTo:
+                    type: string
+                    examples:
+                        - executed
+                    description: New status.
+                    example: executed
+                description:
+                    type: string
+                    examples:
+                        - Journal of cash between accounts
+                    description: Description of the journal event.
+                    example: Journal of cash between accounts
+                idempotencyKey:
+                    type: string
+                    examples:
+                        - 72bdf18f-7410-43ec-b4e8-b6e41c5c0160
+                    description: Idempotency key (if provided).
+                    example: 72bdf18f-7410-43ec-b4e8-b6e41c5c0160
+                idempotencyKeyType:
+                    type: string
+                    examples:
+                        - single
+                    description: Type of idempotency key (single or batch).
+                    example: single
+                batchErrorMessage:
+                    type: string
+                    description: Batch error message (if idempotency_key_type is batch).
+            description: JournalStatusEventV2 represents a journal status change event (v2).
+        SubscribeSystemEventsV2Request:
+            type: object
+            properties:
+                since:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Starting date filter (YYYY-MM-DD).
+                    example: 2024-01-15
+                until:
+                    type: string
+                    examples:
+                        - 2024-01-31
+                    description: Ending date filter (YYYY-MM-DD).
+                    example: 2024-01-31
+                sinceId:
+                    type: string
+                    examples:
+                        - 01F535Y1FVY8WZHE763HCNS8SZ
+                    description: Starting event ID (ULID).
+                    example: 01F535Y1FVY8WZHE763HCNS8SZ
+                untilId:
+                    type: string
+                    examples:
+                        - 01F535Y1FVY8WZHE763HCNS8T0
+                    description: Ending event ID (ULID).
+                    example: 01F535Y1FVY8WZHE763HCNS8T0
+            description: SubscribeSystemEventsV2Request is the request to subscribe to system events (v2).
+        SubscribeSystemEventsV2Response:
+            type: object
+            properties:
+                events:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SystemEventV2'
+            description: SubscribeSystemEventsV2Response is the response stream for system events (v2).
+        SystemEventV2:
+            type: object
+            properties:
+                at:
+                    type: string
+                    examples:
+                        - 2026-01-05T10:28:23.163857Z
+                    description: Timestamp of the event.
+                    example: 2026-01-05T10:28:23.163857Z
+                eventId:
+                    type: string
+                    examples:
+                        - 01F535Y1FVY8WZHE763HCNS8SZ
+                    description: Event ID (ULID format).
+                    example: 01F535Y1FVY8WZHE763HCNS8SZ
+                type:
+                    type: string
+                    examples:
+                        - eod_balances_ready
+                    description: System event type.
+                    example: eod_balances_ready
+                systemDate:
+                    type: string
+                    examples:
+                        - 2026-01-05
+                    description: System date to which this event belongs.
+                    example: 2026-01-05
+                description:
+                    type: string
+                    examples:
+                        - End-of-day balances are now available.
+                    description: Human readable description of the system event.
+                    example: End-of-day balances are now available.
+            description: SystemEventV2 represents a system event (v2).
+        SubscribeAdminActionsV2Request:
+            type: object
+            properties:
+                since:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Starting date filter (RFC3339 or YYYY-MM-DD).
+                    example: 2024-01-15
+                until:
+                    type: string
+                    examples:
+                        - 2024-01-31
+                    description: Ending date filter (RFC3339 or YYYY-MM-DD).
+                    example: 2024-01-31
+                sinceId:
+                    type: string
+                    examples:
+                        - 01GTVS4FVS2KJDTPYH2WM6NAXF
+                    description: Starting event ID (ULID).
+                    example: 01GTVS4FVS2KJDTPYH2WM6NAXF
+                untilId:
+                    type: string
+                    examples:
+                        - 01GTVS4FVS2KJDTPYH2WM6NAXG
+                    description: Ending event ID (ULID).
+                    example: 01GTVS4FVS2KJDTPYH2WM6NAXG
+            description: SubscribeAdminActionsV2Request is the request to subscribe to admin action events (v2).
+        SubscribeAdminActionsV2Response:
+            type: object
+            properties:
+                events:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AdminActionEventV2'
+            description: SubscribeAdminActionsV2Response is the response stream for admin action events (v2).
+        AdminActionEventV2:
+            type: object
+            properties:
+                eventId:
+                    type: string
+                    examples:
+                        - 01GTVS4FVS2KJDTPYH2WM6NAXF
+                    description: Event ID (ULID format).
+                    example: 01GTVS4FVS2KJDTPYH2WM6NAXF
+                replacesEventId:
+                    type: string
+                    examples:
+                        - 01GTVS4FVS2KJDTPYH2WM6NAXE
+                    description: ID of the replaced event (optional).
+                    example: 01GTVS4FVS2KJDTPYH2WM6NAXE
+                at:
+                    type: string
+                    examples:
+                        - 2023-03-06T16:38:01Z
+                    description: Timestamp of event.
+                    example: 2023-03-06T16:38:01Z
+                belongsTo:
+                    $ref: '#/components/schemas/AdminActionBelongsTo'
+                createdBy:
+                    $ref: '#/components/schemas/AdminActionCreatedBy'
+                type:
+                    type: string
+                    examples:
+                        - liquidation_admin_event
+                    description: Type of admin action.
+                    example: liquidation_admin_event
+                category:
+                    type: string
+                    examples:
+                        - order
+                    description: Category of admin action.
+                    example: order
+                visibility:
+                    type: string
+                    examples:
+                        - external
+                    description: Visibility of admin action.
+                    example: external
+                note:
+                    type: string
+                    examples:
+                        - 'Position liquidated: Asset: TSLA'
+                    description: Free text description of the admin action.
+                    example: 'Position liquidated: Asset: TSLA'
+                correspondent:
+                    type: string
+                    examples:
+                        - LPCA
+                    description: Related correspondent.
+                    example: LPCA
+                liquidationContext:
+                    $ref: '#/components/schemas/LiquidationContext'
+                transactionCancelContext:
+                    $ref: '#/components/schemas/TransactionCancelContext'
+            description: AdminActionEventV2 represents an admin action event (v2).
+        AdminActionBelongsTo:
+            type: object
+            properties:
+                kind:
+                    type: string
+                    examples:
+                        - account
+                    description: Kind of entity.
+                    example: account
+                idReference:
+                    type: string
+                    examples:
+                        - 0bbf1dd7-4235-4eca-8b1a-0db63572c735
+                    description: ID reference of the entity.
+                    example: 0bbf1dd7-4235-4eca-8b1a-0db63572c735
+            description: AdminActionBelongsTo identifies what entity an admin action belongs to.
+        AdminActionCreatedBy:
+            type: object
+            properties:
+                kind:
+                    type: string
+                    examples:
+                        - admin
+                    description: Kind of creator.
+                    example: admin
+                idReference:
+                    type: string
+                    examples:
+                        - 19455a3c-595f-457f-97b3-64a2b5aeae96
+                    description: ID reference of the creator.
+                    example: 19455a3c-595f-457f-97b3-64a2b5aeae96
+            description: AdminActionCreatedBy identifies who created an admin action.
+        LiquidationContext:
+            type: object
+            properties:
+                symbol:
+                    type: string
+                    examples:
+                        - TSLA
+                    description: Symbol that was liquidated.
+                    example: TSLA
+                reason:
+                    type: string
+                    examples:
+                        - Liquidation due to real time risk
+                    description: Reason for liquidation.
+                    example: Liquidation due to real time risk
+                availableQty:
+                    type: string
+                    examples:
+                        - 0.0001
+                    description: Available quantity.
+                    example: 0.0001
+                requestedQty:
+                    type: string
+                    examples:
+                        - 0.0001
+                    description: Requested quantity.
+                    example: 0.0001
+                error:
+                    type: string
+                    description: Error message if any.
+            description: LiquidationContext contains details for liquidation admin events.
+        TransactionCancelContext:
+            type: object
+            properties:
+                transactionId:
+                    type: string
+                    examples:
+                        - fdf18af2-142b-409e-8aad-d1731e276af0
+                    format: uuid
+                    description: Transaction ID that was cancelled.
+                    example: fdf18af2-142b-409e-8aad-d1731e276af0
+                entryType:
+                    type: string
+                    examples:
+                        - JNLC
+                    description: Entry type (e.g., JNLC).
+                    example: JNLC
+                externalId:
+                    type: string
+                    examples:
+                        - d5eede2c-1c08-45df-9800-87ad5eefc11f
+                    description: External ID.
+                    example: d5eede2c-1c08-45df-9800-87ad5eefc11f
+            description: TransactionCancelContext contains details for transaction cancel admin events.
+        SubscribeFundingStatusV2Request:
+            type: object
+            properties:
+                since:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Starting date filter (YYYY-MM-DD).
+                    example: 2024-01-15
+                until:
+                    type: string
+                    examples:
+                        - 2024-01-31
+                    description: Ending date filter (YYYY-MM-DD).
+                    example: 2024-01-31
+                sinceId:
+                    type: integer
+                    format: int32
+                    description: Starting event ID (integer, legacy).
+                untilId:
+                    type: integer
+                    format: int32
+                    description: Ending event ID (integer, legacy).
+                sinceUlid:
+                    type: string
+                    examples:
+                        - 01F7VQQ782DM57SJNWAYMD14J9
+                    description: Starting event ID (ULID).
+                    example: 01F7VQQ782DM57SJNWAYMD14J9
+                untilUlid:
+                    type: string
+                    examples:
+                        - 01F7VQQ782DM57SJNWAYMD14K0
+                    description: Ending event ID (ULID).
+                    example: 01F7VQQ782DM57SJNWAYMD14K0
+            description: SubscribeFundingStatusV2Request is the request to subscribe to funding status events (v2).
+        SubscribeFundingStatusV2Response:
+            type: object
+            properties:
+                events:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FundingStatusEventV2'
+            description: SubscribeFundingStatusV2Response is the response stream for funding status events (v2).
+        FundingStatusEventV2:
+            type: object
+            properties:
+                eventId:
+                    type: string
+                    examples:
+                        - 01F7VQQ782DM57SJNWAYMD14J9
+                    description: Event ID (ULID format).
+                    example: 01F7VQQ782DM57SJNWAYMD14J9
+                at:
+                    type: string
+                    examples:
+                        - 2025-04-11T19:52:24.066998Z
+                    description: Timestamp of the status change.
+                    example: 2025-04-11T19:52:24.066998Z
+                accountId:
+                    type: string
+                    examples:
+                        - 8e00606a-c9ac-409a-ba45-f55e8f77984a
+                    format: uuid
+                    description: Account UUID.
+                    example: 8e00606a-c9ac-409a-ba45-f55e8f77984a
+                correspondent:
+                    type: string
+                    examples:
+                        - LPCA
+                    description: Correspondent code.
+                    example: LPCA
+                entityId:
+                    type: string
+                    examples:
+                        - c4ed4206-697b-4859-ab71-b9de6649859d
+                    format: uuid
+                    description: Entity UUID.
+                    example: c4ed4206-697b-4859-ab71-b9de6649859d
+                entityType:
+                    type: string
+                    examples:
+                        - BankRelationship
+                    description: Entity type (BankRelationship, WireBank, Transfer).
+                    example: BankRelationship
+                statusFrom:
+                    type: string
+                    examples:
+                        - QUEUED
+                    description: Previous status (null if first status).
+                    example: QUEUED
+                statusTo:
+                    type: string
+                    examples:
+                        - REJECTED
+                    description: New status.
+                    example: REJECTED
+                reason:
+                    type: string
+                    examples:
+                        - bank account owner name does not match brokerage account name
+                    description: Reason for status change (used when rejected/canceled).
+                    example: bank account owner name does not match brokerage account name
+            description: FundingStatusEventV2 represents a funding status change event (v2).

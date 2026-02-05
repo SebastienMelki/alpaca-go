@@ -1,0 +1,219 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+
+// OptionsApprovalStatus represents the options trading approval status.
+enum OptionsApprovalStatus {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  OPTIONS_APPROVAL_STATUS_UNSPECIFIED = 0;
+  OPTIONS_APPROVAL_STATUS_PENDING = 1; // [(sebuf.http.enum_value) = "pending"];
+  OPTIONS_APPROVAL_STATUS_APPROVED = 2; // [(sebuf.http.enum_value) = "approved"];
+  OPTIONS_APPROVAL_STATUS_REJECTED = 3; // [(sebuf.http.enum_value) = "rejected"];
+  OPTIONS_APPROVAL_STATUS_PENDING_REVIEW = 4; // [(sebuf.http.enum_value) = "pending_review"];
+}
+
+// OptionsLevel represents the options trading level.
+enum OptionsLevel {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  OPTIONS_LEVEL_UNSPECIFIED = 0;
+  OPTIONS_LEVEL_DISABLED = 1; // [(sebuf.http.enum_value) = "disabled"];
+  OPTIONS_LEVEL_1 = 2; // [(sebuf.http.enum_value) = "level_1"];
+  OPTIONS_LEVEL_2 = 3; // [(sebuf.http.enum_value) = "level_2"];
+}
+
+// OptionsApproval represents an account's options trading approval.
+message OptionsApproval {
+  // Account ID.
+  string account_id = 1 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Approval status.
+  string status = 2 [(sebuf.http.field_examples) = { values: ["approved"] }];
+
+  // Options level.
+  string level = 3 [(sebuf.http.field_examples) = { values: ["level_2"] }];
+
+  // Requested level.
+  string requested_level = 4 [(sebuf.http.field_examples) = { values: ["level_2"] }];
+
+  // Reason for rejection (if applicable).
+  string rejection_reason = 5 [(sebuf.http.field_examples) = { values: ["Insufficient trading experience"] }];
+
+  // Timestamp when approval was created.
+  string created_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when approval was last updated.
+  string updated_at = 7 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// BrokerOptionContract represents an option contract in the broker context.
+message BrokerOptionContract {
+  // Option contract ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // OCC symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["AAPL240119C00150000"] }];
+
+  // Contract name.
+  string name = 3 [(sebuf.http.field_examples) = { values: ["AAPL Jan 19 2024 150.00 Call"] }];
+
+  // Underlying symbol.
+  string underlying_symbol = 4 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Contract type (call or put).
+  string type = 5 [(sebuf.http.field_examples) = { values: ["call"] }];
+
+  // Expiration date.
+  string expiration_date = 6 [(sebuf.http.field_examples) = { values: ["2024-01-19"] }];
+
+  // Strike price.
+  string strike_price = 7 [(sebuf.http.field_examples) = { values: ["150.00"] }];
+
+  // Contract size (typically 100).
+  int32 size = 8 [(sebuf.http.field_examples) = { values: ["100"] }];
+
+  // Contract status.
+  string status = 9 [(sebuf.http.field_examples) = { values: ["active"] }];
+
+  // Contract style (american or european).
+  string style = 10 [(sebuf.http.field_examples) = { values: ["american"] }];
+
+  // Open interest.
+  int64 open_interest = 11 [(sebuf.http.field_examples) = { values: ["15000"] }];
+
+  // Close price.
+  string close_price = 12 [(sebuf.http.field_examples) = { values: ["5.50"] }];
+
+  // Timestamp when contract was created.
+  string created_at = 13 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// GetOptionsApprovalRequest is the request to get options approval for an account.
+message GetOptionsApprovalRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// RequestOptionsApprovalRequest is the request to request options approval.
+message RequestOptionsApprovalRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Requested options level.
+  string level = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["level_2"] }
+  ];
+}
+
+// UpdateOptionsApprovalRequest is the request to update options approval.
+message UpdateOptionsApprovalRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // New approval status.
+  string status = 2 [
+    (sebuf.http.field_examples) = { values: ["approved"] }
+  ];
+
+  // New options level.
+  string level = 3 [
+    (sebuf.http.field_examples) = { values: ["level_2"] }
+  ];
+
+  // Reason for status change.
+  string reason = 4 [
+    (sebuf.http.field_examples) = { values: ["Meets experience requirements"] }
+  ];
+}
+
+// ListBrokerOptionContractsRequest is the request to list option contracts.
+message ListBrokerOptionContractsRequest {
+  // Filter by underlying symbol.
+  string underlying_symbol = 1 [
+    (sebuf.http.query) = { name: "underlying_symbol" },
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Filter by contract type.
+  string type = 2 [
+    (sebuf.http.query) = { name: "type" },
+    (sebuf.http.field_examples) = { values: ["call"] }
+  ];
+
+  // Filter by expiration date (on or after).
+  string expiration_date_gte = 3 [
+    (sebuf.http.query) = { name: "expiration_date_gte" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Filter by expiration date (on or before).
+  string expiration_date_lte = 4 [
+    (sebuf.http.query) = { name: "expiration_date_lte" },
+    (sebuf.http.field_examples) = { values: ["2024-03-15"] }
+  ];
+
+  // Filter by strike price (greater than or equal).
+  string strike_price_gte = 5 [
+    (sebuf.http.query) = { name: "strike_price_gte" },
+    (sebuf.http.field_examples) = { values: ["140.00"] }
+  ];
+
+  // Filter by strike price (less than or equal).
+  string strike_price_lte = 6 [
+    (sebuf.http.query) = { name: "strike_price_lte" },
+    (sebuf.http.field_examples) = { values: ["160.00"] }
+  ];
+
+  // Filter by status.
+  string status = 7 [
+    (sebuf.http.query) = { name: "status" },
+    (sebuf.http.field_examples) = { values: ["active"] }
+  ];
+
+  // Maximum number of results.
+  int32 limit = 8 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 10000 },
+    (sebuf.http.field_examples) = { values: ["100"] }
+  ];
+
+  // Pagination token.
+  string page_token = 9 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["abc123"] }
+  ];
+}
+
+// ListBrokerOptionContractsResponse is the response containing option contracts.
+message ListBrokerOptionContractsResponse {
+  // List of option contracts.
+  repeated BrokerOptionContract option_contracts = 1;
+
+  // Next page token.
+  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["def456"] }];
+}
+
+// GetBrokerOptionContractRequest is the request to get a specific option contract.
+message GetBrokerOptionContractRequest {
+  // The option symbol or ID (required).
+  string symbol_or_id = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL240119C00150000"] }
+  ];
+}

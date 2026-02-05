@@ -1,0 +1,519 @@
+syntax = "proto3";
+
+package alpaca.broker.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+option go_package = "github.com/alpacahq/alpaca-go/alpaca/broker/v2;brokerv2";
+
+// TradeUpdateEventType represents the type of trade update event.
+enum TradeUpdateEventType {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  TRADE_UPDATE_EVENT_TYPE_UNSPECIFIED = 0;
+  TRADE_UPDATE_EVENT_TYPE_NEW = 1; // [(sebuf.http.enum_value) = "new"];
+  TRADE_UPDATE_EVENT_TYPE_FILL = 2; // [(sebuf.http.enum_value) = "fill"];
+  TRADE_UPDATE_EVENT_TYPE_PARTIAL_FILL = 3; // [(sebuf.http.enum_value) = "partial_fill"];
+  TRADE_UPDATE_EVENT_TYPE_CANCELED = 4; // [(sebuf.http.enum_value) = "canceled"];
+  TRADE_UPDATE_EVENT_TYPE_EXPIRED = 5; // [(sebuf.http.enum_value) = "expired"];
+  TRADE_UPDATE_EVENT_TYPE_DONE_FOR_DAY = 6; // [(sebuf.http.enum_value) = "done_for_day"];
+  TRADE_UPDATE_EVENT_TYPE_REPLACED = 7; // [(sebuf.http.enum_value) = "replaced"];
+  TRADE_UPDATE_EVENT_TYPE_REJECTED = 8; // [(sebuf.http.enum_value) = "rejected"];
+  TRADE_UPDATE_EVENT_TYPE_PENDING_NEW = 9; // [(sebuf.http.enum_value) = "pending_new"];
+  TRADE_UPDATE_EVENT_TYPE_STOPPED = 10; // [(sebuf.http.enum_value) = "stopped"];
+  TRADE_UPDATE_EVENT_TYPE_PENDING_CANCEL = 11; // [(sebuf.http.enum_value) = "pending_cancel"];
+  TRADE_UPDATE_EVENT_TYPE_PENDING_REPLACE = 12; // [(sebuf.http.enum_value) = "pending_replace"];
+  TRADE_UPDATE_EVENT_TYPE_CALCULATED = 13; // [(sebuf.http.enum_value) = "calculated"];
+  TRADE_UPDATE_EVENT_TYPE_SUSPENDED = 14; // [(sebuf.http.enum_value) = "suspended"];
+  TRADE_UPDATE_EVENT_TYPE_ORDER_REPLACE_REJECTED = 15; // [(sebuf.http.enum_value) = "order_replace_rejected"];
+  TRADE_UPDATE_EVENT_TYPE_ORDER_CANCEL_REJECTED = 16; // [(sebuf.http.enum_value) = "order_cancel_rejected"];
+  TRADE_UPDATE_EVENT_TYPE_TRADE_BUST = 17; // [(sebuf.http.enum_value) = "trade_bust"];
+  TRADE_UPDATE_EVENT_TYPE_TRADE_CORRECT = 18; // [(sebuf.http.enum_value) = "trade_correct"];
+  TRADE_UPDATE_EVENT_TYPE_RESTATED = 19; // [(sebuf.http.enum_value) = "restated"];
+  TRADE_UPDATE_EVENT_TYPE_ACCEPTED = 20; // [(sebuf.http.enum_value) = "accepted"];
+  TRADE_UPDATE_EVENT_TYPE_HELD = 21; // [(sebuf.http.enum_value) = "held"];
+}
+
+// JournalEntryType represents the type of journal entry.
+enum JournalEntryType {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  JOURNAL_ENTRY_TYPE_UNSPECIFIED = 0;
+  JOURNAL_ENTRY_TYPE_JNLC = 1; // [(sebuf.http.enum_value) = "JNLC"];
+  JOURNAL_ENTRY_TYPE_JNLS = 2; // [(sebuf.http.enum_value) = "JNLS"];
+}
+
+// JournalStatusType represents the status of a journal.
+enum JournalStatusType {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  JOURNAL_STATUS_TYPE_UNSPECIFIED = 0;
+  JOURNAL_STATUS_TYPE_PENDING = 1; // [(sebuf.http.enum_value) = "pending"];
+  JOURNAL_STATUS_TYPE_CANCELED = 2; // [(sebuf.http.enum_value) = "canceled"];
+  JOURNAL_STATUS_TYPE_EXECUTED = 3; // [(sebuf.http.enum_value) = "executed"];
+  JOURNAL_STATUS_TYPE_QUEUED = 4; // [(sebuf.http.enum_value) = "queued"];
+  JOURNAL_STATUS_TYPE_REJECTED = 5; // [(sebuf.http.enum_value) = "rejected"];
+  JOURNAL_STATUS_TYPE_DELETED = 6; // [(sebuf.http.enum_value) = "deleted"];
+  JOURNAL_STATUS_TYPE_REFUSED = 7; // [(sebuf.http.enum_value) = "refused"];
+  JOURNAL_STATUS_TYPE_SENT_TO_CLEARING = 8; // [(sebuf.http.enum_value) = "sent_to_clearing"];
+  JOURNAL_STATUS_TYPE_CORRECT = 9; // [(sebuf.http.enum_value) = "correct"];
+}
+
+// SystemEventType represents the type of system event.
+enum SystemEventType {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  SYSTEM_EVENT_TYPE_UNSPECIFIED = 0;
+  SYSTEM_EVENT_TYPE_EOD_BALANCES_READY = 1; // [(sebuf.http.enum_value) = "eod_balances_ready"];
+  SYSTEM_EVENT_TYPE_EOD_POSITIONS_READY = 2; // [(sebuf.http.enum_value) = "eod_positions_ready"];
+}
+
+// TradeUpdateEventV2Leg represents a leg of a multi-leg order fill event.
+message TradeUpdateEventV2Leg {
+  // The amount of shares filled for this event.
+  string qty = 1 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // The average price per share for this event.
+  string price = 2 [(sebuf.http.field_examples) = { values: ["0.04"] }];
+
+  // Symbol of the asset.
+  string symbol = 3 [(sebuf.http.field_examples) = { values: ["AAPL250117P00200000"] }];
+
+  // Order ID for this leg.
+  string order_id = 4 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["8d58279f-7dc8-415f-8495-32f394935509"] }
+  ];
+
+  // Timestamp of this event leg.
+  string timestamp = 5 [(sebuf.http.field_examples) = { values: ["2025-01-14T16:05:51.867802561Z"] }];
+
+  // Execution ID for this leg.
+  string execution_id = 6 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["ccf7d1dc-78e1-4eb5-92c6-5c86b2bcca8f"] }
+  ];
+}
+
+// TradeUpdateEventV2 represents a trade update event (v2).
+message TradeUpdateEventV2 {
+  // Account UUID.
+  string account_id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["529248ad-c4cc-4a50-bea4-6bfd2953f83a"] }
+  ];
+
+  // Timestamp of event.
+  string at = 2 [(sebuf.http.field_examples) = { values: ["2022-04-19T14:12:30.656741Z"] }];
+
+  // Event type.
+  string event = 3 [(sebuf.http.field_examples) = { values: ["fill"] }];
+
+  // Event ID (ULID format - lexically sortable, monotonically increasing).
+  string event_id = 4 [(sebuf.http.field_examples) = { values: ["01G112NTT0XAXKDZK3AABK68TH"] }];
+
+  // Execution ID (not present for MultilegOptions).
+  string execution_id = 5 [(sebuf.http.field_examples) = { values: ["7e544af3-3104-4e1a-8cbc-dab2624949ff"] }];
+
+  // Previous execution ID (present only in trade_bust and trade_correct events).
+  string previous_execution_id = 6 [(sebuf.http.field_examples) = { values: ["aeb60660-412f-4537-8d1f-1101b3fc8f64"] }];
+
+  // Order details (JSON object).
+  string order = 7 [(sebuf.http.field_examples) = { values: ["{\"id\": \"...\", \"symbol\": \"AAPL\"}"] }];
+
+  // Timestamp of the event.
+  string timestamp = 8 [(sebuf.http.field_examples) = { values: ["2022-04-19T14:12:30.602193534Z"] }];
+
+  // Price at execution (for fills).
+  string price = 9 [(sebuf.http.field_examples) = { values: ["150.25"] }];
+
+  // Swap rate for local currency/crypto trades.
+  string swap_rate = 10 [(sebuf.http.field_examples) = { values: ["1.0"] }];
+
+  // Position quantity after fill (not for MultilegOptions).
+  string position_qty = 11 [(sebuf.http.field_examples) = { values: ["200"] }];
+
+  // Position quantities for MultilegOptions (map of symbol to quantity).
+  map<string, string> position_qtys = 12;
+
+  // Quantity filled for this event.
+  string qty = 13 [(sebuf.http.field_examples) = { values: ["100"] }];
+
+  // Legs for MultilegOptions fill events.
+  repeated TradeUpdateEventV2Leg legs = 14;
+}
+
+// JournalStatusEventV2 represents a journal status change event (v2).
+message JournalStatusEventV2 {
+  // Timestamp of event.
+  string at = 1 [(sebuf.http.field_examples) = { values: ["2021-05-07T10:28:23.163857Z"] }];
+
+  // Journal entry type (JNLC or JNLS).
+  string entry_type = 2 [(sebuf.http.field_examples) = { values: ["JNLC"] }];
+
+  // Event ID (ULID format).
+  string event_id = 3 [(sebuf.http.field_examples) = { values: ["01F535Y1FVY8WZHE763HCNS8SZ"] }];
+
+  // Journal UUID.
+  string journal_id = 4 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["2f144d2a-91e6-46ff-8e37-959a701cc58d"] }
+  ];
+
+  // Previous status.
+  string status_from = 5 [(sebuf.http.field_examples) = { values: ["queued"] }];
+
+  // New status.
+  string status_to = 6 [(sebuf.http.field_examples) = { values: ["executed"] }];
+
+  // Description of the journal event.
+  string description = 7 [(sebuf.http.field_examples) = { values: ["Journal of cash between accounts"] }];
+
+  // Idempotency key (if provided).
+  string idempotency_key = 8 [(sebuf.http.field_examples) = { values: ["72bdf18f-7410-43ec-b4e8-b6e41c5c0160"] }];
+
+  // Type of idempotency key (single or batch).
+  string idempotency_key_type = 9 [(sebuf.http.field_examples) = { values: ["single"] }];
+
+  // Batch error message (if idempotency_key_type is batch).
+  string batch_error_message = 10;
+}
+
+// SystemEventV2 represents a system event (v2).
+message SystemEventV2 {
+  // Timestamp of the event.
+  string at = 1 [(sebuf.http.field_examples) = { values: ["2026-01-05T10:28:23.163857Z"] }];
+
+  // Event ID (ULID format).
+  string event_id = 2 [(sebuf.http.field_examples) = { values: ["01F535Y1FVY8WZHE763HCNS8SZ"] }];
+
+  // System event type.
+  string type = 3 [(sebuf.http.field_examples) = { values: ["eod_balances_ready"] }];
+
+  // System date to which this event belongs.
+  string system_date = 4 [(sebuf.http.field_examples) = { values: ["2026-01-05"] }];
+
+  // Human readable description of the system event.
+  string description = 5 [(sebuf.http.field_examples) = { values: ["End-of-day balances are now available."] }];
+}
+
+// SubscribeTradeEventsV2Request is the request to subscribe to trade events (v2).
+message SubscribeTradeEventsV2Request {
+  // Starting date filter (YYYY-MM-DD).
+  string since = 1 [
+    (sebuf.http.query) = { name: "since" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Ending date filter (YYYY-MM-DD).
+  string until = 2 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31"] }
+  ];
+
+  // Starting event ID (ULID).
+  string since_id = 3 [
+    (sebuf.http.query) = { name: "since_id" },
+    (sebuf.http.field_examples) = { values: ["01G112NTT0XAXKDZK3AABK68TH"] }
+  ];
+
+  // Ending event ID (ULID).
+  string until_id = 4 [
+    (sebuf.http.query) = { name: "until_id" },
+    (sebuf.http.field_examples) = { values: ["01G112NTT0XAXKDZK3AABK68TI"] }
+  ];
+}
+
+// SubscribeTradeEventsV2Response is the response stream for trade events (v2).
+message SubscribeTradeEventsV2Response {
+  // Stream of trade update events.
+  repeated TradeUpdateEventV2 events = 1;
+}
+
+// SubscribeJournalEventsV2Request is the request to subscribe to journal events (v2).
+message SubscribeJournalEventsV2Request {
+  // Starting date filter (YYYY-MM-DD).
+  string since = 1 [
+    (sebuf.http.query) = { name: "since" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Ending date filter (YYYY-MM-DD).
+  string until = 2 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31"] }
+  ];
+
+  // Starting event ID (ULID).
+  string since_id = 3 [
+    (sebuf.http.query) = { name: "since_id" },
+    (sebuf.http.field_examples) = { values: ["01F535Y1FVY8WZHE763HCNS8SZ"] }
+  ];
+
+  // Ending event ID (ULID).
+  string until_id = 4 [
+    (sebuf.http.query) = { name: "until_id" },
+    (sebuf.http.field_examples) = { values: ["01F535Y1FVY8WZHE763HCNS8T0"] }
+  ];
+
+  // Filter by journal ID.
+  string id = 5 [
+    (sebuf.http.query) = { name: "id" },
+    (sebuf.http.field_examples) = { values: ["2f144d2a-91e6-46ff-8e37-959a701cc58d"] }
+  ];
+}
+
+// SubscribeJournalEventsV2Response is the response stream for journal events (v2).
+message SubscribeJournalEventsV2Response {
+  // Stream of journal status events.
+  repeated JournalStatusEventV2 events = 1;
+}
+
+// SubscribeSystemEventsV2Request is the request to subscribe to system events (v2).
+message SubscribeSystemEventsV2Request {
+  // Starting date filter (YYYY-MM-DD).
+  string since = 1 [
+    (sebuf.http.query) = { name: "since" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Ending date filter (YYYY-MM-DD).
+  string until = 2 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31"] }
+  ];
+
+  // Starting event ID (ULID).
+  string since_id = 3 [
+    (sebuf.http.query) = { name: "since_id" },
+    (sebuf.http.field_examples) = { values: ["01F535Y1FVY8WZHE763HCNS8SZ"] }
+  ];
+
+  // Ending event ID (ULID).
+  string until_id = 4 [
+    (sebuf.http.query) = { name: "until_id" },
+    (sebuf.http.field_examples) = { values: ["01F535Y1FVY8WZHE763HCNS8T0"] }
+  ];
+}
+
+// SubscribeSystemEventsV2Response is the response stream for system events (v2).
+message SubscribeSystemEventsV2Response {
+  // Stream of system events.
+  repeated SystemEventV2 events = 1;
+}
+
+// AdminActionBelongsToKind represents what entity an admin action belongs to.
+enum AdminActionBelongsToKind {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  ADMIN_ACTION_BELONGS_TO_KIND_UNSPECIFIED = 0;
+  ADMIN_ACTION_BELONGS_TO_KIND_ACCOUNT = 1; // [(sebuf.http.enum_value) = "account"];
+  ADMIN_ACTION_BELONGS_TO_KIND_OWNER = 2; // [(sebuf.http.enum_value) = "owner"];
+  ADMIN_ACTION_BELONGS_TO_KIND_CORRESPONDENT = 3; // [(sebuf.http.enum_value) = "correspondent"];
+}
+
+// AdminActionCreatedByKind represents who created an admin action.
+enum AdminActionCreatedByKind {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  ADMIN_ACTION_CREATED_BY_KIND_UNSPECIFIED = 0;
+  ADMIN_ACTION_CREATED_BY_KIND_ADMIN = 1; // [(sebuf.http.enum_value) = "admin"];
+}
+
+// AdminActionType represents the type of admin action.
+enum AdminActionType {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  ADMIN_ACTION_TYPE_UNSPECIFIED = 0;
+  ADMIN_ACTION_TYPE_LIQUIDATION = 1; // [(sebuf.http.enum_value) = "liquidation_admin_event"];
+  ADMIN_ACTION_TYPE_LEGACY_NOTE = 2; // [(sebuf.http.enum_value) = "legacy_note_admin_event"];
+  ADMIN_ACTION_TYPE_TRANSACTION_CANCEL = 3; // [(sebuf.http.enum_value) = "transaction_cancel_admin_event"];
+}
+
+// AdminActionCategory represents the category of admin action.
+enum AdminActionCategory {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  ADMIN_ACTION_CATEGORY_UNSPECIFIED = 0;
+  ADMIN_ACTION_CATEGORY_ORDER = 1; // [(sebuf.http.enum_value) = "order"];
+  ADMIN_ACTION_CATEGORY_OTHER = 2; // [(sebuf.http.enum_value) = "other"];
+}
+
+// AdminActionVisibility represents the visibility of admin action.
+enum AdminActionVisibility {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  ADMIN_ACTION_VISIBILITY_UNSPECIFIED = 0;
+  ADMIN_ACTION_VISIBILITY_INTERNAL = 1; // [(sebuf.http.enum_value) = "internal"];
+  ADMIN_ACTION_VISIBILITY_EXTERNAL = 2; // [(sebuf.http.enum_value) = "external"];
+  ADMIN_ACTION_VISIBILITY_CORRESPONDENT_ONLY = 3; // [(sebuf.http.enum_value) = "correspondent_only"];
+}
+
+// AdminActionBelongsTo identifies what entity an admin action belongs to.
+message AdminActionBelongsTo {
+  // Kind of entity.
+  string kind = 1 [(sebuf.http.field_examples) = { values: ["account"] }];
+  // ID reference of the entity.
+  string id_reference = 2 [(sebuf.http.field_examples) = { values: ["0bbf1dd7-4235-4eca-8b1a-0db63572c735"] }];
+}
+
+// AdminActionCreatedBy identifies who created an admin action.
+message AdminActionCreatedBy {
+  // Kind of creator.
+  string kind = 1 [(sebuf.http.field_examples) = { values: ["admin"] }];
+  // ID reference of the creator.
+  string id_reference = 2 [(sebuf.http.field_examples) = { values: ["19455a3c-595f-457f-97b3-64a2b5aeae96"] }];
+}
+
+// LiquidationContext contains details for liquidation admin events.
+message LiquidationContext {
+  // Symbol that was liquidated.
+  string symbol = 1 [(sebuf.http.field_examples) = { values: ["TSLA"] }];
+  // Reason for liquidation.
+  string reason = 2 [(sebuf.http.field_examples) = { values: ["Liquidation due to real time risk"] }];
+  // Available quantity.
+  string available_qty = 3 [(sebuf.http.field_examples) = { values: ["0.0001"] }];
+  // Requested quantity.
+  string requested_qty = 4 [(sebuf.http.field_examples) = { values: ["0.0001"] }];
+  // Error message if any.
+  string error = 5;
+}
+
+// TransactionCancelContext contains details for transaction cancel admin events.
+message TransactionCancelContext {
+  // Transaction ID that was cancelled.
+  string transaction_id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["fdf18af2-142b-409e-8aad-d1731e276af0"] }
+  ];
+  // Entry type (e.g., JNLC).
+  string entry_type = 2 [(sebuf.http.field_examples) = { values: ["JNLC"] }];
+  // External ID.
+  string external_id = 3 [(sebuf.http.field_examples) = { values: ["d5eede2c-1c08-45df-9800-87ad5eefc11f"] }];
+}
+
+// AdminActionEventV2 represents an admin action event (v2).
+message AdminActionEventV2 {
+  // Event ID (ULID format).
+  string event_id = 1 [(sebuf.http.field_examples) = { values: ["01GTVS4FVS2KJDTPYH2WM6NAXF"] }];
+  // ID of the replaced event (optional).
+  string replaces_event_id = 2 [(sebuf.http.field_examples) = { values: ["01GTVS4FVS2KJDTPYH2WM6NAXE"] }];
+  // Timestamp of event.
+  string at = 3 [(sebuf.http.field_examples) = { values: ["2023-03-06T16:38:01Z"] }];
+  // Entity this action belongs to.
+  AdminActionBelongsTo belongs_to = 4;
+  // Who created this action.
+  AdminActionCreatedBy created_by = 5;
+  // Type of admin action.
+  string type = 6 [(sebuf.http.field_examples) = { values: ["liquidation_admin_event"] }];
+  // Category of admin action.
+  string category = 7 [(sebuf.http.field_examples) = { values: ["order"] }];
+  // Visibility of admin action.
+  string visibility = 8 [(sebuf.http.field_examples) = { values: ["external"] }];
+  // Free text description of the admin action.
+  string note = 9 [(sebuf.http.field_examples) = { values: ["Position liquidated: Asset: TSLA"] }];
+  // Related correspondent.
+  string correspondent = 10 [(sebuf.http.field_examples) = { values: ["LPCA"] }];
+  // Context depends on the type - can be liquidation or transaction cancel context.
+  oneof context {
+    LiquidationContext liquidation_context = 11;
+    TransactionCancelContext transaction_cancel_context = 12;
+  }
+}
+
+// FundingEntityType represents the type of funding entity.
+enum FundingEntityType {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  FUNDING_ENTITY_TYPE_UNSPECIFIED = 0;
+  FUNDING_ENTITY_TYPE_BANK_RELATIONSHIP = 1; // [(sebuf.http.enum_value) = "BankRelationship"];
+  FUNDING_ENTITY_TYPE_WIRE_BANK = 2; // [(sebuf.http.enum_value) = "WireBank"];
+  FUNDING_ENTITY_TYPE_TRANSFER = 3; // [(sebuf.http.enum_value) = "Transfer"];
+}
+
+// FundingStatusEventV2 represents a funding status change event (v2).
+message FundingStatusEventV2 {
+  // Event ID (ULID format).
+  string event_id = 1 [(sebuf.http.field_examples) = { values: ["01F7VQQ782DM57SJNWAYMD14J9"] }];
+  // Timestamp of the status change.
+  string at = 2 [(sebuf.http.field_examples) = { values: ["2025-04-11T19:52:24.066998Z"] }];
+  // Account UUID.
+  string account_id = 3 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["8e00606a-c9ac-409a-ba45-f55e8f77984a"] }
+  ];
+  // Correspondent code.
+  string correspondent = 4 [(sebuf.http.field_examples) = { values: ["LPCA"] }];
+  // Entity UUID.
+  string entity_id = 5 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["c4ed4206-697b-4859-ab71-b9de6649859d"] }
+  ];
+  // Entity type (BankRelationship, WireBank, Transfer).
+  string entity_type = 6 [(sebuf.http.field_examples) = { values: ["BankRelationship"] }];
+  // Previous status (null if first status).
+  string status_from = 7 [(sebuf.http.field_examples) = { values: ["QUEUED"] }];
+  // New status.
+  string status_to = 8 [(sebuf.http.field_examples) = { values: ["REJECTED"] }];
+  // Reason for status change (used when rejected/canceled).
+  string reason = 9 [(sebuf.http.field_examples) = { values: ["bank account owner name does not match brokerage account name"] }];
+}
+
+// SubscribeAdminActionsV2Request is the request to subscribe to admin action events (v2).
+message SubscribeAdminActionsV2Request {
+  // Starting date filter (RFC3339 or YYYY-MM-DD).
+  string since = 1 [
+    (sebuf.http.query) = { name: "since" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+  // Ending date filter (RFC3339 or YYYY-MM-DD).
+  string until = 2 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31"] }
+  ];
+  // Starting event ID (ULID).
+  string since_id = 3 [
+    (sebuf.http.query) = { name: "since_id" },
+    (sebuf.http.field_examples) = { values: ["01GTVS4FVS2KJDTPYH2WM6NAXF"] }
+  ];
+  // Ending event ID (ULID).
+  string until_id = 4 [
+    (sebuf.http.query) = { name: "until_id" },
+    (sebuf.http.field_examples) = { values: ["01GTVS4FVS2KJDTPYH2WM6NAXG"] }
+  ];
+}
+
+// SubscribeAdminActionsV2Response is the response stream for admin action events (v2).
+message SubscribeAdminActionsV2Response {
+  // Stream of admin action events.
+  repeated AdminActionEventV2 events = 1;
+}
+
+// SubscribeFundingStatusV2Request is the request to subscribe to funding status events (v2).
+message SubscribeFundingStatusV2Request {
+  // Starting date filter (YYYY-MM-DD).
+  string since = 1 [
+    (sebuf.http.query) = { name: "since" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+  // Ending date filter (YYYY-MM-DD).
+  string until = 2 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31"] }
+  ];
+  // Starting event ID (integer, legacy).
+  int32 since_id = 3 [
+    (sebuf.http.query) = { name: "since_id" }
+  ];
+  // Ending event ID (integer, legacy).
+  int32 until_id = 4 [
+    (sebuf.http.query) = { name: "until_id" }
+  ];
+  // Starting event ID (ULID).
+  string since_ulid = 5 [
+    (sebuf.http.query) = { name: "since_ulid" },
+    (sebuf.http.field_examples) = { values: ["01F7VQQ782DM57SJNWAYMD14J9"] }
+  ];
+  // Ending event ID (ULID).
+  string until_ulid = 6 [
+    (sebuf.http.query) = { name: "until_ulid" },
+    (sebuf.http.field_examples) = { values: ["01F7VQQ782DM57SJNWAYMD14K0"] }
+  ];
+}
+
+// SubscribeFundingStatusV2Response is the response stream for funding status events (v2).
+message SubscribeFundingStatusV2Response {
+  // Stream of funding status events.
+  repeated FundingStatusEventV2 events = 1;
+}

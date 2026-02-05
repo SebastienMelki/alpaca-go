@@ -1,0 +1,1094 @@
+openapi: 3.1.0
+info:
+    title: BrokerV1BetaService API
+    version: 1.0.0
+paths:
+    /v1beta/accounts/{account_id}/funding_wallet:
+        get:
+            tags:
+                - BrokerV1BetaService
+            summary: GetFundingWallet
+            description: |-
+                GetFundingWallet retrieves a funding wallet for an account.
+                 GET /v1beta/accounts/{account_id}/funding_wallet
+            operationId: GetFundingWallet
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (required).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FundingWallet'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        post:
+            tags:
+                - BrokerV1BetaService
+            summary: CreateFundingWallet
+            description: |-
+                CreateFundingWallet creates a funding wallet for an account.
+                 POST /v1beta/accounts/{account_id}/funding_wallet
+            operationId: CreateFundingWallet
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (required).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateFundingWalletRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FundingWallet'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta/funding_wallets:
+        post:
+            tags:
+                - BrokerV1BetaService
+            summary: BatchCreateFundingWallets
+            description: |-
+                BatchCreateFundingWallets creates funding wallets for multiple accounts.
+                 POST /v1beta/funding_wallets
+            operationId: BatchCreateFundingWallets
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BatchCreateFundingWalletsRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BatchCreateFundingWalletsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta/accounts/{account_id}/funding_wallet/transfers:
+        get:
+            tags:
+                - BrokerV1BetaService
+            summary: ListFundingWalletTransfers
+            description: |-
+                ListFundingWalletTransfers retrieves transfers for a funding wallet.
+                 GET /v1beta/accounts/{account_id}/funding_wallet/transfers
+            operationId: ListFundingWalletTransfers
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (required).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListFundingWalletTransfersResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta/accounts/{account_id}/funding_wallet/transfers/{transfer_id}:
+        get:
+            tags:
+                - BrokerV1BetaService
+            summary: GetFundingWalletTransfer
+            description: |-
+                GetFundingWalletTransfer retrieves a specific funding wallet transfer.
+                 GET /v1beta/accounts/{account_id}/funding_wallet/transfers/{transfer_id}
+            operationId: GetFundingWalletTransfer
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (required).
+                  required: true
+                  schema:
+                    type: string
+                - name: transfer_id
+                  in: path
+                  description: The transfer ID (required).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FundingWalletTransfer'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta/accounts/{account_id}/funding_wallet/withdrawals:
+        post:
+            tags:
+                - BrokerV1BetaService
+            summary: CreateFundingWalletWithdrawal
+            description: |-
+                CreateFundingWalletWithdrawal creates a withdrawal from a funding wallet.
+                 POST /v1beta/accounts/{account_id}/funding_wallet/withdrawals
+            operationId: CreateFundingWalletWithdrawal
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (required).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateFundingWalletWithdrawalRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FundingWalletTransfer'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta/accounts/{account_id}/funding_wallet/funding_details:
+        get:
+            tags:
+                - BrokerV1BetaService
+            summary: ListFundingDetails
+            description: |-
+                ListFundingDetails retrieves funding details for an account.
+                 GET /v1beta/accounts/{account_id}/funding_wallet/funding_details
+            operationId: ListFundingDetails
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (required).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/FundingDetails'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta/accounts/{account_id}/funding_wallet/demo_deposit:
+        post:
+            tags:
+                - BrokerV1BetaService
+            summary: DemoDeposit
+            description: |-
+                DemoDeposit creates a demo deposit (sandbox only).
+                 POST /v1beta/accounts/{account_id}/funding_wallet/demo_deposit
+            operationId: DemoDeposit
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (required).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DemoDepositRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DemoDepositResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v1beta/accounts/{account_id}/funding_wallet/recipient_bank:
+        get:
+            tags:
+                - BrokerV1BetaService
+            summary: GetRecipientBank
+            description: |-
+                GetRecipientBank retrieves the recipient bank for an account.
+                 GET /v1beta/accounts/{account_id}/funding_wallet/recipient_bank
+            operationId: GetRecipientBank
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (required).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RecipientBank'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        post:
+            tags:
+                - BrokerV1BetaService
+            summary: CreateRecipientBank
+            description: |-
+                CreateRecipientBank creates a recipient bank for an account.
+                 POST /v1beta/accounts/{account_id}/funding_wallet/recipient_bank
+            operationId: CreateRecipientBank
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (required).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateRecipientBankRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RecipientBank'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        delete:
+            tags:
+                - BrokerV1BetaService
+            summary: DeleteRecipientBank
+            description: |-
+                DeleteRecipientBank deletes the recipient bank for an account.
+                 DELETE /v1beta/accounts/{account_id}/funding_wallet/recipient_bank
+            operationId: DeleteRecipientBank
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: The account ID (required).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteRecipientBankResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+components:
+    schemas:
+        FieldViolation:
+            type: object
+            properties:
+                field:
+                    type: string
+                    description: The field path that failed validation (e.g., 'user.email' for nested fields). For header validation, this will be the header name (e.g., 'X-API-Key')
+                description:
+                    type: string
+                    description: Human-readable description of the validation violation (e.g., 'must be a valid email address', 'required field missing')
+            required:
+                - field
+                - description
+            description: FieldViolation describes a single validation error for a specific field.
+        ValidationError:
+            type: object
+            properties:
+                violations:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FieldViolation'
+                    description: List of validation violations
+            required:
+                - violations
+            description: ValidationError is returned when request validation fails. It contains a list of field violations describing what went wrong.
+        CreateFundingWalletRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (required).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: CreateFundingWalletRequest is the request to create a funding wallet.
+        FundingWallet:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: Account ID associated with the wallet.
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                status:
+                    type: string
+                    examples:
+                        - active
+                    description: Wallet status.
+                    example: active
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Timestamp when the wallet was created.
+                    example: 2024-01-15T10:30:00Z
+            description: FundingWallet represents a funding wallet for an account.
+        GetFundingWalletRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (required).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: GetFundingWalletRequest is the request to get a funding wallet.
+        BatchCreateFundingWalletsRequest:
+            type: object
+            properties:
+                accountIds:
+                    type: array
+                    items:
+                        type: string
+                        description: List of account IDs.
+            description: BatchCreateFundingWalletsRequest is the request to batch create funding wallets.
+        BatchCreateFundingWalletsResponse:
+            type: object
+            properties:
+                wallets:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FundingWallet'
+            description: BatchCreateFundingWalletsResponse is the response for batch creating funding wallets.
+        ListFundingWalletTransfersRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (required).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: ListFundingWalletTransfersRequest is the request to list funding wallet transfers.
+        ListFundingWalletTransfersResponse:
+            type: object
+            properties:
+                transfers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FundingWalletTransfer'
+            description: ListFundingWalletTransfersResponse is the response containing funding wallet transfers.
+        FundingWalletTransfer:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+                    description: Transfer ID.
+                    example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: Account ID.
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                fees:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TransferFee'
+                requestedAmount:
+                    type: string
+                    examples:
+                        - 1000.00
+                    description: The amount sent as part of the withdrawal creation.
+                    example: 1000.00
+                originalAmount:
+                    type: string
+                    examples:
+                        - 975.00
+                    description: The amount expected to receive (requested amount - fees).
+                    example: 975.00
+                originalCurrency:
+                    type: string
+                    examples:
+                        - EUR
+                    description: Currency of the withdrawn amount (3-letter ISO code).
+                    example: EUR
+                direction:
+                    type: string
+                    examples:
+                        - outgoing
+                    description: Transfer direction.
+                    example: outgoing
+                status:
+                    type: string
+                    examples:
+                        - COMPLETE
+                    description: Transfer status.
+                    example: COMPLETE
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Timestamp when the transfer was created.
+                    example: 2024-01-15T10:30:00Z
+                updatedAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T12:00:00Z
+                    description: Timestamp when the transfer was last updated.
+                    example: 2024-01-15T12:00:00Z
+                usd:
+                    $ref: '#/components/schemas/UsdAmount'
+                paymentType:
+                    type: string
+                    examples:
+                        - swift_wire
+                    description: Payment type.
+                    example: swift_wire
+            description: FundingWalletTransfer represents a transfer to/from a funding wallet.
+        TransferFee:
+            type: object
+            properties:
+                type:
+                    type: string
+                    examples:
+                        - withdrawal_fee
+                    description: Fee type.
+                    example: withdrawal_fee
+                amount:
+                    type: string
+                    examples:
+                        - 25.00
+                    description: Fee amount.
+                    example: 25.00
+                currency:
+                    type: string
+                    examples:
+                        - USD
+                    description: Currency of the fee.
+                    example: USD
+                paymentType:
+                    type: string
+                    examples:
+                        - invoice
+                    description: Payment type for the fee.
+                    example: invoice
+            description: TransferFee represents a fee associated with a transfer.
+        UsdAmount:
+            type: object
+            properties:
+                amount:
+                    type: string
+                    examples:
+                        - 1000.00
+                    description: Amount in USD.
+                    example: 1000.00
+            description: UsdAmount represents a USD amount.
+        GetFundingWalletTransferRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (required).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                transferId:
+                    type: string
+                    examples:
+                        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+                    format: uuid
+                    description: The transfer ID (required).
+                    example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+            required:
+                - accountId
+                - transferId
+            description: GetFundingWalletTransferRequest is the request to get a specific funding wallet transfer.
+        CreateFundingWalletWithdrawalRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (required).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                amount:
+                    type: string
+                    examples:
+                        - 1000.00
+                    description: Amount to withdraw.
+                    example: 1000.00
+                currency:
+                    type: string
+                    examples:
+                        - USD
+                    description: Currency to withdraw.
+                    example: USD
+            required:
+                - accountId
+                - amount
+            description: CreateFundingWalletWithdrawalRequest is the request to create a withdrawal.
+        ListFundingDetailsRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (required).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: ListFundingDetailsRequest is the request to list funding details.
+        ListFundingDetailsResponse:
+            type: object
+            properties:
+                fundingDetails:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FundingDetails'
+            description: ListFundingDetailsResponse is the response containing funding details.
+        FundingDetails:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: Account ID.
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                bankName:
+                    type: string
+                    examples:
+                        - JPMorgan Chase
+                    description: Bank name.
+                    example: JPMorgan Chase
+                bankAddress:
+                    type: string
+                    examples:
+                        - 383 Madison Ave, New York, NY 10179
+                    description: Bank address.
+                    example: 383 Madison Ave, New York, NY 10179
+                swiftCode:
+                    type: string
+                    examples:
+                        - CHASUS33
+                    description: SWIFT/BIC code.
+                    example: CHASUS33
+                accountNumber:
+                    type: string
+                    examples:
+                        - 1234567890
+                    description: Account number.
+                    example: 1234567890
+                routingNumber:
+                    type: string
+                    examples:
+                        - 021000021
+                    description: Routing number.
+                    example: 021000021
+                beneficiaryName:
+                    type: string
+                    examples:
+                        - Alpaca Securities LLC
+                    description: Beneficiary name.
+                    example: Alpaca Securities LLC
+                reference:
+                    type: string
+                    examples:
+                        - 'Account: 904837e3'
+                    description: Reference/memo.
+                    example: 'Account: 904837e3'
+            description: FundingDetails represents funding details for an account.
+        DemoDepositRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (required).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                amount:
+                    type: string
+                    examples:
+                        - 10000.00
+                    description: Amount to deposit.
+                    example: 10000.00
+            required:
+                - accountId
+                - amount
+            description: DemoDepositRequest is the request to create a demo deposit (sandbox only).
+        DemoDepositResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the deposit was successful.
+                    example: true
+            description: DemoDepositResponse is the response for a demo deposit.
+        GetRecipientBankRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (required).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: GetRecipientBankRequest is the request to get a recipient bank.
+        RecipientBank:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+                    description: Recipient bank ID.
+                    example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: Account ID associated with this recipient bank.
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                bankName:
+                    type: string
+                    examples:
+                        - Deutsche Bank
+                    description: Bank name.
+                    example: Deutsche Bank
+                bankAddress:
+                    type: string
+                    examples:
+                        - Taunusanlage 12, 60325 Frankfurt, Germany
+                    description: Bank address.
+                    example: Taunusanlage 12, 60325 Frankfurt, Germany
+                swiftCode:
+                    type: string
+                    examples:
+                        - DEUTDEFF
+                    description: SWIFT/BIC code.
+                    example: DEUTDEFF
+                beneficiaryName:
+                    type: string
+                    examples:
+                        - John Doe
+                    description: Beneficiary name.
+                    example: John Doe
+                accountNumber:
+                    type: string
+                    examples:
+                        - DE89370400440532013000
+                    description: Beneficiary account number or IBAN.
+                    example: DE89370400440532013000
+                country:
+                    type: string
+                    examples:
+                        - DE
+                    description: Bank country (ISO 3166-1 alpha-2).
+                    example: DE
+                currency:
+                    type: string
+                    examples:
+                        - EUR
+                    description: Currency (ISO 4217).
+                    example: EUR
+                status:
+                    type: string
+                    examples:
+                        - active
+                    description: Status of the recipient bank.
+                    example: active
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Timestamp when the recipient bank was created.
+                    example: 2024-01-15T10:30:00Z
+                updatedAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Timestamp when the recipient bank was last updated.
+                    example: 2024-01-15T10:30:00Z
+            description: RecipientBank represents a recipient bank for wire transfers.
+        CreateRecipientBankRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (required).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                bankName:
+                    type: string
+                    examples:
+                        - Deutsche Bank
+                    description: Bank name.
+                    example: Deutsche Bank
+                bankAddress:
+                    type: string
+                    examples:
+                        - Taunusanlage 12, 60325 Frankfurt, Germany
+                    description: Bank address.
+                    example: Taunusanlage 12, 60325 Frankfurt, Germany
+                swiftCode:
+                    type: string
+                    examples:
+                        - DEUTDEFF
+                    description: SWIFT/BIC code.
+                    example: DEUTDEFF
+                beneficiaryName:
+                    type: string
+                    examples:
+                        - John Doe
+                    description: Beneficiary name.
+                    example: John Doe
+                accountNumber:
+                    type: string
+                    examples:
+                        - DE89370400440532013000
+                    description: Beneficiary account number or IBAN.
+                    example: DE89370400440532013000
+                country:
+                    type: string
+                    examples:
+                        - DE
+                    description: Bank country (ISO 3166-1 alpha-2).
+                    example: DE
+                currency:
+                    type: string
+                    examples:
+                        - EUR
+                    description: Currency (ISO 4217).
+                    example: EUR
+            required:
+                - accountId
+                - bankName
+                - swiftCode
+                - beneficiaryName
+                - accountNumber
+                - country
+                - currency
+            description: CreateRecipientBankRequest is the request to create a recipient bank.
+        DeleteRecipientBankRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: The account ID (required).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: DeleteRecipientBankRequest is the request to delete a recipient bank.
+        DeleteRecipientBankResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the deletion was successful.
+                    example: true
+            description: DeleteRecipientBankResponse is the response for deleting a recipient bank.

@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+
+// ReportType represents the type of EOD report.
+enum ReportType {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  REPORT_TYPE_UNSPECIFIED = 0;
+  REPORT_TYPE_ACCOUNT = 1; // [(sebuf.http.enum_value) = "account"];
+  REPORT_TYPE_TRADE = 2; // [(sebuf.http.enum_value) = "trade"];
+  REPORT_TYPE_TRADE_CANCEL_CORRECT = 3; // [(sebuf.http.enum_value) = "trade_cancel_correct"];
+  REPORT_TYPE_JOURNAL = 4; // [(sebuf.http.enum_value) = "journal"];
+  REPORT_TYPE_TRANSFER = 5; // [(sebuf.http.enum_value) = "transfer"];
+  REPORT_TYPE_MARGIN_CALL = 6; // [(sebuf.http.enum_value) = "margin_call"];
+  REPORT_TYPE_TRADING_POSITION = 7; // [(sebuf.http.enum_value) = "trading_position"];
+  REPORT_TYPE_TRADING_ACTIVITY = 8; // [(sebuf.http.enum_value) = "trading_activity"];
+  REPORT_TYPE_NON_TRADING_ACTIVITY = 9; // [(sebuf.http.enum_value) = "non_trading_activity"];
+}
+
+// ReportFormat represents the format of the report.
+enum ReportFormat {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  REPORT_FORMAT_UNSPECIFIED = 0;
+  REPORT_FORMAT_CSV = 1; // [(sebuf.http.enum_value) = "csv"];
+  REPORT_FORMAT_JSON = 2; // [(sebuf.http.enum_value) = "json"];
+}
+
+// EODReport represents an End-of-Day report.
+message EODReport {
+  // Report ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Report type.
+  string type = 2 [(sebuf.http.field_examples) = { values: ["account"] }];
+
+  // Report date.
+  string date = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
+
+  // Report format.
+  string format = 4 [(sebuf.http.field_examples) = { values: ["csv"] }];
+
+  // Download URL (presigned, expires after some time).
+  string url = 5 [(sebuf.http.field_examples) = { values: ["https://reports.alpaca.markets/..."] }];
+
+  // File size in bytes.
+  int64 size = 6 [(sebuf.http.field_examples) = { values: ["1048576"] }];
+
+  // Number of records in the report.
+  int32 record_count = 7 [(sebuf.http.field_examples) = { values: ["5000"] }];
+
+  // Timestamp when the report was generated.
+  string created_at = 8 [(sebuf.http.field_examples) = { values: ["2024-01-16T06:00:00Z"] }];
+
+  // Timestamp when the download URL expires.
+  string expires_at = 9 [(sebuf.http.field_examples) = { values: ["2024-01-17T06:00:00Z"] }];
+}
+
+// ListEODReportsRequest is the request to list EOD reports.
+message ListEODReportsRequest {
+  // Filter by report type.
+  string type = 1 [
+    (sebuf.http.query) = { name: "type" },
+    (sebuf.http.field_examples) = { values: ["account"] }
+  ];
+
+  // Filter by start date.
+  string start_date = 2 [
+    (sebuf.http.query) = { name: "start_date" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01"] }
+  ];
+
+  // Filter by end date.
+  string end_date = 3 [
+    (sebuf.http.query) = { name: "end_date" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31"] }
+  ];
+
+  // Report format.
+  string format = 4 [
+    (sebuf.http.query) = { name: "format" },
+    (sebuf.http.field_examples) = { values: ["csv"] }
+  ];
+}
+
+// ListEODReportsResponse is the response containing EOD reports.
+message ListEODReportsResponse {
+  // List of EOD reports.
+  repeated EODReport reports = 1; // [(sebuf.http.unwrap_root) = true];
+}
+
+// GetEODReportRequest is the request to get a specific EOD report.
+message GetEODReportRequest {
+  // The report type (required).
+  string type = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["account"] }
+  ];
+
+  // The report date (required).
+  string date = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Report format.
+  string format = 3 [
+    (sebuf.http.query) = { name: "format" },
+    (sebuf.http.field_examples) = { values: ["csv"] }
+  ];
+}
+
+// DownloadEODReportRequest is the request to download an EOD report.
+message DownloadEODReportRequest {
+  // The report ID (required).
+  string report_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// DownloadEODReportResponse is the response containing the report download URL.
+message DownloadEODReportResponse {
+  // Presigned download URL.
+  string url = 1 [(sebuf.http.field_examples) = { values: ["https://reports.alpaca.markets/..."] }];
+
+  // Timestamp when the URL expires.
+  string expires_at = 2 [(sebuf.http.field_examples) = { values: ["2024-01-17T06:00:00Z"] }];
+}

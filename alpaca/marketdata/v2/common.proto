@@ -101,6 +101,9 @@ message Snapshot {
 
   // Previous daily bar.
   Bar prev_daily_bar = 5;
+
+  // Symbol (returned in single snapshot responses).
+  string symbol = 6 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
 }
 
 // Timeframe represents the bar timeframe.

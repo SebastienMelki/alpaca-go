@@ -1,0 +1,524 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// ReverseSplit represents a reverse stock split corporate action.
+message ReverseSplit {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["913de862-c02c-46dc-a89c-fc8779a50d30"] }];
+
+  // The stock symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["MNTS"] }];
+
+  // The old CUSIP identifier.
+  string old_cusip = 3 [(sebuf.http.field_examples) = { values: ["60879E101"] }];
+
+  // The new CUSIP identifier.
+  string new_cusip = 4 [(sebuf.http.field_examples) = { values: ["60879E200"] }];
+
+  // The new rate in the split ratio.
+  double new_rate = 5 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // The old rate in the split ratio.
+  double old_rate = 6 [(sebuf.http.field_examples) = { values: ["50"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 7 [(sebuf.http.field_examples) = { values: ["2023-08-24"] }];
+
+  // The ex-date marks the cutoff point for shareholders to be credited.
+  string ex_date = 8 [(sebuf.http.field_examples) = { values: ["2023-08-24"] }];
+
+  // The record date for the corporate action.
+  string record_date = 9 [(sebuf.http.field_examples) = { values: ["2023-08-24"] }];
+
+  // The payable date for the corporate action.
+  string payable_date = 10 [(sebuf.http.field_examples) = { values: ["2023-08-24"] }];
+}
+
+// ForwardSplit represents a forward stock split corporate action.
+message ForwardSplit {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["189bd849-ab9f-4b4d-aaaa-a6d415fd976d"] }];
+
+  // The stock symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["SRE"] }];
+
+  // The CUSIP identifier.
+  string cusip = 3 [(sebuf.http.field_examples) = { values: ["816851109"] }];
+
+  // The new rate in the split ratio.
+  double new_rate = 4 [(sebuf.http.field_examples) = { values: ["2"] }];
+
+  // The old rate in the split ratio.
+  double old_rate = 5 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 6 [(sebuf.http.field_examples) = { values: ["2023-08-22"] }];
+
+  // The ex-date marks the cutoff point for shareholders to be credited.
+  string ex_date = 7 [(sebuf.http.field_examples) = { values: ["2023-08-22"] }];
+
+  // The record date for the corporate action.
+  string record_date = 8 [(sebuf.http.field_examples) = { values: ["2023-08-14"] }];
+
+  // The payable date for the corporate action.
+  string payable_date = 9 [(sebuf.http.field_examples) = { values: ["2023-08-21"] }];
+
+  // The due bill redemption date.
+  string due_bill_redemption_date = 10 [(sebuf.http.field_examples) = { values: ["2023-08-23"] }];
+}
+
+// UnitSplit represents a unit split corporate action.
+message UnitSplit {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["3e68e87e-ae95-4d68-91d1-715d52ef143a"] }];
+
+  // The old symbol before the split.
+  string old_symbol = 2 [(sebuf.http.field_examples) = { values: ["TPBAU"] }];
+
+  // The old CUSIP identifier.
+  string old_cusip = 3 [(sebuf.http.field_examples) = { values: ["G8990L119"] }];
+
+  // The old rate in the split ratio.
+  double old_rate = 4 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // The new symbol after the split.
+  string new_symbol = 5 [(sebuf.http.field_examples) = { values: ["LVRO"] }];
+
+  // The new CUSIP identifier.
+  string new_cusip = 6 [(sebuf.http.field_examples) = { values: ["G5391L102"] }];
+
+  // The new rate in the split ratio.
+  double new_rate = 7 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // The alternate symbol.
+  string alternate_symbol = 8 [(sebuf.http.field_examples) = { values: ["LVROW"] }];
+
+  // The alternate CUSIP identifier.
+  string alternate_cusip = 9 [(sebuf.http.field_examples) = { values: ["G5391L110"] }];
+
+  // The alternate rate.
+  double alternate_rate = 10 [(sebuf.http.field_examples) = { values: ["0.3333"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 11 [(sebuf.http.field_examples) = { values: ["2023-03-01"] }];
+
+  // The effective date marks the cutoff point for shareholders to be credited.
+  string effective_date = 12 [(sebuf.http.field_examples) = { values: ["2023-03-01"] }];
+
+  // The payable date for the corporate action.
+  string payable_date = 13 [(sebuf.http.field_examples) = { values: ["2023-03-01"] }];
+}
+
+// StockDividend represents a stock dividend corporate action.
+message StockDividend {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["3ae94c30-2d37-473a-bf29-5f7b4ab6d3ca"] }];
+
+  // The stock symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["MSBC"] }];
+
+  // The CUSIP identifier.
+  string cusip = 3 [(sebuf.http.field_examples) = { values: ["605015106"] }];
+
+  // The dividend rate.
+  double rate = 4 [(sebuf.http.field_examples) = { values: ["0.05"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 5 [(sebuf.http.field_examples) = { values: ["2023-05-19"] }];
+
+  // The ex-date marks the cutoff point for shareholders to be credited.
+  string ex_date = 6 [(sebuf.http.field_examples) = { values: ["2023-05-19"] }];
+
+  // The record date for the corporate action.
+  string record_date = 7 [(sebuf.http.field_examples) = { values: ["2023-05-22"] }];
+
+  // The payable date for the corporate action.
+  string payable_date = 8 [(sebuf.http.field_examples) = { values: ["2023-05-05"] }];
+}
+
+// CashDividend represents a cash dividend corporate action.
+message CashDividend {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["11cfd108-292e-4cc6-bfbf-5999cdbc4029"] }];
+
+  // The stock symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["FCF"] }];
+
+  // The CUSIP identifier.
+  string cusip = 3 [(sebuf.http.field_examples) = { values: ["319829107"] }];
+
+  // The dividend rate per share.
+  double rate = 4 [(sebuf.http.field_examples) = { values: ["0.125"] }];
+
+  // Whether this is a special dividend.
+  bool special = 5 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Whether this is a foreign dividend.
+  bool foreign = 6 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 7 [(sebuf.http.field_examples) = { values: ["2023-05-19"] }];
+
+  // The ex-date marks the cutoff point for shareholders to be credited.
+  string ex_date = 8 [(sebuf.http.field_examples) = { values: ["2023-05-04"] }];
+
+  // The record date for the corporate action.
+  string record_date = 9 [(sebuf.http.field_examples) = { values: ["2023-05-05"] }];
+
+  // The payable date for the corporate action.
+  string payable_date = 10 [(sebuf.http.field_examples) = { values: ["2023-05-19"] }];
+
+  // The due bill on date.
+  string due_bill_on_date = 11;
+
+  // The due bill off date.
+  string due_bill_off_date = 12;
+}
+
+// SpinOff represents a spin-off corporate action.
+message SpinOff {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["82e602f6-35bc-4651-a5dd-f6d88ff37c55"] }];
+
+  // The source symbol from which the spin-off originates.
+  string source_symbol = 2 [(sebuf.http.field_examples) = { values: ["JUPW"] }];
+
+  // The source CUSIP identifier.
+  string source_cusip = 3 [(sebuf.http.field_examples) = { values: ["48208F105"] }];
+
+  // The source rate.
+  double source_rate = 4 [(sebuf.http.field_examples) = { values: ["19.35"] }];
+
+  // The new symbol created by the spin-off.
+  string new_symbol = 5 [(sebuf.http.field_examples) = { values: ["SRM"] }];
+
+  // The new CUSIP identifier.
+  string new_cusip = 6 [(sebuf.http.field_examples) = { values: ["85237B101"] }];
+
+  // The new rate.
+  double new_rate = 7 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 8 [(sebuf.http.field_examples) = { values: ["2023-08-15"] }];
+
+  // The ex-date marks the cutoff point for shareholders to be credited.
+  string ex_date = 9 [(sebuf.http.field_examples) = { values: ["2023-08-15"] }];
+
+  // The record date for the corporate action.
+  string record_date = 10 [(sebuf.http.field_examples) = { values: ["2023-08-15"] }];
+
+  // The payable date for the corporate action.
+  string payable_date = 11;
+
+  // The due bill redemption date.
+  string due_bill_redemption_date = 12;
+}
+
+// CashMerger represents a cash merger corporate action.
+message CashMerger {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["3772bbd7-4ad5-44d4-9cc0-f69156a2f8f5"] }];
+
+  // The acquirer symbol.
+  string acquirer_symbol = 2;
+
+  // The acquirer CUSIP identifier.
+  string acquirer_cusip = 3;
+
+  // The acquiree symbol being acquired.
+  string acquiree_symbol = 4 [(sebuf.http.field_examples) = { values: ["GLOP"] }];
+
+  // The acquiree CUSIP identifier.
+  string acquiree_cusip = 5 [(sebuf.http.field_examples) = { values: ["Y2687W108"] }];
+
+  // The cash rate per share.
+  double rate = 6 [(sebuf.http.field_examples) = { values: ["5.37"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 7 [(sebuf.http.field_examples) = { values: ["2023-07-17"] }];
+
+  // The effective date marks the cutoff point for shareholders to be credited.
+  string effective_date = 8 [(sebuf.http.field_examples) = { values: ["2023-07-17"] }];
+
+  // The payable date for the corporate action.
+  string payable_date = 9 [(sebuf.http.field_examples) = { values: ["2023-07-17"] }];
+}
+
+// StockMerger represents a stock merger corporate action.
+message StockMerger {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["728f8cb2-a00e-4bc7-ad14-d15fe82bbcff"] }];
+
+  // The acquirer symbol.
+  string acquirer_symbol = 2 [(sebuf.http.field_examples) = { values: ["EXR"] }];
+
+  // The acquirer CUSIP identifier.
+  string acquirer_cusip = 3 [(sebuf.http.field_examples) = { values: ["30225T102"] }];
+
+  // The acquirer rate.
+  double acquirer_rate = 4 [(sebuf.http.field_examples) = { values: ["0.895"] }];
+
+  // The acquiree symbol being acquired.
+  string acquiree_symbol = 5 [(sebuf.http.field_examples) = { values: ["LSI"] }];
+
+  // The acquiree CUSIP identifier.
+  string acquiree_cusip = 6 [(sebuf.http.field_examples) = { values: ["53223X107"] }];
+
+  // The acquiree rate.
+  double acquiree_rate = 7 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 8 [(sebuf.http.field_examples) = { values: ["2023-07-20"] }];
+
+  // The effective date marks the cutoff point for shareholders to be credited.
+  string effective_date = 9 [(sebuf.http.field_examples) = { values: ["2023-07-20"] }];
+
+  // The payable date for the corporate action.
+  string payable_date = 10 [(sebuf.http.field_examples) = { values: ["2023-07-20"] }];
+}
+
+// StockAndCashMerger represents a stock and cash merger corporate action.
+message StockAndCashMerger {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["e5248356-2c06-42cf-aeb9-1595bd616cdb"] }];
+
+  // The acquirer symbol.
+  string acquirer_symbol = 2 [(sebuf.http.field_examples) = { values: ["FRBA"] }];
+
+  // The acquirer CUSIP identifier.
+  string acquirer_cusip = 3 [(sebuf.http.field_examples) = { values: ["31931U102"] }];
+
+  // The acquirer rate.
+  double acquirer_rate = 4 [(sebuf.http.field_examples) = { values: ["0.7733"] }];
+
+  // The acquiree symbol being acquired.
+  string acquiree_symbol = 5 [(sebuf.http.field_examples) = { values: ["MLVF"] }];
+
+  // The acquiree CUSIP identifier.
+  string acquiree_cusip = 6 [(sebuf.http.field_examples) = { values: ["561409103"] }];
+
+  // The acquiree rate.
+  double acquiree_rate = 7 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // The cash rate per share.
+  double cash_rate = 8 [(sebuf.http.field_examples) = { values: ["7.8"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 9 [(sebuf.http.field_examples) = { values: ["2023-07-18"] }];
+
+  // The effective date marks the cutoff point for shareholders to be credited.
+  string effective_date = 10 [(sebuf.http.field_examples) = { values: ["2023-07-18"] }];
+
+  // The payable date for the corporate action.
+  string payable_date = 11 [(sebuf.http.field_examples) = { values: ["2023-07-18"] }];
+}
+
+// Redemption represents a redemption corporate action.
+message Redemption {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["395da031-0e57-4918-a6fb-64a7c713aca4"] }];
+
+  // The stock symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["ORPHY"] }];
+
+  // The CUSIP identifier.
+  string cusip = 3 [(sebuf.http.field_examples) = { values: ["687305102"] }];
+
+  // The redemption rate.
+  double rate = 4 [(sebuf.http.field_examples) = { values: ["0.141134"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 5 [(sebuf.http.field_examples) = { values: ["2023-06-13"] }];
+
+  // The payable date for the corporate action.
+  string payable_date = 6 [(sebuf.http.field_examples) = { values: ["2023-06-13"] }];
+}
+
+// NameChange represents a name/symbol change corporate action.
+message NameChange {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["5a774c35-edec-4532-a812-a56d0bbb623a"] }];
+
+  // The old symbol before the change.
+  string old_symbol = 2 [(sebuf.http.field_examples) = { values: ["BSAQ"] }];
+
+  // The old CUSIP identifier.
+  string old_cusip = 3 [(sebuf.http.field_examples) = { values: ["G11537100"] }];
+
+  // The new symbol after the change.
+  string new_symbol = 4 [(sebuf.http.field_examples) = { values: ["VFS"] }];
+
+  // The new CUSIP identifier.
+  string new_cusip = 5 [(sebuf.http.field_examples) = { values: ["Y9390M103"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 6 [(sebuf.http.field_examples) = { values: ["2023-08-15"] }];
+}
+
+// WorthlessRemoval represents a worthless removal corporate action.
+message WorthlessRemoval {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["106c2149-ee04-4d2e-a943-98dbb4d21a3c"] }];
+
+  // The stock symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["BLPH"] }];
+
+  // The CUSIP identifier.
+  string cusip = 3 [(sebuf.http.field_examples) = { values: ["078771300"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 4 [(sebuf.http.field_examples) = { values: ["2024-12-19"] }];
+}
+
+// RightsDistribution represents a rights distribution corporate action.
+message RightsDistribution {
+  // The internal Alpaca identifier of the corporate action.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["69794cfd-0adc-4e11-9211-9210a9cf8932"] }];
+
+  // The source symbol from which rights are distributed.
+  string source_symbol = 2 [(sebuf.http.field_examples) = { values: ["IFN"] }];
+
+  // The source CUSIP identifier.
+  string source_cusip = 3 [(sebuf.http.field_examples) = { values: ["454089103"] }];
+
+  // The new rights symbol.
+  string new_symbol = 4 [(sebuf.http.field_examples) = { values: ["IFN.RTWI"] }];
+
+  // The new CUSIP identifier.
+  string new_cusip = 5 [(sebuf.http.field_examples) = { values: ["454089111"] }];
+
+  // The distribution rate.
+  double rate = 6 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // The date when the corporate action is processed by Alpaca.
+  string process_date = 7 [(sebuf.http.field_examples) = { values: ["2024-04-19"] }];
+
+  // The ex-date marks the cutoff point for shareholders to be credited.
+  string ex_date = 8 [(sebuf.http.field_examples) = { values: ["2024-04-17"] }];
+
+  // The record date for the corporate action.
+  string record_date = 9 [(sebuf.http.field_examples) = { values: ["2024-04-18"] }];
+
+  // The payable date for the corporate action.
+  string payable_date = 10 [(sebuf.http.field_examples) = { values: ["2024-04-19"] }];
+
+  // The expiration date for the rights.
+  string expiration_date = 11 [(sebuf.http.field_examples) = { values: ["2024-05-14"] }];
+}
+
+// CorporateActions contains all types of corporate actions grouped by type.
+message CorporateActions {
+  // Reverse stock splits.
+  repeated ReverseSplit reverse_splits = 1;
+
+  // Forward stock splits.
+  repeated ForwardSplit forward_splits = 2;
+
+  // Unit splits.
+  repeated UnitSplit unit_splits = 3;
+
+  // Stock dividends.
+  repeated StockDividend stock_dividends = 4;
+
+  // Cash dividends.
+  repeated CashDividend cash_dividends = 5;
+
+  // Spin-offs.
+  repeated SpinOff spin_offs = 6;
+
+  // Cash mergers.
+  repeated CashMerger cash_mergers = 7;
+
+  // Stock mergers.
+  repeated StockMerger stock_mergers = 8;
+
+  // Stock and cash mergers.
+  repeated StockAndCashMerger stock_and_cash_mergers = 9;
+
+  // Redemptions.
+  repeated Redemption redemptions = 10;
+
+  // Name/symbol changes.
+  repeated NameChange name_changes = 11;
+
+  // Worthless removals.
+  repeated WorthlessRemoval worthless_removals = 12;
+
+  // Rights distributions.
+  repeated RightsDistribution rights_distributions = 13;
+}
+
+// GetCorporateActionsRequest is the request to get corporate actions data.
+message GetCorporateActionsRequest {
+  // A comma-separated list of symbols.
+  string symbols = 1 [
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL,TSLA"] }
+  ];
+
+  // A comma-separated list of CUSIPs.
+  string cusips = 2 [
+    (sebuf.http.query) = { name: "cusips" },
+    (sebuf.http.field_examples) = { values: ["037833100,88160R101"] }
+  ];
+
+  // A comma-separated list of corporate action types.
+  // Supported types: reverse_split, forward_split, unit_split, cash_dividend,
+  // stock_dividend, spin_off, cash_merger, stock_merger, stock_and_cash_merger,
+  // redemption, name_change, worthless_removal, rights_distribution.
+  string types = 3 [
+    (sebuf.http.query) = { name: "types" },
+    (sebuf.http.field_examples) = { values: ["forward_split,reverse_split"] }
+  ];
+
+  // The inclusive start of the interval. Format: YYYY-MM-DD. Default: current day.
+  string start = 4 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-08-14"] }
+  ];
+
+  // The inclusive end of the interval. Format: YYYY-MM-DD. Default: current day.
+  string end = 5 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-08-25"] }
+  ];
+
+  // A comma-separated list of corporate action IDs.
+  // This parameter is mutually exclusive with all other filters.
+  string ids = 6 [
+    (sebuf.http.query) = { name: "ids" },
+    (sebuf.http.field_examples) = { values: ["1dbc7685-9517-4a77-a236-8527d49cefdc,f8489167-4e4b-431d-a0be-6017ae1cf08a"] }
+  ];
+
+  // Maximum number of corporate actions to return (1-1000, default 100).
+  int32 limit = 7 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 1000 },
+    (sebuf.http.field_examples) = { values: ["100"] }
+  ];
+
+  // Pagination token for the next page.
+  string page_token = 8 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Sort data in ascending or descending order.
+  string sort = 9 [
+    (sebuf.http.query) = { name: "sort" },
+    (sebuf.http.field_examples) = { values: ["asc"] }
+  ];
+}
+
+// GetCorporateActionsResponse is the response containing corporate actions data.
+message GetCorporateActionsResponse {
+  // The corporate actions grouped by type.
+  CorporateActions corporate_actions = 1;
+
+  // Pagination token for the next page.
+  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+}

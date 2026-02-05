@@ -1,0 +1,194 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+
+// CIPStatus represents the status of CIP verification.
+enum CIPStatus {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  CIP_STATUS_UNSPECIFIED = 0;
+  CIP_STATUS_PENDING = 1; // [(sebuf.http.enum_value) = "pending"];
+  CIP_STATUS_APPROVED = 2; // [(sebuf.http.enum_value) = "approved"];
+  CIP_STATUS_REJECTED = 3; // [(sebuf.http.enum_value) = "rejected"];
+  CIP_STATUS_NEEDS_REVIEW = 4; // [(sebuf.http.enum_value) = "needs_review"];
+  CIP_STATUS_ACTION_REQUIRED = 5; // [(sebuf.http.enum_value) = "action_required"];
+}
+
+// CIPProvider represents the CIP verification provider.
+enum CIPProvider {
+  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
+  CIP_PROVIDER_UNSPECIFIED = 0;
+  CIP_PROVIDER_ONFIDO = 1; // [(sebuf.http.enum_value) = "onfido"];
+  CIP_PROVIDER_ALLOY = 2; // [(sebuf.http.enum_value) = "alloy"];
+  CIP_PROVIDER_COGNITO = 3; // [(sebuf.http.enum_value) = "cognito"];
+}
+
+// CIPInfo represents Customer Identification Program information.
+message CIPInfo {
+  // CIP ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Account ID.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // CIP provider.
+  string provider = 3 [(sebuf.http.field_examples) = { values: ["onfido"] }];
+
+  // CIP status.
+  string status = 4 [(sebuf.http.field_examples) = { values: ["approved"] }];
+
+  // Provider-specific applicant ID.
+  string applicant_id = 5 [(sebuf.http.field_examples) = { values: ["applicant_abc123"] }];
+
+  // KYC results.
+  CIPKYCResult kyc = 6;
+
+  // Document verification results.
+  CIPDocumentResult document = 7;
+
+  // Photo verification results.
+  CIPPhotoResult photo = 8;
+
+  // Identity verification results.
+  CIPIdentityResult identity = 9;
+
+  // Watchlist screening results.
+  CIPWatchlistResult watchlist = 10;
+
+  // Timestamp when CIP was created.
+  string created_at = 11 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when CIP was last updated.
+  string updated_at = 12 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// CIPKYCResult represents KYC verification results.
+message CIPKYCResult {
+  // KYC status.
+  string status = 1 [(sebuf.http.field_examples) = { values: ["approved"] }];
+
+  // Risk score (0-100).
+  int32 risk_score = 2 [(sebuf.http.field_examples) = { values: ["15"] }];
+
+  // Risk level.
+  string risk_level = 3 [(sebuf.http.field_examples) = { values: ["low"] }];
+
+  // Verification method.
+  string method = 4 [(sebuf.http.field_examples) = { values: ["electronic"] }];
+}
+
+// CIPDocumentResult represents document verification results.
+message CIPDocumentResult {
+  // Document status.
+  string status = 1 [(sebuf.http.field_examples) = { values: ["approved"] }];
+
+  // Document type.
+  string document_type = 2 [(sebuf.http.field_examples) = { values: ["drivers_license"] }];
+
+  // Issuing country.
+  string issuing_country = 3 [(sebuf.http.field_examples) = { values: ["USA"] }];
+
+  // Expiration date.
+  string expiration_date = 4 [(sebuf.http.field_examples) = { values: ["2028-01-15"] }];
+
+  // Document number (masked).
+  string document_number = 5 [(sebuf.http.field_examples) = { values: ["***1234"] }];
+}
+
+// CIPPhotoResult represents photo/selfie verification results.
+message CIPPhotoResult {
+  // Photo status.
+  string status = 1 [(sebuf.http.field_examples) = { values: ["approved"] }];
+
+  // Similarity score.
+  string similarity_score = 2 [(sebuf.http.field_examples) = { values: ["0.95"] }];
+
+  // Liveness check result.
+  string liveness = 3 [(sebuf.http.field_examples) = { values: ["passed"] }];
+}
+
+// CIPIdentityResult represents identity verification results.
+message CIPIdentityResult {
+  // Identity status.
+  string status = 1 [(sebuf.http.field_examples) = { values: ["approved"] }];
+
+  // Name match result.
+  string name_match = 2 [(sebuf.http.field_examples) = { values: ["exact"] }];
+
+  // Date of birth match result.
+  string dob_match = 3 [(sebuf.http.field_examples) = { values: ["exact"] }];
+
+  // Address match result.
+  string address_match = 4 [(sebuf.http.field_examples) = { values: ["partial"] }];
+
+  // SSN match result (US only).
+  string ssn_match = 5 [(sebuf.http.field_examples) = { values: ["exact"] }];
+}
+
+// CIPWatchlistResult represents watchlist screening results.
+message CIPWatchlistResult {
+  // Watchlist status.
+  string status = 1 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Number of matches found.
+  int32 matches = 2 [(sebuf.http.field_examples) = { values: ["0"] }];
+
+  // Types of watchlists screened.
+  repeated string screened_lists = 3;
+
+  // Timestamp of last screening.
+  string screened_at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// GetCIPInfoRequest is the request to get CIP info for an account.
+message GetCIPInfoRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// UpdateCIPInfoRequest is the request to update CIP info.
+message UpdateCIPInfoRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Provider name.
+  string provider = 2 [
+    (sebuf.http.field_examples) = { values: ["onfido"] }
+  ];
+
+  // Provider-specific applicant ID.
+  string applicant_id = 3 [
+    (sebuf.http.field_examples) = { values: ["applicant_abc123"] }
+  ];
+
+  // Status to set.
+  string status = 4 [
+    (sebuf.http.field_examples) = { values: ["approved"] }
+  ];
+
+  // KYC results.
+  CIPKYCResult kyc = 5;
+
+  // Document results.
+  CIPDocumentResult document = 6;
+
+  // Photo results.
+  CIPPhotoResult photo = 7;
+
+  // Identity results.
+  CIPIdentityResult identity = 8;
+
+  // Watchlist results.
+  CIPWatchlistResult watchlist = 9;
+}

@@ -1,0 +1,334 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v1beta;
+
+option go_package = "github.com/sebastienmelki/alpaca-go/internal/gen/alpaca/marketdata/v1beta;marketdatav1beta";
+
+import "sebuf/http/annotations.proto";
+import "sebuf/http/headers.proto";
+import "alpaca/marketdata/v1beta/crypto_bars.proto";
+import "alpaca/marketdata/v1beta/crypto_trades.proto";
+import "alpaca/marketdata/v1beta/crypto_quotes.proto";
+import "alpaca/marketdata/v1beta/crypto_snapshots.proto";
+import "alpaca/marketdata/v1beta/crypto_orderbooks.proto";
+import "alpaca/marketdata/v1beta/option_bars.proto";
+import "alpaca/marketdata/v1beta/option_trades.proto";
+import "alpaca/marketdata/v1beta/option_quotes.proto";
+import "alpaca/marketdata/v1beta/option_snapshots.proto";
+import "alpaca/marketdata/v1beta/option_meta.proto";
+import "alpaca/marketdata/v1beta/news.proto";
+import "alpaca/marketdata/v1beta/screener.proto";
+import "alpaca/marketdata/v1beta/corporate_actions.proto";
+import "alpaca/marketdata/v1beta/forex.proto";
+import "alpaca/marketdata/v1beta/fixed_income.proto";
+import "alpaca/marketdata/v1beta/logos.proto";
+
+// MarketDataBetaService provides the Alpaca Market Data Beta APIs.
+// This includes crypto, options, news, screener, forex, fixed income, and logos.
+// Base URL: https://data.alpaca.markets
+service MarketDataBetaService {
+  // Base path for all endpoints.
+  option (sebuf.http.service_config) = {
+    base_path: ""
+  };
+
+  // API key authentication required for all operations.
+  option (sebuf.http.service_headers) = {
+    required_headers: [
+      {
+        name: "APCA-API-KEY-ID"
+        description: "Alpaca API key ID"
+        type: "string"
+        required: true
+        example: "PKXXXXXXXXXXXXXXXXXX"
+      },
+      {
+        name: "APCA-API-SECRET-KEY"
+        description: "Alpaca API secret key"
+        type: "string"
+        required: true
+        example: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+      }
+    ]
+  };
+
+  // ============================================
+  // Crypto Data - Bars (v1beta3)
+  // ============================================
+
+  // GetCryptoBars retrieves historical crypto bars.
+  // GET /v1beta3/crypto/{loc}/bars
+  rpc GetCryptoBars(GetCryptoBarsRequest) returns (GetCryptoBarsResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta3/crypto/{loc}/bars"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetLatestCryptoBars retrieves the latest crypto bars.
+  // GET /v1beta3/crypto/{loc}/latest/bars
+  rpc GetLatestCryptoBars(GetLatestCryptoBarsRequest) returns (GetLatestCryptoBarsResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta3/crypto/{loc}/latest/bars"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Crypto Data - Trades (v1beta3)
+  // ============================================
+
+  // GetCryptoTrades retrieves historical crypto trades.
+  // GET /v1beta3/crypto/{loc}/trades
+  rpc GetCryptoTrades(GetCryptoTradesRequest) returns (GetCryptoTradesResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta3/crypto/{loc}/trades"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetLatestCryptoTrades retrieves the latest crypto trades.
+  // GET /v1beta3/crypto/{loc}/latest/trades
+  rpc GetLatestCryptoTrades(GetLatestCryptoTradesRequest) returns (GetLatestCryptoTradesResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta3/crypto/{loc}/latest/trades"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Crypto Data - Quotes (v1beta3)
+  // ============================================
+
+  // GetCryptoQuotes retrieves historical crypto quotes.
+  // GET /v1beta3/crypto/{loc}/quotes
+  rpc GetCryptoQuotes(GetCryptoQuotesRequest) returns (GetCryptoQuotesResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta3/crypto/{loc}/quotes"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetLatestCryptoQuotes retrieves the latest crypto quotes.
+  // GET /v1beta3/crypto/{loc}/latest/quotes
+  rpc GetLatestCryptoQuotes(GetLatestCryptoQuotesRequest) returns (GetLatestCryptoQuotesResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta3/crypto/{loc}/latest/quotes"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Crypto Data - Snapshots (v1beta3)
+  // ============================================
+
+  // GetCryptoSnapshots retrieves crypto snapshots.
+  // GET /v1beta3/crypto/{loc}/snapshots
+  rpc GetCryptoSnapshots(GetCryptoSnapshotsRequest) returns (GetCryptoSnapshotsResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta3/crypto/{loc}/snapshots"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Crypto Data - Orderbooks (v1beta3)
+  // ============================================
+
+  // GetCryptoOrderbooks retrieves the latest crypto orderbooks.
+  // GET /v1beta3/crypto/{loc}/latest/orderbooks
+  rpc GetCryptoOrderbooks(GetCryptoOrderbooksRequest) returns (GetCryptoOrderbooksResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta3/crypto/{loc}/latest/orderbooks"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Options Data - Bars (v1beta1)
+  // ============================================
+
+  // GetOptionBars retrieves historical option bars.
+  // GET /v1beta1/options/bars
+  rpc GetOptionBars(GetOptionBarsRequest) returns (GetOptionBarsResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/options/bars"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Options Data - Trades (v1beta1)
+  // ============================================
+
+  // GetOptionTrades retrieves historical option trades.
+  // GET /v1beta1/options/trades
+  rpc GetOptionTrades(GetOptionTradesRequest) returns (GetOptionTradesResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/options/trades"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetLatestOptionTrades retrieves the latest option trades.
+  // GET /v1beta1/options/trades/latest
+  rpc GetLatestOptionTrades(GetLatestOptionTradesRequest) returns (GetLatestOptionTradesResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/options/trades/latest"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Options Data - Quotes (v1beta1)
+  // ============================================
+
+  // GetLatestOptionQuotes retrieves the latest option quotes.
+  // GET /v1beta1/options/quotes/latest
+  rpc GetLatestOptionQuotes(GetLatestOptionQuotesRequest) returns (GetLatestOptionQuotesResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/options/quotes/latest"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Options Data - Snapshots (v1beta1)
+  // ============================================
+
+  // GetOptionSnapshots retrieves option snapshots.
+  // GET /v1beta1/options/snapshots
+  rpc GetOptionSnapshots(GetOptionSnapshotsRequest) returns (GetOptionSnapshotsResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/options/snapshots"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetOptionChain retrieves the option chain for an underlying.
+  // GET /v1beta1/options/snapshots/{underlying_symbol}
+  rpc GetOptionChain(GetOptionChainRequest) returns (GetOptionChainResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/options/snapshots/{underlying_symbol}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Options Data - Metadata (v1beta1)
+  // ============================================
+
+  // GetOptionMetaConditions retrieves option condition code mappings.
+  // GET /v1beta1/options/meta/conditions/{ticktype}
+  rpc GetOptionMetaConditions(GetOptionMetaConditionsRequest) returns (GetOptionMetaConditionsResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/options/meta/conditions/{ticktype}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetOptionMetaExchanges retrieves option exchange code mappings.
+  // GET /v1beta1/options/meta/exchanges
+  rpc GetOptionMetaExchanges(GetOptionMetaExchangesRequest) returns (GetOptionMetaExchangesResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/options/meta/exchanges"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // News (v1beta1)
+  // ============================================
+
+  // GetNews retrieves news articles.
+  // GET /v1beta1/news
+  rpc GetNews(GetNewsRequest) returns (GetNewsResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/news"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Screener (v1beta1)
+  // ============================================
+
+  // GetMostActives retrieves the most active stocks.
+  // GET /v1beta1/screener/stocks/most-actives
+  rpc GetMostActives(GetMostActivesRequest) returns (GetMostActivesResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/screener/stocks/most-actives"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetMovers retrieves the top market movers.
+  // GET /v1beta1/screener/{market_type}/movers
+  rpc GetMovers(GetMoversRequest) returns (GetMoversResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/screener/{market_type}/movers"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Corporate Actions (v1)
+  // ============================================
+
+  // GetCorporateActions retrieves corporate actions data.
+  // GET /v1/corporate-actions
+  rpc GetCorporateActions(GetCorporateActionsRequest) returns (GetCorporateActionsResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1/corporate-actions"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Forex (v1beta1)
+  // ============================================
+
+  // GetForexRates retrieves historical forex rates.
+  // GET /v1beta1/forex/rates
+  rpc GetForexRates(GetForexRatesRequest) returns (GetForexRatesResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/forex/rates"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetLatestForexRates retrieves the latest forex rates.
+  // GET /v1beta1/forex/latest/rates
+  rpc GetLatestForexRates(GetLatestForexRatesRequest) returns (GetLatestForexRatesResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/forex/latest/rates"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Fixed Income (v1beta1)
+  // ============================================
+
+  // GetFixedIncomeLatestPrices retrieves the latest fixed income prices.
+  // GET /v1beta1/fixed_income/latest/prices
+  rpc GetFixedIncomeLatestPrices(GetFixedIncomeLatestPricesRequest) returns (GetFixedIncomeLatestPricesResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/fixed_income/latest/prices"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Logos (v1beta1)
+  // ============================================
+
+  // GetLogo retrieves the company logo image for a symbol.
+  // GET /v1beta1/logos/{symbol}
+  rpc GetLogo(GetLogoRequest) returns (GetLogoResponse) {
+    option (sebuf.http.config) = {
+      path: "/v1beta1/logos/{symbol}"
+      method: HTTP_METHOD_GET
+    };
+  }
+}

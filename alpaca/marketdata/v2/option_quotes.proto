@@ -75,7 +75,7 @@ message GetOptionQuotesRequest {
 
 // OptionQuotesList is a list of quotes for a single option symbol.
 message OptionQuotesList {
-  repeated OptionQuote quotes = 1;
+  repeated OptionQuote quotes = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetOptionQuotesResponse is the response containing option quotes.

@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v1beta;
+
+option go_package = "github.com/sebastienmelki/alpaca-go/internal/gen/alpaca/marketdata/v1beta;marketdatav1beta";
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// OptionQuote represents an option bid/ask quote.
+message OptionQuote {
+  // Timestamp (RFC 3339).
+  string t = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00.123456Z"] }];
+
+  // Ask exchange code.
+  string ax = 2 [(sebuf.http.field_examples) = { values: ["C"] }];
+
+  // Ask price.
+  double ap = 3 [(sebuf.http.field_examples) = { values: ["5.30"] }];
+
+  // Ask size.
+  int64 as = 4 [(sebuf.http.field_examples) = { values: ["50"] }];
+
+  // Bid exchange code.
+  string bx = 5 [(sebuf.http.field_examples) = { values: ["P"] }];
+
+  // Bid price.
+  double bp = 6 [(sebuf.http.field_examples) = { values: ["5.20"] }];
+
+  // Bid size.
+  int64 bs = 7 [(sebuf.http.field_examples) = { values: ["30"] }];
+
+  // Quote condition.
+  string c = 8 [(sebuf.http.field_examples) = { values: ["R"] }];
+}
+
+// GetLatestOptionQuotesRequest is the request to get the latest option quotes.
+message GetLatestOptionQuotesRequest {
+  // Comma-separated list of option symbols.
+  string symbols = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "symbols" },
+    (sebuf.http.field_examples) = { values: ["AAPL240119C00150000"] }
+  ];
+
+  // Data feed (indicative, opra).
+  string feed = 2 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["opra"] }
+  ];
+}
+
+// GetLatestOptionQuotesResponse is the response containing the latest option quotes.
+message GetLatestOptionQuotesResponse {
+  // Map of symbol to latest quote.
+  map<string, OptionQuote> quotes = 1;
+}

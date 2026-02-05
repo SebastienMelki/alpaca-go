@@ -55,7 +55,7 @@ message GetStockQuotesRequest {
 
 // StockQuotesList is a list of quotes for a single symbol.
 message StockQuotesList {
-  repeated Quote quotes = 1;
+  repeated Quote quotes = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetStockQuotesResponse is the response containing stock quotes.
