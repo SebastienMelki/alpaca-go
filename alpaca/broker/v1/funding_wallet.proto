@@ -5,43 +5,6 @@ package alpaca.broker.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-
-// FundingWalletStatus represents the status of a funding wallet.
-enum FundingWalletStatus {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  FUNDING_WALLET_STATUS_UNSPECIFIED = 0;
-  FUNDING_WALLET_STATUS_ACTIVE = 1; // [(sebuf.http.enum_value) = "active"];
-  FUNDING_WALLET_STATUS_PENDING = 2; // [(sebuf.http.enum_value) = "pending"];
-  FUNDING_WALLET_STATUS_DISABLED = 3; // [(sebuf.http.enum_value) = "disabled"];
-}
-
-// FundingWalletTransferStatus represents the status of a funding wallet transfer.
-enum FundingWalletTransferStatus {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  FUNDING_WALLET_TRANSFER_STATUS_UNSPECIFIED = 0;
-  FUNDING_WALLET_TRANSFER_STATUS_PENDING = 1; // [(sebuf.http.enum_value) = "PENDING"];
-  FUNDING_WALLET_TRANSFER_STATUS_CANCELED = 2; // [(sebuf.http.enum_value) = "CANCELED"];
-  FUNDING_WALLET_TRANSFER_STATUS_EXECUTED = 3; // [(sebuf.http.enum_value) = "EXECUTED"];
-  FUNDING_WALLET_TRANSFER_STATUS_FAILED = 4; // [(sebuf.http.enum_value) = "FAILED"];
-  FUNDING_WALLET_TRANSFER_STATUS_COMPLETE = 5; // [(sebuf.http.enum_value) = "COMPLETE"];
-}
-
-// FundingWalletTransferDirection represents the direction of a funding wallet transfer.
-enum FundingWalletTransferDirection {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  FUNDING_WALLET_TRANSFER_DIRECTION_UNSPECIFIED = 0;
-  FUNDING_WALLET_TRANSFER_DIRECTION_INCOMING = 1; // [(sebuf.http.enum_value) = "incoming"];
-  FUNDING_WALLET_TRANSFER_DIRECTION_OUTGOING = 2; // [(sebuf.http.enum_value) = "outgoing"];
-}
-
-// FundingDetailPaymentType represents the payment type for funding details.
-enum FundingDetailPaymentType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  FUNDING_DETAIL_PAYMENT_TYPE_UNSPECIFIED = 0;
-  FUNDING_DETAIL_PAYMENT_TYPE_SWIFT_WIRE = 1; // [(sebuf.http.enum_value) = "swift_wire"];
-  FUNDING_DETAIL_PAYMENT_TYPE_LOCAL_RAILS = 2; // [(sebuf.http.enum_value) = "local_rails"];
-}
-
 // FundingWallet represents a funding wallet for an account.
 message FundingWallet {
   // Account ID associated with the wallet.
@@ -240,7 +203,7 @@ message ListFundingDetailsRequest {
 // ListFundingDetailsResponse is the response containing funding details.
 message ListFundingDetailsResponse {
   // List of funding details.
-  repeated FundingDetails funding_details = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated FundingDetails funding_details = 1 [(sebuf.http.unwrap) = true];
 }
 
 // DemoDepositRequest is the request to create a demo deposit (sandbox only).

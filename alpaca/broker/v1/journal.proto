@@ -5,30 +5,6 @@ package alpaca.broker.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-
-// JournalEntryType represents the type of journal entry.
-enum JournalEntryType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  JOURNAL_ENTRY_TYPE_UNSPECIFIED = 0;
-  JOURNAL_ENTRY_TYPE_JNLC = 1; // [(sebuf.http.enum_value) = "JNLC"];
-  JOURNAL_ENTRY_TYPE_JNLS = 2; // [(sebuf.http.enum_value) = "JNLS"];
-}
-
-// JournalStatus represents the status of a journal entry.
-enum JournalStatus {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  JOURNAL_STATUS_UNSPECIFIED = 0;
-  JOURNAL_STATUS_QUEUED = 1; // [(sebuf.http.enum_value) = "queued"];
-  JOURNAL_STATUS_SENT_TO_CLEARING = 2; // [(sebuf.http.enum_value) = "sent_to_clearing"];
-  JOURNAL_STATUS_PENDING = 3; // [(sebuf.http.enum_value) = "pending"];
-  JOURNAL_STATUS_EXECUTED = 4; // [(sebuf.http.enum_value) = "executed"];
-  JOURNAL_STATUS_REJECTED = 5; // [(sebuf.http.enum_value) = "rejected"];
-  JOURNAL_STATUS_CANCELED = 6; // [(sebuf.http.enum_value) = "canceled"];
-  JOURNAL_STATUS_REFUSED = 7; // [(sebuf.http.enum_value) = "refused"];
-  JOURNAL_STATUS_DELETED = 8; // [(sebuf.http.enum_value) = "deleted"];
-  JOURNAL_STATUS_CORRECT = 9; // [(sebuf.http.enum_value) = "correct"];
-}
-
 // TransmitterInfo contains information about the transmitter for travel rule compliance.
 message TransmitterInfo {
   // Full name of the originator.
@@ -222,7 +198,7 @@ message ListJournalsRequest {
 // ListJournalsResponse is the response containing journals.
 message ListJournalsResponse {
   // List of journals.
-  repeated Journal journals = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated Journal journals = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetJournalRequest is the request to get a specific journal.
@@ -301,7 +277,7 @@ message CreateBatchJournalRequest {
 // CreateBatchJournalResponse is the response for batch journal creation.
 message CreateBatchJournalResponse {
   // List of created journals.
-  repeated Journal journals = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated Journal journals = 1 [(sebuf.http.unwrap) = true];
 }
 
 // ReverseBatchJournalRequest is the request to reverse a batch of journals.
@@ -325,5 +301,5 @@ message ReverseBatchJournalRequest {
 // ReverseBatchJournalResponse is the response for batch journal reversal.
 message ReverseBatchJournalResponse {
   // List of reversed journals.
-  repeated Journal journals = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated Journal journals = 1 [(sebuf.http.unwrap) = true];
 }

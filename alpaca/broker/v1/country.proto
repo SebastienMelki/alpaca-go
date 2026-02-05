@@ -4,41 +4,19 @@ package alpaca.broker.v1;
 
 import "sebuf/http/annotations.proto";
 
+// CountryInfo represents information for a country.
+message CountryInfo {
+  // Full name of the country as defined by ISO 3166-1.
+  string full_name = 1 [(sebuf.http.field_examples) = { values: ["United States of America"] }];
 
-// CountryStatus represents whether a country is supported.
-enum CountryStatus {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  COUNTRY_STATUS_UNSPECIFIED = 0;
-  COUNTRY_STATUS_SUPPORTED = 1; // [(sebuf.http.enum_value) = "supported"];
-  COUNTRY_STATUS_NOT_SUPPORTED = 2; // [(sebuf.http.enum_value) = "not_supported"];
-  COUNTRY_STATUS_RESTRICTED = 3; // [(sebuf.http.enum_value) = "restricted"];
-}
+  // Crypto risk rating of the country.
+  string crypto_risk_rating = 2 [(sebuf.http.field_examples) = { values: ["medium"] }];
 
-// Country represents country information.
-message Country {
-  // ISO 3166-1 alpha-2 country code.
-  string code = 1 [(sebuf.http.field_examples) = { values: ["US"] }];
+  // Securities risk rating of the country.
+  string securities_risk_rating = 3 [(sebuf.http.field_examples) = { values: ["medium"] }];
 
-  // ISO 3166-1 alpha-3 country code.
-  string code3 = 2 [(sebuf.http.field_examples) = { values: ["USA"] }];
-
-  // Country name.
-  string name = 3 [(sebuf.http.field_examples) = { values: ["United States"] }];
-
-  // Whether the country is supported for account opening.
-  bool supported = 4 [(sebuf.http.field_examples) = { values: ["true"] }];
-
-  // Status of the country.
-  string status = 5 [(sebuf.http.field_examples) = { values: ["supported"] }];
-
-  // Required documents for this country.
-  repeated string required_documents = 6;
-
-  // Supported account types for this country.
-  repeated string account_types = 7;
-
-  // Notes or restrictions for this country.
-  string notes = 8 [(sebuf.http.field_examples) = { values: ["Full support for all account types"] }];
+  // States where Alpaca supports crypto trading.
+  repeated string crypto_supported_states = 4;
 }
 
 // State represents a state/province/region within a country.
@@ -54,18 +32,13 @@ message State {
 }
 
 // ListCountriesRequest is the request to list countries.
-message ListCountriesRequest {
-  // Filter by supported status only.
-  bool supported_only = 1 [
-    (sebuf.http.query) = { name: "supported_only" },
-    (sebuf.http.field_examples) = { values: ["true"] }
-  ];
-}
+message ListCountriesRequest {}
 
-// ListCountriesResponse is the response containing countries.
+// ListCountriesResponse is the response containing countries as a map.
+// Keys are ISO 3166-1 alpha-3 country codes.
 message ListCountriesResponse {
-  // List of countries.
-  repeated Country countries = 1; // [(sebuf.http.unwrap_root) = true];
+  // Map of country codes to country info.
+  map<string, CountryInfo> countries = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetCountryRequest is the request to get a specific country.
@@ -87,5 +60,5 @@ message ListStatesRequest {
 // ListStatesResponse is the response containing states.
 message ListStatesResponse {
   // List of states.
-  repeated State states = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated State states = 1 [(sebuf.http.unwrap) = true];
 }

@@ -5,26 +5,6 @@ package alpaca.broker.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-
-// OptionsApprovalStatus represents the options trading approval status.
-enum OptionsApprovalStatus {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  OPTIONS_APPROVAL_STATUS_UNSPECIFIED = 0;
-  OPTIONS_APPROVAL_STATUS_PENDING = 1; // [(sebuf.http.enum_value) = "pending"];
-  OPTIONS_APPROVAL_STATUS_APPROVED = 2; // [(sebuf.http.enum_value) = "approved"];
-  OPTIONS_APPROVAL_STATUS_REJECTED = 3; // [(sebuf.http.enum_value) = "rejected"];
-  OPTIONS_APPROVAL_STATUS_PENDING_REVIEW = 4; // [(sebuf.http.enum_value) = "pending_review"];
-}
-
-// OptionsLevel represents the options trading level.
-enum OptionsLevel {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  OPTIONS_LEVEL_UNSPECIFIED = 0;
-  OPTIONS_LEVEL_DISABLED = 1; // [(sebuf.http.enum_value) = "disabled"];
-  OPTIONS_LEVEL_1 = 2; // [(sebuf.http.enum_value) = "level_1"];
-  OPTIONS_LEVEL_2 = 3; // [(sebuf.http.enum_value) = "level_2"];
-}
-
 // OptionsApproval represents an account's options trading approval.
 message OptionsApproval {
   // Account ID.
@@ -60,35 +40,53 @@ message BrokerOptionContract {
   // Contract name.
   string name = 3 [(sebuf.http.field_examples) = { values: ["AAPL Jan 19 2024 150.00 Call"] }];
 
-  // Underlying symbol.
-  string underlying_symbol = 4 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+  // Contract status.
+  string status = 4 [(sebuf.http.field_examples) = { values: ["active"] }];
 
-  // Contract type (call or put).
-  string type = 5 [(sebuf.http.field_examples) = { values: ["call"] }];
+  // Whether the option contract is tradable.
+  bool tradable = 5 [(sebuf.http.field_examples) = { values: ["true"] }];
 
   // Expiration date.
   string expiration_date = 6 [(sebuf.http.field_examples) = { values: ["2024-01-19"] }];
 
-  // Strike price.
-  string strike_price = 7 [(sebuf.http.field_examples) = { values: ["150.00"] }];
+  // Root symbol.
+  string root_symbol = 7 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
 
-  // Contract size (typically 100).
-  int32 size = 8 [(sebuf.http.field_examples) = { values: ["100"] }];
+  // Underlying symbol.
+  string underlying_symbol = 8 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
 
-  // Contract status.
-  string status = 9 [(sebuf.http.field_examples) = { values: ["active"] }];
+  // Underlying asset ID.
+  string underlying_asset_id = 9 [(sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }];
+
+  // Contract type (call or put).
+  string type = 10 [(sebuf.http.field_examples) = { values: ["call"] }];
 
   // Contract style (american or european).
-  string style = 10 [(sebuf.http.field_examples) = { values: ["american"] }];
+  string style = 11 [(sebuf.http.field_examples) = { values: ["american"] }];
+
+  // Strike price.
+  string strike_price = 12 [(sebuf.http.field_examples) = { values: ["150.00"] }];
+
+  // Multiplier for calculating trade premium and extended strike price.
+  string multiplier = 13 [(sebuf.http.field_examples) = { values: ["100"] }];
+
+  // Number of underlying shares delivered if exercised/assigned.
+  string size = 14 [(sebuf.http.field_examples) = { values: ["100"] }];
 
   // Open interest.
-  int64 open_interest = 11 [(sebuf.http.field_examples) = { values: ["15000"] }];
+  string open_interest = 15 [(sebuf.http.field_examples) = { values: ["237"] }];
+
+  // Date of open interest data.
+  string open_interest_date = 16 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
 
   // Close price.
-  string close_price = 12 [(sebuf.http.field_examples) = { values: ["5.50"] }];
+  string close_price = 17 [(sebuf.http.field_examples) = { values: ["5.50"] }];
 
-  // Timestamp when contract was created.
-  string created_at = 13 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+  // Date of close price data.
+  string close_price_date = 18 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
+
+  // Penny Program Indicator.
+  bool ppind = 19 [(sebuf.http.field_examples) = { values: ["true"] }];
 }
 
 // GetOptionsApprovalRequest is the request to get options approval for an account.

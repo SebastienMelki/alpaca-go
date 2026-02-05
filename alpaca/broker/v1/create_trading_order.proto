@@ -4,7 +4,6 @@ package alpaca.broker.v1;
 
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
-import "alpaca/broker/v1/trading_order.proto";
 
 // BrokerTakeProfitSpec specifies take profit parameters for bracket orders.
 message BrokerTakeProfitSpec {
@@ -49,21 +48,36 @@ message CreateTradingOrderRequest {
   string notional = 4 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
 
   // Order side.
-  BrokerOrderSide side = 5 [
-    (buf.validate.field).enum = { not_in: [0] },
-    (sebuf.http.field_examples) = { values: ["1"] }
+  string side = 5 [
+    (buf.validate.field) = {
+      required: true,
+      string: {
+        in: ["buy", "sell"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["buy"] }
   ];
 
   // Order type.
-  BrokerOrderType type = 6 [
-    (buf.validate.field).enum = { not_in: [0] },
-    (sebuf.http.field_examples) = { values: ["2"] }
+  string type = 6 [
+    (buf.validate.field) = {
+      required: true,
+      string: {
+        in: ["market", "limit", "stop", "stop_limit", "trailing_stop"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["limit"] }
   ];
 
   // Time in force.
-  BrokerTimeInForce time_in_force = 7 [
-    (buf.validate.field).enum = { not_in: [0] },
-    (sebuf.http.field_examples) = { values: ["1"] }
+  string time_in_force = 7 [
+    (buf.validate.field) = {
+      required: true,
+      string: {
+        in: ["day", "gtc", "opg", "cls", "ioc", "fok"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["day"] }
   ];
 
   // Limit price (for limit orders).
@@ -88,7 +102,14 @@ message CreateTradingOrderRequest {
   ];
 
   // Order class.
-  BrokerOrderClass order_class = 14 [(sebuf.http.field_examples) = { values: ["1"] }];
+  string order_class = 14 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "simple", "bracket", "oco", "oto"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["simple"] }
+  ];
 
   // Take profit spec (for bracket orders).
   BrokerTakeProfitSpec take_profit = 15;

@@ -2,57 +2,49 @@ syntax = "proto3";
 
 package alpaca.broker.v1;
 
+import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-// TransferDirection represents the direction of a transfer.
-enum TransferDirection {
-  TRANSFER_DIRECTION_UNSPECIFIED = 0;
-  TRANSFER_DIRECTION_INCOMING = 1;
-  TRANSFER_DIRECTION_OUTGOING = 2;
-}
-
-// TransferType represents the type of transfer.
-enum TransferType {
-  TRANSFER_TYPE_UNSPECIFIED = 0;
-  TRANSFER_TYPE_ACH = 1;
-  TRANSFER_TYPE_WIRE = 2;
-}
-
-// TransferStatus represents the status of a transfer.
-enum TransferStatus {
-  TRANSFER_STATUS_UNSPECIFIED = 0;
-  TRANSFER_STATUS_QUEUED = 1;
-  TRANSFER_STATUS_PENDING = 2;
-  TRANSFER_STATUS_SENT_TO_CLEARING = 3;
-  TRANSFER_STATUS_APPROVED = 4;
-  TRANSFER_STATUS_COMPLETE = 5;
-  TRANSFER_STATUS_CANCELED = 6;
-  TRANSFER_STATUS_REJECTED = 7;
-  TRANSFER_STATUS_RETURNED = 8;
+// TransferIRA represents IRA-specific transfer details.
+message TransferIRA {
+  // Tax year for the contribution.
+  int32 tax_year = 1;
+  // Federal tax withholding amount.
+  string federal_tax_withholding = 2;
+  // State tax withholding amount.
+  string state_tax_withholding = 3;
+  // Withholding state.
+  string withholding_state = 4;
 }
 
 // Transfer represents a fund transfer.
 message Transfer {
   // Transfer ID (UUID).
-  string id = 1 [(sebuf.http.field_examples) = { values: ["a1b2c3d4-e5f6-7890-abcd-ef1234567890"] }];
+  string id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["a1b2c3d4-e5f6-7890-abcd-ef1234567890"] }
+  ];
 
   // Account ID (UUID).
-  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+  string account_id = 2 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
 
-  // ACH relationship ID (if ACH transfer).
+  // ACH relationship ID (if ACH transfer, optional, UUID format when present).
   string relationship_id = 3 [(sebuf.http.field_examples) = { values: ["f5fbd77f-7b7e-4b91-8e8a-aaaa00000001"] }];
 
   // Bank ID (if wire transfer).
   string bank_id = 4;
 
   // Transfer type.
-  TransferType type = 5 [(sebuf.http.field_examples) = { values: ["1"] }];
+  string type = 5 [(sebuf.http.field_examples) = { values: ["ach"] }];
 
   // Transfer status.
-  TransferStatus status = 6 [(sebuf.http.field_examples) = { values: ["5"] }];
+  string status = 6 [(sebuf.http.field_examples) = { values: ["COMPLETE"] }];
 
   // Transfer direction.
-  TransferDirection direction = 7 [(sebuf.http.field_examples) = { values: ["1"] }];
+  string direction = 7 [(sebuf.http.field_examples) = { values: ["INCOMING"] }];
 
   // Transfer amount.
   string amount = 8 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
@@ -77,4 +69,19 @@ message Transfer {
 
   // Requested amount (before fees).
   string requested_amount = 15 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
+
+  // Hold until date.
+  string hold_until = 16;
+
+  // Instant funding amount.
+  string instant_amount = 17;
+
+  // Fee payment method.
+  string fee_payment_method = 18;
+
+  // IRA-specific details.
+  TransferIRA ira = 19;
+
+  // Currency code.
+  string currency = 20 [(sebuf.http.field_examples) = { values: ["USD"] }];
 }

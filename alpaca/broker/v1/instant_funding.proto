@@ -5,26 +5,6 @@ package alpaca.broker.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-
-// InstantFundingStatus represents the status of an instant funding transfer.
-enum InstantFundingStatus {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  INSTANT_FUNDING_STATUS_UNSPECIFIED = 0;
-  INSTANT_FUNDING_STATUS_PENDING = 1; // [(sebuf.http.enum_value) = "PENDING"];
-  INSTANT_FUNDING_STATUS_CANCELED = 2; // [(sebuf.http.enum_value) = "CANCELED"];
-  INSTANT_FUNDING_STATUS_EXECUTED = 3; // [(sebuf.http.enum_value) = "EXECUTED"];
-  INSTANT_FUNDING_STATUS_FAILED = 4; // [(sebuf.http.enum_value) = "FAILED"];
-  INSTANT_FUNDING_STATUS_COMPLETED = 5; // [(sebuf.http.enum_value) = "COMPLETED"];
-}
-
-// InstantFundingFeeType represents the type of instant funding fee.
-enum InstantFundingFeeType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  INSTANT_FUNDING_FEE_TYPE_UNSPECIFIED = 0;
-  INSTANT_FUNDING_FEE_TYPE_PARTNER = 1; // [(sebuf.http.enum_value) = "partner"];
-  INSTANT_FUNDING_FEE_TYPE_ALPACA = 2; // [(sebuf.http.enum_value) = "alpaca"];
-}
-
 // InstantFundingInterest represents an interest entry.
 message InstantFundingInterest {
   // Interest ID.
@@ -95,18 +75,6 @@ message InstantFunding {
 
   // Fee entries.
   repeated InstantFundingFee fees = 12;
-}
-
-// InstantFundingLimits represents account limits for instant funding.
-message InstantFundingLimits {
-  // Maximum instant funding amount.
-  string max_amount = 1 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
-
-  // Current utilization.
-  string utilized = 2 [(sebuf.http.field_examples) = { values: ["10000.00"] }];
-
-  // Available limit.
-  string available = 3 [(sebuf.http.field_examples) = { values: ["40000.00"] }];
 }
 
 // InstantFundingSettlement represents an instant funding settlement.
@@ -182,17 +150,7 @@ message ListInstantFundingRequest {
 // ListInstantFundingResponse is the response containing instant funding transfers.
 message ListInstantFundingResponse {
   // List of instant funding transfers.
-  repeated InstantFunding transfers = 1; // [(sebuf.http.unwrap_root) = true];
-}
-
-// GetInstantFundingLimitsRequest is the request to get instant funding limits.
-message GetInstantFundingLimitsRequest {
-  // The account ID (required).
-  string account_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.uuid = true,
-    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
-  ];
+  repeated InstantFunding transfers = 1 [(sebuf.http.unwrap) = true];
 }
 
 // DeleteInstantFundingRequest is the request to cancel an instant funding transfer.
@@ -217,7 +175,7 @@ message ListInstantFundingSettlementsRequest {}
 // ListInstantFundingSettlementsResponse is the response containing settlements.
 message ListInstantFundingSettlementsResponse {
   // List of settlements.
-  repeated InstantFundingSettlement settlements = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated InstantFundingSettlement settlements = 1;
 }
 
 // CreateInstantFundingSettlementRequest is the request to create an instant funding settlement.

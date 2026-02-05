@@ -155,7 +155,7 @@ message ListOnfidoChecksRequest {
 // ListOnfidoChecksResponse is the response containing Onfido checks.
 message ListOnfidoChecksResponse {
   // List of checks.
-  repeated OnfidoCheck checks = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated OnfidoCheck checks = 1 [(sebuf.http.unwrap) = true];
 }
 
 // UploadOnfidoDocumentRequest is the request to upload a document to Onfido.

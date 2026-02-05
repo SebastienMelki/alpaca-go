@@ -109,7 +109,7 @@ message ListBrokerCryptoWalletsRequest {
 // ListBrokerCryptoWalletsResponse is the response containing crypto wallets.
 message ListBrokerCryptoWalletsResponse {
   // List of crypto wallets (or single wallet if asset specified).
-  repeated BrokerCryptoWallet wallets = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated BrokerCryptoWallet wallets = 1 [(sebuf.http.unwrap) = true];
 }
 
 // ListBrokerCryptoTransfersRequest is the request to list crypto transfers for an account.
@@ -125,7 +125,7 @@ message ListBrokerCryptoTransfersRequest {
 // ListBrokerCryptoTransfersResponse is the response containing crypto transfers.
 message ListBrokerCryptoTransfersResponse {
   // List of crypto transfers.
-  repeated BrokerCryptoTransfer transfers = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated BrokerCryptoTransfer transfers = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetBrokerCryptoTransferRequest is the request to get a specific crypto transfer.
@@ -191,7 +191,7 @@ message ListBrokerWhitelistedAddressesRequest {
 // ListBrokerWhitelistedAddressesResponse is the response containing whitelisted addresses.
 message ListBrokerWhitelistedAddressesResponse {
   // List of whitelisted addresses.
-  repeated BrokerWhitelistedAddress addresses = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated BrokerWhitelistedAddress addresses = 1 [(sebuf.http.unwrap) = true];
 }
 
 // CreateBrokerWhitelistedAddressRequest is the request to create a whitelisted address.

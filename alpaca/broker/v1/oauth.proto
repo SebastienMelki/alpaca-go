@@ -5,23 +5,6 @@ package alpaca.broker.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-
-// OAuthTokenType represents the type of OAuth token.
-enum OAuthTokenType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  O_AUTH_TOKEN_TYPE_UNSPECIFIED = 0;
-  O_AUTH_TOKEN_TYPE_BEARER = 1; // [(sebuf.http.enum_value) = "Bearer"];
-}
-
-// OAuthGrantType represents the OAuth grant type.
-enum OAuthGrantType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  O_AUTH_GRANT_TYPE_UNSPECIFIED = 0;
-  O_AUTH_GRANT_TYPE_AUTHORIZATION_CODE = 1; // [(sebuf.http.enum_value) = "authorization_code"];
-  O_AUTH_GRANT_TYPE_REFRESH_TOKEN = 2; // [(sebuf.http.enum_value) = "refresh_token"];
-  O_AUTH_GRANT_TYPE_CLIENT_CREDENTIALS = 3; // [(sebuf.http.enum_value) = "client_credentials"];
-}
-
 // OAuthToken represents an OAuth access token.
 message OAuthToken {
   // Access token.
@@ -180,7 +163,7 @@ message ListOAuthClientsRequest {}
 // ListOAuthClientsResponse is the response containing OAuth clients.
 message ListOAuthClientsResponse {
   // List of OAuth clients.
-  repeated OAuthClient clients = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated OAuthClient clients = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetOAuthClientRequest is the request to get a specific OAuth client.
@@ -264,7 +247,7 @@ message ListOAuthAuthorizationsRequest {
 // ListOAuthAuthorizationsResponse is the response containing authorizations.
 message ListOAuthAuthorizationsResponse {
   // List of authorizations.
-  repeated OAuthAuthorization authorizations = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated OAuthAuthorization authorizations = 1 [(sebuf.http.unwrap) = true];
 }
 
 // RevokeOAuthAuthorizationRequest is the request to revoke an authorization.

@@ -5,30 +5,6 @@ package alpaca.broker.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-
-// ReportType represents the type of EOD report.
-enum ReportType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  REPORT_TYPE_UNSPECIFIED = 0;
-  REPORT_TYPE_ACCOUNT = 1; // [(sebuf.http.enum_value) = "account"];
-  REPORT_TYPE_TRADE = 2; // [(sebuf.http.enum_value) = "trade"];
-  REPORT_TYPE_TRADE_CANCEL_CORRECT = 3; // [(sebuf.http.enum_value) = "trade_cancel_correct"];
-  REPORT_TYPE_JOURNAL = 4; // [(sebuf.http.enum_value) = "journal"];
-  REPORT_TYPE_TRANSFER = 5; // [(sebuf.http.enum_value) = "transfer"];
-  REPORT_TYPE_MARGIN_CALL = 6; // [(sebuf.http.enum_value) = "margin_call"];
-  REPORT_TYPE_TRADING_POSITION = 7; // [(sebuf.http.enum_value) = "trading_position"];
-  REPORT_TYPE_TRADING_ACTIVITY = 8; // [(sebuf.http.enum_value) = "trading_activity"];
-  REPORT_TYPE_NON_TRADING_ACTIVITY = 9; // [(sebuf.http.enum_value) = "non_trading_activity"];
-}
-
-// ReportFormat represents the format of the report.
-enum ReportFormat {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  REPORT_FORMAT_UNSPECIFIED = 0;
-  REPORT_FORMAT_CSV = 1; // [(sebuf.http.enum_value) = "csv"];
-  REPORT_FORMAT_JSON = 2; // [(sebuf.http.enum_value) = "json"];
-}
-
 // EODReport represents an End-of-Day report.
 message EODReport {
   // Report ID.
@@ -89,7 +65,7 @@ message ListEODReportsRequest {
 // ListEODReportsResponse is the response containing EOD reports.
 message ListEODReportsResponse {
   // List of EOD reports.
-  repeated EODReport reports = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated EODReport reports = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetEODReportRequest is the request to get a specific EOD report.

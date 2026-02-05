@@ -5,25 +5,6 @@ package alpaca.broker.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-
-// IRAContributionType represents the type of IRA contribution.
-enum IRAContributionType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  IRA_CONTRIBUTION_TYPE_UNSPECIFIED = 0;
-  IRA_CONTRIBUTION_TYPE_REGULAR = 1; // [(sebuf.http.enum_value) = "regular"];
-  IRA_CONTRIBUTION_TYPE_ROLLOVER = 2; // [(sebuf.http.enum_value) = "rollover"];
-  IRA_CONTRIBUTION_TYPE_CONVERSION = 3; // [(sebuf.http.enum_value) = "conversion"];
-}
-
-// IRAExcessContributionStatus represents the status of an excess contribution.
-enum IRAExcessContributionStatus {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  IRA_EXCESS_CONTRIBUTION_STATUS_UNSPECIFIED = 0;
-  IRA_EXCESS_CONTRIBUTION_STATUS_PENDING = 1; // [(sebuf.http.enum_value) = "pending"];
-  IRA_EXCESS_CONTRIBUTION_STATUS_PROCESSED = 2; // [(sebuf.http.enum_value) = "processed"];
-  IRA_EXCESS_CONTRIBUTION_STATUS_REJECTED = 3; // [(sebuf.http.enum_value) = "rejected"];
-}
-
 // IRAExcessContribution represents an IRA excess contribution record.
 message IRAExcessContribution {
   // Excess contribution ID.
@@ -102,7 +83,7 @@ message ListIRAExcessContributionsRequest {
 // ListIRAExcessContributionsResponse is the response containing excess contributions.
 message ListIRAExcessContributionsResponse {
   // List of excess contributions.
-  repeated IRAExcessContribution excess_contributions = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated IRAExcessContribution excess_contributions = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetIRAExcessContributionRequest is the request to get a specific excess contribution.

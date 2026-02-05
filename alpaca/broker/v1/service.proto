@@ -25,6 +25,22 @@ import "alpaca/broker/v1/list_trading_orders.proto";
 import "alpaca/broker/v1/get_trading_order.proto";
 import "alpaca/broker/v1/cancel_trading_order.proto";
 import "alpaca/broker/v1/trading_position.proto";
+import "alpaca/broker/v1/document.proto";
+import "alpaca/broker/v1/watchlist.proto";
+import "alpaca/broker/v1/broker_crypto_funding.proto";
+import "alpaca/broker/v1/journal.proto";
+import "alpaca/broker/v1/rebalancing.proto";
+import "alpaca/broker/v1/jit.proto";
+import "alpaca/broker/v1/instant_funding.proto";
+import "alpaca/broker/v1/fpsl.proto";
+import "alpaca/broker/v1/oauth.proto";
+import "alpaca/broker/v1/sse.proto";
+import "alpaca/broker/v1/cip.proto";
+import "alpaca/broker/v1/onfido.proto";
+import "alpaca/broker/v1/calendar.proto";
+import "alpaca/broker/v1/options.proto";
+import "alpaca/broker/v1/ira.proto";
+import "alpaca/broker/v1/country.proto";
 
 // BrokerService provides the Alpaca Broker API for B2B operations.
 // Base URL: https://broker-api.alpaca.markets
@@ -247,4 +263,832 @@ service BrokerService {
       method: HTTP_METHOD_DELETE
     };
   }
+
+  // ============================================
+  // Document Operations
+  // ============================================
+
+  // ListAccountDocuments retrieves documents for an account.
+  // GET /v1/accounts/{account_id}/documents
+  rpc ListAccountDocuments(ListAccountDocumentsRequest) returns (ListAccountDocumentsResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/documents"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // DownloadAccountDocument downloads an account document.
+  // GET /v1/accounts/{account_id}/documents/{document_id}/download
+  rpc DownloadAccountDocument(DownloadAccountDocumentRequest) returns (DownloadAccountDocumentResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/documents/{document_id}/download"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // DownloadW8BenDocument downloads a W-8BEN document.
+  // GET /v1/accounts/{account_id}/documents/w8ben/{document_id}/download
+  rpc DownloadW8BenDocument(DownloadW8BenDocumentRequest) returns (DownloadAccountDocumentResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/documents/w8ben/{document_id}/download"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Broker Watchlist Operations
+  // ============================================
+
+  // ListBrokerWatchlists retrieves watchlists for an account.
+  // GET /v1/trading/accounts/{account_id}/watchlists
+  rpc ListBrokerWatchlists(ListBrokerWatchlistsRequest) returns (ListBrokerWatchlistsResponse) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/watchlists"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateBrokerWatchlist creates a watchlist for an account.
+  // POST /v1/trading/accounts/{account_id}/watchlists
+  rpc CreateBrokerWatchlist(CreateBrokerWatchlistRequest) returns (BrokerWatchlist) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/watchlists"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // GetBrokerWatchlist retrieves a specific watchlist.
+  // GET /v1/trading/accounts/{account_id}/watchlists/{watchlist_id}
+  rpc GetBrokerWatchlist(GetBrokerWatchlistRequest) returns (BrokerWatchlist) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/watchlists/{watchlist_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // UpdateBrokerWatchlist updates a watchlist.
+  // PUT /v1/trading/accounts/{account_id}/watchlists/{watchlist_id}
+  rpc UpdateBrokerWatchlist(UpdateBrokerWatchlistRequest) returns (BrokerWatchlist) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/watchlists/{watchlist_id}"
+      method: HTTP_METHOD_PUT
+    };
+  }
+
+  // DeleteBrokerWatchlist deletes a watchlist.
+  // DELETE /v1/trading/accounts/{account_id}/watchlists/{watchlist_id}
+  rpc DeleteBrokerWatchlist(DeleteBrokerWatchlistRequest) returns (DeleteBrokerWatchlistResponse) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/watchlists/{watchlist_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // AddBrokerWatchlistAsset adds an asset to a watchlist.
+  // POST /v1/trading/accounts/{account_id}/watchlists/{watchlist_id}
+  rpc AddBrokerWatchlistAsset(AddBrokerWatchlistAssetRequest) returns (BrokerWatchlist) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/watchlists/{watchlist_id}"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // RemoveBrokerWatchlistAsset removes an asset from a watchlist.
+  // DELETE /v1/trading/accounts/{account_id}/watchlists/{watchlist_id}/{symbol}
+  rpc RemoveBrokerWatchlistAsset(RemoveBrokerWatchlistAssetRequest) returns (RemoveBrokerWatchlistAssetResponse) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/watchlists/{watchlist_id}/{symbol}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ============================================
+  // Broker Crypto Funding Operations
+  // ============================================
+
+  // ListBrokerCryptoWallets retrieves crypto wallets for an account.
+  // GET /v1/accounts/{account_id}/wallets
+  rpc ListBrokerCryptoWallets(ListBrokerCryptoWalletsRequest) returns (ListBrokerCryptoWalletsResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/wallets"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ListBrokerCryptoTransfers retrieves crypto transfers for an account.
+  // GET /v1/accounts/{account_id}/wallets/transfers
+  rpc ListBrokerCryptoTransfers(ListBrokerCryptoTransfersRequest) returns (ListBrokerCryptoTransfersResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/wallets/transfers"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetBrokerCryptoTransfer retrieves a specific crypto transfer.
+  // GET /v1/accounts/{account_id}/wallets/transfers/{transfer_id}
+  rpc GetBrokerCryptoTransfer(GetBrokerCryptoTransferRequest) returns (BrokerCryptoTransfer) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/wallets/transfers/{transfer_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateBrokerCryptoTransfer creates a crypto transfer for an account.
+  // POST /v1/accounts/{account_id}/wallets/transfers
+  rpc CreateBrokerCryptoTransfer(CreateBrokerCryptoTransferRequest) returns (BrokerCryptoTransfer) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/wallets/transfers"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ListBrokerWhitelistedAddresses retrieves whitelisted addresses for an account.
+  // GET /v1/accounts/{account_id}/wallets/whitelisted_addresses
+  rpc ListBrokerWhitelistedAddresses(ListBrokerWhitelistedAddressesRequest) returns (ListBrokerWhitelistedAddressesResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/wallets/whitelisted_addresses"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateBrokerWhitelistedAddress creates a whitelisted address for an account.
+  // POST /v1/accounts/{account_id}/wallets/whitelisted_addresses
+  rpc CreateBrokerWhitelistedAddress(CreateBrokerWhitelistedAddressRequest) returns (BrokerWhitelistedAddress) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/wallets/whitelisted_addresses"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // DeleteBrokerWhitelistedAddress deletes a whitelisted address.
+  // DELETE /v1/accounts/{account_id}/wallets/whitelisted_addresses/{whitelisted_address_id}
+  rpc DeleteBrokerWhitelistedAddress(DeleteBrokerWhitelistedAddressRequest) returns (DeleteBrokerWhitelistedAddressResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/wallets/whitelisted_addresses/{whitelisted_address_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ============================================
+  // Journal Operations
+  // ============================================
+
+  // CreateJournal creates a journal entry (cash or securities transfer).
+  // POST /v1/journals
+  rpc CreateJournal(CreateJournalRequest) returns (Journal) {
+    option (sebuf.http.config) = {
+      path: "/journals"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ListJournals retrieves journal entries.
+  // GET /v1/journals
+  rpc ListJournals(ListJournalsRequest) returns (ListJournalsResponse) {
+    option (sebuf.http.config) = {
+      path: "/journals"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetJournal retrieves a specific journal.
+  // GET /v1/journals/{journal_id}
+  rpc GetJournal(GetJournalRequest) returns (Journal) {
+    option (sebuf.http.config) = {
+      path: "/journals/{journal_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // DeleteJournal cancels/deletes a journal.
+  // DELETE /v1/journals/{journal_id}
+  rpc DeleteJournal(DeleteJournalRequest) returns (DeleteJournalResponse) {
+    option (sebuf.http.config) = {
+      path: "/journals/{journal_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // CreateBatchJournal creates batch journal entries.
+  // POST /v1/journals/batch
+  rpc CreateBatchJournal(CreateBatchJournalRequest) returns (CreateBatchJournalResponse) {
+    option (sebuf.http.config) = {
+      path: "/journals/batch"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ReverseBatchJournal reverses a batch of journals.
+  // POST /v1/journals/reverse_batch
+  rpc ReverseBatchJournal(ReverseBatchJournalRequest) returns (ReverseBatchJournalResponse) {
+    option (sebuf.http.config) = {
+      path: "/journals/reverse_batch"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ============================================
+  // Rebalancing Portfolio Operations
+  // ============================================
+
+  // ListPortfolios retrieves rebalancing portfolios.
+  // GET /v1/rebalancing/portfolios
+  rpc ListPortfolios(ListPortfoliosRequest) returns (ListPortfoliosResponse) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/portfolios"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreatePortfolio creates a rebalancing portfolio.
+  // POST /v1/rebalancing/portfolios
+  rpc CreatePortfolio(CreatePortfolioRequest) returns (RebalancingPortfolio) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/portfolios"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // GetPortfolio retrieves a specific portfolio.
+  // GET /v1/rebalancing/portfolios/{portfolio_id}
+  rpc GetPortfolio(GetPortfolioRequest) returns (RebalancingPortfolio) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/portfolios/{portfolio_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // UpdatePortfolio updates a portfolio.
+  // PATCH /v1/rebalancing/portfolios/{portfolio_id}
+  rpc UpdatePortfolio(UpdatePortfolioRequest) returns (RebalancingPortfolio) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/portfolios/{portfolio_id}"
+      method: HTTP_METHOD_PATCH
+    };
+  }
+
+  // DeletePortfolio deletes a portfolio.
+  // DELETE /v1/rebalancing/portfolios/{portfolio_id}
+  rpc DeletePortfolio(DeletePortfolioRequest) returns (DeletePortfolioResponse) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/portfolios/{portfolio_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ============================================
+  // Rebalancing Subscription Operations
+  // ============================================
+
+  // ListSubscriptions retrieves rebalancing subscriptions.
+  // GET /v1/rebalancing/subscriptions
+  rpc ListSubscriptions(ListSubscriptionsRequest) returns (ListSubscriptionsResponse) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/subscriptions"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateSubscription creates a rebalancing subscription.
+  // POST /v1/rebalancing/subscriptions
+  rpc CreateSubscription(CreateSubscriptionRequest) returns (RebalancingSubscription) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/subscriptions"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // GetSubscription retrieves a specific subscription.
+  // GET /v1/rebalancing/subscriptions/{subscription_id}
+  rpc GetSubscription(GetSubscriptionRequest) returns (RebalancingSubscription) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/subscriptions/{subscription_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // DeleteSubscription deletes a subscription.
+  // DELETE /v1/rebalancing/subscriptions/{subscription_id}
+  rpc DeleteSubscription(DeleteSubscriptionRequest) returns (DeleteSubscriptionResponse) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/subscriptions/{subscription_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ============================================
+  // Rebalancing Run Operations
+  // ============================================
+
+  // ListRuns retrieves rebalancing runs.
+  // GET /v1/rebalancing/runs
+  rpc ListRuns(ListRunsRequest) returns (ListRunsResponse) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/runs"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateRun initiates a rebalancing run.
+  // POST /v1/rebalancing/runs
+  rpc CreateRun(CreateRunRequest) returns (RebalancingRun) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/runs"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // GetRun retrieves a specific run.
+  // GET /v1/rebalancing/runs/{run_id}
+  rpc GetRun(GetRunRequest) returns (RebalancingRun) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/runs/{run_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CancelRun cancels a run.
+  // DELETE /v1/rebalancing/runs/{run_id}
+  rpc CancelRun(CancelRunRequest) returns (CancelRunResponse) {
+    option (sebuf.http.config) = {
+      path: "/rebalancing/runs/{run_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ============================================
+  // JIT Settlement Operations
+  // ============================================
+
+  // ListJITSettlements retrieves JIT settlements.
+  // GET /v1/jit/settlements
+  rpc ListJITSettlements(ListJITSettlementsRequest) returns (ListJITSettlementsResponse) {
+    option (sebuf.http.config) = {
+      path: "/jit/settlements"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetJITSettlement retrieves a specific JIT settlement.
+  // GET /v1/jit/settlements/{settlement_id}
+  rpc GetJITSettlement(GetJITSettlementRequest) returns (JITSettlement) {
+    option (sebuf.http.config) = {
+      path: "/jit/settlements/{settlement_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateJITSettlement creates a JIT settlement.
+  // POST /v1/jit/settlements
+  rpc CreateJITSettlement(CreateJITSettlementRequest) returns (JITSettlement) {
+    option (sebuf.http.config) = {
+      path: "/jit/settlements"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ListJITLedgers retrieves JIT ledgers.
+  // GET /v1/transfers/jit/ledgers
+  rpc ListJITLedgers(ListJITLedgersRequest) returns (ListJITLedgersResponse) {
+    option (sebuf.http.config) = {
+      path: "/transfers/jit/ledgers"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetJITLedgerBalances retrieves balances for a JIT ledger.
+  // GET /v1/transfers/jit/ledgers/{ledger_id}/balances
+  rpc GetJITLedgerBalances(GetJITLedgerBalancesRequest) returns (GetJITLedgerBalancesResponse) {
+    option (sebuf.http.config) = {
+      path: "/transfers/jit/ledgers/{ledger_id}/balances"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetJITLimits retrieves JIT funding limits.
+  // GET /v1/transfers/jit/limits
+  rpc GetJITLimits(GetJITLimitsRequest) returns (JITLimits) {
+    option (sebuf.http.config) = {
+      path: "/transfers/jit/limits"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Instant Funding Operations
+  // ============================================
+
+  // ListInstantFunding retrieves instant funding transfers.
+  // GET /v1/instant_funding
+  rpc ListInstantFunding(ListInstantFundingRequest) returns (ListInstantFundingResponse) {
+    option (sebuf.http.config) = {
+      path: "/instant_funding"
+      method: HTTP_METHOD_GET
+    };
+  }
+  
+  // DeleteInstantFunding cancels an instant funding transfer.
+  // DELETE /v1/instant_funding/{instant_funding_id}
+  rpc DeleteInstantFunding(DeleteInstantFundingRequest) returns (DeleteInstantFundingResponse) {
+    option (sebuf.http.config) = {
+      path: "/instant_funding/{instant_funding_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ListInstantFundingSettlements retrieves instant funding settlements.
+  // GET /v1/instant_funding/settlements
+  rpc ListInstantFundingSettlements(ListInstantFundingSettlementsRequest) returns (ListInstantFundingSettlementsResponse) {
+    option (sebuf.http.config) = {
+      path: "/instant_funding/settlements"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateInstantFundingSettlement creates an instant funding settlement.
+  // POST /v1/instant_funding/settlements
+  rpc CreateInstantFundingSettlement(CreateInstantFundingSettlementRequest) returns (InstantFundingSettlement) {
+    option (sebuf.http.config) = {
+      path: "/instant_funding/settlements"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ============================================
+  // FPSL Operations
+  // ============================================
+
+  // ListFPSLTiers retrieves FPSL tiers.
+  // GET /v1/fpsl/tiers
+  rpc ListFPSLTiers(ListFPSLTiersRequest) returns (ListFPSLTiersResponse) {
+    option (sebuf.http.config) = {
+      path: "/fpsl/tiers"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ListFPSLLoans retrieves FPSL loans.
+  // GET /v1/fpsl/loans
+  rpc ListFPSLLoans(ListFPSLLoansRequest) returns (ListFPSLLoansResponse) {
+    option (sebuf.http.config) = {
+      path: "/fpsl/loans"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ListAPRTiers retrieves APR tiers.
+  // GET /v1/apr/tiers
+  rpc ListAPRTiers(ListAPRTiersRequest) returns (ListAPRTiersResponse) {
+    option (sebuf.http.config) = {
+      path: "/apr/tiers"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // OAuth Operations
+  // ============================================
+
+  // CreateOAuthToken exchanges credentials for an OAuth token.
+  // POST /v1/oauth/token
+  rpc CreateOAuthToken(CreateOAuthTokenRequest) returns (OAuthToken) {
+    option (sebuf.http.config) = {
+      path: "/oauth/token"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // AuthorizeOAuth initiates the OAuth authorization flow.
+  // GET /v1/oauth/authorize
+  rpc AuthorizeOAuth(AuthorizeOAuthRequest) returns (AuthorizeOAuthResponse) {
+    option (sebuf.http.config) = {
+      path: "/oauth/authorize"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetOAuthClient retrieves a specific OAuth client.
+  // GET /v1/oauth/clients/{client_id}
+  rpc GetOAuthClient(GetOAuthClientRequest) returns (OAuthClient) {
+    option (sebuf.http.config) = {
+      path: "/oauth/clients/{client_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateOAuthClient creates an OAuth client.
+  // POST /v1/oauth/clients
+  rpc CreateOAuthClient(CreateOAuthClientRequest) returns (OAuthClient) {
+    option (sebuf.http.config) = {
+      path: "/oauth/clients"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // UpdateOAuthClient updates an OAuth client.
+  // PATCH /v1/oauth/clients/{client_id}
+  rpc UpdateOAuthClient(UpdateOAuthClientRequest) returns (OAuthClient) {
+    option (sebuf.http.config) = {
+      path: "/oauth/clients/{client_id}"
+      method: HTTP_METHOD_PATCH
+    };
+  }
+
+  // DeleteOAuthClient deletes an OAuth client.
+  // DELETE /v1/oauth/clients/{client_id}
+  rpc DeleteOAuthClient(DeleteOAuthClientRequest) returns (DeleteOAuthClientResponse) {
+    option (sebuf.http.config) = {
+      path: "/oauth/clients/{client_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // RevokeOAuthAuthorization revokes an OAuth authorization.
+  // DELETE /v1/oauth/authorizations/{authorization_id}
+  rpc RevokeOAuthAuthorization(RevokeOAuthAuthorizationRequest) returns (RevokeOAuthAuthorizationResponse) {
+    option (sebuf.http.config) = {
+      path: "/oauth/authorizations/{authorization_id}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ============================================
+  // SSE Event Stream Operations
+  // ============================================
+
+  // SubscribeAccountEvents subscribes to account events.
+  // GET /v1/events/accounts/status
+  rpc SubscribeAccountEvents(SubscribeAccountEventsRequest) returns (SubscribeSSEResponse) {
+    option (sebuf.http.config) = {
+      path: "/events/accounts/status"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // SubscribeTradeEvents subscribes to trade events.
+  // Deprecated: Use SubscribeTradeEventsV2 in BrokerV2Service instead.
+  // GET /v1/events/trades
+  rpc SubscribeTradeEvents(SubscribeTradeEventsRequest) returns (SubscribeSSEResponse) {
+    option deprecated = true;
+    option (sebuf.http.config) = {
+      path: "/events/trades"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // SubscribeTransferEvents subscribes to transfer events.
+  // Deprecated: Use SubscribeFundingStatusV2 in BrokerV2Service instead.
+  // GET /v1/events/transfers/status
+  rpc SubscribeTransferEvents(SubscribeTransferEventsRequest) returns (SubscribeSSEResponse) {
+    option deprecated = true;
+    option (sebuf.http.config) = {
+      path: "/events/transfers/status"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // SubscribeJournalEvents subscribes to journal events.
+  // GET /v1/events/journals/status
+  rpc SubscribeJournalEvents(SubscribeJournalEventsRequest) returns (SubscribeSSEResponse) {
+    option (sebuf.http.config) = {
+      path: "/events/journals/status"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // SubscribeNTAEvents subscribes to non-trading activity events.
+  // GET /v1/events/nta
+  rpc SubscribeNTAEvents(SubscribeNTAEventsRequest) returns (SubscribeSSEResponse) {
+    option (sebuf.http.config) = {
+      path: "/events/nta"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // CIP Operations
+  // ============================================
+
+  // GetCIPInfo retrieves CIP information for an account.
+  // GET /v1/accounts/{account_id}/cip
+  rpc GetCIPInfo(GetCIPInfoRequest) returns (CIPInfo) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/cip"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // UpdateCIPInfo updates CIP information for an account.
+  // PATCH /v1/accounts/{account_id}/cip
+  rpc UpdateCIPInfo(UpdateCIPInfoRequest) returns (CIPInfo) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/cip"
+      method: HTTP_METHOD_PATCH
+    };
+  }
+
+  // ============================================
+  // Onfido Operations
+  // ============================================
+
+  // CreateOnfidoApplicant creates an Onfido applicant for an account.
+  // POST /v1/accounts/{account_id}/onfido/applicants
+  rpc CreateOnfidoApplicant(CreateOnfidoApplicantRequest) returns (OnfidoApplicant) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/onfido/applicants"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // GetOnfidoApplicant retrieves the Onfido applicant for an account.
+  // GET /v1/accounts/{account_id}/onfido/applicants
+  rpc GetOnfidoApplicant(GetOnfidoApplicantRequest) returns (OnfidoApplicant) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/onfido/applicants"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GenerateOnfidoSDKToken generates an Onfido SDK token for client-side integration.
+  // POST /v1/accounts/{account_id}/onfido/sdk_tokens
+  rpc GenerateOnfidoSDKToken(GenerateOnfidoSDKTokenRequest) returns (OnfidoSDKToken) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/onfido/sdk_tokens"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // CreateOnfidoCheck creates an Onfido check for an account.
+  // POST /v1/accounts/{account_id}/onfido/checks
+  rpc CreateOnfidoCheck(CreateOnfidoCheckRequest) returns (OnfidoCheck) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/onfido/checks"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // GetOnfidoCheck retrieves a specific Onfido check.
+  // GET /v1/accounts/{account_id}/onfido/checks/{check_id}
+  rpc GetOnfidoCheck(GetOnfidoCheckRequest) returns (OnfidoCheck) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/onfido/checks/{check_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ListOnfidoChecks retrieves Onfido checks for an account.
+  // GET /v1/accounts/{account_id}/onfido/checks
+  rpc ListOnfidoChecks(ListOnfidoChecksRequest) returns (ListOnfidoChecksResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/onfido/checks"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // UploadOnfidoDocument uploads a document to Onfido.
+  // POST /v1/accounts/{account_id}/onfido/documents
+  rpc UploadOnfidoDocument(UploadOnfidoDocumentRequest) returns (OnfidoDocument) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/onfido/documents"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // UploadOnfidoPhoto uploads a live photo to Onfido.
+  // POST /v1/accounts/{account_id}/onfido/photos
+  rpc UploadOnfidoPhoto(UploadOnfidoPhotoRequest) returns (OnfidoPhoto) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/onfido/photos"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ============================================
+  // EOD Reporting Operations
+  // ============================================
+
+  // ============================================
+  // Market Calendar Operations
+  // ============================================
+
+  // GetMarketCalendar retrieves the market calendar.
+  // GET /v1/calendar
+  rpc GetMarketCalendar(GetMarketCalendarRequest) returns (GetMarketCalendarResponse) {
+    option (sebuf.http.config) = {
+      path: "/calendar"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetMarketClock retrieves the current market clock.
+  // GET /v1/clock
+  rpc GetMarketClock(GetMarketClockRequest) returns (MarketClock) {
+    option (sebuf.http.config) = {
+      path: "/clock"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Options Operations
+  // ============================================
+
+  // GetOptionsApproval retrieves options approval for an account.
+  // GET /v1/accounts/{account_id}/options
+  rpc GetOptionsApproval(GetOptionsApprovalRequest) returns (OptionsApproval) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/options"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // RequestOptionsApproval requests options approval for an account.
+  // POST /v1/accounts/{account_id}/options
+  rpc RequestOptionsApproval(RequestOptionsApprovalRequest) returns (OptionsApproval) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/options"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // UpdateOptionsApproval updates options approval for an account.
+  // PATCH /v1/accounts/{account_id}/options
+  rpc UpdateOptionsApproval(UpdateOptionsApprovalRequest) returns (OptionsApproval) {
+    option (sebuf.http.config) = {
+      path: "/accounts/{account_id}/options"
+      method: HTTP_METHOD_PATCH
+    };
+  }
+
+  // ListBrokerOptionContracts retrieves option contracts.
+  // GET /v1/options/contracts
+  rpc ListBrokerOptionContracts(ListBrokerOptionContractsRequest) returns (ListBrokerOptionContractsResponse) {
+    option (sebuf.http.config) = {
+      path: "/options/contracts"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetBrokerOptionContract retrieves a specific option contract.
+  // GET /v1/options/contracts/{symbol_or_id}
+  rpc GetBrokerOptionContract(GetBrokerOptionContractRequest) returns (BrokerOptionContract) {
+    option (sebuf.http.config) = {
+      path: "/options/contracts/{symbol_or_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // IRA Operations
+  // ============================================
+
+  // ListIRAExcessContributions retrieves IRA excess contributions.
+  // GET /v1/ira/excess_contributions
+  rpc ListIRAExcessContributions(ListIRAExcessContributionsRequest) returns (ListIRAExcessContributionsResponse) {
+    option (sebuf.http.config) = {
+      path: "/ira/excess_contributions"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetIRAExcessContribution retrieves a specific IRA excess contribution.
+  // GET /v1/ira/excess_contributions/{excess_contribution_id}
+  rpc GetIRAExcessContribution(GetIRAExcessContributionRequest) returns (IRAExcessContribution) {
+    option (sebuf.http.config) = {
+      path: "/ira/excess_contributions/{excess_contribution_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateIRAExcessContribution creates an IRA excess contribution removal request.
+  // POST /v1/ira/excess_contributions
+  rpc CreateIRAExcessContribution(CreateIRAExcessContributionRequest) returns (IRAExcessContribution) {
+    option (sebuf.http.config) = {
+      path: "/ira/excess_contributions"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // GetIRAContributionLimits retrieves IRA contribution limits.
+  // GET /v1/ira/limits
+  rpc GetIRAContributionLimits(GetIRAContributionLimitsRequest) returns (IRAContributionLimits) {
+    option (sebuf.http.config) = {
+      path: "/ira/limits"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Country Operations
+  // ============================================
+
+  // ListCountries retrieves supported countries.
+  // GET /v1/country-info
+  rpc ListCountries(ListCountriesRequest) returns (ListCountriesResponse) {
+    option (sebuf.http.config) = {
+      path: "/country-info"
+      method: HTTP_METHOD_GET
+    };
+  }
+
 }

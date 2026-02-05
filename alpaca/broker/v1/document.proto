@@ -5,35 +5,37 @@ package alpaca.broker.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-
-// DocumentType represents the type of account document.
-enum DocumentType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  DOCUMENT_TYPE_UNSPECIFIED = 0;
-  DOCUMENT_TYPE_ACCOUNT_STATEMENT = 1; // [(sebuf.http.enum_value) = "account_statement"];
-  DOCUMENT_TYPE_TRADE_CONFIRMATION = 2; // [(sebuf.http.enum_value) = "trade_confirmation"];
-  DOCUMENT_TYPE_TAX_1099 = 3; // [(sebuf.http.enum_value) = "tax_1099"];
-  DOCUMENT_TYPE_TAX_1099_INT = 4; // [(sebuf.http.enum_value) = "tax_1099_int"];
-  DOCUMENT_TYPE_TAX_1099_B = 5; // [(sebuf.http.enum_value) = "tax_1099_b"];
-  DOCUMENT_TYPE_TAX_1099_DIV = 6; // [(sebuf.http.enum_value) = "tax_1099_div"];
-}
-
 // AccountDocument represents a document associated with a broker account.
 message AccountDocument {
   // Unique document identifier.
   string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
 
-  // Document type.
-  string type = 2 [(sebuf.http.field_examples) = { values: ["account_statement"] }];
+  // Document type (alias for type field from API).
+  string type = 2 [json_name = "type", (sebuf.http.field_examples) = { values: ["account_statement"] }];
 
-  // Document name.
-  string name = 3 [(sebuf.http.field_examples) = { values: ["January 2024 Statement"] }];
+  // Document sub-type (alias for sub_type field from API).
+  string sub_type = 3 [json_name = "sub_type", (sebuf.http.field_examples) = { values: ["passport"] }];
 
-  // Date the document was created.
-  string date = 4 [(sebuf.http.field_examples) = { values: ["2024-01-31"] }];
+  // Document type (detailed).
+  string document_type = 9 [(sebuf.http.field_examples) = { values: ["identity_verification"] }];
+
+  // Document sub-type (detailed).
+  string document_sub_type = 10 [(sebuf.http.field_examples) = { values: ["passport"] }];
+
+  // MIME type.
+  string mime_type = 4 [(sebuf.http.field_examples) = { values: ["image/jpeg"] }];
 
   // Timestamp when the document was created.
   string created_at = 5 [(sebuf.http.field_examples) = { values: ["2024-02-01T00:00:00Z"] }];
+
+  // Document name.
+  string name = 6 [(sebuf.http.field_examples) = { values: ["January 2024 Statement"] }];
+
+  // Date the document was created.
+  string date = 7 [(sebuf.http.field_examples) = { values: ["2024-01-31"] }];
+
+  // Content URL.
+  string content = 8;
 }
 
 // ListAccountDocumentsRequest is the request to list documents for an account.
@@ -67,7 +69,7 @@ message ListAccountDocumentsRequest {
 // ListAccountDocumentsResponse is the response containing account documents.
 message ListAccountDocumentsResponse {
   // List of documents.
-  repeated AccountDocument documents = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated AccountDocument documents = 1 [(sebuf.http.unwrap) = true];
 }
 
 // DownloadAccountDocumentRequest is the request to download an account document.

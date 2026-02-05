@@ -47,5 +47,5 @@ message ListAccountsRequest {
 // ListAccountsResponse is the response containing a list of broker accounts.
 message ListAccountsResponse {
   // List of accounts.
-  repeated BrokerAccount accounts = 1;
+  repeated BrokerAccount accounts = 1 [(sebuf.http.unwrap) = true];
 }

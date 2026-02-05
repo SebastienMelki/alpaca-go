@@ -62,5 +62,5 @@ message ListTradingOrdersRequest {
 // ListTradingOrdersResponse is the response containing trading orders.
 message ListTradingOrdersResponse {
   // List of orders.
-  repeated BrokerOrder orders = 1;
+  repeated BrokerOrder orders = 1 [(sebuf.http.unwrap) = true];
 }

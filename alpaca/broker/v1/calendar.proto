@@ -18,6 +18,12 @@ message MarketDay {
 
   // Settlement date.
   string settlement_date = 4 [(sebuf.http.field_examples) = { values: ["2024-01-17"] }];
+
+  // Session open time.
+  string session_open = 5 [(sebuf.http.field_examples) = { values: ["04:00"] }];
+
+  // Session close time.
+  string session_close = 6 [(sebuf.http.field_examples) = { values: ["20:00"] }];
 }
 
 // MarketClock represents the current market clock status.
@@ -53,7 +59,7 @@ message GetMarketCalendarRequest {
 // GetMarketCalendarResponse is the response containing market calendar days.
 message GetMarketCalendarResponse {
   // List of market days.
-  repeated MarketDay days = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated MarketDay days = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetMarketClockRequest is the request to get the current market clock.

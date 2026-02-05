@@ -76,7 +76,7 @@ message ListBrokerWatchlistsRequest {
 // ListBrokerWatchlistsResponse is the response containing watchlists.
 message ListBrokerWatchlistsResponse {
   // List of watchlists.
-  repeated BrokerWatchlist watchlists = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated BrokerWatchlist watchlists = 1 [(sebuf.http.unwrap) = true];
 }
 
 // CreateBrokerWatchlistRequest is the request to create a watchlist.

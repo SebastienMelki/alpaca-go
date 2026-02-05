@@ -4,19 +4,6 @@ package alpaca.broker.v1;
 
 import "sebuf/http/annotations.proto";
 
-
-// SSEEventType represents the type of SSE event.
-enum SSEEventType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  SSE_EVENT_TYPE_UNSPECIFIED = 0;
-  SSE_EVENT_TYPE_ACCOUNT_UPDATED = 1; // [(sebuf.http.enum_value) = "account_updated"];
-  SSE_EVENT_TYPE_ACCOUNT_STATUS_CHANGED = 2; // [(sebuf.http.enum_value) = "account_status_changed"];
-  SSE_EVENT_TYPE_TRADE_UPDATED = 3; // [(sebuf.http.enum_value) = "trade_updated"];
-  SSE_EVENT_TYPE_TRANSFER_UPDATED = 4; // [(sebuf.http.enum_value) = "transfer_updated"];
-  SSE_EVENT_TYPE_JOURNAL_UPDATED = 5; // [(sebuf.http.enum_value) = "journal_updated"];
-  SSE_EVENT_TYPE_NON_TRADING_ACTIVITY = 6; // [(sebuf.http.enum_value) = "nta"];
-}
-
 // SSEEvent represents a Server-Sent Event.
 message SSEEvent {
   // Event ID.

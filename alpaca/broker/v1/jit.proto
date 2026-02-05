@@ -5,25 +5,6 @@ package alpaca.broker.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-
-// JITSettlementStatus represents the status of a JIT settlement.
-enum JITSettlementStatus {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  JIT_SETTLEMENT_STATUS_UNSPECIFIED = 0;
-  JIT_SETTLEMENT_STATUS_PENDING = 1; // [(sebuf.http.enum_value) = "PENDING"];
-  JIT_SETTLEMENT_STATUS_AWAITING_ADDITIONAL_FUNDS = 2; // [(sebuf.http.enum_value) = "AWAITING_ADDITIONAL_FUNDS"];
-  JIT_SETTLEMENT_STATUS_COMPLETED = 3; // [(sebuf.http.enum_value) = "COMPLETED"];
-  JIT_SETTLEMENT_STATUS_FAILED = 4; // [(sebuf.http.enum_value) = "FAILED"];
-}
-
-// JITAssetClass represents the asset class for JIT settlements.
-enum JITAssetClass {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  JIT_ASSET_CLASS_UNSPECIFIED = 0;
-  JIT_ASSET_CLASS_CRYPTO = 1; // [(sebuf.http.enum_value) = "crypto"];
-  JIT_ASSET_CLASS_US_EQUITY = 2; // [(sebuf.http.enum_value) = "us_equity"];
-}
-
 // JITSettlement represents a Just-In-Time settlement.
 message JITSettlement {
   // Settlement ID.
@@ -63,25 +44,19 @@ message JITSettlement {
   string asset_class = 12 [(sebuf.http.field_examples) = { values: ["us_equity"] }];
 }
 
-// JITLedger represents a JIT ledger entry.
+// JITLedger represents a JIT ledger account.
 message JITLedger {
   // Ledger ID.
-  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+  string id = 1 [(sebuf.http.field_examples) = { values: ["2896b9e2-3198-44cd-a08e-4cc4079aee33"] }];
 
-  // Associated account ID.
-  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+  // Ledger name.
+  string ledger_name = 2 [(sebuf.http.field_examples) = { values: ["Securities JIT IN"] }];
 
-  // Ledger balance.
-  string balance = 3 [(sebuf.http.field_examples) = { values: ["5000.00"] }];
+  // Ledger status.
+  string status = 3 [(sebuf.http.field_examples) = { values: ["active"] }];
 
-  // Currency.
-  string currency = 4 [(sebuf.http.field_examples) = { values: ["USD"] }];
-
-  // Timestamp when ledger was created.
-  string created_at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
-
-  // Timestamp when ledger was last updated.
-  string updated_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T12:00:00Z"] }];
+  // Creation time in UNIX format.
+  string created_at = 4 [(sebuf.http.field_examples) = { values: ["1653532627"] }];
 }
 
 // JITLedgerBalance represents a balance entry for a JIT ledger.
@@ -149,8 +124,12 @@ message ListJITLedgersRequest {}
 
 // ListJITLedgersResponse is the response containing JIT ledgers.
 message ListJITLedgersResponse {
-  // List of ledgers.
-  repeated JITLedger ledgers = 1; // [(sebuf.http.unwrap_root) = true];
+  // Map of ledger list.
+  map<string, JITLedgerList> ledgers = 1 [(sebuf.http.unwrap) = true];
+}
+
+message JITLedgerList {
+  repeated JITLedger ledgers = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetJITLedgerBalancesRequest is the request to get JIT ledger balances.

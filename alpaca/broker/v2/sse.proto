@@ -7,63 +7,6 @@ import "sebuf/http/annotations.proto";
 
 option go_package = "github.com/alpacahq/alpaca-go/alpaca/broker/v2;brokerv2";
 
-// TradeUpdateEventType represents the type of trade update event.
-enum TradeUpdateEventType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  TRADE_UPDATE_EVENT_TYPE_UNSPECIFIED = 0;
-  TRADE_UPDATE_EVENT_TYPE_NEW = 1; // [(sebuf.http.enum_value) = "new"];
-  TRADE_UPDATE_EVENT_TYPE_FILL = 2; // [(sebuf.http.enum_value) = "fill"];
-  TRADE_UPDATE_EVENT_TYPE_PARTIAL_FILL = 3; // [(sebuf.http.enum_value) = "partial_fill"];
-  TRADE_UPDATE_EVENT_TYPE_CANCELED = 4; // [(sebuf.http.enum_value) = "canceled"];
-  TRADE_UPDATE_EVENT_TYPE_EXPIRED = 5; // [(sebuf.http.enum_value) = "expired"];
-  TRADE_UPDATE_EVENT_TYPE_DONE_FOR_DAY = 6; // [(sebuf.http.enum_value) = "done_for_day"];
-  TRADE_UPDATE_EVENT_TYPE_REPLACED = 7; // [(sebuf.http.enum_value) = "replaced"];
-  TRADE_UPDATE_EVENT_TYPE_REJECTED = 8; // [(sebuf.http.enum_value) = "rejected"];
-  TRADE_UPDATE_EVENT_TYPE_PENDING_NEW = 9; // [(sebuf.http.enum_value) = "pending_new"];
-  TRADE_UPDATE_EVENT_TYPE_STOPPED = 10; // [(sebuf.http.enum_value) = "stopped"];
-  TRADE_UPDATE_EVENT_TYPE_PENDING_CANCEL = 11; // [(sebuf.http.enum_value) = "pending_cancel"];
-  TRADE_UPDATE_EVENT_TYPE_PENDING_REPLACE = 12; // [(sebuf.http.enum_value) = "pending_replace"];
-  TRADE_UPDATE_EVENT_TYPE_CALCULATED = 13; // [(sebuf.http.enum_value) = "calculated"];
-  TRADE_UPDATE_EVENT_TYPE_SUSPENDED = 14; // [(sebuf.http.enum_value) = "suspended"];
-  TRADE_UPDATE_EVENT_TYPE_ORDER_REPLACE_REJECTED = 15; // [(sebuf.http.enum_value) = "order_replace_rejected"];
-  TRADE_UPDATE_EVENT_TYPE_ORDER_CANCEL_REJECTED = 16; // [(sebuf.http.enum_value) = "order_cancel_rejected"];
-  TRADE_UPDATE_EVENT_TYPE_TRADE_BUST = 17; // [(sebuf.http.enum_value) = "trade_bust"];
-  TRADE_UPDATE_EVENT_TYPE_TRADE_CORRECT = 18; // [(sebuf.http.enum_value) = "trade_correct"];
-  TRADE_UPDATE_EVENT_TYPE_RESTATED = 19; // [(sebuf.http.enum_value) = "restated"];
-  TRADE_UPDATE_EVENT_TYPE_ACCEPTED = 20; // [(sebuf.http.enum_value) = "accepted"];
-  TRADE_UPDATE_EVENT_TYPE_HELD = 21; // [(sebuf.http.enum_value) = "held"];
-}
-
-// JournalEntryType represents the type of journal entry.
-enum JournalEntryType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  JOURNAL_ENTRY_TYPE_UNSPECIFIED = 0;
-  JOURNAL_ENTRY_TYPE_JNLC = 1; // [(sebuf.http.enum_value) = "JNLC"];
-  JOURNAL_ENTRY_TYPE_JNLS = 2; // [(sebuf.http.enum_value) = "JNLS"];
-}
-
-// JournalStatusType represents the status of a journal.
-enum JournalStatusType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  JOURNAL_STATUS_TYPE_UNSPECIFIED = 0;
-  JOURNAL_STATUS_TYPE_PENDING = 1; // [(sebuf.http.enum_value) = "pending"];
-  JOURNAL_STATUS_TYPE_CANCELED = 2; // [(sebuf.http.enum_value) = "canceled"];
-  JOURNAL_STATUS_TYPE_EXECUTED = 3; // [(sebuf.http.enum_value) = "executed"];
-  JOURNAL_STATUS_TYPE_QUEUED = 4; // [(sebuf.http.enum_value) = "queued"];
-  JOURNAL_STATUS_TYPE_REJECTED = 5; // [(sebuf.http.enum_value) = "rejected"];
-  JOURNAL_STATUS_TYPE_DELETED = 6; // [(sebuf.http.enum_value) = "deleted"];
-  JOURNAL_STATUS_TYPE_REFUSED = 7; // [(sebuf.http.enum_value) = "refused"];
-  JOURNAL_STATUS_TYPE_SENT_TO_CLEARING = 8; // [(sebuf.http.enum_value) = "sent_to_clearing"];
-  JOURNAL_STATUS_TYPE_CORRECT = 9; // [(sebuf.http.enum_value) = "correct"];
-}
-
-// SystemEventType represents the type of system event.
-enum SystemEventType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  SYSTEM_EVENT_TYPE_UNSPECIFIED = 0;
-  SYSTEM_EVENT_TYPE_EOD_BALANCES_READY = 1; // [(sebuf.http.enum_value) = "eod_balances_ready"];
-  SYSTEM_EVENT_TYPE_EOD_POSITIONS_READY = 2; // [(sebuf.http.enum_value) = "eod_positions_ready"];
-}
 
 // TradeUpdateEventV2Leg represents a leg of a multi-leg order fill event.
 message TradeUpdateEventV2Leg {
@@ -299,47 +242,6 @@ message SubscribeSystemEventsV2Response {
   repeated SystemEventV2 events = 1;
 }
 
-// AdminActionBelongsToKind represents what entity an admin action belongs to.
-enum AdminActionBelongsToKind {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  ADMIN_ACTION_BELONGS_TO_KIND_UNSPECIFIED = 0;
-  ADMIN_ACTION_BELONGS_TO_KIND_ACCOUNT = 1; // [(sebuf.http.enum_value) = "account"];
-  ADMIN_ACTION_BELONGS_TO_KIND_OWNER = 2; // [(sebuf.http.enum_value) = "owner"];
-  ADMIN_ACTION_BELONGS_TO_KIND_CORRESPONDENT = 3; // [(sebuf.http.enum_value) = "correspondent"];
-}
-
-// AdminActionCreatedByKind represents who created an admin action.
-enum AdminActionCreatedByKind {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  ADMIN_ACTION_CREATED_BY_KIND_UNSPECIFIED = 0;
-  ADMIN_ACTION_CREATED_BY_KIND_ADMIN = 1; // [(sebuf.http.enum_value) = "admin"];
-}
-
-// AdminActionType represents the type of admin action.
-enum AdminActionType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  ADMIN_ACTION_TYPE_UNSPECIFIED = 0;
-  ADMIN_ACTION_TYPE_LIQUIDATION = 1; // [(sebuf.http.enum_value) = "liquidation_admin_event"];
-  ADMIN_ACTION_TYPE_LEGACY_NOTE = 2; // [(sebuf.http.enum_value) = "legacy_note_admin_event"];
-  ADMIN_ACTION_TYPE_TRANSACTION_CANCEL = 3; // [(sebuf.http.enum_value) = "transaction_cancel_admin_event"];
-}
-
-// AdminActionCategory represents the category of admin action.
-enum AdminActionCategory {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  ADMIN_ACTION_CATEGORY_UNSPECIFIED = 0;
-  ADMIN_ACTION_CATEGORY_ORDER = 1; // [(sebuf.http.enum_value) = "order"];
-  ADMIN_ACTION_CATEGORY_OTHER = 2; // [(sebuf.http.enum_value) = "other"];
-}
-
-// AdminActionVisibility represents the visibility of admin action.
-enum AdminActionVisibility {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  ADMIN_ACTION_VISIBILITY_UNSPECIFIED = 0;
-  ADMIN_ACTION_VISIBILITY_INTERNAL = 1; // [(sebuf.http.enum_value) = "internal"];
-  ADMIN_ACTION_VISIBILITY_EXTERNAL = 2; // [(sebuf.http.enum_value) = "external"];
-  ADMIN_ACTION_VISIBILITY_CORRESPONDENT_ONLY = 3; // [(sebuf.http.enum_value) = "correspondent_only"];
-}
 
 // AdminActionBelongsTo identifies what entity an admin action belongs to.
 message AdminActionBelongsTo {
@@ -413,14 +315,6 @@ message AdminActionEventV2 {
   }
 }
 
-// FundingEntityType represents the type of funding entity.
-enum FundingEntityType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  FUNDING_ENTITY_TYPE_UNSPECIFIED = 0;
-  FUNDING_ENTITY_TYPE_BANK_RELATIONSHIP = 1; // [(sebuf.http.enum_value) = "BankRelationship"];
-  FUNDING_ENTITY_TYPE_WIRE_BANK = 2; // [(sebuf.http.enum_value) = "WireBank"];
-  FUNDING_ENTITY_TYPE_TRANSFER = 3; // [(sebuf.http.enum_value) = "Transfer"];
-}
 
 // FundingStatusEventV2 represents a funding status change event (v2).
 message FundingStatusEventV2 {

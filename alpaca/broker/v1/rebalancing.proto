@@ -5,35 +5,6 @@ package alpaca.broker.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-
-// PortfolioStatus represents the status of a rebalancing portfolio.
-enum PortfolioStatus {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  PORTFOLIO_STATUS_UNSPECIFIED = 0;
-  PORTFOLIO_STATUS_ACTIVE = 1; // [(sebuf.http.enum_value) = "active"];
-  PORTFOLIO_STATUS_INACTIVE = 2; // [(sebuf.http.enum_value) = "inactive"];
-  PORTFOLIO_STATUS_NEEDS_ADJUSTMENT = 3; // [(sebuf.http.enum_value) = "needs_adjustment"];
-}
-
-// SubscriptionStatus represents the status of a rebalancing subscription.
-enum SubscriptionStatus {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  SUBSCRIPTION_STATUS_UNSPECIFIED = 0;
-  SUBSCRIPTION_STATUS_ACTIVE = 1; // [(sebuf.http.enum_value) = "active"];
-  SUBSCRIPTION_STATUS_INACTIVE = 2; // [(sebuf.http.enum_value) = "inactive"];
-}
-
-// RunStatus represents the status of a rebalancing run.
-enum RunStatus {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  RUN_STATUS_UNSPECIFIED = 0;
-  RUN_STATUS_QUEUED = 1; // [(sebuf.http.enum_value) = "QUEUED"];
-  RUN_STATUS_IN_PROGRESS = 2; // [(sebuf.http.enum_value) = "IN_PROGRESS"];
-  RUN_STATUS_COMPLETED = 3; // [(sebuf.http.enum_value) = "COMPLETED"];
-  RUN_STATUS_COMPLETED_WITH_ERRORS = 4; // [(sebuf.http.enum_value) = "COMPLETED_WITH_ERRORS"];
-  RUN_STATUS_CANCELED = 5; // [(sebuf.http.enum_value) = "CANCELED"];
-}
-
 // PortfolioWeight represents a weight allocation in a portfolio.
 message PortfolioWeight {
   // Type of weight (cash or asset).
@@ -157,7 +128,7 @@ message ListPortfoliosRequest {
 // ListPortfoliosResponse is the response containing portfolios.
 message ListPortfoliosResponse {
   // List of portfolios.
-  repeated RebalancingPortfolio portfolios = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated RebalancingPortfolio portfolios = 1 [(sebuf.http.unwrap) = true];
 }
 
 // CreatePortfolioRequest is the request to create a portfolio.
@@ -264,7 +235,7 @@ message ListSubscriptionsRequest {
 // ListSubscriptionsResponse is the response containing subscriptions.
 message ListSubscriptionsResponse {
   // List of subscriptions.
-  repeated RebalancingSubscription subscriptions = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated RebalancingSubscription subscriptions = 1 [(sebuf.http.unwrap) = true];
 }
 
 // CreateSubscriptionRequest is the request to create a subscription.
@@ -328,7 +299,7 @@ message ListRunsRequest {
 // ListRunsResponse is the response containing runs.
 message ListRunsResponse {
   // List of runs.
-  repeated RebalancingRun runs = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated RebalancingRun runs = 1 [(sebuf.http.unwrap) = true];
 }
 
 // CreateRunRequest is the request to create/initiate a rebalancing run.
