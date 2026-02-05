@@ -6,6 +6,7 @@ package tradingv1
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -45,8 +46,11 @@ type TradingServiceClient interface {
 	ClosePosition(ctx context.Context, req *ClosePositionRequest, opts ...TradingServiceCallOption) (*Order, error)
 	CloseAllPositions(ctx context.Context, req *CloseAllPositionsRequest, opts ...TradingServiceCallOption) (*CloseAllPositionsResponse, error)
 	ExerciseOption(ctx context.Context, req *ExerciseOptionRequest, opts ...TradingServiceCallOption) (*ExerciseOptionResponse, error)
+	DoNotExerciseOption(ctx context.Context, req *DoNotExerciseOptionRequest, opts ...TradingServiceCallOption) (*DoNotExerciseOptionResponse, error)
 	ListAssets(ctx context.Context, req *ListAssetsRequest, opts ...TradingServiceCallOption) (*ListAssetsResponse, error)
 	GetAsset(ctx context.Context, req *GetAssetRequest, opts ...TradingServiceCallOption) (*Asset, error)
+	ListOptionContracts(ctx context.Context, req *ListOptionContractsRequest, opts ...TradingServiceCallOption) (*ListOptionContractsResponse, error)
+	GetOptionContract(ctx context.Context, req *GetOptionContractRequest, opts ...TradingServiceCallOption) (*OptionContract, error)
 	GetClock(ctx context.Context, req *GetClockRequest, opts ...TradingServiceCallOption) (*Clock, error)
 	GetCalendar(ctx context.Context, req *GetCalendarRequest, opts ...TradingServiceCallOption) (*GetCalendarResponse, error)
 	ListWatchlists(ctx context.Context, req *ListWatchlistsRequest, opts ...TradingServiceCallOption) (*ListWatchlistsResponse, error)
@@ -56,6 +60,18 @@ type TradingServiceClient interface {
 	DeleteWatchlist(ctx context.Context, req *DeleteWatchlistRequest, opts ...TradingServiceCallOption) (*DeleteWatchlistResponse, error)
 	AddWatchlistAsset(ctx context.Context, req *AddWatchlistAssetRequest, opts ...TradingServiceCallOption) (*Watchlist, error)
 	RemoveWatchlistAsset(ctx context.Context, req *RemoveWatchlistAssetRequest, opts ...TradingServiceCallOption) (*RemoveWatchlistAssetResponse, error)
+	GetWatchlistByName(ctx context.Context, req *GetWatchlistByNameRequest, opts ...TradingServiceCallOption) (*Watchlist, error)
+	UpdateWatchlistByName(ctx context.Context, req *UpdateWatchlistByNameRequest, opts ...TradingServiceCallOption) (*Watchlist, error)
+	DeleteWatchlistByName(ctx context.Context, req *DeleteWatchlistByNameRequest, opts ...TradingServiceCallOption) (*DeleteWatchlistResponse, error)
+	AddWatchlistAssetByName(ctx context.Context, req *AddWatchlistAssetByNameRequest, opts ...TradingServiceCallOption) (*Watchlist, error)
+	ListCryptoWallets(ctx context.Context, req *ListCryptoWalletsRequest, opts ...TradingServiceCallOption) (*ListCryptoWalletsResponse, error)
+	ListCryptoTransfers(ctx context.Context, req *ListCryptoTransfersRequest, opts ...TradingServiceCallOption) (*ListCryptoTransfersResponse, error)
+	GetCryptoTransfer(ctx context.Context, req *GetCryptoTransferRequest, opts ...TradingServiceCallOption) (*CryptoTransfer, error)
+	CreateCryptoTransfer(ctx context.Context, req *CreateCryptoTransferRequest, opts ...TradingServiceCallOption) (*CryptoTransfer, error)
+	GetCryptoTransferEstimate(ctx context.Context, req *GetCryptoTransferEstimateRequest, opts ...TradingServiceCallOption) (*CryptoTransferEstimate, error)
+	ListWhitelistedAddresses(ctx context.Context, req *ListWhitelistedAddressesRequest, opts ...TradingServiceCallOption) (*ListWhitelistedAddressesResponse, error)
+	CreateWhitelistedAddress(ctx context.Context, req *CreateWhitelistedAddressRequest, opts ...TradingServiceCallOption) (*WhitelistedAddress, error)
+	DeleteWhitelistedAddress(ctx context.Context, req *DeleteWhitelistedAddressRequest, opts ...TradingServiceCallOption) (*DeleteWhitelistedAddressResponse, error)
 }
 
 // tradingServiceClient is the implementation of TradingServiceClient.
@@ -366,11 +382,14 @@ func (c *tradingServiceClient) GetPortfolioHistory(ctx context.Context, req *Get
 	if req.End != "" {
 		queryParams.Set("end", fmt.Sprint(req.End))
 	}
-	if req.PnlReset != false {
+	if req.PnlReset != "" {
 		queryParams.Set("pnl_reset", fmt.Sprint(req.PnlReset))
 	}
-	if req.ExtendedHours != false {
+	if req.ExtendedHours != "" {
 		queryParams.Set("extended_hours", fmt.Sprint(req.ExtendedHours))
+	}
+	if req.CashflowTypes != "" {
+		queryParams.Set("cashflow_types", fmt.Sprint(req.CashflowTypes))
 	}
 	if len(queryParams) > 0 {
 		reqURL += "?" + queryParams.Encode()
@@ -436,14 +455,20 @@ func (c *tradingServiceClient) GetAccountActivities(ctx context.Context, req *Ge
 
 	// Add query parameters
 	queryParams := url.Values{}
-	if req.ActivityType != "" {
-		queryParams.Set("activity_type", fmt.Sprint(req.ActivityType))
+	if req.ActivityTypes != "" {
+		queryParams.Set("activity_types", fmt.Sprint(req.ActivityTypes))
 	}
-	if req.After != "" {
-		queryParams.Set("after", fmt.Sprint(req.After))
+	if req.Category != "" {
+		queryParams.Set("category", fmt.Sprint(req.Category))
+	}
+	if req.Date != "" {
+		queryParams.Set("date", fmt.Sprint(req.Date))
 	}
 	if req.Until != "" {
 		queryParams.Set("until", fmt.Sprint(req.Until))
+	}
+	if req.After != "" {
+		queryParams.Set("after", fmt.Sprint(req.After))
 	}
 	if req.Direction != "" {
 		queryParams.Set("direction", fmt.Sprint(req.Direction))
@@ -453,9 +478,6 @@ func (c *tradingServiceClient) GetAccountActivities(ctx context.Context, req *Ge
 	}
 	if req.PageToken != "" {
 		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
-	}
-	if req.Date != "" {
-		queryParams.Set("date", fmt.Sprint(req.Date))
 	}
 	if len(queryParams) > 0 {
 		reqURL += "?" + queryParams.Encode()
@@ -691,6 +713,15 @@ func (c *tradingServiceClient) ListOrders(ctx context.Context, req *ListOrdersRe
 	}
 	if req.Side != "" {
 		queryParams.Set("side", fmt.Sprint(req.Side))
+	}
+	if req.AssetClass != "" {
+		queryParams.Set("asset_class", fmt.Sprint(req.AssetClass))
+	}
+	if req.BeforeOrderId != "" {
+		queryParams.Set("before_order_id", fmt.Sprint(req.BeforeOrderId))
+	}
+	if req.AfterOrderId != "" {
+		queryParams.Set("after_order_id", fmt.Sprint(req.AfterOrderId))
 	}
 	if len(queryParams) > 0 {
 		reqURL += "?" + queryParams.Encode()
@@ -1126,8 +1157,8 @@ func (c *tradingServiceClient) GetPosition(ctx context.Context, req *GetPosition
 	}
 
 	// Build URL
-	path := "/v2/positions/{symbol}"
-	path = strings.Replace(path, "{symbol}", url.PathEscape(fmt.Sprint(req.Symbol)), 1)
+	path := "/v2/positions/{symbol_or_asset_id}"
+	path = strings.Replace(path, "{symbol_or_asset_id}", url.PathEscape(fmt.Sprint(req.SymbolOrAssetId)), 1)
 	reqURL := c.baseURL + path
 
 	contentType := c.contentType
@@ -1185,8 +1216,8 @@ func (c *tradingServiceClient) ClosePosition(ctx context.Context, req *ClosePosi
 	}
 
 	// Build URL
-	path := "/v2/positions/{symbol}"
-	path = strings.Replace(path, "{symbol}", url.PathEscape(fmt.Sprint(req.Symbol)), 1)
+	path := "/v2/positions/{symbol_or_asset_id}"
+	path = strings.Replace(path, "{symbol_or_asset_id}", url.PathEscape(fmt.Sprint(req.SymbolOrAssetId)), 1)
 	reqURL := c.baseURL + path
 
 	// Add query parameters
@@ -1380,6 +1411,71 @@ func (c *tradingServiceClient) ExerciseOption(ctx context.Context, req *Exercise
 	return result, nil
 }
 
+// DoNotExerciseOption calls the DoNotExerciseOption RPC.
+func (c *tradingServiceClient) DoNotExerciseOption(ctx context.Context, req *DoNotExerciseOptionRequest, opts ...TradingServiceCallOption) (*DoNotExerciseOptionResponse, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/positions/{symbol_or_contract_id}/do-not-exercise"
+	path = strings.Replace(path, "{symbol_or_contract_id}", url.PathEscape(fmt.Sprint(req.SymbolOrContractId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &DoNotExerciseOptionResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
 // ListAssets calls the ListAssets RPC.
 func (c *tradingServiceClient) ListAssets(ctx context.Context, req *ListAssetsRequest, opts ...TradingServiceCallOption) (*ListAssetsResponse, error) {
 	callOpts := &tradingServiceCallOptions{}
@@ -1505,6 +1601,171 @@ func (c *tradingServiceClient) GetAsset(ctx context.Context, req *GetAssetReques
 
 	// Unmarshal response
 	result := &Asset{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListOptionContracts calls the ListOptionContracts RPC.
+func (c *tradingServiceClient) ListOptionContracts(ctx context.Context, req *ListOptionContractsRequest, opts ...TradingServiceCallOption) (*ListOptionContractsResponse, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/options/contracts"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.UnderlyingSymbols != "" {
+		queryParams.Set("underlying_symbols", fmt.Sprint(req.UnderlyingSymbols))
+	}
+	if req.ShowDeliverables != false {
+		queryParams.Set("show_deliverables", fmt.Sprint(req.ShowDeliverables))
+	}
+	if req.Status != "" {
+		queryParams.Set("status", fmt.Sprint(req.Status))
+	}
+	if req.ExpirationDate != "" {
+		queryParams.Set("expiration_date", fmt.Sprint(req.ExpirationDate))
+	}
+	if req.ExpirationDateGte != "" {
+		queryParams.Set("expiration_date_gte", fmt.Sprint(req.ExpirationDateGte))
+	}
+	if req.ExpirationDateLte != "" {
+		queryParams.Set("expiration_date_lte", fmt.Sprint(req.ExpirationDateLte))
+	}
+	if req.RootSymbol != "" {
+		queryParams.Set("root_symbol", fmt.Sprint(req.RootSymbol))
+	}
+	if req.Type != "" {
+		queryParams.Set("type", fmt.Sprint(req.Type))
+	}
+	if req.Style != "" {
+		queryParams.Set("style", fmt.Sprint(req.Style))
+	}
+	if req.StrikePriceGte != "" {
+		queryParams.Set("strike_price_gte", fmt.Sprint(req.StrikePriceGte))
+	}
+	if req.StrikePriceLte != "" {
+		queryParams.Set("strike_price_lte", fmt.Sprint(req.StrikePriceLte))
+	}
+	if req.PageToken != "" {
+		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
+	}
+	if req.Limit != 0 {
+		queryParams.Set("limit", fmt.Sprint(req.Limit))
+	}
+	if req.Ppind != false {
+		queryParams.Set("ppind", fmt.Sprint(req.Ppind))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListOptionContractsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetOptionContract calls the GetOptionContract RPC.
+func (c *tradingServiceClient) GetOptionContract(ctx context.Context, req *GetOptionContractRequest, opts ...TradingServiceCallOption) (*OptionContract, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/options/contracts/{symbol_or_id}"
+	path = strings.Replace(path, "{symbol_or_id}", url.PathEscape(fmt.Sprint(req.SymbolOrId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OptionContract{}
 	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
@@ -2070,9 +2331,784 @@ func (c *tradingServiceClient) RemoveWatchlistAsset(ctx context.Context, req *Re
 	return result, nil
 }
 
+// GetWatchlistByName calls the GetWatchlistByName RPC.
+func (c *tradingServiceClient) GetWatchlistByName(ctx context.Context, req *GetWatchlistByNameRequest, opts ...TradingServiceCallOption) (*Watchlist, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/watchlists:by_name"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Name != "" {
+		queryParams.Set("name", fmt.Sprint(req.Name))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &Watchlist{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// UpdateWatchlistByName calls the UpdateWatchlistByName RPC.
+func (c *tradingServiceClient) UpdateWatchlistByName(ctx context.Context, req *UpdateWatchlistByNameRequest, opts ...TradingServiceCallOption) (*Watchlist, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/watchlists:by_name"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "PUT", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &Watchlist{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// DeleteWatchlistByName calls the DeleteWatchlistByName RPC.
+func (c *tradingServiceClient) DeleteWatchlistByName(ctx context.Context, req *DeleteWatchlistByNameRequest, opts ...TradingServiceCallOption) (*DeleteWatchlistResponse, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/watchlists:by_name"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Name != "" {
+		queryParams.Set("name", fmt.Sprint(req.Name))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "DELETE", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &DeleteWatchlistResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// AddWatchlistAssetByName calls the AddWatchlistAssetByName RPC.
+func (c *tradingServiceClient) AddWatchlistAssetByName(ctx context.Context, req *AddWatchlistAssetByNameRequest, opts ...TradingServiceCallOption) (*Watchlist, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/watchlists:by_name/{watchlist_name}"
+	path = strings.Replace(path, "{watchlist_name}", url.PathEscape(fmt.Sprint(req.WatchlistName)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &Watchlist{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListCryptoWallets calls the ListCryptoWallets RPC.
+func (c *tradingServiceClient) ListCryptoWallets(ctx context.Context, req *ListCryptoWalletsRequest, opts ...TradingServiceCallOption) (*ListCryptoWalletsResponse, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/wallets"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Asset != "" {
+		queryParams.Set("asset", fmt.Sprint(req.Asset))
+	}
+	if req.Network != "" {
+		queryParams.Set("network", fmt.Sprint(req.Network))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListCryptoWalletsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListCryptoTransfers calls the ListCryptoTransfers RPC.
+func (c *tradingServiceClient) ListCryptoTransfers(ctx context.Context, req *ListCryptoTransfersRequest, opts ...TradingServiceCallOption) (*ListCryptoTransfersResponse, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/wallets/transfers"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListCryptoTransfersResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetCryptoTransfer calls the GetCryptoTransfer RPC.
+func (c *tradingServiceClient) GetCryptoTransfer(ctx context.Context, req *GetCryptoTransferRequest, opts ...TradingServiceCallOption) (*CryptoTransfer, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/wallets/transfers/{transfer_id}"
+	path = strings.Replace(path, "{transfer_id}", url.PathEscape(fmt.Sprint(req.TransferId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &CryptoTransfer{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateCryptoTransfer calls the CreateCryptoTransfer RPC.
+func (c *tradingServiceClient) CreateCryptoTransfer(ctx context.Context, req *CreateCryptoTransferRequest, opts ...TradingServiceCallOption) (*CryptoTransfer, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/wallets/transfers"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &CryptoTransfer{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetCryptoTransferEstimate calls the GetCryptoTransferEstimate RPC.
+func (c *tradingServiceClient) GetCryptoTransferEstimate(ctx context.Context, req *GetCryptoTransferEstimateRequest, opts ...TradingServiceCallOption) (*CryptoTransferEstimate, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/wallets/fees/estimate"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Asset != "" {
+		queryParams.Set("asset", fmt.Sprint(req.Asset))
+	}
+	if req.FromAddress != "" {
+		queryParams.Set("from_address", fmt.Sprint(req.FromAddress))
+	}
+	if req.ToAddress != "" {
+		queryParams.Set("to_address", fmt.Sprint(req.ToAddress))
+	}
+	if req.Amount != "" {
+		queryParams.Set("amount", fmt.Sprint(req.Amount))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &CryptoTransferEstimate{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListWhitelistedAddresses calls the ListWhitelistedAddresses RPC.
+func (c *tradingServiceClient) ListWhitelistedAddresses(ctx context.Context, req *ListWhitelistedAddressesRequest, opts ...TradingServiceCallOption) (*ListWhitelistedAddressesResponse, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/wallets/whitelists"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListWhitelistedAddressesResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateWhitelistedAddress calls the CreateWhitelistedAddress RPC.
+func (c *tradingServiceClient) CreateWhitelistedAddress(ctx context.Context, req *CreateWhitelistedAddressRequest, opts ...TradingServiceCallOption) (*WhitelistedAddress, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/wallets/whitelists"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &WhitelistedAddress{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// DeleteWhitelistedAddress calls the DeleteWhitelistedAddress RPC.
+func (c *tradingServiceClient) DeleteWhitelistedAddress(ctx context.Context, req *DeleteWhitelistedAddressRequest, opts ...TradingServiceCallOption) (*DeleteWhitelistedAddressResponse, error) {
+	callOpts := &tradingServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/wallets/whitelists/{whitelisted_address_id}"
+	path = strings.Replace(path, "{whitelisted_address_id}", url.PathEscape(fmt.Sprint(req.WhitelistedAddressId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "DELETE", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &DeleteWhitelistedAddressResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
 func (c *tradingServiceClient) marshalRequest(req proto.Message, contentType string) ([]byte, error) {
 	switch contentType {
 	case ContentTypeJSON:
+		// Check for custom JSON marshaler (unwrap support)
+		if marshaler, ok := req.(json.Marshaler); ok {
+			return marshaler.MarshalJSON()
+		}
 		return protojson.Marshal(req)
 	case ContentTypeProto:
 		return proto.Marshal(req)
@@ -2107,6 +3143,10 @@ func (c *tradingServiceClient) unmarshalResponse(body []byte, msg proto.Message,
 
 	switch contentType {
 	case ContentTypeJSON:
+		// Check for custom JSON unmarshaler (unwrap support)
+		if unmarshaler, ok := msg.(json.Unmarshaler); ok {
+			return unmarshaler.UnmarshalJSON(body)
+		}
 		return protojson.Unmarshal(body, msg)
 	case ContentTypeProto:
 		return proto.Unmarshal(body, msg)

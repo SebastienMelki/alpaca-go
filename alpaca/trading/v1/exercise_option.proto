@@ -22,3 +22,21 @@ message ExerciseOptionResponse {
   // The symbol that was exercised.
   string symbol = 2 [(sebuf.http.field_examples) = { values: ["AAPL240119C00150000"] }];
 }
+
+// DoNotExerciseOptionRequest is the request to mark an option position as do-not-exercise.
+message DoNotExerciseOptionRequest {
+  // The option symbol or contract ID (bound from path variable).
+  string symbol_or_contract_id = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL240119C00150000"] }
+  ];
+}
+
+// DoNotExerciseOptionResponse is the response after marking an option as do-not-exercise.
+message DoNotExerciseOptionResponse {
+  // Whether the do-not-exercise request was accepted.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // The symbol that was marked as do-not-exercise.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["AAPL240119C00150000"] }];
+}

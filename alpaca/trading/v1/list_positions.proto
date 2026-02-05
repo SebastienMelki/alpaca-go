@@ -3,6 +3,7 @@ syntax = "proto3";
 package alpaca.trading.v1;
 
 import "alpaca/trading/v1/position.proto";
+import "sebuf/http/annotations.proto";
 
 // ListPositionsRequest is the request to list all open positions.
 message ListPositionsRequest {}
@@ -10,5 +11,5 @@ message ListPositionsRequest {}
 // ListPositionsResponse is the response containing all open positions.
 message ListPositionsResponse {
   // List of open positions.
-  repeated Position positions = 1;
+  repeated Position positions = 1 [(sebuf.http.unwrap) = true];
 }

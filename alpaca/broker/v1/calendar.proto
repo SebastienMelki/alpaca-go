@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "sebuf/http/annotations.proto";
+
+
+// MarketDay represents a trading day with open and close times.
+message MarketDay {
+  // Date of the trading day.
+  string date = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
+
+  // Market open time (HH:MM format in Eastern Time).
+  string open = 2 [(sebuf.http.field_examples) = { values: ["09:30"] }];
+
+  // Market close time (HH:MM format in Eastern Time).
+  string close = 3 [(sebuf.http.field_examples) = { values: ["16:00"] }];
+
+  // Settlement date.
+  string settlement_date = 4 [(sebuf.http.field_examples) = { values: ["2024-01-17"] }];
+
+  // Session open time.
+  string session_open = 5 [(sebuf.http.field_examples) = { values: ["04:00"] }];
+
+  // Session close time.
+  string session_close = 6 [(sebuf.http.field_examples) = { values: ["20:00"] }];
+}
+
+// MarketClock represents the current market clock status.
+message MarketClock {
+  // Current timestamp.
+  string timestamp = 1 [(sebuf.http.field_examples) = { values: ["2024-01-15T14:30:00-05:00"] }];
+
+  // Whether the market is currently open.
+  bool is_open = 2 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Next market open time.
+  string next_open = 3 [(sebuf.http.field_examples) = { values: ["2024-01-16T09:30:00-05:00"] }];
+
+  // Next market close time.
+  string next_close = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T16:00:00-05:00"] }];
+}
+
+// GetMarketCalendarRequest is the request to get the market calendar.
+message GetMarketCalendarRequest {
+  // Start date for calendar range.
+  string start = 1 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01"] }
+  ];
+
+  // End date for calendar range.
+  string end = 2 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-12-31"] }
+  ];
+}
+
+// GetMarketCalendarResponse is the response containing market calendar days.
+message GetMarketCalendarResponse {
+  // List of market days.
+  repeated MarketDay days = 1 [(sebuf.http.unwrap) = true];
+}
+
+// GetMarketClockRequest is the request to get the current market clock.
+message GetMarketClockRequest {}

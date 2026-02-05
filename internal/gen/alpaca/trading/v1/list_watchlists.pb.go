@@ -7,11 +7,13 @@
 package tradingv1
 
 import (
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -108,11 +110,11 @@ var File_alpaca_trading_v1_list_watchlists_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_list_watchlists_proto_rawDesc = "" +
 	"\n" +
-	"'alpaca/trading/v1/list_watchlists.proto\x12\x11alpaca.trading.v1\x1a!alpaca/trading/v1/watchlist.proto\"\x17\n" +
-	"\x15ListWatchlistsRequest\"V\n" +
-	"\x16ListWatchlistsResponse\x12<\n" +
+	"'alpaca/trading/v1/list_watchlists.proto\x12\x11alpaca.trading.v1\x1a!alpaca/trading/v1/watchlist.proto\x1a\x1csebuf/http/annotations.proto\"\x17\n" +
+	"\x15ListWatchlistsRequest\"\\\n" +
+	"\x16ListWatchlistsResponse\x12B\n" +
 	"\n" +
-	"watchlists\x18\x01 \x03(\v2\x1c.alpaca.trading.v1.WatchlistR\n" +
+	"watchlists\x18\x01 \x03(\v2\x1c.alpaca.trading.v1.WatchlistB\x04ȵ\x18\x01R\n" +
 	"watchlistsB\xe0\x01\n" +
 	"\x15com.alpaca.trading.v1B\x13ListWatchlistsProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 

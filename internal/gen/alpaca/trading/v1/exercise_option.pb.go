@@ -7,13 +7,14 @@
 package tradingv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -124,6 +125,107 @@ func (x *ExerciseOptionResponse) GetSymbol() string {
 	return ""
 }
 
+// DoNotExerciseOptionRequest is the request to mark an option position as do-not-exercise.
+type DoNotExerciseOptionRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The option symbol or contract ID (bound from path variable).
+	SymbolOrContractId string `protobuf:"bytes,1,opt,name=symbol_or_contract_id,json=symbolOrContractId,proto3" json:"symbol_or_contract_id,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *DoNotExerciseOptionRequest) Reset() {
+	*x = DoNotExerciseOptionRequest{}
+	mi := &file_alpaca_trading_v1_exercise_option_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DoNotExerciseOptionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DoNotExerciseOptionRequest) ProtoMessage() {}
+
+func (x *DoNotExerciseOptionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_trading_v1_exercise_option_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DoNotExerciseOptionRequest.ProtoReflect.Descriptor instead.
+func (*DoNotExerciseOptionRequest) Descriptor() ([]byte, []int) {
+	return file_alpaca_trading_v1_exercise_option_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DoNotExerciseOptionRequest) GetSymbolOrContractId() string {
+	if x != nil {
+		return x.SymbolOrContractId
+	}
+	return ""
+}
+
+// DoNotExerciseOptionResponse is the response after marking an option as do-not-exercise.
+type DoNotExerciseOptionResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Whether the do-not-exercise request was accepted.
+	Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	// The symbol that was marked as do-not-exercise.
+	Symbol        string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DoNotExerciseOptionResponse) Reset() {
+	*x = DoNotExerciseOptionResponse{}
+	mi := &file_alpaca_trading_v1_exercise_option_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DoNotExerciseOptionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DoNotExerciseOptionResponse) ProtoMessage() {}
+
+func (x *DoNotExerciseOptionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_trading_v1_exercise_option_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DoNotExerciseOptionResponse.ProtoReflect.Descriptor instead.
+func (*DoNotExerciseOptionResponse) Descriptor() ([]byte, []int) {
+	return file_alpaca_trading_v1_exercise_option_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DoNotExerciseOptionResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *DoNotExerciseOptionResponse) GetSymbol() string {
+	if x != nil {
+		return x.Symbol
+	}
+	return ""
+}
+
 var File_alpaca_trading_v1_exercise_option_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_exercise_option_proto_rawDesc = "" +
@@ -133,6 +235,15 @@ const file_alpaca_trading_v1_exercise_option_proto_rawDesc = "" +
 	"\x15symbol_or_contract_id\x18\x01 \x01(\tB\x1f\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x15\n" +
 	"\x13AAPL240119C00150000R\x12symbolOrContractId\"q\n" +
 	"\x16ExerciseOptionResponse\x12$\n" +
+	"\asuccess\x18\x01 \x01(\bB\n" +
+	"\xba\xb5\x18\x06\n" +
+	"\x04trueR\asuccess\x121\n" +
+	"\x06symbol\x18\x02 \x01(\tB\x19\xba\xb5\x18\x15\n" +
+	"\x13AAPL240119C00150000R\x06symbol\"p\n" +
+	"\x1aDoNotExerciseOptionRequest\x12R\n" +
+	"\x15symbol_or_contract_id\x18\x01 \x01(\tB\x1f\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x15\n" +
+	"\x13AAPL240119C00150000R\x12symbolOrContractId\"v\n" +
+	"\x1bDoNotExerciseOptionResponse\x12$\n" +
 	"\asuccess\x18\x01 \x01(\bB\n" +
 	"\xba\xb5\x18\x06\n" +
 	"\x04trueR\asuccess\x121\n" +
@@ -152,10 +263,12 @@ func file_alpaca_trading_v1_exercise_option_proto_rawDescGZIP() []byte {
 	return file_alpaca_trading_v1_exercise_option_proto_rawDescData
 }
 
-var file_alpaca_trading_v1_exercise_option_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_alpaca_trading_v1_exercise_option_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_alpaca_trading_v1_exercise_option_proto_goTypes = []any{
-	(*ExerciseOptionRequest)(nil),  // 0: alpaca.trading.v1.ExerciseOptionRequest
-	(*ExerciseOptionResponse)(nil), // 1: alpaca.trading.v1.ExerciseOptionResponse
+	(*ExerciseOptionRequest)(nil),       // 0: alpaca.trading.v1.ExerciseOptionRequest
+	(*ExerciseOptionResponse)(nil),      // 1: alpaca.trading.v1.ExerciseOptionResponse
+	(*DoNotExerciseOptionRequest)(nil),  // 2: alpaca.trading.v1.DoNotExerciseOptionRequest
+	(*DoNotExerciseOptionResponse)(nil), // 3: alpaca.trading.v1.DoNotExerciseOptionResponse
 }
 var file_alpaca_trading_v1_exercise_option_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -176,7 +289,7 @@ func file_alpaca_trading_v1_exercise_option_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_trading_v1_exercise_option_proto_rawDesc), len(file_alpaca_trading_v1_exercise_option_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

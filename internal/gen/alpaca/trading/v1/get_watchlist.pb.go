@@ -7,13 +7,14 @@
 package tradingv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -69,6 +70,52 @@ func (x *GetWatchlistRequest) GetWatchlistId() string {
 	return ""
 }
 
+// GetWatchlistByNameRequest is the request to get a watchlist by name.
+type GetWatchlistByNameRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The watchlist name (required).
+	Name          string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetWatchlistByNameRequest) Reset() {
+	*x = GetWatchlistByNameRequest{}
+	mi := &file_alpaca_trading_v1_get_watchlist_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetWatchlistByNameRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWatchlistByNameRequest) ProtoMessage() {}
+
+func (x *GetWatchlistByNameRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_trading_v1_get_watchlist_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWatchlistByNameRequest.ProtoReflect.Descriptor instead.
+func (*GetWatchlistByNameRequest) Descriptor() ([]byte, []int) {
+	return file_alpaca_trading_v1_get_watchlist_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *GetWatchlistByNameRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 var File_alpaca_trading_v1_get_watchlist_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_get_watchlist_proto_rawDesc = "" +
@@ -76,7 +123,11 @@ const file_alpaca_trading_v1_get_watchlist_proto_rawDesc = "" +
 	"%alpaca/trading/v1/get_watchlist.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"o\n" +
 	"\x13GetWatchlistRequest\x12X\n" +
 	"\fwatchlist_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
-	"$fb306e55-16d3-4f7c-9b2b-dcefc74e31a1R\vwatchlistIdB\xde\x01\n" +
+	"$fb306e55-16d3-4f7c-9b2b-dcefc74e31a1R\vwatchlistId\"U\n" +
+	"\x19GetWatchlistByNameRequest\x128\n" +
+	"\x04name\x18\x01 \x01(\tB$\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x10\n" +
+	"\x0eMy Tech Stocksµ\x18\x06\n" +
+	"\x04nameR\x04nameB\xde\x01\n" +
 	"\x15com.alpaca.trading.v1B\x11GetWatchlistProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (
@@ -91,9 +142,10 @@ func file_alpaca_trading_v1_get_watchlist_proto_rawDescGZIP() []byte {
 	return file_alpaca_trading_v1_get_watchlist_proto_rawDescData
 }
 
-var file_alpaca_trading_v1_get_watchlist_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_alpaca_trading_v1_get_watchlist_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_alpaca_trading_v1_get_watchlist_proto_goTypes = []any{
-	(*GetWatchlistRequest)(nil), // 0: alpaca.trading.v1.GetWatchlistRequest
+	(*GetWatchlistRequest)(nil),       // 0: alpaca.trading.v1.GetWatchlistRequest
+	(*GetWatchlistByNameRequest)(nil), // 1: alpaca.trading.v1.GetWatchlistByNameRequest
 }
 var file_alpaca_trading_v1_get_watchlist_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -114,7 +166,7 @@ func file_alpaca_trading_v1_get_watchlist_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_trading_v1_get_watchlist_proto_rawDesc), len(file_alpaca_trading_v1_get_watchlist_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

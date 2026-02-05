@@ -59,7 +59,10 @@ func NewPaperClient(apiKey, apiSecret string, opts ...Option) *Client {
 	return NewClient(apiKey, apiSecret, append(opts, WithBaseURL(PaperBaseURL))...)
 }
 
-// Re-export core model types.
+// =============================================================================
+// Core Model Types
+// =============================================================================
+
 type (
 	Account               = tradingv1.Account
 	AccountConfigurations = tradingv1.AccountConfigurations
@@ -73,23 +76,47 @@ type (
 	AccountActivity       = tradingv1.AccountActivity
 )
 
-// Re-export enums.
+// =============================================================================
+// Order Nested Types
+// =============================================================================
+
 type (
-	OrderSide         = tradingv1.OrderSide
-	OrderType         = tradingv1.OrderType
-	OrderStatus       = tradingv1.OrderStatus
-	TimeInForce       = tradingv1.TimeInForce
-	AssetClass        = tradingv1.AssetClass
-	AssetStatus       = tradingv1.AssetStatus
-	PositionSide      = tradingv1.PositionSide
-	OrderClass        = tradingv1.OrderClass
-	ActivityType      = tradingv1.ActivityType
-	DtbpCheck         = tradingv1.DtbpCheck
-	TradeConfirmEmail = tradingv1.TradeConfirmEmail
-	AccountStatus     = tradingv1.AccountStatus
+	TakeProfitSpec       = tradingv1.TakeProfitSpec
+	StopLossSpec         = tradingv1.StopLossSpec
+	MLegOrderLeg         = tradingv1.MLegOrderLeg
+	AdvancedInstructions = tradingv1.AdvancedInstructions
+	CanceledOrder        = tradingv1.CanceledOrder
+	ClosedPosition       = tradingv1.ClosedPosition
 )
 
-// Re-export request types.
+// =============================================================================
+// Option Contract Types
+// =============================================================================
+
+type (
+	OptionContract    = tradingv1.OptionContract
+	OptionDeliverable = tradingv1.OptionDeliverable
+)
+
+// =============================================================================
+// Crypto Funding Types
+// =============================================================================
+
+type (
+	CryptoWallet           = tradingv1.CryptoWallet
+	CryptoTransfer         = tradingv1.CryptoTransfer
+	WhitelistedAddress     = tradingv1.WhitelistedAddress
+	CryptoTransferEstimate = tradingv1.CryptoTransferEstimate
+)
+
+// =============================================================================
+// Note: Enums have been converted to strings for better API compatibility
+// =============================================================================
+
+// =============================================================================
+// Account Request/Response Types
+// =============================================================================
+
 type (
 	GetAccountRequest                  = tradingv1.GetAccountRequest
 	GetAccountConfigurationsRequest    = tradingv1.GetAccountConfigurationsRequest
@@ -97,86 +124,215 @@ type (
 	GetPortfolioHistoryRequest         = tradingv1.GetPortfolioHistoryRequest
 	GetAccountActivitiesRequest        = tradingv1.GetAccountActivitiesRequest
 	GetAccountActivitiesByTypeRequest  = tradingv1.GetAccountActivitiesByTypeRequest
-	CreateOrderRequest                 = tradingv1.CreateOrderRequest
-	ListOrdersRequest                  = tradingv1.ListOrdersRequest
-	GetOrderRequest                    = tradingv1.GetOrderRequest
-	GetOrderByClientIdRequest          = tradingv1.GetOrderByClientIdRequest
-	ReplaceOrderRequest                = tradingv1.ReplaceOrderRequest
-	CancelOrderRequest                 = tradingv1.CancelOrderRequest
-	CancelAllOrdersRequest             = tradingv1.CancelAllOrdersRequest
-	ListPositionsRequest               = tradingv1.ListPositionsRequest
-	GetPositionRequest                 = tradingv1.GetPositionRequest
-	ClosePositionRequest               = tradingv1.ClosePositionRequest
-	CloseAllPositionsRequest           = tradingv1.CloseAllPositionsRequest
-	ExerciseOptionRequest              = tradingv1.ExerciseOptionRequest
-	ListAssetsRequest                  = tradingv1.ListAssetsRequest
-	GetAssetRequest                    = tradingv1.GetAssetRequest
-	GetClockRequest                    = tradingv1.GetClockRequest
-	GetCalendarRequest                 = tradingv1.GetCalendarRequest
-	ListWatchlistsRequest              = tradingv1.ListWatchlistsRequest
-	CreateWatchlistRequest             = tradingv1.CreateWatchlistRequest
-	GetWatchlistRequest                = tradingv1.GetWatchlistRequest
-	UpdateWatchlistRequest             = tradingv1.UpdateWatchlistRequest
-	DeleteWatchlistRequest             = tradingv1.DeleteWatchlistRequest
-	AddWatchlistAssetRequest           = tradingv1.AddWatchlistAssetRequest
-	RemoveWatchlistAssetRequest        = tradingv1.RemoveWatchlistAssetRequest
+	GetAccountActivitiesResponse       = tradingv1.GetAccountActivitiesResponse
 )
 
-// Re-export response types.
+// =============================================================================
+// Order Request/Response Types
+// =============================================================================
+
 type (
-	GetAccountActivitiesResponse = tradingv1.GetAccountActivitiesResponse
-	ListOrdersResponse           = tradingv1.ListOrdersResponse
-	CancelOrderResponse          = tradingv1.CancelOrderResponse
-	CancelAllOrdersResponse      = tradingv1.CancelAllOrdersResponse
-	ListPositionsResponse        = tradingv1.ListPositionsResponse
-	CloseAllPositionsResponse    = tradingv1.CloseAllPositionsResponse
+	CreateOrderRequest      = tradingv1.CreateOrderRequest
+	ListOrdersRequest       = tradingv1.ListOrdersRequest
+	ListOrdersResponse      = tradingv1.ListOrdersResponse
+	GetOrderRequest         = tradingv1.GetOrderRequest
+	GetOrderByClientIdRequest = tradingv1.GetOrderByClientIdRequest
+	ReplaceOrderRequest     = tradingv1.ReplaceOrderRequest
+	CancelOrderRequest      = tradingv1.CancelOrderRequest
+	CancelOrderResponse     = tradingv1.CancelOrderResponse
+	CancelAllOrdersRequest  = tradingv1.CancelAllOrdersRequest
+	CancelAllOrdersResponse = tradingv1.CancelAllOrdersResponse
+)
+
+// =============================================================================
+// Position Request/Response Types
+// =============================================================================
+
+type (
+	ListPositionsRequest      = tradingv1.ListPositionsRequest
+	ListPositionsResponse     = tradingv1.ListPositionsResponse
+	GetPositionRequest        = tradingv1.GetPositionRequest
+	ClosePositionRequest      = tradingv1.ClosePositionRequest
+	CloseAllPositionsRequest  = tradingv1.CloseAllPositionsRequest
+	CloseAllPositionsResponse = tradingv1.CloseAllPositionsResponse
+)
+
+// =============================================================================
+// Option Exercise Request/Response Types
+// =============================================================================
+
+type (
+	ExerciseOptionRequest        = tradingv1.ExerciseOptionRequest
 	ExerciseOptionResponse       = tradingv1.ExerciseOptionResponse
-	ListAssetsResponse           = tradingv1.ListAssetsResponse
-	GetCalendarResponse          = tradingv1.GetCalendarResponse
+	DoNotExerciseOptionRequest   = tradingv1.DoNotExerciseOptionRequest
+	DoNotExerciseOptionResponse  = tradingv1.DoNotExerciseOptionResponse
+)
+
+// =============================================================================
+// Option Contract Request/Response Types
+// =============================================================================
+
+type (
+	ListOptionContractsRequest  = tradingv1.ListOptionContractsRequest
+	ListOptionContractsResponse = tradingv1.ListOptionContractsResponse
+	GetOptionContractRequest    = tradingv1.GetOptionContractRequest
+)
+
+// =============================================================================
+// Asset Request/Response Types
+// =============================================================================
+
+type (
+	ListAssetsRequest  = tradingv1.ListAssetsRequest
+	ListAssetsResponse = tradingv1.ListAssetsResponse
+	GetAssetRequest    = tradingv1.GetAssetRequest
+)
+
+// =============================================================================
+// Clock/Calendar Request/Response Types
+// =============================================================================
+
+type (
+	GetClockRequest     = tradingv1.GetClockRequest
+	GetCalendarRequest  = tradingv1.GetCalendarRequest
+	GetCalendarResponse = tradingv1.GetCalendarResponse
+)
+
+// =============================================================================
+// Watchlist Request/Response Types
+// =============================================================================
+
+type (
+	ListWatchlistsRequest        = tradingv1.ListWatchlistsRequest
 	ListWatchlistsResponse       = tradingv1.ListWatchlistsResponse
+	CreateWatchlistRequest       = tradingv1.CreateWatchlistRequest
+	GetWatchlistRequest          = tradingv1.GetWatchlistRequest
+	GetWatchlistByNameRequest    = tradingv1.GetWatchlistByNameRequest
+	UpdateWatchlistRequest       = tradingv1.UpdateWatchlistRequest
+	UpdateWatchlistByNameRequest = tradingv1.UpdateWatchlistByNameRequest
+	DeleteWatchlistRequest       = tradingv1.DeleteWatchlistRequest
+	DeleteWatchlistByNameRequest = tradingv1.DeleteWatchlistByNameRequest
 	DeleteWatchlistResponse      = tradingv1.DeleteWatchlistResponse
+	AddWatchlistAssetRequest     = tradingv1.AddWatchlistAssetRequest
+	AddWatchlistAssetByNameRequest = tradingv1.AddWatchlistAssetByNameRequest
+	RemoveWatchlistAssetRequest  = tradingv1.RemoveWatchlistAssetRequest
 	RemoveWatchlistAssetResponse = tradingv1.RemoveWatchlistAssetResponse
 )
 
-// Re-export nested types.
+// =============================================================================
+// Crypto Funding Request/Response Types
+// =============================================================================
+
 type (
-	TakeProfitSpec = tradingv1.TakeProfitSpec
-	StopLossSpec   = tradingv1.StopLossSpec
+	ListCryptoWalletsRequest         = tradingv1.ListCryptoWalletsRequest
+	ListCryptoWalletsResponse        = tradingv1.ListCryptoWalletsResponse
+	ListCryptoTransfersRequest       = tradingv1.ListCryptoTransfersRequest
+	ListCryptoTransfersResponse      = tradingv1.ListCryptoTransfersResponse
+	GetCryptoTransferRequest         = tradingv1.GetCryptoTransferRequest
+	CreateCryptoTransferRequest      = tradingv1.CreateCryptoTransferRequest
+	ListWhitelistedAddressesRequest  = tradingv1.ListWhitelistedAddressesRequest
+	ListWhitelistedAddressesResponse = tradingv1.ListWhitelistedAddressesResponse
+	CreateWhitelistedAddressRequest  = tradingv1.CreateWhitelistedAddressRequest
+	DeleteWhitelistedAddressRequest  = tradingv1.DeleteWhitelistedAddressRequest
+	DeleteWhitelistedAddressResponse = tradingv1.DeleteWhitelistedAddressResponse
+	GetCryptoTransferEstimateRequest = tradingv1.GetCryptoTransferEstimateRequest
 )
 
-// Enum value constants for OrderSide.
+// =============================================================================
+// String Constants (formerly enums)
+// =============================================================================
+
+// OrderSide string constants.
 const (
-	OrderSide_ORDER_SIDE_UNSPECIFIED = tradingv1.OrderSide_ORDER_SIDE_UNSPECIFIED
-	OrderSide_ORDER_SIDE_BUY         = tradingv1.OrderSide_ORDER_SIDE_BUY
-	OrderSide_ORDER_SIDE_SELL        = tradingv1.OrderSide_ORDER_SIDE_SELL
+	OrderSide_BUY  = "buy"
+	OrderSide_SELL = "sell"
 )
 
-// Enum value constants for OrderType.
+// OrderType string constants.
 const (
-	OrderType_ORDER_TYPE_UNSPECIFIED   = tradingv1.OrderType_ORDER_TYPE_UNSPECIFIED
-	OrderType_ORDER_TYPE_MARKET        = tradingv1.OrderType_ORDER_TYPE_MARKET
-	OrderType_ORDER_TYPE_LIMIT         = tradingv1.OrderType_ORDER_TYPE_LIMIT
-	OrderType_ORDER_TYPE_STOP          = tradingv1.OrderType_ORDER_TYPE_STOP
-	OrderType_ORDER_TYPE_STOP_LIMIT    = tradingv1.OrderType_ORDER_TYPE_STOP_LIMIT
-	OrderType_ORDER_TYPE_TRAILING_STOP = tradingv1.OrderType_ORDER_TYPE_TRAILING_STOP
+	OrderType_MARKET        = "market"
+	OrderType_LIMIT         = "limit"
+	OrderType_STOP          = "stop"
+	OrderType_STOP_LIMIT    = "stop_limit"
+	OrderType_TRAILING_STOP = "trailing_stop"
 )
 
-// Enum value constants for TimeInForce.
+// TimeInForce string constants.
 const (
-	TimeInForce_TIME_IN_FORCE_UNSPECIFIED = tradingv1.TimeInForce_TIME_IN_FORCE_UNSPECIFIED
-	TimeInForce_TIME_IN_FORCE_DAY         = tradingv1.TimeInForce_TIME_IN_FORCE_DAY
-	TimeInForce_TIME_IN_FORCE_GTC         = tradingv1.TimeInForce_TIME_IN_FORCE_GTC
-	TimeInForce_TIME_IN_FORCE_OPG         = tradingv1.TimeInForce_TIME_IN_FORCE_OPG
-	TimeInForce_TIME_IN_FORCE_CLS         = tradingv1.TimeInForce_TIME_IN_FORCE_CLS
-	TimeInForce_TIME_IN_FORCE_IOC         = tradingv1.TimeInForce_TIME_IN_FORCE_IOC
-	TimeInForce_TIME_IN_FORCE_FOK         = tradingv1.TimeInForce_TIME_IN_FORCE_FOK
+	TimeInForce_DAY = "day"
+	TimeInForce_GTC = "gtc"
+	TimeInForce_OPG = "opg"
+	TimeInForce_CLS = "cls"
+	TimeInForce_IOC = "ioc"
+	TimeInForce_FOK = "fok"
 )
 
-// Enum value constants for OrderClass.
+// OrderClass string constants.
 const (
-	OrderClass_ORDER_CLASS_UNSPECIFIED = tradingv1.OrderClass_ORDER_CLASS_UNSPECIFIED
-	OrderClass_ORDER_CLASS_SIMPLE      = tradingv1.OrderClass_ORDER_CLASS_SIMPLE
-	OrderClass_ORDER_CLASS_BRACKET     = tradingv1.OrderClass_ORDER_CLASS_BRACKET
-	OrderClass_ORDER_CLASS_OCO         = tradingv1.OrderClass_ORDER_CLASS_OCO
-	OrderClass_ORDER_CLASS_OTO         = tradingv1.OrderClass_ORDER_CLASS_OTO
+	OrderClass_SIMPLE  = "simple"
+	OrderClass_BRACKET = "bracket"
+	OrderClass_OCO     = "oco"
+	OrderClass_OTO     = "oto"
+	OrderClass_MLEG    = "mleg"
+)
+
+// OrderStatus string constants.
+const (
+	OrderStatus_NEW                = "new"
+	OrderStatus_PARTIALLY_FILLED   = "partially_filled"
+	OrderStatus_FILLED             = "filled"
+	OrderStatus_DONE_FOR_DAY       = "done_for_day"
+	OrderStatus_CANCELED           = "canceled"
+	OrderStatus_EXPIRED            = "expired"
+	OrderStatus_REPLACED           = "replaced"
+	OrderStatus_PENDING_CANCEL     = "pending_cancel"
+	OrderStatus_PENDING_REPLACE    = "pending_replace"
+	OrderStatus_PENDING_NEW        = "pending_new"
+	OrderStatus_ACCEPTED           = "accepted"
+	OrderStatus_ACCEPTED_FOR_BIDDING = "accepted_for_bidding"
+	OrderStatus_STOPPED            = "stopped"
+	OrderStatus_REJECTED           = "rejected"
+	OrderStatus_SUSPENDED          = "suspended"
+	OrderStatus_CALCULATED         = "calculated"
+	OrderStatus_HELD               = "held"
+)
+
+// PositionSide string constants.
+const (
+	PositionSide_LONG  = "long"
+	PositionSide_SHORT = "short"
+)
+
+// PositionIntent string constants.
+const (
+	PositionIntent_BUY_TO_OPEN    = "buy_to_open"
+	PositionIntent_BUY_TO_CLOSE   = "buy_to_close"
+	PositionIntent_SELL_TO_OPEN   = "sell_to_open"
+	PositionIntent_SELL_TO_CLOSE  = "sell_to_close"
+)
+
+// AssetClass string constants.
+const (
+	AssetClass_US_EQUITY = "us_equity"
+	AssetClass_CRYPTO    = "crypto"
+	AssetClass_US_OPTION = "us_option"
+)
+
+// AccountStatus string constants.
+const (
+	AccountStatus_ONBOARDING        = "ONBOARDING"
+	AccountStatus_SUBMISSION_FAILED = "SUBMISSION_FAILED"
+	AccountStatus_SUBMITTED         = "SUBMITTED"
+	AccountStatus_ACCOUNT_UPDATED   = "ACCOUNT_UPDATED"
+	AccountStatus_APPROVAL_PENDING  = "APPROVAL_PENDING"
+	AccountStatus_ACTIVE            = "ACTIVE"
+	AccountStatus_REJECTED          = "REJECTED"
+	AccountStatus_DISABLED          = "DISABLED"
+	AccountStatus_ACCOUNT_CLOSED    = "ACCOUNT_CLOSED"
+)
+
+// CryptoStatus string constants.
+const (
+	CryptoStatus_INACTIVE = "INACTIVE"
+	CryptoStatus_ACTIVE   = "ACTIVE"
 )

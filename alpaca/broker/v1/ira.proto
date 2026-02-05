@@ -1,0 +1,139 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// IRAExcessContribution represents an IRA excess contribution record.
+message IRAExcessContribution {
+  // Excess contribution ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Account ID.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Contribution type.
+  string contribution_type = 3 [(sebuf.http.field_examples) = { values: ["regular"] }];
+
+  // Tax year.
+  int32 tax_year = 4 [(sebuf.http.field_examples) = { values: ["2024"] }];
+
+  // Excess amount.
+  string excess_amount = 5 [(sebuf.http.field_examples) = { values: ["1500.00"] }];
+
+  // Earnings attributable to excess.
+  string earnings = 6 [(sebuf.http.field_examples) = { values: ["75.00"] }];
+
+  // Total distribution amount (excess + earnings).
+  string distribution_amount = 7 [(sebuf.http.field_examples) = { values: ["1575.00"] }];
+
+  // Status.
+  string status = 8 [(sebuf.http.field_examples) = { values: ["pending"] }];
+
+  // Reason for the excess contribution removal.
+  string reason = 9 [(sebuf.http.field_examples) = { values: ["Exceeded annual contribution limit"] }];
+
+  // Timestamp when created.
+  string created_at = 10 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when last updated.
+  string updated_at = 11 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when processed.
+  string processed_at = 12 [(sebuf.http.field_examples) = { values: ["2024-01-16T10:30:00Z"] }];
+}
+
+// IRAContributionLimits represents IRA contribution limits for a tax year.
+message IRAContributionLimits {
+  // Tax year.
+  int32 tax_year = 1 [(sebuf.http.field_examples) = { values: ["2024"] }];
+
+  // Regular contribution limit (under 50).
+  string regular_limit = 2 [(sebuf.http.field_examples) = { values: ["7000.00"] }];
+
+  // Catch-up contribution limit (50 and over).
+  string catchup_limit = 3 [(sebuf.http.field_examples) = { values: ["8000.00"] }];
+
+  // Deadline for contributions.
+  string contribution_deadline = 4 [(sebuf.http.field_examples) = { values: ["2025-04-15"] }];
+}
+
+// ListIRAExcessContributionsRequest is the request to list IRA excess contributions.
+message ListIRAExcessContributionsRequest {
+  // Filter by account ID.
+  string account_id = 1 [
+    (sebuf.http.query) = { name: "account_id" },
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Filter by tax year.
+  int32 tax_year = 2 [
+    (sebuf.http.query) = { name: "tax_year" },
+    (sebuf.http.field_examples) = { values: ["2024"] }
+  ];
+
+  // Filter by status.
+  string status = 3 [
+    (sebuf.http.query) = { name: "status" },
+    (sebuf.http.field_examples) = { values: ["pending"] }
+  ];
+}
+
+// ListIRAExcessContributionsResponse is the response containing excess contributions.
+message ListIRAExcessContributionsResponse {
+  // List of excess contributions.
+  repeated IRAExcessContribution excess_contributions = 1 [(sebuf.http.unwrap) = true];
+}
+
+// GetIRAExcessContributionRequest is the request to get a specific excess contribution.
+message GetIRAExcessContributionRequest {
+  // The excess contribution ID (required).
+  string excess_contribution_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// CreateIRAExcessContributionRequest is the request to create an excess contribution removal.
+message CreateIRAExcessContributionRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Contribution type (required).
+  string contribution_type = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["regular"] }
+  ];
+
+  // Tax year (required).
+  int32 tax_year = 3 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["2024"] }
+  ];
+
+  // Excess amount (required).
+  string excess_amount = 4 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["1500.00"] }
+  ];
+
+  // Reason for the excess contribution.
+  string reason = 5 [
+    (sebuf.http.field_examples) = { values: ["Exceeded annual contribution limit"] }
+  ];
+}
+
+// GetIRAContributionLimitsRequest is the request to get IRA contribution limits.
+message GetIRAContributionLimitsRequest {
+  // The tax year (optional, defaults to current year).
+  int32 tax_year = 1 [
+    (sebuf.http.query) = { name: "tax_year" },
+    (sebuf.http.field_examples) = { values: ["2024"] }
+  ];
+}

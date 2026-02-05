@@ -2,42 +2,40 @@ syntax = "proto3";
 
 package alpaca.trading.v1;
 
+import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-// AccountStatus represents the status of an account.
-enum AccountStatus {
-  ACCOUNT_STATUS_UNSPECIFIED = 0;
-  ACCOUNT_STATUS_ONBOARDING = 1;
-  ACCOUNT_STATUS_SUBMISSION_FAILED = 2;
-  ACCOUNT_STATUS_SUBMITTED = 3;
-  ACCOUNT_STATUS_ACCOUNT_UPDATED = 4;
-  ACCOUNT_STATUS_APPROVAL_PENDING = 5;
-  ACCOUNT_STATUS_ACTIVE = 6;
-  ACCOUNT_STATUS_REJECTED = 7;
-  ACCOUNT_STATUS_DISABLED = 8;
-  ACCOUNT_STATUS_ACCOUNT_CLOSED = 9;
-}
-
-// CryptoStatus represents the crypto trading status of an account.
-enum CryptoStatus {
-  CRYPTO_STATUS_UNSPECIFIED = 0;
-  CRYPTO_STATUS_INACTIVE = 1;
-  CRYPTO_STATUS_ACTIVE = 2;
-}
 
 // Account represents an Alpaca trading account.
 message Account {
   // Account ID (UUID).
-  string id = 1 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+  string id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
 
   // Account number.
   string account_number = 2 [(sebuf.http.field_examples) = { values: ["010203ABCD"] }];
 
   // Account status.
-  AccountStatus status = 3 [(sebuf.http.field_examples) = { values: ["6"] }];
+  string status = 3 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "ONBOARDING", "SUBMISSION_FAILED", "SUBMITTED", "ACCOUNT_UPDATED", "APPROVAL_PENDING", "ACTIVE", "REJECTED", "DISABLED", "ACCOUNT_CLOSED"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["ACTIVE"] }
+  ];
 
   // Crypto trading status.
-  CryptoStatus crypto_status = 4 [(sebuf.http.field_examples) = { values: ["2"] }];
+  string crypto_status = 4 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "INACTIVE", "ACTIVE"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["ACTIVE"] }
+  ];
 
   // Currency (USD).
   string currency = 5 [(sebuf.http.field_examples) = { values: ["USD"] }];

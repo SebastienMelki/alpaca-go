@@ -2,30 +2,30 @@ syntax = "proto3";
 
 package alpaca.trading.v1;
 
+import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
-
-// DtbpCheck represents the day trading buying power check setting.
-enum DtbpCheck {
-  DTBP_CHECK_UNSPECIFIED = 0;
-  DTBP_CHECK_ENTRY = 1;
-  DTBP_CHECK_EXIT = 2;
-  DTBP_CHECK_BOTH = 3;
-}
-
-// TradeConfirmEmail represents the trade confirmation email setting.
-enum TradeConfirmEmail {
-  TRADE_CONFIRM_EMAIL_UNSPECIFIED = 0;
-  TRADE_CONFIRM_EMAIL_ALL = 1;
-  TRADE_CONFIRM_EMAIL_NONE = 2;
-}
 
 // AccountConfigurations represents the account configuration settings.
 message AccountConfigurations {
   // Day trading buying power check setting.
-  string dtbp_check = 1 [(sebuf.http.field_examples) = { values: ["both"] }];
+  string dtbp_check = 1 [
+    (buf.validate.field) = {
+      string: {
+        in: ["entry", "exit", "both"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["both"] }
+  ];
 
   // Trade confirmation email setting.
-  string trade_confirm_email = 2 [(sebuf.http.field_examples) = { values: ["all"] }];
+  string trade_confirm_email = 2 [
+    (buf.validate.field) = {
+      string: {
+        in: ["all", "none"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["all"] }
+  ];
 
   // Whether to suspend trades.
   bool suspend_trade = 3 [(sebuf.http.field_examples) = { values: ["false"] }];
@@ -52,10 +52,24 @@ message GetAccountConfigurationsRequest {}
 // UpdateAccountConfigurationsRequest is the request to update account configurations.
 message UpdateAccountConfigurationsRequest {
   // Day trading buying power check setting (entry, exit, both).
-  string dtbp_check = 1 [(sebuf.http.field_examples) = { values: ["both"] }];
+  string dtbp_check = 1 [
+    (buf.validate.field) = {
+      string: {
+        in: ["entry", "exit", "both"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["both"] }
+  ];
 
   // Trade confirmation email setting (all, none).
-  string trade_confirm_email = 2 [(sebuf.http.field_examples) = { values: ["all"] }];
+  string trade_confirm_email = 2 [
+    (buf.validate.field) = {
+      string: {
+        in: ["all", "none"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["all"] }
+  ];
 
   // Whether to suspend trades.
   bool suspend_trade = 3 [(sebuf.http.field_examples) = { values: ["false"] }];

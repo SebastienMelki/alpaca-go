@@ -208,16 +208,22 @@ paths:
                     type: string
                 - name: pnl_reset
                   in: query
-                  description: Whether to use PnL calculation instead of market value.
+                  description: PnL reset mode for intraday queries (no_reset or per_day).
                   required: false
                   schema:
-                    type: boolean
+                    type: string
                 - name: extended_hours
                   in: query
-                  description: Whether to include extended hours data.
+                  description: Whether to include extended hours data (deprecated, use intraday_reporting).
                   required: false
                   schema:
-                    type: boolean
+                    type: string
+                - name: cashflow_types
+                  in: query
+                  description: Cashflow activities to include (ALL, NONE, or comma-separated list of activity types).
+                  required: false
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -266,21 +272,35 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: activity_type
+                - name: activity_types
                   in: query
-                  description: Filter by activity type.
+                  description: Filter by activity types (comma-separated list).
                   required: false
                   schema:
                     type: string
-                - name: after
+                - name: category
                   in: query
-                  description: Filter by activities after this timestamp (RFC 3339).
+                  description: |-
+                    Filter by category (trade_activity or non_trade_activity).
+                     Cannot be used with activity_types parameter.
+                  required: false
+                  schema:
+                    type: string
+                - name: date
+                  in: query
+                  description: Filter by date (YYYY-MM-DD or RFC 3339).
                   required: false
                   schema:
                     type: string
                 - name: until
                   in: query
                   description: Filter by activities until this timestamp (RFC 3339).
+                  required: false
+                  schema:
+                    type: string
+                - name: after
+                  in: query
+                  description: Filter by activities after this timestamp (RFC 3339).
                   required: false
                   schema:
                     type: string
@@ -300,12 +320,6 @@ paths:
                 - name: page_token
                   in: query
                   description: Page token for pagination.
-                  required: false
-                  schema:
-                    type: string
-                - name: date
-                  in: query
-                  description: Filter by date (YYYY-MM-DD).
                   required: false
                   schema:
                     type: string
@@ -494,6 +508,24 @@ paths:
                 - name: side
                   in: query
                   description: Filter by side (buy or sell).
+                  required: false
+                  schema:
+                    type: string
+                - name: asset_class
+                  in: query
+                  description: 'Filter by asset class (comma-separated: us_equity, us_option, crypto, all).'
+                  required: false
+                  schema:
+                    type: string
+                - name: before_order_id
+                  in: query
+                  description: Return orders submitted before this order ID (exclusive).
+                  required: false
+                  schema:
+                    type: string
+                - name: after_order_id
+                  in: query
+                  description: Return orders submitted after this order ID (exclusive).
                   required: false
                   schema:
                     type: string
@@ -948,14 +980,14 @@ paths:
                                         type: string
                                     code:
                                         type: integer
-    /v2/positions/{symbol}:
+    /v2/positions/{symbol_or_asset_id}:
         get:
             tags:
                 - TradingService
             summary: GetPosition
             description: |-
-                GetPosition retrieves a specific position by symbol.
-                 GET /v2/positions/{symbol}
+                GetPosition retrieves a specific position by symbol or asset ID.
+                 GET /v2/positions/{symbol_or_asset_id}
             operationId: GetPosition
             parameters:
                 - name: APCA-API-KEY-ID
@@ -972,9 +1004,9 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: symbol
+                - name: symbol_or_asset_id
                   in: path
-                  description: The symbol of the position (bound from path variable).
+                  description: The symbol or asset ID of the position (bound from path variable).
                   required: true
                   schema:
                     type: string
@@ -1008,7 +1040,7 @@ paths:
             summary: ClosePosition
             description: |-
                 ClosePosition closes a specific position (liquidates).
-                 DELETE /v2/positions/{symbol}
+                 DELETE /v2/positions/{symbol_or_asset_id}
             operationId: ClosePosition
             parameters:
                 - name: APCA-API-KEY-ID
@@ -1025,9 +1057,9 @@ paths:
                   schema:
                     type: string
                     example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: symbol
+                - name: symbol_or_asset_id
                   in: path
-                  description: The symbol of the position to close (bound from path variable).
+                  description: The symbol or asset ID of the position to close (bound from path variable).
                   required: true
                   schema:
                     type: string
@@ -1110,6 +1142,66 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ExerciseOptionResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/positions/{symbol_or_contract_id}/do-not-exercise:
+        post:
+            tags:
+                - TradingService
+            summary: DoNotExerciseOption
+            description: |-
+                DoNotExerciseOption marks an option position as do-not-exercise.
+                 POST /v2/positions/{symbol_or_contract_id}/do-not-exercise
+            operationId: DoNotExerciseOption
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbol_or_contract_id
+                  in: path
+                  description: The option symbol or contract ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DoNotExerciseOptionRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DoNotExerciseOptionResponse'
                 "400":
                     description: Validation error
                     content:
@@ -1230,6 +1322,193 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Asset'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/options/contracts:
+        get:
+            tags:
+                - TradingService
+            summary: ListOptionContracts
+            description: |-
+                ListOptionContracts retrieves a list of option contracts.
+                 GET /v2/options/contracts
+            operationId: ListOptionContracts
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: underlying_symbols
+                  in: query
+                  description: Filter contracts by one or more underlying symbols.
+                  required: false
+                  schema:
+                    type: string
+                - name: show_deliverables
+                  in: query
+                  description: Include deliverables array in the response.
+                  required: false
+                  schema:
+                    type: boolean
+                - name: status
+                  in: query
+                  description: Filter contracts by status (active/inactive).
+                  required: false
+                  schema:
+                    type: string
+                - name: expiration_date
+                  in: query
+                  description: 'Filter contracts by the exact expiration date (format: YYYY-MM-DD).'
+                  required: false
+                  schema:
+                    type: string
+                - name: expiration_date_gte
+                  in: query
+                  description: Filter contracts with expiration date greater than or equal to the specified date.
+                  required: false
+                  schema:
+                    type: string
+                - name: expiration_date_lte
+                  in: query
+                  description: Filter contracts with expiration date less than or equal to the specified date.
+                  required: false
+                  schema:
+                    type: string
+                - name: root_symbol
+                  in: query
+                  description: Filter contracts by the root symbol.
+                  required: false
+                  schema:
+                    type: string
+                - name: type
+                  in: query
+                  description: Filter contracts by the type (call/put).
+                  required: false
+                  schema:
+                    type: string
+                - name: style
+                  in: query
+                  description: Filter contracts by the style (american/european).
+                  required: false
+                  schema:
+                    type: string
+                - name: strike_price_gte
+                  in: query
+                  description: Filter contracts with strike price greater than or equal to the specified value.
+                  required: false
+                  schema:
+                    type: string
+                - name: strike_price_lte
+                  in: query
+                  description: Filter contracts with strike price less than or equal to the specified value.
+                  required: false
+                  schema:
+                    type: string
+                - name: page_token
+                  in: query
+                  description: Pagination token for the next page.
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: The number of contracts to limit per page (default=100, max=10000).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: ppind
+                  in: query
+                  description: The Penny Program Indicator field indicates whether an option contract is eligible for penny price increments.
+                  required: false
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListOptionContractsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/options/contracts/{symbol_or_id}:
+        get:
+            tags:
+                - TradingService
+            summary: GetOptionContract
+            description: |-
+                GetOptionContract retrieves a specific option contract by symbol or ID.
+                 GET /v2/options/contracts/{symbol_or_id}
+            operationId: GetOptionContract
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: symbol_or_id
+                  in: path
+                  description: The symbol or contract ID (required).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OptionContract'
                 "400":
                     description: Validation error
                     content:
@@ -1741,6 +2020,668 @@ paths:
                                         type: string
                                     code:
                                         type: integer
+    /v2/watchlists:by_name:
+        get:
+            tags:
+                - TradingService
+            summary: GetWatchlistByName
+            description: |-
+                GetWatchlistByName retrieves a watchlist by name.
+                 GET /v2/watchlists:by_name
+            operationId: GetWatchlistByName
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: name
+                  in: query
+                  description: The watchlist name (required).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Watchlist'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        put:
+            tags:
+                - TradingService
+            summary: UpdateWatchlistByName
+            description: |-
+                UpdateWatchlistByName updates a watchlist by name.
+                 PUT /v2/watchlists:by_name
+            operationId: UpdateWatchlistByName
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateWatchlistByNameRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Watchlist'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        delete:
+            tags:
+                - TradingService
+            summary: DeleteWatchlistByName
+            description: |-
+                DeleteWatchlistByName deletes a watchlist by name.
+                 DELETE /v2/watchlists:by_name
+            operationId: DeleteWatchlistByName
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: name
+                  in: query
+                  description: The watchlist name (required).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteWatchlistResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/watchlists:by_name/{watchlist_name}:
+        post:
+            tags:
+                - TradingService
+            summary: AddWatchlistAssetByName
+            description: |-
+                AddWatchlistAssetByName adds an asset to a watchlist by name.
+                 POST /v2/watchlists:by_name/{watchlist_name}
+            operationId: AddWatchlistAssetByName
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: watchlist_name
+                  in: path
+                  description: The watchlist name (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AddWatchlistAssetByNameRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Watchlist'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/wallets:
+        get:
+            tags:
+                - TradingService
+            summary: ListCryptoWallets
+            description: |-
+                ListCryptoWallets retrieves crypto funding wallets.
+                 GET /v2/wallets
+            operationId: ListCryptoWallets
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: asset
+                  in: query
+                  description: Filter by asset symbol.
+                  required: false
+                  schema:
+                    type: string
+                - name: network
+                  in: query
+                  description: Optional network identifier (ethereum, solana).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListCryptoWalletsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/wallets/transfers:
+        get:
+            tags:
+                - TradingService
+            summary: ListCryptoTransfers
+            description: |-
+                ListCryptoTransfers retrieves crypto funding transfers.
+                 GET /v2/wallets/transfers
+            operationId: ListCryptoTransfers
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListCryptoTransfersResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        post:
+            tags:
+                - TradingService
+            summary: CreateCryptoTransfer
+            description: |-
+                CreateCryptoTransfer creates a new crypto transfer.
+                 POST /v2/wallets/transfers
+            operationId: CreateCryptoTransfer
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateCryptoTransferRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CryptoTransfer'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/wallets/transfers/{transfer_id}:
+        get:
+            tags:
+                - TradingService
+            summary: GetCryptoTransfer
+            description: |-
+                GetCryptoTransfer retrieves a specific crypto transfer.
+                 GET /v2/wallets/transfers/{transfer_id}
+            operationId: GetCryptoTransfer
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: transfer_id
+                  in: path
+                  description: The transfer ID (required).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CryptoTransfer'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/wallets/fees/estimate:
+        get:
+            tags:
+                - TradingService
+            summary: GetCryptoTransferEstimate
+            description: |-
+                GetCryptoTransferEstimate retrieves a crypto transfer estimate.
+                 GET /v2/wallets/fees/estimate
+            operationId: GetCryptoTransferEstimate
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: asset
+                  in: query
+                  description: The crypto asset symbol.
+                  required: false
+                  schema:
+                    type: string
+                - name: from_address
+                  in: query
+                  description: The originating address of the proposed transaction.
+                  required: false
+                  schema:
+                    type: string
+                - name: to_address
+                  in: query
+                  description: The destination address of the proposed transaction.
+                  required: false
+                  schema:
+                    type: string
+                - name: amount
+                  in: query
+                  description: The amount of the proposed transaction.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CryptoTransferEstimate'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/wallets/whitelists:
+        get:
+            tags:
+                - TradingService
+            summary: ListWhitelistedAddresses
+            description: |-
+                ListWhitelistedAddresses retrieves whitelisted crypto addresses.
+                 GET /v2/wallets/whitelists
+            operationId: ListWhitelistedAddresses
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListWhitelistedAddressesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+        post:
+            tags:
+                - TradingService
+            summary: CreateWhitelistedAddress
+            description: |-
+                CreateWhitelistedAddress creates a new whitelisted address.
+                 POST /v2/wallets/whitelists
+            operationId: CreateWhitelistedAddress
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateWhitelistedAddressRequest'
+                required: true
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/WhitelistedAddress'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
+    /v2/wallets/whitelists/{whitelisted_address_id}:
+        delete:
+            tags:
+                - TradingService
+            summary: DeleteWhitelistedAddress
+            description: |-
+                DeleteWhitelistedAddress deletes a whitelisted address.
+                 DELETE /v2/wallets/whitelists/{whitelisted_address_id}
+            operationId: DeleteWhitelistedAddress
+            parameters:
+                - name: APCA-API-KEY-ID
+                  in: header
+                  description: Alpaca API key ID
+                  required: true
+                  schema:
+                    type: string
+                    example: PKXXXXXXXXXXXXXXXXXX
+                - name: APCA-API-SECRET-KEY
+                  in: header
+                  description: Alpaca API secret key
+                  required: true
+                  schema:
+                    type: string
+                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                - name: whitelisted_address_id
+                  in: path
+                  description: The whitelisted address ID (required).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteWhitelistedAddressResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    code:
+                                        type: integer
 components:
     schemas:
         FieldViolation:
@@ -1779,6 +2720,7 @@ components:
                     type: string
                     examples:
                         - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
                     description: Account ID (UUID).
                     example: 904837e3-3b76-47ec-b432-046db621571b
                 accountNumber:
@@ -1789,25 +2731,31 @@ components:
                     example: 010203ABCD
                 status:
                     type: string
+                    examples:
+                        - ACTIVE
                     enum:
-                        - ACCOUNT_STATUS_UNSPECIFIED
-                        - ACCOUNT_STATUS_ONBOARDING
-                        - ACCOUNT_STATUS_SUBMISSION_FAILED
-                        - ACCOUNT_STATUS_SUBMITTED
-                        - ACCOUNT_STATUS_ACCOUNT_UPDATED
-                        - ACCOUNT_STATUS_APPROVAL_PENDING
-                        - ACCOUNT_STATUS_ACTIVE
-                        - ACCOUNT_STATUS_REJECTED
-                        - ACCOUNT_STATUS_DISABLED
-                        - ACCOUNT_STATUS_ACCOUNT_CLOSED
-                    description: AccountStatus represents the status of an account.
+                        -
+                        - ONBOARDING
+                        - SUBMISSION_FAILED
+                        - SUBMITTED
+                        - ACCOUNT_UPDATED
+                        - APPROVAL_PENDING
+                        - ACTIVE
+                        - REJECTED
+                        - DISABLED
+                        - ACCOUNT_CLOSED
+                    description: Account status.
+                    example: ACTIVE
                 cryptoStatus:
                     type: string
+                    examples:
+                        - ACTIVE
                     enum:
-                        - CRYPTO_STATUS_UNSPECIFIED
-                        - CRYPTO_STATUS_INACTIVE
-                        - CRYPTO_STATUS_ACTIVE
-                    description: CryptoStatus represents the crypto trading status of an account.
+                        -
+                        - INACTIVE
+                        - ACTIVE
+                    description: Crypto trading status.
+                    example: ACTIVE
                 currency:
                     type: string
                     examples:
@@ -2014,12 +2962,19 @@ components:
                     type: string
                     examples:
                         - both
+                    enum:
+                        - entry
+                        - exit
+                        - both
                     description: Day trading buying power check setting.
                     example: both
                 tradeConfirmEmail:
                     type: string
                     examples:
                         - all
+                    enum:
+                        - all
+                        - none
                     description: Trade confirmation email setting.
                     example: all
                 suspendTrade:
@@ -2067,12 +3022,19 @@ components:
                     type: string
                     examples:
                         - both
+                    enum:
+                        - entry
+                        - exit
+                        - both
                     description: Day trading buying power check setting (entry, exit, both).
                     example: both
                 tradeConfirmEmail:
                     type: string
                     examples:
                         - all
+                    enum:
+                        - all
+                        - none
                     description: Trade confirmation email setting (all, none).
                     example: all
                 suspendTrade:
@@ -2140,17 +3102,26 @@ components:
                     description: End date/time (RFC-3339 or YYYY-MM-DD).
                     example: 2024-01-31
                 pnlReset:
-                    type: boolean
+                    type: string
                     examples:
-                        - false
-                    description: Whether to use PnL calculation instead of market value.
-                    example: false
+                        - per_day
+                        - no_reset
+                    description: PnL reset mode for intraday queries (no_reset or per_day).
+                    example: per_day
                 extendedHours:
-                    type: boolean
+                    type: string
                     examples:
-                        - false
-                    description: Whether to include extended hours data.
-                    example: false
+                        - true
+                    description: Whether to include extended hours data (deprecated, use intraday_reporting).
+                    example: true
+                cashflowTypes:
+                    type: string
+                    examples:
+                        - ALL
+                        - NONE
+                        - DIV,INT
+                    description: Cashflow activities to include (ALL, NONE, or comma-separated list of activity types).
+                    example: ALL
             description: GetPortfolioHistoryRequest is the request to get portfolio history.
         PortfolioHistory:
             type: object
@@ -2196,24 +3167,40 @@ components:
         GetAccountActivitiesRequest:
             type: object
             properties:
-                activityType:
+                activityTypes:
                     type: string
                     examples:
                         - FILL
-                    description: Filter by activity type.
+                        - FILL,DIV,INT
+                    description: Filter by activity types (comma-separated list).
                     example: FILL
-                after:
+                category:
                     type: string
                     examples:
-                        - 2024-01-01T00:00:00Z
-                    description: Filter by activities after this timestamp (RFC 3339).
-                    example: 2024-01-01T00:00:00Z
+                        - trade_activity
+                        - non_trade_activity
+                    description: |-
+                        Filter by category (trade_activity or non_trade_activity).
+                         Cannot be used with activity_types parameter.
+                    example: trade_activity
+                date:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Filter by date (YYYY-MM-DD or RFC 3339).
+                    example: 2024-01-15
                 until:
                     type: string
                     examples:
                         - 2024-01-31T23:59:59Z
                     description: Filter by activities until this timestamp (RFC 3339).
                     example: 2024-01-31T23:59:59Z
+                after:
+                    type: string
+                    examples:
+                        - 2024-01-01T00:00:00Z
+                    description: Filter by activities after this timestamp (RFC 3339).
+                    example: 2024-01-01T00:00:00Z
                 direction:
                     type: string
                     examples:
@@ -2233,12 +3220,6 @@ components:
                         - token123
                     description: Page token for pagination.
                     example: token123
-                date:
-                    type: string
-                    examples:
-                        - 2024-01-15
-                    description: Filter by date (YYYY-MM-DD).
-                    example: 2024-01-15
             description: GetAccountActivitiesRequest is the request to get account activities.
         GetAccountActivitiesResponse:
             type: object
@@ -2420,32 +3401,38 @@ components:
                     example: 1000.00
                 side:
                     type: string
+                    examples:
+                        - buy
                     enum:
-                        - ORDER_SIDE_UNSPECIFIED
-                        - ORDER_SIDE_BUY
-                        - ORDER_SIDE_SELL
-                    description: OrderSide represents the side of an order (buy or sell).
+                        - buy
+                        - sell
+                    description: Order side (buy or sell).
+                    example: buy
                 type:
                     type: string
+                    examples:
+                        - limit
                     enum:
-                        - ORDER_TYPE_UNSPECIFIED
-                        - ORDER_TYPE_MARKET
-                        - ORDER_TYPE_LIMIT
-                        - ORDER_TYPE_STOP
-                        - ORDER_TYPE_STOP_LIMIT
-                        - ORDER_TYPE_TRAILING_STOP
-                    description: OrderType represents the type of order.
+                        - market
+                        - limit
+                        - stop
+                        - stop_limit
+                        - trailing_stop
+                    description: Order type.
+                    example: limit
                 timeInForce:
                     type: string
+                    examples:
+                        - day
                     enum:
-                        - TIME_IN_FORCE_UNSPECIFIED
-                        - TIME_IN_FORCE_DAY
-                        - TIME_IN_FORCE_GTC
-                        - TIME_IN_FORCE_OPG
-                        - TIME_IN_FORCE_CLS
-                        - TIME_IN_FORCE_IOC
-                        - TIME_IN_FORCE_FOK
-                    description: TimeInForce represents the time in force for an order.
+                        - day
+                        - gtc
+                        - opg
+                        - cls
+                        - ioc
+                        - fok
+                    description: Time in force.
+                    example: day
                 limitPrice:
                     type: string
                     examples:
@@ -2480,22 +3467,45 @@ components:
                     type: string
                     examples:
                         - my_order_123
-                    maxLength: 48
-                    description: Client order ID (user-provided, max 48 characters).
+                    maxLength: 128
+                    description: Client order ID (user-provided, max 128 characters).
                     example: my_order_123
                 orderClass:
                     type: string
+                    examples:
+                        - simple
                     enum:
-                        - ORDER_CLASS_UNSPECIFIED
-                        - ORDER_CLASS_SIMPLE
-                        - ORDER_CLASS_BRACKET
-                        - ORDER_CLASS_OCO
-                        - ORDER_CLASS_OTO
-                    description: OrderClass represents the class of order.
+                        -
+                        - simple
+                        - bracket
+                        - oco
+                        - oto
+                        - mleg
+                    description: Order class.
+                    example: simple
                 takeProfit:
                     $ref: '#/components/schemas/TakeProfitSpec'
                 stopLoss:
                     $ref: '#/components/schemas/StopLossSpec'
+                positionIntent:
+                    type: string
+                    examples:
+                        - buy_to_open
+                    enum:
+                        -
+                        - buy_to_open
+                        - buy_to_close
+                        - sell_to_open
+                        - sell_to_close
+                    description: Position intent for options orders.
+                    example: buy_to_open
+                legs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MLegOrderLeg'
+                    maxItems: 4
+                advancedInstructions:
+                    $ref: '#/components/schemas/AdvancedInstructions'
             required:
                 - symbol
             description: CreateOrderRequest is the request to create a new order.
@@ -2529,6 +3539,87 @@ components:
             required:
                 - stopPrice
             description: StopLossSpec specifies stop loss parameters for bracket orders.
+        MLegOrderLeg:
+            type: object
+            properties:
+                side:
+                    type: string
+                    examples:
+                        - buy
+                    enum:
+                        -
+                        - buy
+                        - sell
+                    description: Order side (buy or sell).
+                    example: buy
+                positionIntent:
+                    type: string
+                    examples:
+                        - buy_to_open
+                    enum:
+                        -
+                        - buy_to_open
+                        - buy_to_close
+                        - sell_to_open
+                        - sell_to_close
+                    description: Position intent for options.
+                    example: buy_to_open
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL241213C00250000
+                    description: Symbol or asset ID to identify the asset to trade.
+                    example: AAPL241213C00250000
+                ratioQty:
+                    type: string
+                    examples:
+                        - 1
+                    description: Proportional quantity of this leg in relation to the overall multi-leg order qty.
+                    example: 1
+            required:
+                - symbol
+                - ratioQty
+            description: MLegOrderLeg represents an individual leg of a multi-leg options order.
+        AdvancedInstructions:
+            type: object
+            properties:
+                algorithm:
+                    type: string
+                    examples:
+                        - DMA
+                    description: The advanced routing algorithm to use (DMA, TWAP, VWAP).
+                    example: DMA
+                destination:
+                    type: string
+                    examples:
+                        - NYSE
+                    description: Target exchange for order execution (NYSE, NASDAQ, ARCA).
+                    example: NYSE
+                displayQty:
+                    type: string
+                    examples:
+                        - 100
+                    description: Maximum shares/contracts displayed on the exchange at any time.
+                    example: 100
+                startTime:
+                    type: string
+                    examples:
+                        - 2025-07-21T09:30:00-04:00
+                    description: When the algorithm is to start executing (RFC 3339).
+                    example: 2025-07-21T09:30:00-04:00
+                endTime:
+                    type: string
+                    examples:
+                        - 2025-07-21T15:30:00-04:00
+                    description: When the algorithm is to be done executing (RFC 3339).
+                    example: 2025-07-21T15:30:00-04:00
+                maxPercentage:
+                    type: string
+                    examples:
+                        - 0.314
+                    description: Maximum percentage of the ticker's period volume (0 < max_percentage < 1).
+                    example: 0.314
+            description: AdvancedInstructions provides advanced instructions for Elite Smart Router.
         Order:
             type: object
             properties:
@@ -2536,6 +3627,7 @@ components:
                     type: string
                     examples:
                         - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    format: uuid
                     description: Order ID (UUID).
                     example: 61e69015-8549-4bfd-b9c3-01e75843f47d
                 clientOrderId:
@@ -2582,14 +3674,21 @@ components:
                     description: Timestamp when the order was replaced.
                 replacedBy:
                     type: string
-                    description: Order ID that replaced this order.
+                    examples:
+                        - 71e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: Order ID that replaced this order (optional, UUID format when present).
+                    example: 71e69015-8549-4bfd-b9c3-01e75843f47d
                 replaces:
                     type: string
-                    description: Order ID that this order replaces.
+                    examples:
+                        - 81e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: Order ID that this order replaces (optional, UUID format when present).
+                    example: 81e69015-8549-4bfd-b9c3-01e75843f47d
                 assetId:
                     type: string
                     examples:
                         - b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                    format: uuid
                     description: Asset ID.
                     example: b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
                 symbol:
@@ -2600,12 +3699,15 @@ components:
                     example: AAPL
                 assetClass:
                     type: string
+                    examples:
+                        - us_equity
                     enum:
-                        - ASSET_CLASS_UNSPECIFIED
-                        - ASSET_CLASS_US_EQUITY
-                        - ASSET_CLASS_CRYPTO
-                        - ASSET_CLASS_US_OPTION
-                    description: AssetClass represents the asset class.
+                        -
+                        - us_equity
+                        - crypto
+                        - us_option
+                    description: Asset class.
+                    example: us_equity
                 notional:
                     type: string
                     examples:
@@ -2632,51 +3734,67 @@ components:
                     example: 150.25
                 orderClass:
                     type: string
+                    examples:
+                        - simple
                     enum:
-                        - ORDER_CLASS_UNSPECIFIED
-                        - ORDER_CLASS_SIMPLE
-                        - ORDER_CLASS_BRACKET
-                        - ORDER_CLASS_OCO
-                        - ORDER_CLASS_OTO
-                    description: OrderClass represents the class of order.
+                        -
+                        - simple
+                        - bracket
+                        - oco
+                        - oto
+                        - mleg
+                    description: Order class.
+                    example: simple
                 orderType:
                     type: string
+                    examples:
+                        - limit
                     enum:
-                        - ORDER_TYPE_UNSPECIFIED
-                        - ORDER_TYPE_MARKET
-                        - ORDER_TYPE_LIMIT
-                        - ORDER_TYPE_STOP
-                        - ORDER_TYPE_STOP_LIMIT
-                        - ORDER_TYPE_TRAILING_STOP
-                    description: OrderType represents the type of order.
+                        -
+                        - market
+                        - limit
+                        - stop
+                        - stop_limit
+                        - trailing_stop
+                    description: Order type.
+                    example: limit
                 type:
                     type: string
+                    examples:
+                        - limit
                     enum:
-                        - ORDER_TYPE_UNSPECIFIED
-                        - ORDER_TYPE_MARKET
-                        - ORDER_TYPE_LIMIT
-                        - ORDER_TYPE_STOP
-                        - ORDER_TYPE_STOP_LIMIT
-                        - ORDER_TYPE_TRAILING_STOP
-                    description: OrderType represents the type of order.
+                        -
+                        - market
+                        - limit
+                        - stop
+                        - stop_limit
+                        - trailing_stop
+                    description: 'Deprecated: use order_type instead.'
+                    example: limit
                 side:
                     type: string
+                    examples:
+                        - buy
                     enum:
-                        - ORDER_SIDE_UNSPECIFIED
-                        - ORDER_SIDE_BUY
-                        - ORDER_SIDE_SELL
-                    description: OrderSide represents the side of an order (buy or sell).
+                        -
+                        - buy
+                        - sell
+                    description: Order side.
+                    example: buy
                 timeInForce:
                     type: string
+                    examples:
+                        - day
                     enum:
-                        - TIME_IN_FORCE_UNSPECIFIED
-                        - TIME_IN_FORCE_DAY
-                        - TIME_IN_FORCE_GTC
-                        - TIME_IN_FORCE_OPG
-                        - TIME_IN_FORCE_CLS
-                        - TIME_IN_FORCE_IOC
-                        - TIME_IN_FORCE_FOK
-                    description: TimeInForce represents the time in force for an order.
+                        -
+                        - day
+                        - gtc
+                        - opg
+                        - cls
+                        - ioc
+                        - fok
+                    description: Time in force.
+                    example: day
                 limitPrice:
                     type: string
                     examples:
@@ -2691,26 +3809,29 @@ components:
                     example: 145.00
                 status:
                     type: string
+                    examples:
+                        - filled
                     enum:
-                        - ORDER_STATUS_UNSPECIFIED
-                        - ORDER_STATUS_NEW
-                        - ORDER_STATUS_PARTIALLY_FILLED
-                        - ORDER_STATUS_FILLED
-                        - ORDER_STATUS_DONE_FOR_DAY
-                        - ORDER_STATUS_CANCELED
-                        - ORDER_STATUS_EXPIRED
-                        - ORDER_STATUS_REPLACED
-                        - ORDER_STATUS_PENDING_CANCEL
-                        - ORDER_STATUS_PENDING_REPLACE
-                        - ORDER_STATUS_PENDING_NEW
-                        - ORDER_STATUS_ACCEPTED
-                        - ORDER_STATUS_ACCEPTED_FOR_BIDDING
-                        - ORDER_STATUS_STOPPED
-                        - ORDER_STATUS_REJECTED
-                        - ORDER_STATUS_SUSPENDED
-                        - ORDER_STATUS_CALCULATED
-                        - ORDER_STATUS_HELD
-                    description: OrderStatus represents the status of an order.
+                        -
+                        - new
+                        - partially_filled
+                        - filled
+                        - done_for_day
+                        - canceled
+                        - expired
+                        - replaced
+                        - pending_cancel
+                        - pending_replace
+                        - pending_new
+                        - accepted
+                        - accepted_for_bidding
+                        - stopped
+                        - rejected
+                        - suspended
+                        - calculated
+                        - held
+                    description: Order status.
+                    example: filled
                 extendedHours:
                     type: boolean
                     examples:
@@ -2739,6 +3860,42 @@ components:
                         - 155.00
                     description: High water mark (for trailing stop orders).
                     example: 155.00
+                positionIntent:
+                    type: string
+                    examples:
+                        - buy_to_open
+                    enum:
+                        -
+                        - buy_to_open
+                        - buy_to_close
+                        - sell_to_open
+                        - sell_to_close
+                    description: Position intent for options orders.
+                    example: buy_to_open
+                subtag:
+                    type: string
+                    examples:
+                        - mobile
+                    description: Subtag for order categorization.
+                    example: mobile
+                source:
+                    type: string
+                    examples:
+                        - api
+                    description: Source of the order.
+                    example: api
+                expiresAt:
+                    type: string
+                    examples:
+                        - 2024-01-19T21:00:00Z
+                    description: Expiration timestamp for options orders (RFC 3339).
+                    example: 2024-01-19T21:00:00Z
+                ratioQty:
+                    type: string
+                    examples:
+                        - 1
+                    description: Proportional quantity for multi-leg orders.
+                    example: 1
             description: Order represents a trading order.
         ListOrdersRequest:
             type: object
@@ -2794,14 +3951,29 @@ components:
                         - buy
                     description: Filter by side (buy or sell).
                     example: buy
+                assetClass:
+                    type: string
+                    examples:
+                        - us_equity,us_option
+                    description: 'Filter by asset class (comma-separated: us_equity, us_option, crypto, all).'
+                    example: us_equity,us_option
+                beforeOrderId:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: Return orders submitted before this order ID (exclusive).
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+                afterOrderId:
+                    type: string
+                    examples:
+                        - 71e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: Return orders submitted after this order ID (exclusive).
+                    example: 71e69015-8549-4bfd-b9c3-01e75843f47d
             description: ListOrdersRequest is the request to list orders.
         ListOrdersResponse:
-            type: object
-            properties:
-                orders:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Order'
+            type: array
+            items:
+                $ref: '#/components/schemas/Order'
             description: ListOrdersResponse is the response containing a list of orders.
         GetOrderRequest:
             type: object
@@ -2853,15 +4025,18 @@ components:
                     example: 15
                 timeInForce:
                     type: string
+                    examples:
+                        - day
                     enum:
-                        - TIME_IN_FORCE_UNSPECIFIED
-                        - TIME_IN_FORCE_DAY
-                        - TIME_IN_FORCE_GTC
-                        - TIME_IN_FORCE_OPG
-                        - TIME_IN_FORCE_CLS
-                        - TIME_IN_FORCE_IOC
-                        - TIME_IN_FORCE_FOK
-                    description: TimeInForce represents the time in force for an order.
+                        -
+                        - day
+                        - gtc
+                        - opg
+                        - cls
+                        - ioc
+                        - fok
+                    description: New time in force (optional).
+                    example: day
                 limitPrice:
                     type: string
                     examples:
@@ -2954,12 +4129,9 @@ components:
             type: object
             description: ListPositionsRequest is the request to list all open positions.
         ListPositionsResponse:
-            type: object
-            properties:
-                positions:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Position'
+            type: array
+            items:
+                $ref: '#/components/schemas/Position'
             description: ListPositionsResponse is the response containing all open positions.
         Position:
             type: object
@@ -2968,6 +4140,7 @@ components:
                     type: string
                     examples:
                         - b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                    format: uuid
                     description: Asset ID (UUID).
                     example: b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
                 symbol:
@@ -2984,12 +4157,15 @@ components:
                     example: NASDAQ
                 assetClass:
                     type: string
+                    examples:
+                        - us_equity
                     enum:
-                        - ASSET_CLASS_UNSPECIFIED
-                        - ASSET_CLASS_US_EQUITY
-                        - ASSET_CLASS_CRYPTO
-                        - ASSET_CLASS_US_OPTION
-                    description: AssetClass represents the asset class.
+                        -
+                        - us_equity
+                        - crypto
+                        - us_option
+                    description: Asset class.
+                    example: us_equity
                 assetMarginable:
                     type: boolean
                     examples:
@@ -3010,11 +4186,14 @@ components:
                     example: 150.00
                 side:
                     type: string
+                    examples:
+                        - long
                     enum:
-                        - POSITION_SIDE_UNSPECIFIED
-                        - POSITION_SIDE_LONG
-                        - POSITION_SIDE_SHORT
-                    description: PositionSide represents the side of a position.
+                        -
+                        - long
+                        - short
+                    description: Position side (long or short).
+                    example: long
                 marketValue:
                     type: string
                     examples:
@@ -3079,27 +4258,25 @@ components:
         GetPositionRequest:
             type: object
             properties:
-                symbol:
+                symbolOrAssetId:
                     type: string
                     examples:
                         - AAPL
-                    maxLength: 12
-                    minLength: 1
-                    description: The symbol of the position (bound from path variable).
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: The symbol or asset ID of the position (bound from path variable).
                     example: AAPL
             required:
-                - symbol
-            description: GetPositionRequest is the request to get a position by symbol.
+                - symbolOrAssetId
+            description: GetPositionRequest is the request to get a position by symbol or asset ID.
         ClosePositionRequest:
             type: object
             properties:
-                symbol:
+                symbolOrAssetId:
                     type: string
                     examples:
                         - AAPL
-                    maxLength: 12
-                    minLength: 1
-                    description: The symbol of the position to close (bound from path variable).
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: The symbol or asset ID of the position to close (bound from path variable).
                     example: AAPL
                 qty:
                     type: string
@@ -3114,7 +4291,7 @@ components:
                     description: Percentage of position to close (optional, 0-100).
                     example: 50
             required:
-                - symbol
+                - symbolOrAssetId
             description: ClosePositionRequest is the request to close a position.
         CloseAllPositionsRequest:
             type: object
@@ -3181,6 +4358,34 @@ components:
                     description: The symbol that was exercised.
                     example: AAPL240119C00150000
             description: ExerciseOptionResponse is the response after exercising an option.
+        DoNotExerciseOptionRequest:
+            type: object
+            properties:
+                symbolOrContractId:
+                    type: string
+                    examples:
+                        - AAPL240119C00150000
+                    description: The option symbol or contract ID (bound from path variable).
+                    example: AAPL240119C00150000
+            required:
+                - symbolOrContractId
+            description: DoNotExerciseOptionRequest is the request to mark an option position as do-not-exercise.
+        DoNotExerciseOptionResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the do-not-exercise request was accepted.
+                    example: true
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL240119C00150000
+                    description: The symbol that was marked as do-not-exercise.
+                    example: AAPL240119C00150000
+            description: DoNotExerciseOptionResponse is the response after marking an option as do-not-exercise.
         ListAssetsRequest:
             type: object
             properties:
@@ -3204,12 +4409,9 @@ components:
                     example: NASDAQ
             description: ListAssetsRequest is the request to list assets.
         ListAssetsResponse:
-            type: object
-            properties:
-                assets:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Asset'
+            type: array
+            items:
+                $ref: '#/components/schemas/Asset'
             description: ListAssetsResponse is the response containing a list of assets.
         Asset:
             type: object
@@ -3218,6 +4420,7 @@ components:
                     type: string
                     examples:
                         - b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                    format: uuid
                     description: Asset ID (UUID).
                     example: b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
                 class:
@@ -3318,6 +4521,315 @@ components:
             required:
                 - symbolOrId
             description: GetAssetRequest is the request to get an asset by symbol or ID.
+        ListOptionContractsRequest:
+            type: object
+            properties:
+                underlyingSymbols:
+                    type: string
+                    examples:
+                        - AAPL,SPY
+                    description: Filter contracts by one or more underlying symbols.
+                    example: AAPL,SPY
+                showDeliverables:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Include deliverables array in the response.
+                    example: true
+                status:
+                    type: string
+                    examples:
+                        - active
+                    description: Filter contracts by status (active/inactive).
+                    example: active
+                expirationDate:
+                    type: string
+                    examples:
+                        - 2025-06-20
+                    description: 'Filter contracts by the exact expiration date (format: YYYY-MM-DD).'
+                    example: 2025-06-20
+                expirationDateGte:
+                    type: string
+                    examples:
+                        - 2025-06-20
+                    description: Filter contracts with expiration date greater than or equal to the specified date.
+                    example: 2025-06-20
+                expirationDateLte:
+                    type: string
+                    examples:
+                        - 2025-06-20
+                    description: Filter contracts with expiration date less than or equal to the specified date.
+                    example: 2025-06-20
+                rootSymbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Filter contracts by the root symbol.
+                    example: AAPL
+                type:
+                    type: string
+                    examples:
+                        - call
+                    description: Filter contracts by the type (call/put).
+                    example: call
+                style:
+                    type: string
+                    examples:
+                        - american
+                    description: Filter contracts by the style (american/european).
+                    example: american
+                strikePriceGte:
+                    type: string
+                    examples:
+                        - 50
+                    description: Filter contracts with strike price greater than or equal to the specified value.
+                    example: 50
+                strikePriceLte:
+                    type: string
+                    examples:
+                        - 100
+                    description: Filter contracts with strike price less than or equal to the specified value.
+                    example: 100
+                pageToken:
+                    type: string
+                    examples:
+                        - MA==
+                    description: Pagination token for the next page.
+                    example: MA==
+                limit:
+                    type: integer
+                    examples:
+                        - 100
+                    maximum: 10000
+                    minimum: 1
+                    format: int32
+                    description: The number of contracts to limit per page (default=100, max=10000).
+                    example: 100
+                ppind:
+                    type: boolean
+                    examples:
+                        - true
+                    description: The Penny Program Indicator field indicates whether an option contract is eligible for penny price increments.
+                    example: true
+            description: ListOptionContractsRequest is the request to list option contracts.
+        ListOptionContractsResponse:
+            type: object
+            properties:
+                optionContracts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/OptionContract'
+                nextPageToken:
+                    type: string
+                    examples:
+                        - MTAwMA==
+                    description: Pagination token for the next page.
+                    example: MTAwMA==
+            description: ListOptionContractsResponse is the response containing a list of option contracts.
+        OptionContract:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - 98359ef7-5124-49f3-85ea-5cf02df6defa
+                    description: The unique identifier of the option contract.
+                    example: 98359ef7-5124-49f3-85ea-5cf02df6defa
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL250620C00100000
+                    description: The symbol representing the option contract.
+                    example: AAPL250620C00100000
+                name:
+                    type: string
+                    examples:
+                        - AAPL Jun 20 2025 100 Call
+                    description: The name of the option contract.
+                    example: AAPL Jun 20 2025 100 Call
+                status:
+                    type: string
+                    examples:
+                        - active
+                    enum:
+                        - active
+                        - inactive
+                    description: The status of the option contract.
+                    example: active
+                tradable:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Indicates whether the option contract is tradable.
+                    example: true
+                expirationDate:
+                    type: string
+                    examples:
+                        - 2025-06-20
+                    description: The expiration date of the option contract.
+                    example: 2025-06-20
+                rootSymbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: The root symbol of the option contract.
+                    example: AAPL
+                underlyingSymbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: The underlying symbol of the option contract.
+                    example: AAPL
+                underlyingAssetId:
+                    type: string
+                    examples:
+                        - b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                    description: The unique identifier of the underlying asset.
+                    example: b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                type:
+                    type: string
+                    examples:
+                        - call
+                    enum:
+                        - call
+                        - put
+                    description: The type of the option contract (call or put).
+                    example: call
+                style:
+                    type: string
+                    examples:
+                        - american
+                    enum:
+                        - american
+                        - european
+                    description: The style of the option contract (american or european).
+                    example: american
+                strikePrice:
+                    type: string
+                    examples:
+                        - 100
+                    description: The strike price of the option contract.
+                    example: 100
+                multiplier:
+                    type: string
+                    examples:
+                        - 100
+                    description: The multiplier of the option contract.
+                    example: 100
+                size:
+                    type: string
+                    examples:
+                        - 100
+                    description: Represents the number of underlying shares to be delivered in case the contract is exercised/assigned.
+                    example: 100
+                openInterest:
+                    type: string
+                    examples:
+                        - 237
+                    description: The open interest of the option contract.
+                    example: 237
+                openInterestDate:
+                    type: string
+                    examples:
+                        - 2023-12-11
+                    description: The date of the open interest data.
+                    example: 2023-12-11
+                closePrice:
+                    type: string
+                    examples:
+                        - 148.38
+                    description: The close price of the option contract.
+                    example: 148.38
+                closePriceDate:
+                    type: string
+                    examples:
+                        - 2023-12-11
+                    description: The date of the close price data.
+                    example: 2023-12-11
+                deliverables:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/OptionDeliverable'
+            description: OptionContract represents an option contract.
+        OptionDeliverable:
+            type: object
+            properties:
+                type:
+                    type: string
+                    examples:
+                        - equity
+                    enum:
+                        - cash
+                        - equity
+                    description: Type of deliverable, indicating whether it's cash or equity.
+                    example: equity
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Symbol of the deliverable.
+                    example: AAPL
+                assetId:
+                    type: string
+                    examples:
+                        - b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                    description: Unique identifier of the deliverable asset.
+                    example: b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                amount:
+                    type: string
+                    examples:
+                        - 100
+                    description: The deliverable amount.
+                    example: 100
+                allocationPercentage:
+                    type: string
+                    examples:
+                        - 100
+                    description: Cost allocation percentage of the deliverable.
+                    example: 100
+                settlementType:
+                    type: string
+                    examples:
+                        - T+2
+                    enum:
+                        - T+0
+                        - T+1
+                        - T+2
+                        - T+3
+                        - T+4
+                        - T+5
+                    description: Indicates when the deliverable will be settled if the contract is exercised/assigned.
+                    example: T+2
+                settlementMethod:
+                    type: string
+                    examples:
+                        - CCC
+                    enum:
+                        - BTOB
+                        - CADF
+                        - CAFX
+                        - CCC
+                    description: Indicates the settlement method that will be used.
+                    example: CCC
+                delayedSettlement:
+                    type: boolean
+                    examples:
+                        - false
+                    description: If true, the settlement of the deliverable will be delayed.
+                    example: false
+            description: OptionDeliverable represents a deliverable tied to an option contract.
+        GetOptionContractRequest:
+            type: object
+            properties:
+                symbolOrId:
+                    type: string
+                    examples:
+                        - AAPL250620C00100000
+                    description: The symbol or contract ID (required).
+                    example: AAPL250620C00100000
+            required:
+                - symbolOrId
+            description: GetOptionContractRequest is the request to get a specific option contract.
         GetClockRequest:
             type: object
             description: GetClockRequest is the request to get the market clock.
@@ -3411,12 +4923,9 @@ components:
             type: object
             description: ListWatchlistsRequest is the request to list watchlists.
         ListWatchlistsResponse:
-            type: object
-            properties:
-                watchlists:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Watchlist'
+            type: array
+            items:
+                $ref: '#/components/schemas/Watchlist'
             description: ListWatchlistsResponse is the response containing a list of watchlists.
         Watchlist:
             type: object
@@ -3425,12 +4934,14 @@ components:
                     type: string
                     examples:
                         - fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
+                    format: uuid
                     description: Watchlist ID (UUID).
                     example: fb306e55-16d3-4f7c-9b2b-dcefc74e31a1
                 accountId:
                     type: string
                     examples:
                         - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
                     description: Account ID (UUID).
                     example: 904837e3-3b76-47ec-b432-046db621571b
                 name:
@@ -3600,3 +5111,379 @@ components:
                     description: Whether the removal was successful.
                     example: true
             description: RemoveWatchlistAssetResponse is the response after removing an asset.
+        GetWatchlistByNameRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                    examples:
+                        - My Tech Stocks
+                    description: The watchlist name (required).
+                    example: My Tech Stocks
+            required:
+                - name
+            description: GetWatchlistByNameRequest is the request to get a watchlist by name.
+        UpdateWatchlistByNameRequest:
+            type: object
+            properties:
+                currentName:
+                    type: string
+                    examples:
+                        - My Tech Stocks
+                    description: The current watchlist name (bound from path variable).
+                    example: My Tech Stocks
+                name:
+                    type: string
+                    examples:
+                        - Updated Tech Stocks
+                    maxLength: 64
+                    description: New watchlist name.
+                    example: Updated Tech Stocks
+                symbols:
+                    type: array
+                    items:
+                        type: string
+                        examples:
+                            - AAPL
+                            - GOOGL
+                            - MSFT
+                        description: New symbols (replaces existing symbols).
+                        example: AAPL
+            required:
+                - currentName
+            description: UpdateWatchlistByNameRequest is the request to update a watchlist by name.
+        DeleteWatchlistByNameRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                    examples:
+                        - My Tech Stocks
+                    description: The watchlist name (required).
+                    example: My Tech Stocks
+            required:
+                - name
+            description: DeleteWatchlistByNameRequest is the request to delete a watchlist by name.
+        AddWatchlistAssetByNameRequest:
+            type: object
+            properties:
+                watchlistName:
+                    type: string
+                    examples:
+                        - My Tech Stocks
+                    description: The watchlist name (bound from path variable).
+                    example: My Tech Stocks
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    maxLength: 12
+                    minLength: 1
+                    description: Symbol to add.
+                    example: AAPL
+            required:
+                - watchlistName
+                - symbol
+            description: AddWatchlistAssetByNameRequest is the request to add an asset to a watchlist by name.
+        ListCryptoWalletsRequest:
+            type: object
+            properties:
+                asset:
+                    type: string
+                    examples:
+                        - ETH
+                    description: Filter by asset symbol.
+                    example: ETH
+                network:
+                    type: string
+                    examples:
+                        - ethereum
+                    description: Optional network identifier (ethereum, solana).
+                    example: ethereum
+            description: ListCryptoWalletsRequest is the request to list crypto funding wallets.
+        ListCryptoWalletsResponse:
+            type: array
+            items:
+                $ref: '#/components/schemas/CryptoWallet'
+            description: ListCryptoWalletsResponse is the response containing crypto wallets.
+        CryptoWallet:
+            type: object
+            properties:
+                chain:
+                    type: string
+                    examples:
+                        - ethereum
+                    description: The blockchain network (e.g., ethereum, solana).
+                    example: ethereum
+                address:
+                    type: string
+                    examples:
+                        - 0x1234567890abcdef1234567890abcdef12345678
+                    description: The wallet address.
+                    example: 0x1234567890abcdef1234567890abcdef12345678
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Timestamp (RFC3339) of wallet creation.
+                    example: 2024-01-15T10:30:00Z
+            description: CryptoWallet represents a crypto funding wallet.
+        ListCryptoTransfersRequest:
+            type: object
+            description: ListCryptoTransfersRequest is the request to list crypto funding transfers.
+        ListCryptoTransfersResponse:
+            type: array
+            items:
+                $ref: '#/components/schemas/CryptoTransfer'
+            description: ListCryptoTransfersResponse is the response containing crypto transfers.
+        CryptoTransfer:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+                    description: The crypto transfer ID.
+                    example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+                txHash:
+                    type: string
+                    examples:
+                        - 0xabc123...
+                    description: On-chain transaction hash.
+                    example: 0xabc123...
+                direction:
+                    type: string
+                    examples:
+                        - INCOMING
+                    enum:
+                        - INCOMING
+                        - OUTGOING
+                    description: Transfer direction (INCOMING or OUTGOING).
+                    example: INCOMING
+                status:
+                    type: string
+                    examples:
+                        - COMPLETE
+                    enum:
+                        - PROCESSING
+                        - FAILED
+                        - COMPLETE
+                    description: Transfer status (PROCESSING, FAILED, COMPLETE).
+                    example: COMPLETE
+                amount:
+                    type: string
+                    examples:
+                        - 0.5
+                    description: Amount of transfer denominated in the underlying crypto asset.
+                    example: 0.5
+                usdValue:
+                    type: string
+                    examples:
+                        - 25000.00
+                    description: Equivalent USD value at time of transfer.
+                    example: 25000.00
+                networkFee:
+                    type: string
+                    examples:
+                        - 0.001
+                    description: Network fee for the transfer.
+                    example: 0.001
+                fees:
+                    type: string
+                    examples:
+                        - 0.00
+                    description: Additional fees.
+                    example: 0.00
+                chain:
+                    type: string
+                    examples:
+                        - ethereum
+                    description: Underlying network for given transfer.
+                    example: ethereum
+                asset:
+                    type: string
+                    examples:
+                        - BTC
+                    description: Symbol of crypto asset for given transfer.
+                    example: BTC
+                fromAddress:
+                    type: string
+                    examples:
+                        - 0x1234...
+                    description: Originating address of the transfer.
+                    example: 0x1234...
+                toAddress:
+                    type: string
+                    examples:
+                        - 0x5678...
+                    description: Destination address of the transfer.
+                    example: 0x5678...
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Timestamp when transfer was created.
+                    example: 2024-01-15T10:30:00Z
+            description: CryptoTransfer represents a crypto funding transfer.
+        GetCryptoTransferRequest:
+            type: object
+            properties:
+                transferId:
+                    type: string
+                    examples:
+                        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+                    description: The transfer ID (required).
+                    example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+            required:
+                - transferId
+            description: GetCryptoTransferRequest is the request to get a specific crypto transfer.
+        CreateCryptoTransferRequest:
+            type: object
+            properties:
+                amount:
+                    type: string
+                    examples:
+                        - 0.5
+                    description: Amount to transfer.
+                    example: 0.5
+                asset:
+                    type: string
+                    examples:
+                        - ETH
+                    description: The crypto asset symbol.
+                    example: ETH
+                address:
+                    type: string
+                    examples:
+                        - 0x1234567890abcdef1234567890abcdef12345678
+                    description: The destination address.
+                    example: 0x1234567890abcdef1234567890abcdef12345678
+                network:
+                    type: string
+                    examples:
+                        - ethereum
+                    description: The blockchain network.
+                    example: ethereum
+            required:
+                - amount
+                - asset
+                - address
+            description: CreateCryptoTransferRequest is the request to create a crypto transfer.
+        GetCryptoTransferEstimateRequest:
+            type: object
+            properties:
+                asset:
+                    type: string
+                    examples:
+                        - ETH
+                    description: The crypto asset symbol.
+                    example: ETH
+                fromAddress:
+                    type: string
+                    examples:
+                        - 0x1234567890abcdef1234567890abcdef12345678
+                    description: The originating address of the proposed transaction.
+                    example: 0x1234567890abcdef1234567890abcdef12345678
+                toAddress:
+                    type: string
+                    examples:
+                        - 0x1234567890abcdef1234567890abcdef12345678
+                    description: The destination address of the proposed transaction.
+                    example: 0x1234567890abcdef1234567890abcdef12345678
+                amount:
+                    type: string
+                    examples:
+                        - 0.5
+                    description: The amount of the proposed transaction.
+                    example: 0.5
+            description: GetCryptoTransferEstimateRequest is the request to get a crypto transfer estimate.
+        CryptoTransferEstimate:
+            type: object
+            properties:
+                fee:
+                    type: string
+                    examples:
+                        - 0.001
+                    description: Estimated fee for the transfer.
+                    example: 0.001
+            description: CryptoTransferEstimate represents an estimate for a crypto transfer.
+        ListWhitelistedAddressesRequest:
+            type: object
+            description: ListWhitelistedAddressesRequest is the request to list whitelisted addresses.
+        ListWhitelistedAddressesResponse:
+            type: array
+            items:
+                $ref: '#/components/schemas/WhitelistedAddress'
+            description: ListWhitelistedAddressesResponse is the response containing whitelisted addresses.
+        WhitelistedAddress:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+                    description: The whitelisted address ID.
+                    example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+                chain:
+                    type: string
+                    examples:
+                        - ethereum
+                    description: The blockchain network.
+                    example: ethereum
+                asset:
+                    type: string
+                    examples:
+                        - ETH
+                    description: The crypto asset symbol.
+                    example: ETH
+                address:
+                    type: string
+                    examples:
+                        - 0x1234567890abcdef1234567890abcdef12345678
+                    description: The whitelisted address.
+                    example: 0x1234567890abcdef1234567890abcdef12345678
+                status:
+                    type: string
+                    examples:
+                        - APPROVED
+                        - PENDING
+                    description: Status of the whitelisted address (APPROVED or PENDING).
+                    example: APPROVED
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Timestamp when the address was created.
+                    example: 2024-01-15T10:30:00Z
+            description: WhitelistedAddress represents a whitelisted crypto address.
+        CreateWhitelistedAddressRequest:
+            type: object
+            properties:
+                address:
+                    type: string
+                    examples:
+                        - 0x1234567890abcdef1234567890abcdef12345678
+                    description: The address to whitelist.
+                    example: 0x1234567890abcdef1234567890abcdef12345678
+                asset:
+                    type: string
+                    examples:
+                        - ETH
+                    description: The crypto asset symbol.
+                    example: ETH
+            description: CreateWhitelistedAddressRequest is the request to create a whitelisted address.
+        DeleteWhitelistedAddressRequest:
+            type: object
+            properties:
+                whitelistedAddressId:
+                    type: string
+                    examples:
+                        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+                    description: The whitelisted address ID (required).
+                    example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+            required:
+                - whitelistedAddressId
+            description: DeleteWhitelistedAddressRequest is the request to delete a whitelisted address.
+        DeleteWhitelistedAddressResponse:
+            type: object
+            description: DeleteWhitelistedAddressResponse is the response for deleting a whitelisted address.

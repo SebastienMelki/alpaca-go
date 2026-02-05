@@ -7,13 +7,14 @@
 package marketdatav2
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -212,9 +213,9 @@ const file_alpaca_marketdata_v2_stock_snapshots_proto_rawDesc = "" +
 	"\bcurrency\x18\x03 \x01(\tB\x17\xba\xb5\x18\x05\n" +
 	"\x03USDµ\x18\n" +
 	"\n" +
-	"\bcurrencyR\bcurrency\"\xd7\x01\n" +
-	"\x19GetStockSnapshotsResponse\x12\\\n" +
-	"\tsnapshots\x18\x01 \x03(\v2>.alpaca.marketdata.v2.GetStockSnapshotsResponse.SnapshotsEntryR\tsnapshots\x1a\\\n" +
+	"\bcurrencyR\bcurrency\"\xdd\x01\n" +
+	"\x19GetStockSnapshotsResponse\x12b\n" +
+	"\tsnapshots\x18\x01 \x03(\v2>.alpaca.marketdata.v2.GetStockSnapshotsResponse.SnapshotsEntryB\x04ȵ\x18\x01R\tsnapshots\x1a\\\n" +
 	"\x0eSnapshotsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x124\n" +
 	"\x05value\x18\x02 \x01(\v2\x1e.alpaca.marketdata.v2.SnapshotR\x05value:\x028\x01\"\xa1\x01\n" +

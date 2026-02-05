@@ -7,12 +7,14 @@
 package tradingv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -22,127 +24,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AccountStatus represents the status of an account.
-type AccountStatus int32
-
-const (
-	AccountStatus_ACCOUNT_STATUS_UNSPECIFIED       AccountStatus = 0
-	AccountStatus_ACCOUNT_STATUS_ONBOARDING        AccountStatus = 1
-	AccountStatus_ACCOUNT_STATUS_SUBMISSION_FAILED AccountStatus = 2
-	AccountStatus_ACCOUNT_STATUS_SUBMITTED         AccountStatus = 3
-	AccountStatus_ACCOUNT_STATUS_ACCOUNT_UPDATED   AccountStatus = 4
-	AccountStatus_ACCOUNT_STATUS_APPROVAL_PENDING  AccountStatus = 5
-	AccountStatus_ACCOUNT_STATUS_ACTIVE            AccountStatus = 6
-	AccountStatus_ACCOUNT_STATUS_REJECTED          AccountStatus = 7
-	AccountStatus_ACCOUNT_STATUS_DISABLED          AccountStatus = 8
-	AccountStatus_ACCOUNT_STATUS_ACCOUNT_CLOSED    AccountStatus = 9
-)
-
-// Enum value maps for AccountStatus.
-var (
-	AccountStatus_name = map[int32]string{
-		0: "ACCOUNT_STATUS_UNSPECIFIED",
-		1: "ACCOUNT_STATUS_ONBOARDING",
-		2: "ACCOUNT_STATUS_SUBMISSION_FAILED",
-		3: "ACCOUNT_STATUS_SUBMITTED",
-		4: "ACCOUNT_STATUS_ACCOUNT_UPDATED",
-		5: "ACCOUNT_STATUS_APPROVAL_PENDING",
-		6: "ACCOUNT_STATUS_ACTIVE",
-		7: "ACCOUNT_STATUS_REJECTED",
-		8: "ACCOUNT_STATUS_DISABLED",
-		9: "ACCOUNT_STATUS_ACCOUNT_CLOSED",
-	}
-	AccountStatus_value = map[string]int32{
-		"ACCOUNT_STATUS_UNSPECIFIED":       0,
-		"ACCOUNT_STATUS_ONBOARDING":        1,
-		"ACCOUNT_STATUS_SUBMISSION_FAILED": 2,
-		"ACCOUNT_STATUS_SUBMITTED":         3,
-		"ACCOUNT_STATUS_ACCOUNT_UPDATED":   4,
-		"ACCOUNT_STATUS_APPROVAL_PENDING":  5,
-		"ACCOUNT_STATUS_ACTIVE":            6,
-		"ACCOUNT_STATUS_REJECTED":          7,
-		"ACCOUNT_STATUS_DISABLED":          8,
-		"ACCOUNT_STATUS_ACCOUNT_CLOSED":    9,
-	}
-)
-
-func (x AccountStatus) Enum() *AccountStatus {
-	p := new(AccountStatus)
-	*p = x
-	return p
-}
-
-func (x AccountStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (AccountStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_account_proto_enumTypes[0].Descriptor()
-}
-
-func (AccountStatus) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_account_proto_enumTypes[0]
-}
-
-func (x AccountStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use AccountStatus.Descriptor instead.
-func (AccountStatus) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_account_proto_rawDescGZIP(), []int{0}
-}
-
-// CryptoStatus represents the crypto trading status of an account.
-type CryptoStatus int32
-
-const (
-	CryptoStatus_CRYPTO_STATUS_UNSPECIFIED CryptoStatus = 0
-	CryptoStatus_CRYPTO_STATUS_INACTIVE    CryptoStatus = 1
-	CryptoStatus_CRYPTO_STATUS_ACTIVE      CryptoStatus = 2
-)
-
-// Enum value maps for CryptoStatus.
-var (
-	CryptoStatus_name = map[int32]string{
-		0: "CRYPTO_STATUS_UNSPECIFIED",
-		1: "CRYPTO_STATUS_INACTIVE",
-		2: "CRYPTO_STATUS_ACTIVE",
-	}
-	CryptoStatus_value = map[string]int32{
-		"CRYPTO_STATUS_UNSPECIFIED": 0,
-		"CRYPTO_STATUS_INACTIVE":    1,
-		"CRYPTO_STATUS_ACTIVE":      2,
-	}
-)
-
-func (x CryptoStatus) Enum() *CryptoStatus {
-	p := new(CryptoStatus)
-	*p = x
-	return p
-}
-
-func (x CryptoStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (CryptoStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_account_proto_enumTypes[1].Descriptor()
-}
-
-func (CryptoStatus) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_account_proto_enumTypes[1]
-}
-
-func (x CryptoStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use CryptoStatus.Descriptor instead.
-func (CryptoStatus) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_account_proto_rawDescGZIP(), []int{1}
-}
-
 // Account represents an Alpaca trading account.
 type Account struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -151,9 +32,9 @@ type Account struct {
 	// Account number.
 	AccountNumber string `protobuf:"bytes,2,opt,name=account_number,json=accountNumber,proto3" json:"account_number,omitempty"`
 	// Account status.
-	Status AccountStatus `protobuf:"varint,3,opt,name=status,proto3,enum=alpaca.trading.v1.AccountStatus" json:"status,omitempty"`
+	Status string `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	// Crypto trading status.
-	CryptoStatus CryptoStatus `protobuf:"varint,4,opt,name=crypto_status,json=cryptoStatus,proto3,enum=alpaca.trading.v1.CryptoStatus" json:"crypto_status,omitempty"`
+	CryptoStatus string `protobuf:"bytes,4,opt,name=crypto_status,json=cryptoStatus,proto3" json:"crypto_status,omitempty"`
 	// Currency (USD).
 	Currency string `protobuf:"bytes,5,opt,name=currency,proto3" json:"currency,omitempty"`
 	// Current available buying power (cash + margin).
@@ -266,18 +147,18 @@ func (x *Account) GetAccountNumber() string {
 	return ""
 }
 
-func (x *Account) GetStatus() AccountStatus {
+func (x *Account) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
-	return AccountStatus_ACCOUNT_STATUS_UNSPECIFIED
+	return ""
 }
 
-func (x *Account) GetCryptoStatus() CryptoStatus {
+func (x *Account) GetCryptoStatus() string {
 	if x != nil {
 		return x.CryptoStatus
 	}
-	return CryptoStatus_CRYPTO_STATUS_UNSPECIFIED
+	return ""
 }
 
 func (x *Account) GetCurrency() string {
@@ -508,17 +389,18 @@ var File_alpaca_trading_v1_account_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_account_proto_rawDesc = "" +
 	"\n" +
-	"\x1falpaca/trading/v1/account.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\"\x81\x10\n" +
-	"\aAccount\x12:\n" +
-	"\x02id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
+	"\x1falpaca/trading/v1/account.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xeb\x10\n" +
+	"\aAccount\x12B\n" +
+	"\x02id\x18\x01 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$904837e3-3b76-47ec-b432-046db621571bR\x02id\x127\n" +
 	"\x0eaccount_number\x18\x02 \x01(\tB\x10\xba\xb5\x18\f\n" +
 	"\n" +
-	"010203ABCDR\raccountNumber\x12A\n" +
-	"\x06status\x18\x03 \x01(\x0e2 .alpaca.trading.v1.AccountStatusB\a\xba\xb5\x18\x03\n" +
-	"\x016R\x06status\x12M\n" +
-	"\rcrypto_status\x18\x04 \x01(\x0e2\x1f.alpaca.trading.v1.CryptoStatusB\a\xba\xb5\x18\x03\n" +
-	"\x012R\fcryptoStatus\x12%\n" +
+	"010203ABCDR\raccountNumber\x12\xa5\x01\n" +
+	"\x06status\x18\x03 \x01(\tB\x8c\x01\xbaH}r{R\x00R\n" +
+	"ONBOARDINGR\x11SUBMISSION_FAILEDR\tSUBMITTEDR\x0fACCOUNT_UPDATEDR\x10APPROVAL_PENDINGR\x06ACTIVER\bREJECTEDR\bDISABLEDR\x0eACCOUNT_CLOSED\xba\xb5\x18\b\n" +
+	"\x06ACTIVER\x06status\x12J\n" +
+	"\rcrypto_status\x18\x04 \x01(\tB%\xbaH\x16r\x14R\x00R\bINACTIVER\x06ACTIVE\xba\xb5\x18\b\n" +
+	"\x06ACTIVER\fcryptoStatus\x12%\n" +
 	"\bcurrency\x18\x05 \x01(\tB\t\xba\xb5\x18\x05\n" +
 	"\x03USDR\bcurrency\x121\n" +
 	"\fbuying_power\x18\x06 \x01(\tB\x0e\xba\xb5\x18\n" +
@@ -606,22 +488,7 @@ const file_alpaca_trading_v1_account_proto_rawDesc = "" +
 	"\x012R\x14optionsApprovedLevel\x12@\n" +
 	"\x14options_buying_power\x18$ \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\b25000.00R\x12optionsBuyingPower*\xd3\x02\n" +
-	"\rAccountStatus\x12\x1e\n" +
-	"\x1aACCOUNT_STATUS_UNSPECIFIED\x10\x00\x12\x1d\n" +
-	"\x19ACCOUNT_STATUS_ONBOARDING\x10\x01\x12$\n" +
-	" ACCOUNT_STATUS_SUBMISSION_FAILED\x10\x02\x12\x1c\n" +
-	"\x18ACCOUNT_STATUS_SUBMITTED\x10\x03\x12\"\n" +
-	"\x1eACCOUNT_STATUS_ACCOUNT_UPDATED\x10\x04\x12#\n" +
-	"\x1fACCOUNT_STATUS_APPROVAL_PENDING\x10\x05\x12\x19\n" +
-	"\x15ACCOUNT_STATUS_ACTIVE\x10\x06\x12\x1b\n" +
-	"\x17ACCOUNT_STATUS_REJECTED\x10\a\x12\x1b\n" +
-	"\x17ACCOUNT_STATUS_DISABLED\x10\b\x12!\n" +
-	"\x1dACCOUNT_STATUS_ACCOUNT_CLOSED\x10\t*c\n" +
-	"\fCryptoStatus\x12\x1d\n" +
-	"\x19CRYPTO_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
-	"\x16CRYPTO_STATUS_INACTIVE\x10\x01\x12\x18\n" +
-	"\x14CRYPTO_STATUS_ACTIVE\x10\x02B\xd9\x01\n" +
+	"\b25000.00R\x12optionsBuyingPowerB\xd9\x01\n" +
 	"\x15com.alpaca.trading.v1B\fAccountProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (
@@ -636,21 +503,16 @@ func file_alpaca_trading_v1_account_proto_rawDescGZIP() []byte {
 	return file_alpaca_trading_v1_account_proto_rawDescData
 }
 
-var file_alpaca_trading_v1_account_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_alpaca_trading_v1_account_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_alpaca_trading_v1_account_proto_goTypes = []any{
-	(AccountStatus)(0), // 0: alpaca.trading.v1.AccountStatus
-	(CryptoStatus)(0),  // 1: alpaca.trading.v1.CryptoStatus
-	(*Account)(nil),    // 2: alpaca.trading.v1.Account
+	(*Account)(nil), // 0: alpaca.trading.v1.Account
 }
 var file_alpaca_trading_v1_account_proto_depIdxs = []int32{
-	0, // 0: alpaca.trading.v1.Account.status:type_name -> alpaca.trading.v1.AccountStatus
-	1, // 1: alpaca.trading.v1.Account.crypto_status:type_name -> alpaca.trading.v1.CryptoStatus
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_trading_v1_account_proto_init() }
@@ -663,14 +525,13 @@ func file_alpaca_trading_v1_account_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_trading_v1_account_proto_rawDesc), len(file_alpaca_trading_v1_account_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_alpaca_trading_v1_account_proto_goTypes,
 		DependencyIndexes: file_alpaca_trading_v1_account_proto_depIdxs,
-		EnumInfos:         file_alpaca_trading_v1_account_proto_enumTypes,
 		MessageInfos:      file_alpaca_trading_v1_account_proto_msgTypes,
 	}.Build()
 	File_alpaca_trading_v1_account_proto = out.File

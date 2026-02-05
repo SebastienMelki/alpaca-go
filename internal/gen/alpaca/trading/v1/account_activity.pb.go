@@ -7,12 +7,13 @@
 package tradingv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -21,154 +22,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-// ActivityType represents types of account activities.
-type ActivityType int32
-
-const (
-	ActivityType_ACTIVITY_TYPE_UNSPECIFIED ActivityType = 0
-	// Order fills (full or partial).
-	ActivityType_ACTIVITY_TYPE_FILL ActivityType = 1
-	// Cash transactions (ACATC, ACATS, CSD, CSR, DIV, etc.).
-	ActivityType_ACTIVITY_TYPE_TRANS ActivityType = 2
-	// Miscellaneous or corrections.
-	ActivityType_ACTIVITY_TYPE_MISC ActivityType = 3
-	// ACATS IN (from other broker).
-	ActivityType_ACTIVITY_TYPE_ACATC ActivityType = 4
-	// ACATS OUT (to other broker).
-	ActivityType_ACTIVITY_TYPE_ACATS ActivityType = 5
-	// Cash deposit.
-	ActivityType_ACTIVITY_TYPE_CSD ActivityType = 6
-	// Cash withdrawal.
-	ActivityType_ACTIVITY_TYPE_CSW ActivityType = 7
-	// Dividend.
-	ActivityType_ACTIVITY_TYPE_DIV ActivityType = 8
-	// Dividend (qualified).
-	ActivityType_ACTIVITY_TYPE_DIVCGL ActivityType = 9
-	// Dividend (non-qualified).
-	ActivityType_ACTIVITY_TYPE_DIVCGS ActivityType = 10
-	// Dividend (return of capital).
-	ActivityType_ACTIVITY_TYPE_DIVNRA ActivityType = 11
-	// Dividend tax withholding.
-	ActivityType_ACTIVITY_TYPE_DIVTXEX ActivityType = 12
-	// Interest.
-	ActivityType_ACTIVITY_TYPE_INT ActivityType = 13
-	// Merger/acquisition.
-	ActivityType_ACTIVITY_TYPE_MA ActivityType = 14
-	// Name change.
-	ActivityType_ACTIVITY_TYPE_NC ActivityType = 15
-	// Options assignment.
-	ActivityType_ACTIVITY_TYPE_OPASN ActivityType = 16
-	// Options expiration.
-	ActivityType_ACTIVITY_TYPE_OPEXP ActivityType = 17
-	// Options exercise.
-	ActivityType_ACTIVITY_TYPE_OPXRC ActivityType = 18
-	// Pass-through charge.
-	ActivityType_ACTIVITY_TYPE_PTC ActivityType = 19
-	// Reorg.
-	ActivityType_ACTIVITY_TYPE_REORG ActivityType = 20
-	// Symbol change.
-	ActivityType_ACTIVITY_TYPE_SC ActivityType = 21
-	// Stock split.
-	ActivityType_ACTIVITY_TYPE_SSO ActivityType = 22
-	// Stock split reverse.
-	ActivityType_ACTIVITY_TYPE_SSP ActivityType = 23
-	// Journal entry.
-	ActivityType_ACTIVITY_TYPE_JNLC ActivityType = 24
-	// Journal entry (securities).
-	ActivityType_ACTIVITY_TYPE_JNLS ActivityType = 25
-	// Fee.
-	ActivityType_ACTIVITY_TYPE_FEE ActivityType = 26
-)
-
-// Enum value maps for ActivityType.
-var (
-	ActivityType_name = map[int32]string{
-		0:  "ACTIVITY_TYPE_UNSPECIFIED",
-		1:  "ACTIVITY_TYPE_FILL",
-		2:  "ACTIVITY_TYPE_TRANS",
-		3:  "ACTIVITY_TYPE_MISC",
-		4:  "ACTIVITY_TYPE_ACATC",
-		5:  "ACTIVITY_TYPE_ACATS",
-		6:  "ACTIVITY_TYPE_CSD",
-		7:  "ACTIVITY_TYPE_CSW",
-		8:  "ACTIVITY_TYPE_DIV",
-		9:  "ACTIVITY_TYPE_DIVCGL",
-		10: "ACTIVITY_TYPE_DIVCGS",
-		11: "ACTIVITY_TYPE_DIVNRA",
-		12: "ACTIVITY_TYPE_DIVTXEX",
-		13: "ACTIVITY_TYPE_INT",
-		14: "ACTIVITY_TYPE_MA",
-		15: "ACTIVITY_TYPE_NC",
-		16: "ACTIVITY_TYPE_OPASN",
-		17: "ACTIVITY_TYPE_OPEXP",
-		18: "ACTIVITY_TYPE_OPXRC",
-		19: "ACTIVITY_TYPE_PTC",
-		20: "ACTIVITY_TYPE_REORG",
-		21: "ACTIVITY_TYPE_SC",
-		22: "ACTIVITY_TYPE_SSO",
-		23: "ACTIVITY_TYPE_SSP",
-		24: "ACTIVITY_TYPE_JNLC",
-		25: "ACTIVITY_TYPE_JNLS",
-		26: "ACTIVITY_TYPE_FEE",
-	}
-	ActivityType_value = map[string]int32{
-		"ACTIVITY_TYPE_UNSPECIFIED": 0,
-		"ACTIVITY_TYPE_FILL":        1,
-		"ACTIVITY_TYPE_TRANS":       2,
-		"ACTIVITY_TYPE_MISC":        3,
-		"ACTIVITY_TYPE_ACATC":       4,
-		"ACTIVITY_TYPE_ACATS":       5,
-		"ACTIVITY_TYPE_CSD":         6,
-		"ACTIVITY_TYPE_CSW":         7,
-		"ACTIVITY_TYPE_DIV":         8,
-		"ACTIVITY_TYPE_DIVCGL":      9,
-		"ACTIVITY_TYPE_DIVCGS":      10,
-		"ACTIVITY_TYPE_DIVNRA":      11,
-		"ACTIVITY_TYPE_DIVTXEX":     12,
-		"ACTIVITY_TYPE_INT":         13,
-		"ACTIVITY_TYPE_MA":          14,
-		"ACTIVITY_TYPE_NC":          15,
-		"ACTIVITY_TYPE_OPASN":       16,
-		"ACTIVITY_TYPE_OPEXP":       17,
-		"ACTIVITY_TYPE_OPXRC":       18,
-		"ACTIVITY_TYPE_PTC":         19,
-		"ACTIVITY_TYPE_REORG":       20,
-		"ACTIVITY_TYPE_SC":          21,
-		"ACTIVITY_TYPE_SSO":         22,
-		"ACTIVITY_TYPE_SSP":         23,
-		"ACTIVITY_TYPE_JNLC":        24,
-		"ACTIVITY_TYPE_JNLS":        25,
-		"ACTIVITY_TYPE_FEE":         26,
-	}
-)
-
-func (x ActivityType) Enum() *ActivityType {
-	p := new(ActivityType)
-	*p = x
-	return p
-}
-
-func (x ActivityType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (ActivityType) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_account_activity_proto_enumTypes[0].Descriptor()
-}
-
-func (ActivityType) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_account_activity_proto_enumTypes[0]
-}
-
-func (x ActivityType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use ActivityType.Descriptor instead.
-func (ActivityType) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_account_activity_proto_rawDescGZIP(), []int{0}
-}
 
 // AccountActivity represents an account activity event.
 type AccountActivity struct {
@@ -354,20 +207,23 @@ func (x *AccountActivity) GetDate() string {
 // GetAccountActivitiesRequest is the request to get account activities.
 type GetAccountActivitiesRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Filter by activity type.
-	ActivityType string `protobuf:"bytes,1,opt,name=activity_type,json=activityType,proto3" json:"activity_type,omitempty"`
-	// Filter by activities after this timestamp (RFC 3339).
-	After string `protobuf:"bytes,2,opt,name=after,proto3" json:"after,omitempty"`
+	// Filter by activity types (comma-separated list).
+	ActivityTypes string `protobuf:"bytes,1,opt,name=activity_types,json=activityTypes,proto3" json:"activity_types,omitempty"`
+	// Filter by category (trade_activity or non_trade_activity).
+	// Cannot be used with activity_types parameter.
+	Category string `protobuf:"bytes,2,opt,name=category,proto3" json:"category,omitempty"`
+	// Filter by date (YYYY-MM-DD or RFC 3339).
+	Date string `protobuf:"bytes,3,opt,name=date,proto3" json:"date,omitempty"`
 	// Filter by activities until this timestamp (RFC 3339).
-	Until string `protobuf:"bytes,3,opt,name=until,proto3" json:"until,omitempty"`
+	Until string `protobuf:"bytes,4,opt,name=until,proto3" json:"until,omitempty"`
+	// Filter by activities after this timestamp (RFC 3339).
+	After string `protobuf:"bytes,5,opt,name=after,proto3" json:"after,omitempty"`
 	// Sort direction (asc or desc).
-	Direction string `protobuf:"bytes,4,opt,name=direction,proto3" json:"direction,omitempty"`
+	Direction string `protobuf:"bytes,6,opt,name=direction,proto3" json:"direction,omitempty"`
 	// Maximum number of activities to return.
-	PageSize int32 `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,7,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Page token for pagination.
-	PageToken string `protobuf:"bytes,6,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	// Filter by date (YYYY-MM-DD).
-	Date          string `protobuf:"bytes,7,opt,name=date,proto3" json:"date,omitempty"`
+	PageToken     string `protobuf:"bytes,8,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -402,16 +258,23 @@ func (*GetAccountActivitiesRequest) Descriptor() ([]byte, []int) {
 	return file_alpaca_trading_v1_account_activity_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GetAccountActivitiesRequest) GetActivityType() string {
+func (x *GetAccountActivitiesRequest) GetActivityTypes() string {
 	if x != nil {
-		return x.ActivityType
+		return x.ActivityTypes
 	}
 	return ""
 }
 
-func (x *GetAccountActivitiesRequest) GetAfter() string {
+func (x *GetAccountActivitiesRequest) GetCategory() string {
 	if x != nil {
-		return x.After
+		return x.Category
+	}
+	return ""
+}
+
+func (x *GetAccountActivitiesRequest) GetDate() string {
+	if x != nil {
+		return x.Date
 	}
 	return ""
 }
@@ -419,6 +282,13 @@ func (x *GetAccountActivitiesRequest) GetAfter() string {
 func (x *GetAccountActivitiesRequest) GetUntil() string {
 	if x != nil {
 		return x.Until
+	}
+	return ""
+}
+
+func (x *GetAccountActivitiesRequest) GetAfter() string {
+	if x != nil {
+		return x.After
 	}
 	return ""
 }
@@ -440,13 +310,6 @@ func (x *GetAccountActivitiesRequest) GetPageSize() int32 {
 func (x *GetAccountActivitiesRequest) GetPageToken() string {
 	if x != nil {
 		return x.PageToken
-	}
-	return ""
-}
-
-func (x *GetAccountActivitiesRequest) GetDate() string {
-	if x != nil {
-		return x.Date
 	}
 	return ""
 }
@@ -642,33 +505,39 @@ const file_alpaca_trading_v1_account_activity_proto_rawDesc = "" +
 	"\x040.22R\x0eperShareAmount\x12$\n" +
 	"\x04date\x18\x10 \x01(\tB\x10\xba\xb5\x18\f\n" +
 	"\n" +
-	"2024-01-15R\x04date\"\xba\x03\n" +
-	"\x1bGetAccountActivitiesRequest\x12B\n" +
-	"\ractivity_type\x18\x01 \x01(\tB\x1d\xba\xb5\x18\x06\n" +
-	"\x04FILLµ\x18\x0f\n" +
-	"\ractivity_typeR\factivityType\x12;\n" +
-	"\x05after\x18\x02 \x01(\tB%\xba\xb5\x18\x16\n" +
-	"\x142024-01-01T00:00:00Zµ\x18\a\n" +
-	"\x05afterR\x05after\x12;\n" +
-	"\x05until\x18\x03 \x01(\tB%\xba\xb5\x18\x16\n" +
+	"2024-01-15R\x04date\"\x9f\x04\n" +
+	"\x1bGetAccountActivitiesRequest\x12S\n" +
+	"\x0eactivity_types\x18\x01 \x01(\tB,\xba\xb5\x18\x14\n" +
+	"\x04FILL\n" +
+	"\fFILL,DIV,INTµ\x18\x10\n" +
+	"\x0eactivity_typesR\ractivityTypes\x12R\n" +
+	"\bcategory\x18\x02 \x01(\tB6\xba\xb5\x18$\n" +
+	"\x0etrade_activity\n" +
+	"\x12non_trade_activityµ\x18\n" +
+	"\n" +
+	"\bcategoryR\bcategory\x12.\n" +
+	"\x04date\x18\x03 \x01(\tB\x1a\xba\xb5\x18\f\n" +
+	"\n" +
+	"2024-01-15µ\x18\x06\n" +
+	"\x04dateR\x04date\x12;\n" +
+	"\x05until\x18\x04 \x01(\tB%\xba\xb5\x18\x16\n" +
 	"\x142024-01-31T23:59:59Zµ\x18\a\n" +
-	"\x05untilR\x05until\x127\n" +
-	"\tdirection\x18\x04 \x01(\tB\x19\xba\xb5\x18\x06\n" +
+	"\x05untilR\x05until\x12;\n" +
+	"\x05after\x18\x05 \x01(\tB%\xba\xb5\x18\x16\n" +
+	"\x142024-01-01T00:00:00Zµ\x18\a\n" +
+	"\x05afterR\x05after\x127\n" +
+	"\tdirection\x18\x06 \x01(\tB\x19\xba\xb5\x18\x06\n" +
 	"\x04descµ\x18\v\n" +
 	"\tdirectionR\tdirection\x125\n" +
-	"\tpage_size\x18\x05 \x01(\x05B\x18\xba\xb5\x18\x05\n" +
+	"\tpage_size\x18\a \x01(\x05B\x18\xba\xb5\x18\x05\n" +
 	"\x03100µ\x18\v\n" +
 	"\tpage_sizeR\bpageSize\x12=\n" +
 	"\n" +
-	"page_token\x18\x06 \x01(\tB\x1e\xba\xb5\x18\n" +
+	"page_token\x18\b \x01(\tB\x1e\xba\xb5\x18\n" +
 	"\n" +
 	"\btoken123µ\x18\f\n" +
 	"\n" +
-	"page_tokenR\tpageToken\x12.\n" +
-	"\x04date\x18\a \x01(\tB\x1a\xba\xb5\x18\f\n" +
-	"\n" +
-	"2024-01-15µ\x18\x06\n" +
-	"\x04dateR\x04date\"b\n" +
+	"page_tokenR\tpageToken\"b\n" +
 	"\x1cGetAccountActivitiesResponse\x12B\n" +
 	"\n" +
 	"activities\x18\x01 \x03(\v2\".alpaca.trading.v1.AccountActivityR\n" +
@@ -698,36 +567,7 @@ const file_alpaca_trading_v1_account_activity_proto_rawDesc = "" +
 	"\x04date\x18\a \x01(\tB\x1a\xba\xb5\x18\f\n" +
 	"\n" +
 	"2024-01-15µ\x18\x06\n" +
-	"\x04dateR\x04date*\x9f\x05\n" +
-	"\fActivityType\x12\x1d\n" +
-	"\x19ACTIVITY_TYPE_UNSPECIFIED\x10\x00\x12\x16\n" +
-	"\x12ACTIVITY_TYPE_FILL\x10\x01\x12\x17\n" +
-	"\x13ACTIVITY_TYPE_TRANS\x10\x02\x12\x16\n" +
-	"\x12ACTIVITY_TYPE_MISC\x10\x03\x12\x17\n" +
-	"\x13ACTIVITY_TYPE_ACATC\x10\x04\x12\x17\n" +
-	"\x13ACTIVITY_TYPE_ACATS\x10\x05\x12\x15\n" +
-	"\x11ACTIVITY_TYPE_CSD\x10\x06\x12\x15\n" +
-	"\x11ACTIVITY_TYPE_CSW\x10\a\x12\x15\n" +
-	"\x11ACTIVITY_TYPE_DIV\x10\b\x12\x18\n" +
-	"\x14ACTIVITY_TYPE_DIVCGL\x10\t\x12\x18\n" +
-	"\x14ACTIVITY_TYPE_DIVCGS\x10\n" +
-	"\x12\x18\n" +
-	"\x14ACTIVITY_TYPE_DIVNRA\x10\v\x12\x19\n" +
-	"\x15ACTIVITY_TYPE_DIVTXEX\x10\f\x12\x15\n" +
-	"\x11ACTIVITY_TYPE_INT\x10\r\x12\x14\n" +
-	"\x10ACTIVITY_TYPE_MA\x10\x0e\x12\x14\n" +
-	"\x10ACTIVITY_TYPE_NC\x10\x0f\x12\x17\n" +
-	"\x13ACTIVITY_TYPE_OPASN\x10\x10\x12\x17\n" +
-	"\x13ACTIVITY_TYPE_OPEXP\x10\x11\x12\x17\n" +
-	"\x13ACTIVITY_TYPE_OPXRC\x10\x12\x12\x15\n" +
-	"\x11ACTIVITY_TYPE_PTC\x10\x13\x12\x17\n" +
-	"\x13ACTIVITY_TYPE_REORG\x10\x14\x12\x14\n" +
-	"\x10ACTIVITY_TYPE_SC\x10\x15\x12\x15\n" +
-	"\x11ACTIVITY_TYPE_SSO\x10\x16\x12\x15\n" +
-	"\x11ACTIVITY_TYPE_SSP\x10\x17\x12\x16\n" +
-	"\x12ACTIVITY_TYPE_JNLC\x10\x18\x12\x16\n" +
-	"\x12ACTIVITY_TYPE_JNLS\x10\x19\x12\x15\n" +
-	"\x11ACTIVITY_TYPE_FEE\x10\x1aB\xe1\x01\n" +
+	"\x04dateR\x04dateB\xe1\x01\n" +
 	"\x15com.alpaca.trading.v1B\x14AccountActivityProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (
@@ -742,17 +582,15 @@ func file_alpaca_trading_v1_account_activity_proto_rawDescGZIP() []byte {
 	return file_alpaca_trading_v1_account_activity_proto_rawDescData
 }
 
-var file_alpaca_trading_v1_account_activity_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_alpaca_trading_v1_account_activity_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_alpaca_trading_v1_account_activity_proto_goTypes = []any{
-	(ActivityType)(0),                         // 0: alpaca.trading.v1.ActivityType
-	(*AccountActivity)(nil),                   // 1: alpaca.trading.v1.AccountActivity
-	(*GetAccountActivitiesRequest)(nil),       // 2: alpaca.trading.v1.GetAccountActivitiesRequest
-	(*GetAccountActivitiesResponse)(nil),      // 3: alpaca.trading.v1.GetAccountActivitiesResponse
-	(*GetAccountActivitiesByTypeRequest)(nil), // 4: alpaca.trading.v1.GetAccountActivitiesByTypeRequest
+	(*AccountActivity)(nil),                   // 0: alpaca.trading.v1.AccountActivity
+	(*GetAccountActivitiesRequest)(nil),       // 1: alpaca.trading.v1.GetAccountActivitiesRequest
+	(*GetAccountActivitiesResponse)(nil),      // 2: alpaca.trading.v1.GetAccountActivitiesResponse
+	(*GetAccountActivitiesByTypeRequest)(nil), // 3: alpaca.trading.v1.GetAccountActivitiesByTypeRequest
 }
 var file_alpaca_trading_v1_account_activity_proto_depIdxs = []int32{
-	1, // 0: alpaca.trading.v1.GetAccountActivitiesResponse.activities:type_name -> alpaca.trading.v1.AccountActivity
+	0, // 0: alpaca.trading.v1.GetAccountActivitiesResponse.activities:type_name -> alpaca.trading.v1.AccountActivity
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -770,14 +608,13 @@ func file_alpaca_trading_v1_account_activity_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_trading_v1_account_activity_proto_rawDesc), len(file_alpaca_trading_v1_account_activity_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_alpaca_trading_v1_account_activity_proto_goTypes,
 		DependencyIndexes: file_alpaca_trading_v1_account_activity_proto_depIdxs,
-		EnumInfos:         file_alpaca_trading_v1_account_activity_proto_enumTypes,
 		MessageInfos:      file_alpaca_trading_v1_account_activity_proto_msgTypes,
 	}.Build()
 	File_alpaca_trading_v1_account_activity_proto = out.File

@@ -37,5 +37,5 @@ message ListTransfersRequest {
 // ListTransfersResponse is the response containing transfers.
 message ListTransfersResponse {
   // List of transfers.
-  repeated Transfer transfers = 1;
+  repeated Transfer transfers = 1 [(sebuf.http.unwrap) = true];
 }

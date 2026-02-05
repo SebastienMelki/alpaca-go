@@ -7,13 +7,14 @@
 package tradingv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -124,6 +125,170 @@ func (x *StopLossSpec) GetLimitPrice() string {
 	return ""
 }
 
+// MLegOrderLeg represents an individual leg of a multi-leg options order.
+type MLegOrderLeg struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Order side (buy or sell).
+	Side string `protobuf:"bytes,1,opt,name=side,proto3" json:"side,omitempty"`
+	// Position intent for options.
+	PositionIntent string `protobuf:"bytes,2,opt,name=position_intent,json=positionIntent,proto3" json:"position_intent,omitempty"`
+	// Symbol or asset ID to identify the asset to trade.
+	Symbol string `protobuf:"bytes,3,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	// Proportional quantity of this leg in relation to the overall multi-leg order qty.
+	RatioQty      string `protobuf:"bytes,4,opt,name=ratio_qty,json=ratioQty,proto3" json:"ratio_qty,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MLegOrderLeg) Reset() {
+	*x = MLegOrderLeg{}
+	mi := &file_alpaca_trading_v1_create_order_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MLegOrderLeg) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MLegOrderLeg) ProtoMessage() {}
+
+func (x *MLegOrderLeg) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_trading_v1_create_order_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MLegOrderLeg.ProtoReflect.Descriptor instead.
+func (*MLegOrderLeg) Descriptor() ([]byte, []int) {
+	return file_alpaca_trading_v1_create_order_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *MLegOrderLeg) GetSide() string {
+	if x != nil {
+		return x.Side
+	}
+	return ""
+}
+
+func (x *MLegOrderLeg) GetPositionIntent() string {
+	if x != nil {
+		return x.PositionIntent
+	}
+	return ""
+}
+
+func (x *MLegOrderLeg) GetSymbol() string {
+	if x != nil {
+		return x.Symbol
+	}
+	return ""
+}
+
+func (x *MLegOrderLeg) GetRatioQty() string {
+	if x != nil {
+		return x.RatioQty
+	}
+	return ""
+}
+
+// AdvancedInstructions provides advanced instructions for Elite Smart Router.
+type AdvancedInstructions struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The advanced routing algorithm to use (DMA, TWAP, VWAP).
+	Algorithm string `protobuf:"bytes,1,opt,name=algorithm,proto3" json:"algorithm,omitempty"`
+	// Target exchange for order execution (NYSE, NASDAQ, ARCA).
+	Destination string `protobuf:"bytes,2,opt,name=destination,proto3" json:"destination,omitempty"`
+	// Maximum shares/contracts displayed on the exchange at any time.
+	DisplayQty string `protobuf:"bytes,3,opt,name=display_qty,json=displayQty,proto3" json:"display_qty,omitempty"`
+	// When the algorithm is to start executing (RFC 3339).
+	StartTime string `protobuf:"bytes,4,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	// When the algorithm is to be done executing (RFC 3339).
+	EndTime string `protobuf:"bytes,5,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	// Maximum percentage of the ticker's period volume (0 < max_percentage < 1).
+	MaxPercentage string `protobuf:"bytes,6,opt,name=max_percentage,json=maxPercentage,proto3" json:"max_percentage,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdvancedInstructions) Reset() {
+	*x = AdvancedInstructions{}
+	mi := &file_alpaca_trading_v1_create_order_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdvancedInstructions) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdvancedInstructions) ProtoMessage() {}
+
+func (x *AdvancedInstructions) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_trading_v1_create_order_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdvancedInstructions.ProtoReflect.Descriptor instead.
+func (*AdvancedInstructions) Descriptor() ([]byte, []int) {
+	return file_alpaca_trading_v1_create_order_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *AdvancedInstructions) GetAlgorithm() string {
+	if x != nil {
+		return x.Algorithm
+	}
+	return ""
+}
+
+func (x *AdvancedInstructions) GetDestination() string {
+	if x != nil {
+		return x.Destination
+	}
+	return ""
+}
+
+func (x *AdvancedInstructions) GetDisplayQty() string {
+	if x != nil {
+		return x.DisplayQty
+	}
+	return ""
+}
+
+func (x *AdvancedInstructions) GetStartTime() string {
+	if x != nil {
+		return x.StartTime
+	}
+	return ""
+}
+
+func (x *AdvancedInstructions) GetEndTime() string {
+	if x != nil {
+		return x.EndTime
+	}
+	return ""
+}
+
+func (x *AdvancedInstructions) GetMaxPercentage() string {
+	if x != nil {
+		return x.MaxPercentage
+	}
+	return ""
+}
+
 // CreateOrderRequest is the request to create a new order.
 type CreateOrderRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -134,11 +299,11 @@ type CreateOrderRequest struct {
 	// Dollar amount to trade. Required if qty is not specified.
 	Notional string `protobuf:"bytes,3,opt,name=notional,proto3" json:"notional,omitempty"`
 	// Order side (buy or sell).
-	Side OrderSide `protobuf:"varint,4,opt,name=side,proto3,enum=alpaca.trading.v1.OrderSide" json:"side,omitempty"`
+	Side string `protobuf:"bytes,4,opt,name=side,proto3" json:"side,omitempty"`
 	// Order type.
-	Type OrderType `protobuf:"varint,5,opt,name=type,proto3,enum=alpaca.trading.v1.OrderType" json:"type,omitempty"`
+	Type string `protobuf:"bytes,5,opt,name=type,proto3" json:"type,omitempty"`
 	// Time in force.
-	TimeInForce TimeInForce `protobuf:"varint,6,opt,name=time_in_force,json=timeInForce,proto3,enum=alpaca.trading.v1.TimeInForce" json:"time_in_force,omitempty"`
+	TimeInForce string `protobuf:"bytes,6,opt,name=time_in_force,json=timeInForce,proto3" json:"time_in_force,omitempty"`
 	// Limit price (required for limit orders).
 	LimitPrice string `protobuf:"bytes,7,opt,name=limit_price,json=limitPrice,proto3" json:"limit_price,omitempty"`
 	// Stop price (required for stop orders).
@@ -149,21 +314,27 @@ type CreateOrderRequest struct {
 	TrailPercent string `protobuf:"bytes,10,opt,name=trail_percent,json=trailPercent,proto3" json:"trail_percent,omitempty"`
 	// Whether the order is for extended hours.
 	ExtendedHours bool `protobuf:"varint,11,opt,name=extended_hours,json=extendedHours,proto3" json:"extended_hours,omitempty"`
-	// Client order ID (user-provided, max 48 characters).
+	// Client order ID (user-provided, max 128 characters).
 	ClientOrderId string `protobuf:"bytes,12,opt,name=client_order_id,json=clientOrderId,proto3" json:"client_order_id,omitempty"`
 	// Order class.
-	OrderClass OrderClass `protobuf:"varint,13,opt,name=order_class,json=orderClass,proto3,enum=alpaca.trading.v1.OrderClass" json:"order_class,omitempty"`
+	OrderClass string `protobuf:"bytes,13,opt,name=order_class,json=orderClass,proto3" json:"order_class,omitempty"`
 	// Take profit spec (for bracket orders).
 	TakeProfit *TakeProfitSpec `protobuf:"bytes,14,opt,name=take_profit,json=takeProfit,proto3" json:"take_profit,omitempty"`
 	// Stop loss spec (for bracket orders).
-	StopLoss      *StopLossSpec `protobuf:"bytes,15,opt,name=stop_loss,json=stopLoss,proto3" json:"stop_loss,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	StopLoss *StopLossSpec `protobuf:"bytes,15,opt,name=stop_loss,json=stopLoss,proto3" json:"stop_loss,omitempty"`
+	// Position intent for options orders.
+	PositionIntent string `protobuf:"bytes,16,opt,name=position_intent,json=positionIntent,proto3" json:"position_intent,omitempty"`
+	// Legs for multi-leg options orders (max 4).
+	Legs []*MLegOrderLeg `protobuf:"bytes,17,rep,name=legs,proto3" json:"legs,omitempty"`
+	// Advanced instructions for Elite Smart Router.
+	AdvancedInstructions *AdvancedInstructions `protobuf:"bytes,18,opt,name=advanced_instructions,json=advancedInstructions,proto3" json:"advanced_instructions,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *CreateOrderRequest) Reset() {
 	*x = CreateOrderRequest{}
-	mi := &file_alpaca_trading_v1_create_order_proto_msgTypes[2]
+	mi := &file_alpaca_trading_v1_create_order_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -175,7 +346,7 @@ func (x *CreateOrderRequest) String() string {
 func (*CreateOrderRequest) ProtoMessage() {}
 
 func (x *CreateOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_trading_v1_create_order_proto_msgTypes[2]
+	mi := &file_alpaca_trading_v1_create_order_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -188,7 +359,7 @@ func (x *CreateOrderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateOrderRequest.ProtoReflect.Descriptor instead.
 func (*CreateOrderRequest) Descriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_create_order_proto_rawDescGZIP(), []int{2}
+	return file_alpaca_trading_v1_create_order_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CreateOrderRequest) GetSymbol() string {
@@ -212,25 +383,25 @@ func (x *CreateOrderRequest) GetNotional() string {
 	return ""
 }
 
-func (x *CreateOrderRequest) GetSide() OrderSide {
+func (x *CreateOrderRequest) GetSide() string {
 	if x != nil {
 		return x.Side
 	}
-	return OrderSide_ORDER_SIDE_UNSPECIFIED
+	return ""
 }
 
-func (x *CreateOrderRequest) GetType() OrderType {
+func (x *CreateOrderRequest) GetType() string {
 	if x != nil {
 		return x.Type
 	}
-	return OrderType_ORDER_TYPE_UNSPECIFIED
+	return ""
 }
 
-func (x *CreateOrderRequest) GetTimeInForce() TimeInForce {
+func (x *CreateOrderRequest) GetTimeInForce() string {
 	if x != nil {
 		return x.TimeInForce
 	}
-	return TimeInForce_TIME_IN_FORCE_UNSPECIFIED
+	return ""
 }
 
 func (x *CreateOrderRequest) GetLimitPrice() string {
@@ -275,11 +446,11 @@ func (x *CreateOrderRequest) GetClientOrderId() string {
 	return ""
 }
 
-func (x *CreateOrderRequest) GetOrderClass() OrderClass {
+func (x *CreateOrderRequest) GetOrderClass() string {
 	if x != nil {
 		return x.OrderClass
 	}
-	return OrderClass_ORDER_CLASS_UNSPECIFIED
+	return ""
 }
 
 func (x *CreateOrderRequest) GetTakeProfit() *TakeProfitSpec {
@@ -296,11 +467,32 @@ func (x *CreateOrderRequest) GetStopLoss() *StopLossSpec {
 	return nil
 }
 
+func (x *CreateOrderRequest) GetPositionIntent() string {
+	if x != nil {
+		return x.PositionIntent
+	}
+	return ""
+}
+
+func (x *CreateOrderRequest) GetLegs() []*MLegOrderLeg {
+	if x != nil {
+		return x.Legs
+	}
+	return nil
+}
+
+func (x *CreateOrderRequest) GetAdvancedInstructions() *AdvancedInstructions {
+	if x != nil {
+		return x.AdvancedInstructions
+	}
+	return nil
+}
+
 var File_alpaca_trading_v1_create_order_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_create_order_proto_rawDesc = "" +
 	"\n" +
-	"$alpaca/trading/v1/create_order.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a\x1dalpaca/trading/v1/order.proto\"E\n" +
+	"$alpaca/trading/v1/create_order.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"E\n" +
 	"\x0eTakeProfitSpec\x123\n" +
 	"\vlimit_price\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xba\xb5\x18\b\n" +
 	"\x06160.00R\n" +
@@ -311,20 +503,46 @@ const file_alpaca_trading_v1_create_order_proto_rawDesc = "" +
 	"\x06140.00R\tstopPrice\x12-\n" +
 	"\vlimit_price\x18\x02 \x01(\tB\f\xba\xb5\x18\b\n" +
 	"\x06139.00R\n" +
-	"limitPrice\"\xe1\x06\n" +
+	"limitPrice\"\x9f\x02\n" +
+	"\fMLegOrderLeg\x12/\n" +
+	"\x04side\x18\x01 \x01(\tB\x1b\xbaH\x0fr\rR\x00R\x03buyR\x04sell\xba\xb5\x18\x05\n" +
+	"\x03buyR\x04side\x12y\n" +
+	"\x0fposition_intent\x18\x02 \x01(\tBP\xbaH<r:R\x00R\vbuy_to_openR\fbuy_to_closeR\fsell_to_openR\rsell_to_close\xba\xb5\x18\r\n" +
+	"\vbuy_to_openR\x0epositionIntent\x127\n" +
+	"\x06symbol\x18\x03 \x01(\tB\x1f\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x15\n" +
+	"\x13AAPL241213C00250000R\x06symbol\x12*\n" +
+	"\tratio_qty\x18\x04 \x01(\tB\r\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x03\n" +
+	"\x011R\bratioQty\"\xc9\x02\n" +
+	"\x14AdvancedInstructions\x12'\n" +
+	"\talgorithm\x18\x01 \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"\x03DMAR\talgorithm\x12,\n" +
+	"\vdestination\x18\x02 \x01(\tB\n" +
+	"\xba\xb5\x18\x06\n" +
+	"\x04NYSER\vdestination\x12*\n" +
+	"\vdisplay_qty\x18\x03 \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"\x03100R\n" +
+	"displayQty\x12>\n" +
+	"\n" +
+	"start_time\x18\x04 \x01(\tB\x1f\xba\xb5\x18\x1b\n" +
+	"\x192025-07-21T09:30:00-04:00R\tstartTime\x12:\n" +
+	"\bend_time\x18\x05 \x01(\tB\x1f\xba\xb5\x18\x1b\n" +
+	"\x192025-07-21T15:30:00-04:00R\aendTime\x122\n" +
+	"\x0emax_percentage\x18\x06 \x01(\tB\v\xba\xb5\x18\a\n" +
+	"\x050.314R\rmaxPercentage\"\x84\t\n" +
 	"\x12CreateOrderRequest\x12.\n" +
 	"\x06symbol\x18\x01 \x01(\tB\x16\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18\f\xba\xb5\x18\x06\n" +
 	"\x04AAPLR\x06symbol\x12\x1a\n" +
 	"\x03qty\x18\x02 \x01(\tB\b\xba\xb5\x18\x04\n" +
 	"\x0210R\x03qty\x12)\n" +
 	"\bnotional\x18\x03 \x01(\tB\r\xba\xb5\x18\t\n" +
-	"\a1000.00R\bnotional\x12A\n" +
-	"\x04side\x18\x04 \x01(\x0e2\x1c.alpaca.trading.v1.OrderSideB\x0f\xbaH\x05\x82\x01\x02 \x00\xba\xb5\x18\x03\n" +
-	"\x011R\x04side\x12A\n" +
-	"\x04type\x18\x05 \x01(\x0e2\x1c.alpaca.trading.v1.OrderTypeB\x0f\xbaH\x05\x82\x01\x02 \x00\xba\xb5\x18\x03\n" +
-	"\x012R\x04type\x12S\n" +
-	"\rtime_in_force\x18\x06 \x01(\x0e2\x1e.alpaca.trading.v1.TimeInForceB\x0f\xbaH\x05\x82\x01\x02 \x00\xba\xb5\x18\x03\n" +
-	"\x011R\vtimeInForce\x12-\n" +
+	"\a1000.00R\bnotional\x12-\n" +
+	"\x04side\x18\x04 \x01(\tB\x19\xbaH\rr\vR\x03buyR\x04sell\xba\xb5\x18\x05\n" +
+	"\x03buyR\x04side\x12T\n" +
+	"\x04type\x18\x05 \x01(\tB@\xbaH2r0R\x06marketR\x05limitR\x04stopR\n" +
+	"stop_limitR\rtrailing_stop\xba\xb5\x18\a\n" +
+	"\x05limitR\x04type\x12P\n" +
+	"\rtime_in_force\x18\x06 \x01(\tB,\xbaH r\x1eR\x03dayR\x03gtcR\x03opgR\x03clsR\x03iocR\x03fok\xba\xb5\x18\x05\n" +
+	"\x03dayR\vtimeInForce\x12-\n" +
 	"\vlimit_price\x18\a \x01(\tB\f\xba\xb5\x18\b\n" +
 	"\x06150.00R\n" +
 	"limitPrice\x12+\n" +
@@ -339,15 +557,19 @@ const file_alpaca_trading_v1_create_order_proto_rawDesc = "" +
 	" \x01(\tB\t\xba\xb5\x18\x05\n" +
 	"\x035.0R\ftrailPercent\x122\n" +
 	"\x0eextended_hours\x18\v \x01(\bB\v\xba\xb5\x18\a\n" +
-	"\x05falseR\rextendedHours\x12A\n" +
-	"\x0fclient_order_id\x18\f \x01(\tB\x19\xbaH\x04r\x02\x180\xba\xb5\x18\x0e\n" +
-	"\fmy_order_123R\rclientOrderId\x12G\n" +
-	"\vorder_class\x18\r \x01(\x0e2\x1d.alpaca.trading.v1.OrderClassB\a\xba\xb5\x18\x03\n" +
-	"\x011R\n" +
+	"\x05falseR\rextendedHours\x12B\n" +
+	"\x0fclient_order_id\x18\f \x01(\tB\x1a\xbaH\x05r\x03\x18\x80\x01\xba\xb5\x18\x0e\n" +
+	"\fmy_order_123R\rclientOrderId\x12U\n" +
+	"\vorder_class\x18\r \x01(\tB4\xbaH%r#R\x00R\x06simpleR\abracketR\x03ocoR\x03otoR\x04mleg\xba\xb5\x18\b\n" +
+	"\x06simpleR\n" +
 	"orderClass\x12B\n" +
 	"\vtake_profit\x18\x0e \x01(\v2!.alpaca.trading.v1.TakeProfitSpecR\n" +
 	"takeProfit\x12<\n" +
-	"\tstop_loss\x18\x0f \x01(\v2\x1f.alpaca.trading.v1.StopLossSpecR\bstopLossB\xdd\x01\n" +
+	"\tstop_loss\x18\x0f \x01(\v2\x1f.alpaca.trading.v1.StopLossSpecR\bstopLoss\x12y\n" +
+	"\x0fposition_intent\x18\x10 \x01(\tBP\xbaH<r:R\x00R\vbuy_to_openR\fbuy_to_closeR\fsell_to_openR\rsell_to_close\xba\xb5\x18\r\n" +
+	"\vbuy_to_openR\x0epositionIntent\x12=\n" +
+	"\x04legs\x18\x11 \x03(\v2\x1f.alpaca.trading.v1.MLegOrderLegB\b\xbaH\x05\x92\x01\x02\x10\x04R\x04legs\x12\\\n" +
+	"\x15advanced_instructions\x18\x12 \x01(\v2'.alpaca.trading.v1.AdvancedInstructionsR\x14advancedInstructionsB\xdd\x01\n" +
 	"\x15com.alpaca.trading.v1B\x10CreateOrderProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (
@@ -362,28 +584,24 @@ func file_alpaca_trading_v1_create_order_proto_rawDescGZIP() []byte {
 	return file_alpaca_trading_v1_create_order_proto_rawDescData
 }
 
-var file_alpaca_trading_v1_create_order_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_alpaca_trading_v1_create_order_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_alpaca_trading_v1_create_order_proto_goTypes = []any{
-	(*TakeProfitSpec)(nil),     // 0: alpaca.trading.v1.TakeProfitSpec
-	(*StopLossSpec)(nil),       // 1: alpaca.trading.v1.StopLossSpec
-	(*CreateOrderRequest)(nil), // 2: alpaca.trading.v1.CreateOrderRequest
-	(OrderSide)(0),             // 3: alpaca.trading.v1.OrderSide
-	(OrderType)(0),             // 4: alpaca.trading.v1.OrderType
-	(TimeInForce)(0),           // 5: alpaca.trading.v1.TimeInForce
-	(OrderClass)(0),            // 6: alpaca.trading.v1.OrderClass
+	(*TakeProfitSpec)(nil),       // 0: alpaca.trading.v1.TakeProfitSpec
+	(*StopLossSpec)(nil),         // 1: alpaca.trading.v1.StopLossSpec
+	(*MLegOrderLeg)(nil),         // 2: alpaca.trading.v1.MLegOrderLeg
+	(*AdvancedInstructions)(nil), // 3: alpaca.trading.v1.AdvancedInstructions
+	(*CreateOrderRequest)(nil),   // 4: alpaca.trading.v1.CreateOrderRequest
 }
 var file_alpaca_trading_v1_create_order_proto_depIdxs = []int32{
-	3, // 0: alpaca.trading.v1.CreateOrderRequest.side:type_name -> alpaca.trading.v1.OrderSide
-	4, // 1: alpaca.trading.v1.CreateOrderRequest.type:type_name -> alpaca.trading.v1.OrderType
-	5, // 2: alpaca.trading.v1.CreateOrderRequest.time_in_force:type_name -> alpaca.trading.v1.TimeInForce
-	6, // 3: alpaca.trading.v1.CreateOrderRequest.order_class:type_name -> alpaca.trading.v1.OrderClass
-	0, // 4: alpaca.trading.v1.CreateOrderRequest.take_profit:type_name -> alpaca.trading.v1.TakeProfitSpec
-	1, // 5: alpaca.trading.v1.CreateOrderRequest.stop_loss:type_name -> alpaca.trading.v1.StopLossSpec
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	0, // 0: alpaca.trading.v1.CreateOrderRequest.take_profit:type_name -> alpaca.trading.v1.TakeProfitSpec
+	1, // 1: alpaca.trading.v1.CreateOrderRequest.stop_loss:type_name -> alpaca.trading.v1.StopLossSpec
+	2, // 2: alpaca.trading.v1.CreateOrderRequest.legs:type_name -> alpaca.trading.v1.MLegOrderLeg
+	3, // 3: alpaca.trading.v1.CreateOrderRequest.advanced_instructions:type_name -> alpaca.trading.v1.AdvancedInstructions
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_trading_v1_create_order_proto_init() }
@@ -391,14 +609,13 @@ func file_alpaca_trading_v1_create_order_proto_init() {
 	if File_alpaca_trading_v1_create_order_proto != nil {
 		return
 	}
-	file_alpaca_trading_v1_order_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_trading_v1_create_order_proto_rawDesc), len(file_alpaca_trading_v1_create_order_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

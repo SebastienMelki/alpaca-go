@@ -1,0 +1,159 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// AccountDocument represents a document associated with a broker account.
+message AccountDocument {
+  // Unique document identifier.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Document type (alias for type field from API).
+  string type = 2 [json_name = "type", (sebuf.http.field_examples) = { values: ["account_statement"] }];
+
+  // Document sub-type (alias for sub_type field from API).
+  string sub_type = 3 [json_name = "sub_type", (sebuf.http.field_examples) = { values: ["passport"] }];
+
+  // Document type (detailed).
+  string document_type = 9 [(sebuf.http.field_examples) = { values: ["identity_verification"] }];
+
+  // Document sub-type (detailed).
+  string document_sub_type = 10 [(sebuf.http.field_examples) = { values: ["passport"] }];
+
+  // MIME type.
+  string mime_type = 4 [(sebuf.http.field_examples) = { values: ["image/jpeg"] }];
+
+  // Timestamp when the document was created.
+  string created_at = 5 [(sebuf.http.field_examples) = { values: ["2024-02-01T00:00:00Z"] }];
+
+  // Document name.
+  string name = 6 [(sebuf.http.field_examples) = { values: ["January 2024 Statement"] }];
+
+  // Date the document was created.
+  string date = 7 [(sebuf.http.field_examples) = { values: ["2024-01-31"] }];
+
+  // Content URL.
+  string content = 8;
+}
+
+// ListAccountDocumentsRequest is the request to list documents for an account.
+message ListAccountDocumentsRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Filter by document type.
+  string type = 2 [
+    (sebuf.http.query) = { name: "type" },
+    (sebuf.http.field_examples) = { values: ["account_statement"] }
+  ];
+
+  // Filter by start date.
+  string start = 3 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01"] }
+  ];
+
+  // Filter by end date.
+  string end = 4 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-12-31"] }
+  ];
+}
+
+// ListAccountDocumentsResponse is the response containing account documents.
+message ListAccountDocumentsResponse {
+  // List of documents.
+  repeated AccountDocument documents = 1 [(sebuf.http.unwrap) = true];
+}
+
+// DownloadAccountDocumentRequest is the request to download an account document.
+message DownloadAccountDocumentRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The document ID (required).
+  string document_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// DownloadAccountDocumentResponse is the response with the document download URL.
+message DownloadAccountDocumentResponse {
+  // Pre-signed download URL (returned as 301 redirect).
+  string download_url = 1 [(sebuf.http.field_examples) = { values: ["https://s3.amazonaws.com/..."] }];
+}
+
+// UploadAccountDocumentRequest is the request to upload a document for an account.
+message UploadAccountDocumentRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Document type.
+  string document_type = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["identity_verification"] }
+  ];
+
+  // Document sub-type.
+  string document_sub_type = 3 [
+    (sebuf.http.field_examples) = { values: ["passport"] }
+  ];
+
+  // Document content (base64 encoded).
+  string content = 4 [
+    (buf.validate.field).required = true
+  ];
+
+  // MIME type of the document.
+  string mime_type = 5 [
+    (sebuf.http.field_examples) = { values: ["application/pdf"] }
+  ];
+}
+
+// W8BenDocument represents a W-8BEN tax form document.
+message W8BenDocument {
+  // Document ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Timestamp when the document was created.
+  string created_at = 2 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the document was updated.
+  string updated_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Document status.
+  string status = 4 [(sebuf.http.field_examples) = { values: ["signed"] }];
+}
+
+// DownloadW8BenDocumentRequest is the request to download a W-8BEN document.
+message DownloadW8BenDocumentRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The document ID (required).
+  string document_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}

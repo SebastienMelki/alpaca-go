@@ -7,13 +7,14 @@
 package tradingv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -31,7 +32,7 @@ type ReplaceOrderRequest struct {
 	// New quantity (optional, keeps original if not specified).
 	Qty string `protobuf:"bytes,2,opt,name=qty,proto3" json:"qty,omitempty"`
 	// New time in force (optional).
-	TimeInForce TimeInForce `protobuf:"varint,3,opt,name=time_in_force,json=timeInForce,proto3,enum=alpaca.trading.v1.TimeInForce" json:"time_in_force,omitempty"`
+	TimeInForce string `protobuf:"bytes,3,opt,name=time_in_force,json=timeInForce,proto3" json:"time_in_force,omitempty"`
 	// New limit price (optional, for limit orders).
 	LimitPrice string `protobuf:"bytes,4,opt,name=limit_price,json=limitPrice,proto3" json:"limit_price,omitempty"`
 	// New stop price (optional, for stop orders).
@@ -88,11 +89,11 @@ func (x *ReplaceOrderRequest) GetQty() string {
 	return ""
 }
 
-func (x *ReplaceOrderRequest) GetTimeInForce() TimeInForce {
+func (x *ReplaceOrderRequest) GetTimeInForce() string {
 	if x != nil {
 		return x.TimeInForce
 	}
-	return TimeInForce_TIME_IN_FORCE_UNSPECIFIED
+	return ""
 }
 
 func (x *ReplaceOrderRequest) GetLimitPrice() string {
@@ -127,14 +128,14 @@ var File_alpaca_trading_v1_replace_order_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_replace_order_proto_rawDesc = "" +
 	"\n" +
-	"%alpaca/trading/v1/replace_order.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a\x1dalpaca/trading/v1/order.proto\"\x9a\x03\n" +
+	"%alpaca/trading/v1/replace_order.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xa1\x03\n" +
 	"\x13ReplaceOrderRequest\x12P\n" +
 	"\border_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$61e69015-8549-4bfd-b9c3-01e75843f47dR\aorderId\x12\x1a\n" +
 	"\x03qty\x18\x02 \x01(\tB\b\xba\xb5\x18\x04\n" +
-	"\x0215R\x03qty\x12K\n" +
-	"\rtime_in_force\x18\x03 \x01(\x0e2\x1e.alpaca.trading.v1.TimeInForceB\a\xba\xb5\x18\x03\n" +
-	"\x011R\vtimeInForce\x12-\n" +
+	"\x0215R\x03qty\x12R\n" +
+	"\rtime_in_force\x18\x03 \x01(\tB.\xbaH\"r R\x00R\x03dayR\x03gtcR\x03opgR\x03clsR\x03iocR\x03fok\xba\xb5\x18\x05\n" +
+	"\x03dayR\vtimeInForce\x12-\n" +
 	"\vlimit_price\x18\x04 \x01(\tB\f\xba\xb5\x18\b\n" +
 	"\x06152.00R\n" +
 	"limitPrice\x12+\n" +
@@ -163,15 +164,13 @@ func file_alpaca_trading_v1_replace_order_proto_rawDescGZIP() []byte {
 var file_alpaca_trading_v1_replace_order_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_alpaca_trading_v1_replace_order_proto_goTypes = []any{
 	(*ReplaceOrderRequest)(nil), // 0: alpaca.trading.v1.ReplaceOrderRequest
-	(TimeInForce)(0),            // 1: alpaca.trading.v1.TimeInForce
 }
 var file_alpaca_trading_v1_replace_order_proto_depIdxs = []int32{
-	1, // 0: alpaca.trading.v1.ReplaceOrderRequest.time_in_force:type_name -> alpaca.trading.v1.TimeInForce
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_trading_v1_replace_order_proto_init() }
@@ -179,7 +178,6 @@ func file_alpaca_trading_v1_replace_order_proto_init() {
 	if File_alpaca_trading_v1_replace_order_proto != nil {
 		return
 	}
-	file_alpaca_trading_v1_order_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

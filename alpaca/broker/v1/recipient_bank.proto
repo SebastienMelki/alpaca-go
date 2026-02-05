@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+
+// RecipientBank represents a recipient bank for wire transfers.
+message RecipientBank {
+  // Recipient bank ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Account ID associated with this recipient bank.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Bank name.
+  string bank_name = 3 [(sebuf.http.field_examples) = { values: ["Deutsche Bank"] }];
+
+  // Bank address.
+  string bank_address = 4 [(sebuf.http.field_examples) = { values: ["Taunusanlage 12, 60325 Frankfurt, Germany"] }];
+
+  // SWIFT/BIC code.
+  string swift_code = 5 [(sebuf.http.field_examples) = { values: ["DEUTDEFF"] }];
+
+  // Beneficiary name.
+  string beneficiary_name = 6 [(sebuf.http.field_examples) = { values: ["John Doe"] }];
+
+  // Beneficiary account number or IBAN.
+  string account_number = 7 [(sebuf.http.field_examples) = { values: ["DE89370400440532013000"] }];
+
+  // Bank country (ISO 3166-1 alpha-2).
+  string country = 8 [(sebuf.http.field_examples) = { values: ["DE"] }];
+
+  // Currency (ISO 4217).
+  string currency = 9 [(sebuf.http.field_examples) = { values: ["EUR"] }];
+
+  // Status of the recipient bank.
+  string status = 10 [(sebuf.http.field_examples) = { values: ["active"] }];
+
+  // Timestamp when the recipient bank was created.
+  string created_at = 11 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the recipient bank was last updated.
+  string updated_at = 12 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// GetRecipientBankRequest is the request to get a recipient bank.
+message GetRecipientBankRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// CreateRecipientBankRequest is the request to create a recipient bank.
+message CreateRecipientBankRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Bank name.
+  string bank_name = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["Deutsche Bank"] }
+  ];
+
+  // Bank address.
+  string bank_address = 3 [
+    (sebuf.http.field_examples) = { values: ["Taunusanlage 12, 60325 Frankfurt, Germany"] }
+  ];
+
+  // SWIFT/BIC code.
+  string swift_code = 4 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["DEUTDEFF"] }
+  ];
+
+  // Beneficiary name.
+  string beneficiary_name = 5 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["John Doe"] }
+  ];
+
+  // Beneficiary account number or IBAN.
+  string account_number = 6 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["DE89370400440532013000"] }
+  ];
+
+  // Bank country (ISO 3166-1 alpha-2).
+  string country = 7 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["DE"] }
+  ];
+
+  // Currency (ISO 4217).
+  string currency = 8 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["EUR"] }
+  ];
+}
+
+// DeleteRecipientBankRequest is the request to delete a recipient bank.
+message DeleteRecipientBankRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// DeleteRecipientBankResponse is the response for deleting a recipient bank.
+message DeleteRecipientBankResponse {
+  // Whether the deletion was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}

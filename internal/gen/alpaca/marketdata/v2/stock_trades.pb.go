@@ -7,13 +7,14 @@
 package marketdatav2
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -39,7 +40,11 @@ type GetStockTradesRequest struct {
 	// Page token for pagination.
 	PageToken string `protobuf:"bytes,6,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// Sort order (asc, desc).
-	Sort          string `protobuf:"bytes,7,opt,name=sort,proto3" json:"sort,omitempty"`
+	Sort string `protobuf:"bytes,7,opt,name=sort,proto3" json:"sort,omitempty"`
+	// As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
+	Asof string `protobuf:"bytes,8,opt,name=asof,proto3" json:"asof,omitempty"`
+	// Currency for response prices (ISO 4217).
+	Currency      string `protobuf:"bytes,9,opt,name=currency,proto3" json:"currency,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -119,6 +124,20 @@ func (x *GetStockTradesRequest) GetPageToken() string {
 func (x *GetStockTradesRequest) GetSort() string {
 	if x != nil {
 		return x.Sort
+	}
+	return ""
+}
+
+func (x *GetStockTradesRequest) GetAsof() string {
+	if x != nil {
+		return x.Asof
+	}
+	return ""
+}
+
+func (x *GetStockTradesRequest) GetCurrency() string {
+	if x != nil {
+		return x.Currency
 	}
 	return ""
 }
@@ -333,11 +352,312 @@ func (x *GetLatestStockTradesResponse) GetTrades() map[string]*Trade {
 	return nil
 }
 
+// GetStockTradesSingleRequest is the request to get historical trades for a single symbol.
+type GetStockTradesSingleRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The stock symbol (required).
+	Symbol string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	// Start timestamp (RFC 3339 or YYYY-MM-DD).
+	Start string `protobuf:"bytes,2,opt,name=start,proto3" json:"start,omitempty"`
+	// End timestamp (RFC 3339 or YYYY-MM-DD).
+	End string `protobuf:"bytes,3,opt,name=end,proto3" json:"end,omitempty"`
+	// Maximum number of trades to return (1-10000, default 1000).
+	Limit int32 `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
+	// Data feed (iex, sip).
+	Feed string `protobuf:"bytes,5,opt,name=feed,proto3" json:"feed,omitempty"`
+	// Page token for pagination.
+	PageToken string `protobuf:"bytes,6,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	// Sort order (asc, desc).
+	Sort string `protobuf:"bytes,7,opt,name=sort,proto3" json:"sort,omitempty"`
+	// As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
+	Asof string `protobuf:"bytes,8,opt,name=asof,proto3" json:"asof,omitempty"`
+	// Currency for response prices (ISO 4217).
+	Currency      string `protobuf:"bytes,9,opt,name=currency,proto3" json:"currency,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetStockTradesSingleRequest) Reset() {
+	*x = GetStockTradesSingleRequest{}
+	mi := &file_alpaca_marketdata_v2_stock_trades_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetStockTradesSingleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetStockTradesSingleRequest) ProtoMessage() {}
+
+func (x *GetStockTradesSingleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_marketdata_v2_stock_trades_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetStockTradesSingleRequest.ProtoReflect.Descriptor instead.
+func (*GetStockTradesSingleRequest) Descriptor() ([]byte, []int) {
+	return file_alpaca_marketdata_v2_stock_trades_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *GetStockTradesSingleRequest) GetSymbol() string {
+	if x != nil {
+		return x.Symbol
+	}
+	return ""
+}
+
+func (x *GetStockTradesSingleRequest) GetStart() string {
+	if x != nil {
+		return x.Start
+	}
+	return ""
+}
+
+func (x *GetStockTradesSingleRequest) GetEnd() string {
+	if x != nil {
+		return x.End
+	}
+	return ""
+}
+
+func (x *GetStockTradesSingleRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *GetStockTradesSingleRequest) GetFeed() string {
+	if x != nil {
+		return x.Feed
+	}
+	return ""
+}
+
+func (x *GetStockTradesSingleRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *GetStockTradesSingleRequest) GetSort() string {
+	if x != nil {
+		return x.Sort
+	}
+	return ""
+}
+
+func (x *GetStockTradesSingleRequest) GetAsof() string {
+	if x != nil {
+		return x.Asof
+	}
+	return ""
+}
+
+func (x *GetStockTradesSingleRequest) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
+// GetStockTradesSingleResponse is the response containing trades for a single symbol.
+type GetStockTradesSingleResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// List of trades.
+	Trades []*Trade `protobuf:"bytes,1,rep,name=trades,proto3" json:"trades,omitempty"`
+	// The symbol.
+	Symbol string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	// Next page token.
+	NextPageToken string `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetStockTradesSingleResponse) Reset() {
+	*x = GetStockTradesSingleResponse{}
+	mi := &file_alpaca_marketdata_v2_stock_trades_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetStockTradesSingleResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetStockTradesSingleResponse) ProtoMessage() {}
+
+func (x *GetStockTradesSingleResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_marketdata_v2_stock_trades_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetStockTradesSingleResponse.ProtoReflect.Descriptor instead.
+func (*GetStockTradesSingleResponse) Descriptor() ([]byte, []int) {
+	return file_alpaca_marketdata_v2_stock_trades_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetStockTradesSingleResponse) GetTrades() []*Trade {
+	if x != nil {
+		return x.Trades
+	}
+	return nil
+}
+
+func (x *GetStockTradesSingleResponse) GetSymbol() string {
+	if x != nil {
+		return x.Symbol
+	}
+	return ""
+}
+
+func (x *GetStockTradesSingleResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+// GetLatestStockTradeSingleRequest is the request to get the latest trade for a single symbol.
+type GetLatestStockTradeSingleRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The stock symbol (required).
+	Symbol string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	// Data feed (iex, sip).
+	Feed string `protobuf:"bytes,2,opt,name=feed,proto3" json:"feed,omitempty"`
+	// Currency for the response prices.
+	Currency      string `protobuf:"bytes,3,opt,name=currency,proto3" json:"currency,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetLatestStockTradeSingleRequest) Reset() {
+	*x = GetLatestStockTradeSingleRequest{}
+	mi := &file_alpaca_marketdata_v2_stock_trades_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetLatestStockTradeSingleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLatestStockTradeSingleRequest) ProtoMessage() {}
+
+func (x *GetLatestStockTradeSingleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_marketdata_v2_stock_trades_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLatestStockTradeSingleRequest.ProtoReflect.Descriptor instead.
+func (*GetLatestStockTradeSingleRequest) Descriptor() ([]byte, []int) {
+	return file_alpaca_marketdata_v2_stock_trades_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *GetLatestStockTradeSingleRequest) GetSymbol() string {
+	if x != nil {
+		return x.Symbol
+	}
+	return ""
+}
+
+func (x *GetLatestStockTradeSingleRequest) GetFeed() string {
+	if x != nil {
+		return x.Feed
+	}
+	return ""
+}
+
+func (x *GetLatestStockTradeSingleRequest) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
+// GetLatestStockTradeSingleResponse is the response containing the latest trade for a single symbol.
+type GetLatestStockTradeSingleResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The latest trade.
+	Trade *Trade `protobuf:"bytes,1,opt,name=trade,proto3" json:"trade,omitempty"`
+	// The symbol.
+	Symbol        string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetLatestStockTradeSingleResponse) Reset() {
+	*x = GetLatestStockTradeSingleResponse{}
+	mi := &file_alpaca_marketdata_v2_stock_trades_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetLatestStockTradeSingleResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLatestStockTradeSingleResponse) ProtoMessage() {}
+
+func (x *GetLatestStockTradeSingleResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_marketdata_v2_stock_trades_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLatestStockTradeSingleResponse.ProtoReflect.Descriptor instead.
+func (*GetLatestStockTradeSingleResponse) Descriptor() ([]byte, []int) {
+	return file_alpaca_marketdata_v2_stock_trades_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetLatestStockTradeSingleResponse) GetTrade() *Trade {
+	if x != nil {
+		return x.Trade
+	}
+	return nil
+}
+
+func (x *GetLatestStockTradeSingleResponse) GetSymbol() string {
+	if x != nil {
+		return x.Symbol
+	}
+	return ""
+}
+
 var File_alpaca_marketdata_v2_stock_trades_proto protoreflect.FileDescriptor
 
 const file_alpaca_marketdata_v2_stock_trades_proto_rawDesc = "" +
 	"\n" +
-	"'alpaca/marketdata/v2/stock_trades.proto\x12\x14alpaca.marketdata.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a!alpaca/marketdata/v2/common.proto\"\x91\x03\n" +
+	"'alpaca/marketdata/v2/stock_trades.proto\x12\x14alpaca.marketdata.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a!alpaca/marketdata/v2/common.proto\"\xf6\x03\n" +
 	"\x15GetStockTradesRequest\x12<\n" +
 	"\asymbols\x18\x01 \x01(\tB\"\xbaH\x03\xc8\x01\x01\xba\xb5\x18\v\n" +
 	"\tAAPL,TSLAµ\x18\t\n" +
@@ -362,9 +682,17 @@ const file_alpaca_marketdata_v2_stock_trades_proto_rawDesc = "" +
 	"page_tokenR\tpageToken\x12'\n" +
 	"\x04sort\x18\a \x01(\tB\x13\xba\xb5\x18\x05\n" +
 	"\x03ascµ\x18\x06\n" +
-	"\x04sortR\x04sort\"F\n" +
-	"\x0fStockTradesList\x123\n" +
-	"\x06trades\x18\x01 \x03(\v2\x1b.alpaca.marketdata.v2.TradeR\x06trades\"\x84\x02\n" +
+	"\x04sortR\x04sort\x12.\n" +
+	"\x04asof\x18\b \x01(\tB\x1a\xba\xb5\x18\f\n" +
+	"\n" +
+	"2024-01-15µ\x18\x06\n" +
+	"\x04asofR\x04asof\x123\n" +
+	"\bcurrency\x18\t \x01(\tB\x17\xba\xb5\x18\x05\n" +
+	"\x03USDµ\x18\n" +
+	"\n" +
+	"\bcurrencyR\bcurrency\"L\n" +
+	"\x0fStockTradesList\x129\n" +
+	"\x06trades\x18\x01 \x03(\v2\x1b.alpaca.marketdata.v2.TradeB\x04ȵ\x18\x01R\x06trades\"\x84\x02\n" +
 	"\x16GetStockTradesResponse\x12P\n" +
 	"\x06trades\x18\x01 \x03(\v28.alpaca.marketdata.v2.GetStockTradesResponse.TradesEntryR\x06trades\x126\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\x0e\xba\xb5\x18\n" +
@@ -388,7 +716,62 @@ const file_alpaca_marketdata_v2_stock_trades_proto_rawDesc = "" +
 	"\x06trades\x18\x01 \x03(\v2>.alpaca.marketdata.v2.GetLatestStockTradesResponse.TradesEntryR\x06trades\x1aV\n" +
 	"\vTradesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x121\n" +
-	"\x05value\x18\x02 \x01(\v2\x1b.alpaca.marketdata.v2.TradeR\x05value:\x028\x01B\xf2\x01\n" +
+	"\x05value\x18\x02 \x01(\v2\x1b.alpaca.marketdata.v2.TradeR\x05value:\x028\x01\"\xe8\x03\n" +
+	"\x1bGetStockTradesSingleRequest\x12(\n" +
+	"\x06symbol\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x06\n" +
+	"\x04AAPLR\x06symbol\x12;\n" +
+	"\x05start\x18\x02 \x01(\tB%\xba\xb5\x18\x16\n" +
+	"\x142024-01-15T09:30:00Zµ\x18\a\n" +
+	"\x05startR\x05start\x125\n" +
+	"\x03end\x18\x03 \x01(\tB#\xba\xb5\x18\x16\n" +
+	"\x142024-01-15T16:00:00Zµ\x18\x05\n" +
+	"\x03endR\x03end\x125\n" +
+	"\x05limit\x18\x04 \x01(\x05B\x1f\xbaH\a\x1a\x05\x18\x90N(\x01\xba\xb5\x18\x06\n" +
+	"\x041000µ\x18\a\n" +
+	"\x05limitR\x05limit\x12'\n" +
+	"\x04feed\x18\x05 \x01(\tB\x13\xba\xb5\x18\x05\n" +
+	"\x03sipµ\x18\x06\n" +
+	"\x04feedR\x04feed\x12=\n" +
+	"\n" +
+	"page_token\x18\x06 \x01(\tB\x1e\xba\xb5\x18\n" +
+	"\n" +
+	"\btoken123µ\x18\f\n" +
+	"\n" +
+	"page_tokenR\tpageToken\x12'\n" +
+	"\x04sort\x18\a \x01(\tB\x13\xba\xb5\x18\x05\n" +
+	"\x03ascµ\x18\x06\n" +
+	"\x04sortR\x04sort\x12.\n" +
+	"\x04asof\x18\b \x01(\tB\x1a\xba\xb5\x18\f\n" +
+	"\n" +
+	"2024-01-15µ\x18\x06\n" +
+	"\x04asofR\x04asof\x123\n" +
+	"\bcurrency\x18\t \x01(\tB\x17\xba\xb5\x18\x05\n" +
+	"\x03USDµ\x18\n" +
+	"\n" +
+	"\bcurrencyR\bcurrency\"\xb5\x01\n" +
+	"\x1cGetStockTradesSingleResponse\x129\n" +
+	"\x06trades\x18\x01 \x03(\v2\x1b.alpaca.marketdata.v2.TradeB\x04ȵ\x18\x01R\x06trades\x12\"\n" +
+	"\x06symbol\x18\x02 \x01(\tB\n" +
+	"\xba\xb5\x18\x06\n" +
+	"\x04AAPLR\x06symbol\x126\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tB\x0e\xba\xb5\x18\n" +
+	"\n" +
+	"\bYWJjZGVmR\rnextPageToken\"\xaa\x01\n" +
+	" GetLatestStockTradeSingleRequest\x12(\n" +
+	"\x06symbol\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x06\n" +
+	"\x04AAPLR\x06symbol\x12'\n" +
+	"\x04feed\x18\x02 \x01(\tB\x13\xba\xb5\x18\x05\n" +
+	"\x03sipµ\x18\x06\n" +
+	"\x04feedR\x04feed\x123\n" +
+	"\bcurrency\x18\x03 \x01(\tB\x17\xba\xb5\x18\x05\n" +
+	"\x03USDµ\x18\n" +
+	"\n" +
+	"\bcurrencyR\bcurrency\"z\n" +
+	"!GetLatestStockTradeSingleResponse\x121\n" +
+	"\x05trade\x18\x01 \x01(\v2\x1b.alpaca.marketdata.v2.TradeR\x05trade\x12\"\n" +
+	"\x06symbol\x18\x02 \x01(\tB\n" +
+	"\xba\xb5\x18\x06\n" +
+	"\x04AAPLR\x06symbolB\xf2\x01\n" +
 	"\x18com.alpaca.marketdata.v2B\x10StockTradesProtoP\x01ZRgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/marketdata/v2;marketdatav2\xa2\x02\x03AMX\xaa\x02\x14Alpaca.Marketdata.V2\xca\x02\x14Alpaca\\Marketdata\\V2\xe2\x02 Alpaca\\Marketdata\\V2\\GPBMetadata\xea\x02\x16Alpaca::Marketdata::V2b\x06proto3"
 
 var (
@@ -403,28 +786,34 @@ func file_alpaca_marketdata_v2_stock_trades_proto_rawDescGZIP() []byte {
 	return file_alpaca_marketdata_v2_stock_trades_proto_rawDescData
 }
 
-var file_alpaca_marketdata_v2_stock_trades_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_alpaca_marketdata_v2_stock_trades_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_alpaca_marketdata_v2_stock_trades_proto_goTypes = []any{
-	(*GetStockTradesRequest)(nil),        // 0: alpaca.marketdata.v2.GetStockTradesRequest
-	(*StockTradesList)(nil),              // 1: alpaca.marketdata.v2.StockTradesList
-	(*GetStockTradesResponse)(nil),       // 2: alpaca.marketdata.v2.GetStockTradesResponse
-	(*GetLatestStockTradesRequest)(nil),  // 3: alpaca.marketdata.v2.GetLatestStockTradesRequest
-	(*GetLatestStockTradesResponse)(nil), // 4: alpaca.marketdata.v2.GetLatestStockTradesResponse
-	nil,                                  // 5: alpaca.marketdata.v2.GetStockTradesResponse.TradesEntry
-	nil,                                  // 6: alpaca.marketdata.v2.GetLatestStockTradesResponse.TradesEntry
-	(*Trade)(nil),                        // 7: alpaca.marketdata.v2.Trade
+	(*GetStockTradesRequest)(nil),             // 0: alpaca.marketdata.v2.GetStockTradesRequest
+	(*StockTradesList)(nil),                   // 1: alpaca.marketdata.v2.StockTradesList
+	(*GetStockTradesResponse)(nil),            // 2: alpaca.marketdata.v2.GetStockTradesResponse
+	(*GetLatestStockTradesRequest)(nil),       // 3: alpaca.marketdata.v2.GetLatestStockTradesRequest
+	(*GetLatestStockTradesResponse)(nil),      // 4: alpaca.marketdata.v2.GetLatestStockTradesResponse
+	(*GetStockTradesSingleRequest)(nil),       // 5: alpaca.marketdata.v2.GetStockTradesSingleRequest
+	(*GetStockTradesSingleResponse)(nil),      // 6: alpaca.marketdata.v2.GetStockTradesSingleResponse
+	(*GetLatestStockTradeSingleRequest)(nil),  // 7: alpaca.marketdata.v2.GetLatestStockTradeSingleRequest
+	(*GetLatestStockTradeSingleResponse)(nil), // 8: alpaca.marketdata.v2.GetLatestStockTradeSingleResponse
+	nil,           // 9: alpaca.marketdata.v2.GetStockTradesResponse.TradesEntry
+	nil,           // 10: alpaca.marketdata.v2.GetLatestStockTradesResponse.TradesEntry
+	(*Trade)(nil), // 11: alpaca.marketdata.v2.Trade
 }
 var file_alpaca_marketdata_v2_stock_trades_proto_depIdxs = []int32{
-	7, // 0: alpaca.marketdata.v2.StockTradesList.trades:type_name -> alpaca.marketdata.v2.Trade
-	5, // 1: alpaca.marketdata.v2.GetStockTradesResponse.trades:type_name -> alpaca.marketdata.v2.GetStockTradesResponse.TradesEntry
-	6, // 2: alpaca.marketdata.v2.GetLatestStockTradesResponse.trades:type_name -> alpaca.marketdata.v2.GetLatestStockTradesResponse.TradesEntry
-	1, // 3: alpaca.marketdata.v2.GetStockTradesResponse.TradesEntry.value:type_name -> alpaca.marketdata.v2.StockTradesList
-	7, // 4: alpaca.marketdata.v2.GetLatestStockTradesResponse.TradesEntry.value:type_name -> alpaca.marketdata.v2.Trade
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	11, // 0: alpaca.marketdata.v2.StockTradesList.trades:type_name -> alpaca.marketdata.v2.Trade
+	9,  // 1: alpaca.marketdata.v2.GetStockTradesResponse.trades:type_name -> alpaca.marketdata.v2.GetStockTradesResponse.TradesEntry
+	10, // 2: alpaca.marketdata.v2.GetLatestStockTradesResponse.trades:type_name -> alpaca.marketdata.v2.GetLatestStockTradesResponse.TradesEntry
+	11, // 3: alpaca.marketdata.v2.GetStockTradesSingleResponse.trades:type_name -> alpaca.marketdata.v2.Trade
+	11, // 4: alpaca.marketdata.v2.GetLatestStockTradeSingleResponse.trade:type_name -> alpaca.marketdata.v2.Trade
+	1,  // 5: alpaca.marketdata.v2.GetStockTradesResponse.TradesEntry.value:type_name -> alpaca.marketdata.v2.StockTradesList
+	11, // 6: alpaca.marketdata.v2.GetLatestStockTradesResponse.TradesEntry.value:type_name -> alpaca.marketdata.v2.Trade
+	7,  // [7:7] is the sub-list for method output_type
+	7,  // [7:7] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_marketdata_v2_stock_trades_proto_init() }
@@ -439,7 +828,7 @@ func file_alpaca_marketdata_v2_stock_trades_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_marketdata_v2_stock_trades_proto_rawDesc), len(file_alpaca_marketdata_v2_stock_trades_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

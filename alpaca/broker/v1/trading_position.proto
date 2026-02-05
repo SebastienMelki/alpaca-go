@@ -6,11 +6,14 @@ import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 import "alpaca/broker/v1/trading_order.proto";
 
-// BrokerPositionSide represents the side of a position.
-enum BrokerPositionSide {
-  BROKER_POSITION_SIDE_UNSPECIFIED = 0;
-  BROKER_POSITION_SIDE_LONG = 1;
-  BROKER_POSITION_SIDE_SHORT = 2;
+// PositionUSDValues represents USD values for LCT positions.
+message PositionUSDValues {
+  // Market value in USD.
+  string market_value = 1;
+  // Cost basis in USD.
+  string cost_basis = 2;
+  // Unrealized P/L in USD.
+  string unrealized_pl = 3;
 }
 
 // BrokerPosition represents a position in a broker account.
@@ -37,7 +40,7 @@ message BrokerPosition {
   string avg_entry_price = 7 [(sebuf.http.field_examples) = { values: ["150.00"] }];
 
   // Position side.
-  BrokerPositionSide side = 8 [(sebuf.http.field_examples) = { values: ["1"] }];
+  string side = 8 [(sebuf.http.field_examples) = { values: ["long"] }];
 
   // Current market value.
   string market_value = 9 [(sebuf.http.field_examples) = { values: ["15500.00"] }];
@@ -68,6 +71,15 @@ message BrokerPosition {
 
   // Quantity available.
   string qty_available = 18 [(sebuf.http.field_examples) = { values: ["100"] }];
+
+  // Average entry swap rate.
+  string avg_entry_swap_rate = 19;
+
+  // Current swap rate.
+  string swap_rate = 20;
+
+  // USD values (for LCT accounts).
+  PositionUSDValues usd = 21;
 }
 
 // ListTradingPositionsRequest is the request to list positions for a broker account.
@@ -83,7 +95,7 @@ message ListTradingPositionsRequest {
 // ListTradingPositionsResponse is the response containing trading positions.
 message ListTradingPositionsResponse {
   // List of positions.
-  repeated BrokerPosition positions = 1;
+  repeated BrokerPosition positions = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetTradingPositionRequest is the request to get a position for a broker account.

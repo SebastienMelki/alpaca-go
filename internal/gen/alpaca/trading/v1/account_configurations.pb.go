@@ -7,12 +7,14 @@
 package tradingv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -21,109 +23,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-// DtbpCheck represents the day trading buying power check setting.
-type DtbpCheck int32
-
-const (
-	DtbpCheck_DTBP_CHECK_UNSPECIFIED DtbpCheck = 0
-	DtbpCheck_DTBP_CHECK_ENTRY       DtbpCheck = 1
-	DtbpCheck_DTBP_CHECK_EXIT        DtbpCheck = 2
-	DtbpCheck_DTBP_CHECK_BOTH        DtbpCheck = 3
-)
-
-// Enum value maps for DtbpCheck.
-var (
-	DtbpCheck_name = map[int32]string{
-		0: "DTBP_CHECK_UNSPECIFIED",
-		1: "DTBP_CHECK_ENTRY",
-		2: "DTBP_CHECK_EXIT",
-		3: "DTBP_CHECK_BOTH",
-	}
-	DtbpCheck_value = map[string]int32{
-		"DTBP_CHECK_UNSPECIFIED": 0,
-		"DTBP_CHECK_ENTRY":       1,
-		"DTBP_CHECK_EXIT":        2,
-		"DTBP_CHECK_BOTH":        3,
-	}
-)
-
-func (x DtbpCheck) Enum() *DtbpCheck {
-	p := new(DtbpCheck)
-	*p = x
-	return p
-}
-
-func (x DtbpCheck) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (DtbpCheck) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_account_configurations_proto_enumTypes[0].Descriptor()
-}
-
-func (DtbpCheck) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_account_configurations_proto_enumTypes[0]
-}
-
-func (x DtbpCheck) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use DtbpCheck.Descriptor instead.
-func (DtbpCheck) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_account_configurations_proto_rawDescGZIP(), []int{0}
-}
-
-// TradeConfirmEmail represents the trade confirmation email setting.
-type TradeConfirmEmail int32
-
-const (
-	TradeConfirmEmail_TRADE_CONFIRM_EMAIL_UNSPECIFIED TradeConfirmEmail = 0
-	TradeConfirmEmail_TRADE_CONFIRM_EMAIL_ALL         TradeConfirmEmail = 1
-	TradeConfirmEmail_TRADE_CONFIRM_EMAIL_NONE        TradeConfirmEmail = 2
-)
-
-// Enum value maps for TradeConfirmEmail.
-var (
-	TradeConfirmEmail_name = map[int32]string{
-		0: "TRADE_CONFIRM_EMAIL_UNSPECIFIED",
-		1: "TRADE_CONFIRM_EMAIL_ALL",
-		2: "TRADE_CONFIRM_EMAIL_NONE",
-	}
-	TradeConfirmEmail_value = map[string]int32{
-		"TRADE_CONFIRM_EMAIL_UNSPECIFIED": 0,
-		"TRADE_CONFIRM_EMAIL_ALL":         1,
-		"TRADE_CONFIRM_EMAIL_NONE":        2,
-	}
-)
-
-func (x TradeConfirmEmail) Enum() *TradeConfirmEmail {
-	p := new(TradeConfirmEmail)
-	*p = x
-	return p
-}
-
-func (x TradeConfirmEmail) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (TradeConfirmEmail) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_account_configurations_proto_enumTypes[1].Descriptor()
-}
-
-func (TradeConfirmEmail) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_account_configurations_proto_enumTypes[1]
-}
-
-func (x TradeConfirmEmail) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use TradeConfirmEmail.Descriptor instead.
-func (TradeConfirmEmail) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_account_configurations_proto_rawDescGZIP(), []int{1}
-}
 
 // AccountConfigurations represents the account configuration settings.
 type AccountConfigurations struct {
@@ -375,13 +274,12 @@ var File_alpaca_trading_v1_account_configurations_proto protoreflect.FileDescrip
 
 const file_alpaca_trading_v1_account_configurations_proto_rawDesc = "" +
 	"\n" +
-	".alpaca/trading/v1/account_configurations.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\"\xd6\x03\n" +
-	"\x15AccountConfigurations\x12)\n" +
+	".alpaca/trading/v1/account_configurations.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xfe\x03\n" +
+	"\x15AccountConfigurations\x12A\n" +
 	"\n" +
-	"dtbp_check\x18\x01 \x01(\tB\n" +
-	"\xba\xb5\x18\x06\n" +
-	"\x04bothR\tdtbpCheck\x129\n" +
-	"\x13trade_confirm_email\x18\x02 \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"dtbp_check\x18\x01 \x01(\tB\"\xbaH\x15r\x13R\x05entryR\x04exitR\x04both\xba\xb5\x18\x06\n" +
+	"\x04bothR\tdtbpCheck\x12I\n" +
+	"\x13trade_confirm_email\x18\x02 \x01(\tB\x19\xbaH\rr\vR\x03allR\x04none\xba\xb5\x18\x05\n" +
 	"\x03allR\x11tradeConfirmEmail\x120\n" +
 	"\rsuspend_trade\x18\x03 \x01(\bB\v\xba\xb5\x18\a\n" +
 	"\x05falseR\fsuspendTrade\x129\n" +
@@ -397,13 +295,12 @@ const file_alpaca_trading_v1_account_configurations_proto_rawDesc = "" +
 	"\x04trueR\bpdtCheck\x12@\n" +
 	"\x16ptp_no_exception_entry\x18\b \x01(\bB\v\xba\xb5\x18\a\n" +
 	"\x05falseR\x13ptpNoExceptionEntry\"!\n" +
-	"\x1fGetAccountConfigurationsRequest\"\x9f\x03\n" +
-	"\"UpdateAccountConfigurationsRequest\x12)\n" +
+	"\x1fGetAccountConfigurationsRequest\"\xc7\x03\n" +
+	"\"UpdateAccountConfigurationsRequest\x12A\n" +
 	"\n" +
-	"dtbp_check\x18\x01 \x01(\tB\n" +
-	"\xba\xb5\x18\x06\n" +
-	"\x04bothR\tdtbpCheck\x129\n" +
-	"\x13trade_confirm_email\x18\x02 \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"dtbp_check\x18\x01 \x01(\tB\"\xbaH\x15r\x13R\x05entryR\x04exitR\x04both\xba\xb5\x18\x06\n" +
+	"\x04bothR\tdtbpCheck\x12I\n" +
+	"\x13trade_confirm_email\x18\x02 \x01(\tB\x19\xbaH\rr\vR\x03allR\x04none\xba\xb5\x18\x05\n" +
 	"\x03allR\x11tradeConfirmEmail\x120\n" +
 	"\rsuspend_trade\x18\x03 \x01(\bB\v\xba\xb5\x18\a\n" +
 	"\x05falseR\fsuspendTrade\x129\n" +
@@ -416,16 +313,7 @@ const file_alpaca_trading_v1_account_configurations_proto_rawDesc = "" +
 	"\xba\xb5\x18\x06\n" +
 	"\x04trueR\bpdtCheck\x12@\n" +
 	"\x16ptp_no_exception_entry\x18\a \x01(\bB\v\xba\xb5\x18\a\n" +
-	"\x05falseR\x13ptpNoExceptionEntry*g\n" +
-	"\tDtbpCheck\x12\x1a\n" +
-	"\x16DTBP_CHECK_UNSPECIFIED\x10\x00\x12\x14\n" +
-	"\x10DTBP_CHECK_ENTRY\x10\x01\x12\x13\n" +
-	"\x0fDTBP_CHECK_EXIT\x10\x02\x12\x13\n" +
-	"\x0fDTBP_CHECK_BOTH\x10\x03*s\n" +
-	"\x11TradeConfirmEmail\x12#\n" +
-	"\x1fTRADE_CONFIRM_EMAIL_UNSPECIFIED\x10\x00\x12\x1b\n" +
-	"\x17TRADE_CONFIRM_EMAIL_ALL\x10\x01\x12\x1c\n" +
-	"\x18TRADE_CONFIRM_EMAIL_NONE\x10\x02B\xe7\x01\n" +
+	"\x05falseR\x13ptpNoExceptionEntryB\xe7\x01\n" +
 	"\x15com.alpaca.trading.v1B\x1aAccountConfigurationsProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (
@@ -440,14 +328,11 @@ func file_alpaca_trading_v1_account_configurations_proto_rawDescGZIP() []byte {
 	return file_alpaca_trading_v1_account_configurations_proto_rawDescData
 }
 
-var file_alpaca_trading_v1_account_configurations_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_alpaca_trading_v1_account_configurations_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_alpaca_trading_v1_account_configurations_proto_goTypes = []any{
-	(DtbpCheck)(0),                             // 0: alpaca.trading.v1.DtbpCheck
-	(TradeConfirmEmail)(0),                     // 1: alpaca.trading.v1.TradeConfirmEmail
-	(*AccountConfigurations)(nil),              // 2: alpaca.trading.v1.AccountConfigurations
-	(*GetAccountConfigurationsRequest)(nil),    // 3: alpaca.trading.v1.GetAccountConfigurationsRequest
-	(*UpdateAccountConfigurationsRequest)(nil), // 4: alpaca.trading.v1.UpdateAccountConfigurationsRequest
+	(*AccountConfigurations)(nil),              // 0: alpaca.trading.v1.AccountConfigurations
+	(*GetAccountConfigurationsRequest)(nil),    // 1: alpaca.trading.v1.GetAccountConfigurationsRequest
+	(*UpdateAccountConfigurationsRequest)(nil), // 2: alpaca.trading.v1.UpdateAccountConfigurationsRequest
 }
 var file_alpaca_trading_v1_account_configurations_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -467,14 +352,13 @@ func file_alpaca_trading_v1_account_configurations_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_trading_v1_account_configurations_proto_rawDesc), len(file_alpaca_trading_v1_account_configurations_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_alpaca_trading_v1_account_configurations_proto_goTypes,
 		DependencyIndexes: file_alpaca_trading_v1_account_configurations_proto_depIdxs,
-		EnumInfos:         file_alpaca_trading_v1_account_configurations_proto_enumTypes,
 		MessageInfos:      file_alpaca_trading_v1_account_configurations_proto_msgTypes,
 	}.Build()
 	File_alpaca_trading_v1_account_configurations_proto = out.File

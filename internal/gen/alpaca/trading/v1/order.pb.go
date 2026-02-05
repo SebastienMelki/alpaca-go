@@ -7,12 +7,14 @@
 package tradingv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -21,408 +23,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-// OrderSide represents the side of an order (buy or sell).
-type OrderSide int32
-
-const (
-	OrderSide_ORDER_SIDE_UNSPECIFIED OrderSide = 0
-	OrderSide_ORDER_SIDE_BUY         OrderSide = 1
-	OrderSide_ORDER_SIDE_SELL        OrderSide = 2
-)
-
-// Enum value maps for OrderSide.
-var (
-	OrderSide_name = map[int32]string{
-		0: "ORDER_SIDE_UNSPECIFIED",
-		1: "ORDER_SIDE_BUY",
-		2: "ORDER_SIDE_SELL",
-	}
-	OrderSide_value = map[string]int32{
-		"ORDER_SIDE_UNSPECIFIED": 0,
-		"ORDER_SIDE_BUY":         1,
-		"ORDER_SIDE_SELL":        2,
-	}
-)
-
-func (x OrderSide) Enum() *OrderSide {
-	p := new(OrderSide)
-	*p = x
-	return p
-}
-
-func (x OrderSide) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (OrderSide) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_order_proto_enumTypes[0].Descriptor()
-}
-
-func (OrderSide) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_order_proto_enumTypes[0]
-}
-
-func (x OrderSide) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use OrderSide.Descriptor instead.
-func (OrderSide) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_order_proto_rawDescGZIP(), []int{0}
-}
-
-// OrderType represents the type of order.
-type OrderType int32
-
-const (
-	OrderType_ORDER_TYPE_UNSPECIFIED   OrderType = 0
-	OrderType_ORDER_TYPE_MARKET        OrderType = 1
-	OrderType_ORDER_TYPE_LIMIT         OrderType = 2
-	OrderType_ORDER_TYPE_STOP          OrderType = 3
-	OrderType_ORDER_TYPE_STOP_LIMIT    OrderType = 4
-	OrderType_ORDER_TYPE_TRAILING_STOP OrderType = 5
-)
-
-// Enum value maps for OrderType.
-var (
-	OrderType_name = map[int32]string{
-		0: "ORDER_TYPE_UNSPECIFIED",
-		1: "ORDER_TYPE_MARKET",
-		2: "ORDER_TYPE_LIMIT",
-		3: "ORDER_TYPE_STOP",
-		4: "ORDER_TYPE_STOP_LIMIT",
-		5: "ORDER_TYPE_TRAILING_STOP",
-	}
-	OrderType_value = map[string]int32{
-		"ORDER_TYPE_UNSPECIFIED":   0,
-		"ORDER_TYPE_MARKET":        1,
-		"ORDER_TYPE_LIMIT":         2,
-		"ORDER_TYPE_STOP":          3,
-		"ORDER_TYPE_STOP_LIMIT":    4,
-		"ORDER_TYPE_TRAILING_STOP": 5,
-	}
-)
-
-func (x OrderType) Enum() *OrderType {
-	p := new(OrderType)
-	*p = x
-	return p
-}
-
-func (x OrderType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (OrderType) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_order_proto_enumTypes[1].Descriptor()
-}
-
-func (OrderType) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_order_proto_enumTypes[1]
-}
-
-func (x OrderType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use OrderType.Descriptor instead.
-func (OrderType) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_order_proto_rawDescGZIP(), []int{1}
-}
-
-// TimeInForce represents the time in force for an order.
-type TimeInForce int32
-
-const (
-	TimeInForce_TIME_IN_FORCE_UNSPECIFIED TimeInForce = 0
-	// Day order - good for the day only.
-	TimeInForce_TIME_IN_FORCE_DAY TimeInForce = 1
-	// Good 'til canceled.
-	TimeInForce_TIME_IN_FORCE_GTC TimeInForce = 2
-	// At the open.
-	TimeInForce_TIME_IN_FORCE_OPG TimeInForce = 3
-	// At the close.
-	TimeInForce_TIME_IN_FORCE_CLS TimeInForce = 4
-	// Immediate or cancel.
-	TimeInForce_TIME_IN_FORCE_IOC TimeInForce = 5
-	// Fill or kill.
-	TimeInForce_TIME_IN_FORCE_FOK TimeInForce = 6
-)
-
-// Enum value maps for TimeInForce.
-var (
-	TimeInForce_name = map[int32]string{
-		0: "TIME_IN_FORCE_UNSPECIFIED",
-		1: "TIME_IN_FORCE_DAY",
-		2: "TIME_IN_FORCE_GTC",
-		3: "TIME_IN_FORCE_OPG",
-		4: "TIME_IN_FORCE_CLS",
-		5: "TIME_IN_FORCE_IOC",
-		6: "TIME_IN_FORCE_FOK",
-	}
-	TimeInForce_value = map[string]int32{
-		"TIME_IN_FORCE_UNSPECIFIED": 0,
-		"TIME_IN_FORCE_DAY":         1,
-		"TIME_IN_FORCE_GTC":         2,
-		"TIME_IN_FORCE_OPG":         3,
-		"TIME_IN_FORCE_CLS":         4,
-		"TIME_IN_FORCE_IOC":         5,
-		"TIME_IN_FORCE_FOK":         6,
-	}
-)
-
-func (x TimeInForce) Enum() *TimeInForce {
-	p := new(TimeInForce)
-	*p = x
-	return p
-}
-
-func (x TimeInForce) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (TimeInForce) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_order_proto_enumTypes[2].Descriptor()
-}
-
-func (TimeInForce) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_order_proto_enumTypes[2]
-}
-
-func (x TimeInForce) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use TimeInForce.Descriptor instead.
-func (TimeInForce) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_order_proto_rawDescGZIP(), []int{2}
-}
-
-// OrderStatus represents the status of an order.
-type OrderStatus int32
-
-const (
-	OrderStatus_ORDER_STATUS_UNSPECIFIED OrderStatus = 0
-	// Order has been received by Alpaca and routed to exchanges.
-	OrderStatus_ORDER_STATUS_NEW OrderStatus = 1
-	// Order has been partially filled.
-	OrderStatus_ORDER_STATUS_PARTIALLY_FILLED OrderStatus = 2
-	// Order has been completely filled.
-	OrderStatus_ORDER_STATUS_FILLED OrderStatus = 3
-	// Order is done executing for the day.
-	OrderStatus_ORDER_STATUS_DONE_FOR_DAY OrderStatus = 4
-	// Order has been canceled.
-	OrderStatus_ORDER_STATUS_CANCELED OrderStatus = 5
-	// Order has expired.
-	OrderStatus_ORDER_STATUS_EXPIRED OrderStatus = 6
-	// Order was replaced by a new order.
-	OrderStatus_ORDER_STATUS_REPLACED OrderStatus = 7
-	// Order is waiting to be canceled.
-	OrderStatus_ORDER_STATUS_PENDING_CANCEL OrderStatus = 8
-	// Order is waiting to be replaced.
-	OrderStatus_ORDER_STATUS_PENDING_REPLACE OrderStatus = 9
-	// Order has been received but not yet accepted for execution.
-	OrderStatus_ORDER_STATUS_PENDING_NEW OrderStatus = 10
-	// Order has been received and accepted for execution.
-	OrderStatus_ORDER_STATUS_ACCEPTED OrderStatus = 11
-	// Order has been accepted for bidding.
-	OrderStatus_ORDER_STATUS_ACCEPTED_FOR_BIDDING OrderStatus = 12
-	// Order has been stopped.
-	OrderStatus_ORDER_STATUS_STOPPED OrderStatus = 13
-	// Order has been rejected.
-	OrderStatus_ORDER_STATUS_REJECTED OrderStatus = 14
-	// Order has been suspended.
-	OrderStatus_ORDER_STATUS_SUSPENDED OrderStatus = 15
-	// Order has been calculated.
-	OrderStatus_ORDER_STATUS_CALCULATED OrderStatus = 16
-	// Order is held.
-	OrderStatus_ORDER_STATUS_HELD OrderStatus = 17
-)
-
-// Enum value maps for OrderStatus.
-var (
-	OrderStatus_name = map[int32]string{
-		0:  "ORDER_STATUS_UNSPECIFIED",
-		1:  "ORDER_STATUS_NEW",
-		2:  "ORDER_STATUS_PARTIALLY_FILLED",
-		3:  "ORDER_STATUS_FILLED",
-		4:  "ORDER_STATUS_DONE_FOR_DAY",
-		5:  "ORDER_STATUS_CANCELED",
-		6:  "ORDER_STATUS_EXPIRED",
-		7:  "ORDER_STATUS_REPLACED",
-		8:  "ORDER_STATUS_PENDING_CANCEL",
-		9:  "ORDER_STATUS_PENDING_REPLACE",
-		10: "ORDER_STATUS_PENDING_NEW",
-		11: "ORDER_STATUS_ACCEPTED",
-		12: "ORDER_STATUS_ACCEPTED_FOR_BIDDING",
-		13: "ORDER_STATUS_STOPPED",
-		14: "ORDER_STATUS_REJECTED",
-		15: "ORDER_STATUS_SUSPENDED",
-		16: "ORDER_STATUS_CALCULATED",
-		17: "ORDER_STATUS_HELD",
-	}
-	OrderStatus_value = map[string]int32{
-		"ORDER_STATUS_UNSPECIFIED":          0,
-		"ORDER_STATUS_NEW":                  1,
-		"ORDER_STATUS_PARTIALLY_FILLED":     2,
-		"ORDER_STATUS_FILLED":               3,
-		"ORDER_STATUS_DONE_FOR_DAY":         4,
-		"ORDER_STATUS_CANCELED":             5,
-		"ORDER_STATUS_EXPIRED":              6,
-		"ORDER_STATUS_REPLACED":             7,
-		"ORDER_STATUS_PENDING_CANCEL":       8,
-		"ORDER_STATUS_PENDING_REPLACE":      9,
-		"ORDER_STATUS_PENDING_NEW":          10,
-		"ORDER_STATUS_ACCEPTED":             11,
-		"ORDER_STATUS_ACCEPTED_FOR_BIDDING": 12,
-		"ORDER_STATUS_STOPPED":              13,
-		"ORDER_STATUS_REJECTED":             14,
-		"ORDER_STATUS_SUSPENDED":            15,
-		"ORDER_STATUS_CALCULATED":           16,
-		"ORDER_STATUS_HELD":                 17,
-	}
-)
-
-func (x OrderStatus) Enum() *OrderStatus {
-	p := new(OrderStatus)
-	*p = x
-	return p
-}
-
-func (x OrderStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (OrderStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_order_proto_enumTypes[3].Descriptor()
-}
-
-func (OrderStatus) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_order_proto_enumTypes[3]
-}
-
-func (x OrderStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use OrderStatus.Descriptor instead.
-func (OrderStatus) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_order_proto_rawDescGZIP(), []int{3}
-}
-
-// OrderClass represents the class of order.
-type OrderClass int32
-
-const (
-	OrderClass_ORDER_CLASS_UNSPECIFIED OrderClass = 0
-	// Simple order.
-	OrderClass_ORDER_CLASS_SIMPLE OrderClass = 1
-	// Bracket order (entry with take profit and stop loss).
-	OrderClass_ORDER_CLASS_BRACKET OrderClass = 2
-	// One-cancels-other order.
-	OrderClass_ORDER_CLASS_OCO OrderClass = 3
-	// One-triggers-other order.
-	OrderClass_ORDER_CLASS_OTO OrderClass = 4
-)
-
-// Enum value maps for OrderClass.
-var (
-	OrderClass_name = map[int32]string{
-		0: "ORDER_CLASS_UNSPECIFIED",
-		1: "ORDER_CLASS_SIMPLE",
-		2: "ORDER_CLASS_BRACKET",
-		3: "ORDER_CLASS_OCO",
-		4: "ORDER_CLASS_OTO",
-	}
-	OrderClass_value = map[string]int32{
-		"ORDER_CLASS_UNSPECIFIED": 0,
-		"ORDER_CLASS_SIMPLE":      1,
-		"ORDER_CLASS_BRACKET":     2,
-		"ORDER_CLASS_OCO":         3,
-		"ORDER_CLASS_OTO":         4,
-	}
-)
-
-func (x OrderClass) Enum() *OrderClass {
-	p := new(OrderClass)
-	*p = x
-	return p
-}
-
-func (x OrderClass) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (OrderClass) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_order_proto_enumTypes[4].Descriptor()
-}
-
-func (OrderClass) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_order_proto_enumTypes[4]
-}
-
-func (x OrderClass) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use OrderClass.Descriptor instead.
-func (OrderClass) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_order_proto_rawDescGZIP(), []int{4}
-}
-
-// AssetClass represents the asset class.
-type AssetClass int32
-
-const (
-	AssetClass_ASSET_CLASS_UNSPECIFIED AssetClass = 0
-	AssetClass_ASSET_CLASS_US_EQUITY   AssetClass = 1
-	AssetClass_ASSET_CLASS_CRYPTO      AssetClass = 2
-	AssetClass_ASSET_CLASS_US_OPTION   AssetClass = 3
-)
-
-// Enum value maps for AssetClass.
-var (
-	AssetClass_name = map[int32]string{
-		0: "ASSET_CLASS_UNSPECIFIED",
-		1: "ASSET_CLASS_US_EQUITY",
-		2: "ASSET_CLASS_CRYPTO",
-		3: "ASSET_CLASS_US_OPTION",
-	}
-	AssetClass_value = map[string]int32{
-		"ASSET_CLASS_UNSPECIFIED": 0,
-		"ASSET_CLASS_US_EQUITY":   1,
-		"ASSET_CLASS_CRYPTO":      2,
-		"ASSET_CLASS_US_OPTION":   3,
-	}
-)
-
-func (x AssetClass) Enum() *AssetClass {
-	p := new(AssetClass)
-	*p = x
-	return p
-}
-
-func (x AssetClass) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (AssetClass) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_order_proto_enumTypes[5].Descriptor()
-}
-
-func (AssetClass) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_order_proto_enumTypes[5]
-}
-
-func (x AssetClass) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use AssetClass.Descriptor instead.
-func (AssetClass) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_order_proto_rawDescGZIP(), []int{5}
-}
 
 // Order represents a trading order.
 type Order struct {
@@ -447,16 +47,16 @@ type Order struct {
 	FailedAt string `protobuf:"bytes,9,opt,name=failed_at,json=failedAt,proto3" json:"failed_at,omitempty"`
 	// Timestamp when the order was replaced.
 	ReplacedAt string `protobuf:"bytes,10,opt,name=replaced_at,json=replacedAt,proto3" json:"replaced_at,omitempty"`
-	// Order ID that replaced this order.
+	// Order ID that replaced this order (optional, UUID format when present).
 	ReplacedBy string `protobuf:"bytes,11,opt,name=replaced_by,json=replacedBy,proto3" json:"replaced_by,omitempty"`
-	// Order ID that this order replaces.
+	// Order ID that this order replaces (optional, UUID format when present).
 	Replaces string `protobuf:"bytes,12,opt,name=replaces,proto3" json:"replaces,omitempty"`
 	// Asset ID.
 	AssetId string `protobuf:"bytes,13,opt,name=asset_id,json=assetId,proto3" json:"asset_id,omitempty"`
 	// Asset symbol.
 	Symbol string `protobuf:"bytes,14,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	// Asset class.
-	AssetClass AssetClass `protobuf:"varint,15,opt,name=asset_class,json=assetClass,proto3,enum=alpaca.trading.v1.AssetClass" json:"asset_class,omitempty"`
+	AssetClass string `protobuf:"bytes,15,opt,name=asset_class,json=assetClass,proto3" json:"asset_class,omitempty"`
 	// Notional value (for fractional orders).
 	Notional string `protobuf:"bytes,16,opt,name=notional,proto3" json:"notional,omitempty"`
 	// Quantity ordered.
@@ -466,21 +66,21 @@ type Order struct {
 	// Average fill price.
 	FilledAvgPrice string `protobuf:"bytes,19,opt,name=filled_avg_price,json=filledAvgPrice,proto3" json:"filled_avg_price,omitempty"`
 	// Order class.
-	OrderClass OrderClass `protobuf:"varint,20,opt,name=order_class,json=orderClass,proto3,enum=alpaca.trading.v1.OrderClass" json:"order_class,omitempty"`
+	OrderClass string `protobuf:"bytes,20,opt,name=order_class,json=orderClass,proto3" json:"order_class,omitempty"`
 	// Order type.
-	OrderType OrderType `protobuf:"varint,21,opt,name=order_type,json=orderType,proto3,enum=alpaca.trading.v1.OrderType" json:"order_type,omitempty"`
+	OrderType string `protobuf:"bytes,21,opt,name=order_type,json=orderType,proto3" json:"order_type,omitempty"`
 	// Deprecated: use order_type instead.
-	Type OrderType `protobuf:"varint,22,opt,name=type,proto3,enum=alpaca.trading.v1.OrderType" json:"type,omitempty"`
+	Type string `protobuf:"bytes,22,opt,name=type,proto3" json:"type,omitempty"`
 	// Order side.
-	Side OrderSide `protobuf:"varint,23,opt,name=side,proto3,enum=alpaca.trading.v1.OrderSide" json:"side,omitempty"`
+	Side string `protobuf:"bytes,23,opt,name=side,proto3" json:"side,omitempty"`
 	// Time in force.
-	TimeInForce TimeInForce `protobuf:"varint,24,opt,name=time_in_force,json=timeInForce,proto3,enum=alpaca.trading.v1.TimeInForce" json:"time_in_force,omitempty"`
+	TimeInForce string `protobuf:"bytes,24,opt,name=time_in_force,json=timeInForce,proto3" json:"time_in_force,omitempty"`
 	// Limit price (for limit orders).
 	LimitPrice string `protobuf:"bytes,25,opt,name=limit_price,json=limitPrice,proto3" json:"limit_price,omitempty"`
 	// Stop price (for stop orders).
 	StopPrice string `protobuf:"bytes,26,opt,name=stop_price,json=stopPrice,proto3" json:"stop_price,omitempty"`
 	// Order status.
-	Status OrderStatus `protobuf:"varint,27,opt,name=status,proto3,enum=alpaca.trading.v1.OrderStatus" json:"status,omitempty"`
+	Status string `protobuf:"bytes,27,opt,name=status,proto3" json:"status,omitempty"`
 	// Whether the order is for extended hours.
 	ExtendedHours bool `protobuf:"varint,28,opt,name=extended_hours,json=extendedHours,proto3" json:"extended_hours,omitempty"`
 	// Leg orders (for bracket orders).
@@ -490,7 +90,17 @@ type Order struct {
 	// Trail price (for trailing stop orders).
 	TrailPrice string `protobuf:"bytes,31,opt,name=trail_price,json=trailPrice,proto3" json:"trail_price,omitempty"`
 	// High water mark (for trailing stop orders).
-	Hwm           string `protobuf:"bytes,32,opt,name=hwm,proto3" json:"hwm,omitempty"`
+	Hwm string `protobuf:"bytes,32,opt,name=hwm,proto3" json:"hwm,omitempty"`
+	// Position intent for options orders.
+	PositionIntent string `protobuf:"bytes,33,opt,name=position_intent,json=positionIntent,proto3" json:"position_intent,omitempty"`
+	// Subtag for order categorization.
+	Subtag string `protobuf:"bytes,34,opt,name=subtag,proto3" json:"subtag,omitempty"`
+	// Source of the order.
+	Source string `protobuf:"bytes,35,opt,name=source,proto3" json:"source,omitempty"`
+	// Expiration timestamp for options orders (RFC 3339).
+	ExpiresAt string `protobuf:"bytes,36,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	// Proportional quantity for multi-leg orders.
+	RatioQty      string `protobuf:"bytes,37,opt,name=ratio_qty,json=ratioQty,proto3" json:"ratio_qty,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -623,11 +233,11 @@ func (x *Order) GetSymbol() string {
 	return ""
 }
 
-func (x *Order) GetAssetClass() AssetClass {
+func (x *Order) GetAssetClass() string {
 	if x != nil {
 		return x.AssetClass
 	}
-	return AssetClass_ASSET_CLASS_UNSPECIFIED
+	return ""
 }
 
 func (x *Order) GetNotional() string {
@@ -658,39 +268,39 @@ func (x *Order) GetFilledAvgPrice() string {
 	return ""
 }
 
-func (x *Order) GetOrderClass() OrderClass {
+func (x *Order) GetOrderClass() string {
 	if x != nil {
 		return x.OrderClass
 	}
-	return OrderClass_ORDER_CLASS_UNSPECIFIED
+	return ""
 }
 
-func (x *Order) GetOrderType() OrderType {
+func (x *Order) GetOrderType() string {
 	if x != nil {
 		return x.OrderType
 	}
-	return OrderType_ORDER_TYPE_UNSPECIFIED
+	return ""
 }
 
-func (x *Order) GetType() OrderType {
+func (x *Order) GetType() string {
 	if x != nil {
 		return x.Type
 	}
-	return OrderType_ORDER_TYPE_UNSPECIFIED
+	return ""
 }
 
-func (x *Order) GetSide() OrderSide {
+func (x *Order) GetSide() string {
 	if x != nil {
 		return x.Side
 	}
-	return OrderSide_ORDER_SIDE_UNSPECIFIED
+	return ""
 }
 
-func (x *Order) GetTimeInForce() TimeInForce {
+func (x *Order) GetTimeInForce() string {
 	if x != nil {
 		return x.TimeInForce
 	}
-	return TimeInForce_TIME_IN_FORCE_UNSPECIFIED
+	return ""
 }
 
 func (x *Order) GetLimitPrice() string {
@@ -707,11 +317,11 @@ func (x *Order) GetStopPrice() string {
 	return ""
 }
 
-func (x *Order) GetStatus() OrderStatus {
+func (x *Order) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
-	return OrderStatus_ORDER_STATUS_UNSPECIFIED
+	return ""
 }
 
 func (x *Order) GetExtendedHours() bool {
@@ -749,13 +359,48 @@ func (x *Order) GetHwm() string {
 	return ""
 }
 
+func (x *Order) GetPositionIntent() string {
+	if x != nil {
+		return x.PositionIntent
+	}
+	return ""
+}
+
+func (x *Order) GetSubtag() string {
+	if x != nil {
+		return x.Subtag
+	}
+	return ""
+}
+
+func (x *Order) GetSource() string {
+	if x != nil {
+		return x.Source
+	}
+	return ""
+}
+
+func (x *Order) GetExpiresAt() string {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return ""
+}
+
+func (x *Order) GetRatioQty() string {
+	if x != nil {
+		return x.RatioQty
+	}
+	return ""
+}
+
 var File_alpaca_trading_v1_order_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_order_proto_rawDesc = "" +
 	"\n" +
-	"\x1dalpaca/trading/v1/order.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\"\xd2\f\n" +
-	"\x05Order\x12:\n" +
-	"\x02id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
+	"\x1dalpaca/trading/v1/order.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xea\x11\n" +
+	"\x05Order\x12B\n" +
+	"\x02id\x18\x01 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$61e69015-8549-4bfd-b9c3-01e75843f47dR\x02id\x12:\n" +
 	"\x0fclient_order_id\x18\x02 \x01(\tB\x12\xba\xb5\x18\x0e\n" +
 	"\fmy_order_123R\rclientOrderId\x129\n" +
@@ -776,17 +421,19 @@ const file_alpaca_trading_v1_order_proto_rawDesc = "" +
 	"\tfailed_at\x18\t \x01(\tR\bfailedAt\x12\x1f\n" +
 	"\vreplaced_at\x18\n" +
 	" \x01(\tR\n" +
-	"replacedAt\x12\x1f\n" +
-	"\vreplaced_by\x18\v \x01(\tR\n" +
-	"replacedBy\x12\x1a\n" +
-	"\breplaces\x18\f \x01(\tR\breplaces\x12E\n" +
-	"\basset_id\x18\r \x01(\tB*\xba\xb5\x18&\n" +
+	"replacedAt\x12K\n" +
+	"\vreplaced_by\x18\v \x01(\tB*\xba\xb5\x18&\n" +
+	"$71e69015-8549-4bfd-b9c3-01e75843f47dR\n" +
+	"replacedBy\x12F\n" +
+	"\breplaces\x18\f \x01(\tB*\xba\xb5\x18&\n" +
+	"$81e69015-8549-4bfd-b9c3-01e75843f47dR\breplaces\x12M\n" +
+	"\basset_id\x18\r \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$b0b6dd9d-8b9b-48a9-ba46-b9d54906e415R\aassetId\x12\"\n" +
 	"\x06symbol\x18\x0e \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
-	"\x04AAPLR\x06symbol\x12G\n" +
-	"\vasset_class\x18\x0f \x01(\x0e2\x1d.alpaca.trading.v1.AssetClassB\a\xba\xb5\x18\x03\n" +
-	"\x011R\n" +
+	"\x04AAPLR\x06symbol\x12U\n" +
+	"\vasset_class\x18\x0f \x01(\tB4\xbaH\"r R\x00R\tus_equityR\x06cryptoR\tus_option\xba\xb5\x18\v\n" +
+	"\tus_equityR\n" +
 	"assetClass\x12)\n" +
 	"\bnotional\x18\x10 \x01(\tB\r\xba\xb5\x18\t\n" +
 	"\a1000.00R\bnotional\x12\x1a\n" +
@@ -796,27 +443,30 @@ const file_alpaca_trading_v1_order_proto_rawDesc = "" +
 	"filled_qty\x18\x12 \x01(\tB\b\xba\xb5\x18\x04\n" +
 	"\x0210R\tfilledQty\x126\n" +
 	"\x10filled_avg_price\x18\x13 \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06150.25R\x0efilledAvgPrice\x12G\n" +
-	"\vorder_class\x18\x14 \x01(\x0e2\x1d.alpaca.trading.v1.OrderClassB\a\xba\xb5\x18\x03\n" +
-	"\x011R\n" +
-	"orderClass\x12D\n" +
+	"\x06150.25R\x0efilledAvgPrice\x12U\n" +
+	"\vorder_class\x18\x14 \x01(\tB4\xbaH%r#R\x00R\x06simpleR\abracketR\x03ocoR\x03otoR\x04mleg\xba\xb5\x18\b\n" +
+	"\x06simpleR\n" +
+	"orderClass\x12a\n" +
 	"\n" +
-	"order_type\x18\x15 \x01(\x0e2\x1c.alpaca.trading.v1.OrderTypeB\a\xba\xb5\x18\x03\n" +
-	"\x012R\torderType\x129\n" +
-	"\x04type\x18\x16 \x01(\x0e2\x1c.alpaca.trading.v1.OrderTypeB\a\xba\xb5\x18\x03\n" +
-	"\x012R\x04type\x129\n" +
-	"\x04side\x18\x17 \x01(\x0e2\x1c.alpaca.trading.v1.OrderSideB\a\xba\xb5\x18\x03\n" +
-	"\x011R\x04side\x12K\n" +
-	"\rtime_in_force\x18\x18 \x01(\x0e2\x1e.alpaca.trading.v1.TimeInForceB\a\xba\xb5\x18\x03\n" +
-	"\x011R\vtimeInForce\x12-\n" +
+	"order_type\x18\x15 \x01(\tBB\xbaH4r2R\x00R\x06marketR\x05limitR\x04stopR\n" +
+	"stop_limitR\rtrailing_stop\xba\xb5\x18\a\n" +
+	"\x05limitR\torderType\x12V\n" +
+	"\x04type\x18\x16 \x01(\tBB\xbaH4r2R\x00R\x06marketR\x05limitR\x04stopR\n" +
+	"stop_limitR\rtrailing_stop\xba\xb5\x18\a\n" +
+	"\x05limitR\x04type\x12/\n" +
+	"\x04side\x18\x17 \x01(\tB\x1b\xbaH\x0fr\rR\x00R\x03buyR\x04sell\xba\xb5\x18\x05\n" +
+	"\x03buyR\x04side\x12R\n" +
+	"\rtime_in_force\x18\x18 \x01(\tB.\xbaH\"r R\x00R\x03dayR\x03gtcR\x03opgR\x03clsR\x03iocR\x03fok\xba\xb5\x18\x05\n" +
+	"\x03dayR\vtimeInForce\x12-\n" +
 	"\vlimit_price\x18\x19 \x01(\tB\f\xba\xb5\x18\b\n" +
 	"\x06150.00R\n" +
 	"limitPrice\x12+\n" +
 	"\n" +
 	"stop_price\x18\x1a \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06145.00R\tstopPrice\x12?\n" +
-	"\x06status\x18\x1b \x01(\x0e2\x1e.alpaca.trading.v1.OrderStatusB\a\xba\xb5\x18\x03\n" +
-	"\x013R\x06status\x122\n" +
+	"\x06145.00R\tstopPrice\x12\xf6\x01\n" +
+	"\x06status\x18\x1b \x01(\tB\xdd\x01\xbaH\xcd\x01r\xca\x01R\x00R\x03newR\x10partially_filledR\x06filledR\fdone_for_dayR\bcanceledR\aexpiredR\breplacedR\x0epending_cancelR\x0fpending_replaceR\vpending_newR\bacceptedR\x14accepted_for_biddingR\astoppedR\brejectedR\tsuspendedR\n" +
+	"calculatedR\x04held\xba\xb5\x18\b\n" +
+	"\x06filledR\x06status\x122\n" +
 	"\x0eextended_hours\x18\x1c \x01(\bB\v\xba\xb5\x18\a\n" +
 	"\x05falseR\rextendedHours\x12,\n" +
 	"\x04legs\x18\x1d \x03(\v2\x18.alpaca.trading.v1.OrderR\x04legs\x12.\n" +
@@ -827,59 +477,18 @@ const file_alpaca_trading_v1_order_proto_rawDesc = "" +
 	"\x045.00R\n" +
 	"trailPrice\x12\x1e\n" +
 	"\x03hwm\x18  \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06155.00R\x03hwm*P\n" +
-	"\tOrderSide\x12\x1a\n" +
-	"\x16ORDER_SIDE_UNSPECIFIED\x10\x00\x12\x12\n" +
-	"\x0eORDER_SIDE_BUY\x10\x01\x12\x13\n" +
-	"\x0fORDER_SIDE_SELL\x10\x02*\xa2\x01\n" +
-	"\tOrderType\x12\x1a\n" +
-	"\x16ORDER_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
-	"\x11ORDER_TYPE_MARKET\x10\x01\x12\x14\n" +
-	"\x10ORDER_TYPE_LIMIT\x10\x02\x12\x13\n" +
-	"\x0fORDER_TYPE_STOP\x10\x03\x12\x19\n" +
-	"\x15ORDER_TYPE_STOP_LIMIT\x10\x04\x12\x1c\n" +
-	"\x18ORDER_TYPE_TRAILING_STOP\x10\x05*\xb6\x01\n" +
-	"\vTimeInForce\x12\x1d\n" +
-	"\x19TIME_IN_FORCE_UNSPECIFIED\x10\x00\x12\x15\n" +
-	"\x11TIME_IN_FORCE_DAY\x10\x01\x12\x15\n" +
-	"\x11TIME_IN_FORCE_GTC\x10\x02\x12\x15\n" +
-	"\x11TIME_IN_FORCE_OPG\x10\x03\x12\x15\n" +
-	"\x11TIME_IN_FORCE_CLS\x10\x04\x12\x15\n" +
-	"\x11TIME_IN_FORCE_IOC\x10\x05\x12\x15\n" +
-	"\x11TIME_IN_FORCE_FOK\x10\x06*\x94\x04\n" +
-	"\vOrderStatus\x12\x1c\n" +
-	"\x18ORDER_STATUS_UNSPECIFIED\x10\x00\x12\x14\n" +
-	"\x10ORDER_STATUS_NEW\x10\x01\x12!\n" +
-	"\x1dORDER_STATUS_PARTIALLY_FILLED\x10\x02\x12\x17\n" +
-	"\x13ORDER_STATUS_FILLED\x10\x03\x12\x1d\n" +
-	"\x19ORDER_STATUS_DONE_FOR_DAY\x10\x04\x12\x19\n" +
-	"\x15ORDER_STATUS_CANCELED\x10\x05\x12\x18\n" +
-	"\x14ORDER_STATUS_EXPIRED\x10\x06\x12\x19\n" +
-	"\x15ORDER_STATUS_REPLACED\x10\a\x12\x1f\n" +
-	"\x1bORDER_STATUS_PENDING_CANCEL\x10\b\x12 \n" +
-	"\x1cORDER_STATUS_PENDING_REPLACE\x10\t\x12\x1c\n" +
-	"\x18ORDER_STATUS_PENDING_NEW\x10\n" +
-	"\x12\x19\n" +
-	"\x15ORDER_STATUS_ACCEPTED\x10\v\x12%\n" +
-	"!ORDER_STATUS_ACCEPTED_FOR_BIDDING\x10\f\x12\x18\n" +
-	"\x14ORDER_STATUS_STOPPED\x10\r\x12\x19\n" +
-	"\x15ORDER_STATUS_REJECTED\x10\x0e\x12\x1a\n" +
-	"\x16ORDER_STATUS_SUSPENDED\x10\x0f\x12\x1b\n" +
-	"\x17ORDER_STATUS_CALCULATED\x10\x10\x12\x15\n" +
-	"\x11ORDER_STATUS_HELD\x10\x11*\x84\x01\n" +
+	"\x06155.00R\x03hwm\x12y\n" +
+	"\x0fposition_intent\x18! \x01(\tBP\xbaH<r:R\x00R\vbuy_to_openR\fbuy_to_closeR\fsell_to_openR\rsell_to_close\xba\xb5\x18\r\n" +
+	"\vbuy_to_openR\x0epositionIntent\x12$\n" +
+	"\x06subtag\x18\" \x01(\tB\f\xba\xb5\x18\b\n" +
+	"\x06mobileR\x06subtag\x12!\n" +
+	"\x06source\x18# \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"\x03apiR\x06source\x129\n" +
 	"\n" +
-	"OrderClass\x12\x1b\n" +
-	"\x17ORDER_CLASS_UNSPECIFIED\x10\x00\x12\x16\n" +
-	"\x12ORDER_CLASS_SIMPLE\x10\x01\x12\x17\n" +
-	"\x13ORDER_CLASS_BRACKET\x10\x02\x12\x13\n" +
-	"\x0fORDER_CLASS_OCO\x10\x03\x12\x13\n" +
-	"\x0fORDER_CLASS_OTO\x10\x04*w\n" +
-	"\n" +
-	"AssetClass\x12\x1b\n" +
-	"\x17ASSET_CLASS_UNSPECIFIED\x10\x00\x12\x19\n" +
-	"\x15ASSET_CLASS_US_EQUITY\x10\x01\x12\x16\n" +
-	"\x12ASSET_CLASS_CRYPTO\x10\x02\x12\x19\n" +
-	"\x15ASSET_CLASS_US_OPTION\x10\x03B\xd7\x01\n" +
+	"expires_at\x18$ \x01(\tB\x1a\xba\xb5\x18\x16\n" +
+	"\x142024-01-19T21:00:00ZR\texpiresAt\x12$\n" +
+	"\tratio_qty\x18% \x01(\tB\a\xba\xb5\x18\x03\n" +
+	"\x011R\bratioQtyB\xd7\x01\n" +
 	"\x15com.alpaca.trading.v1B\n" +
 	"OrderProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
@@ -895,31 +504,17 @@ func file_alpaca_trading_v1_order_proto_rawDescGZIP() []byte {
 	return file_alpaca_trading_v1_order_proto_rawDescData
 }
 
-var file_alpaca_trading_v1_order_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
 var file_alpaca_trading_v1_order_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_alpaca_trading_v1_order_proto_goTypes = []any{
-	(OrderSide)(0),   // 0: alpaca.trading.v1.OrderSide
-	(OrderType)(0),   // 1: alpaca.trading.v1.OrderType
-	(TimeInForce)(0), // 2: alpaca.trading.v1.TimeInForce
-	(OrderStatus)(0), // 3: alpaca.trading.v1.OrderStatus
-	(OrderClass)(0),  // 4: alpaca.trading.v1.OrderClass
-	(AssetClass)(0),  // 5: alpaca.trading.v1.AssetClass
-	(*Order)(nil),    // 6: alpaca.trading.v1.Order
+	(*Order)(nil), // 0: alpaca.trading.v1.Order
 }
 var file_alpaca_trading_v1_order_proto_depIdxs = []int32{
-	5, // 0: alpaca.trading.v1.Order.asset_class:type_name -> alpaca.trading.v1.AssetClass
-	4, // 1: alpaca.trading.v1.Order.order_class:type_name -> alpaca.trading.v1.OrderClass
-	1, // 2: alpaca.trading.v1.Order.order_type:type_name -> alpaca.trading.v1.OrderType
-	1, // 3: alpaca.trading.v1.Order.type:type_name -> alpaca.trading.v1.OrderType
-	0, // 4: alpaca.trading.v1.Order.side:type_name -> alpaca.trading.v1.OrderSide
-	2, // 5: alpaca.trading.v1.Order.time_in_force:type_name -> alpaca.trading.v1.TimeInForce
-	3, // 6: alpaca.trading.v1.Order.status:type_name -> alpaca.trading.v1.OrderStatus
-	6, // 7: alpaca.trading.v1.Order.legs:type_name -> alpaca.trading.v1.Order
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	0, // 0: alpaca.trading.v1.Order.legs:type_name -> alpaca.trading.v1.Order
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_trading_v1_order_proto_init() }
@@ -932,14 +527,13 @@ func file_alpaca_trading_v1_order_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_trading_v1_order_proto_rawDesc), len(file_alpaca_trading_v1_order_proto_rawDesc)),
-			NumEnums:      6,
+			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_alpaca_trading_v1_order_proto_goTypes,
 		DependencyIndexes: file_alpaca_trading_v1_order_proto_depIdxs,
-		EnumInfos:         file_alpaca_trading_v1_order_proto_enumTypes,
 		MessageInfos:      file_alpaca_trading_v1_order_proto_msgTypes,
 	}.Build()
 	File_alpaca_trading_v1_order_proto = out.File

@@ -1,0 +1,152 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// JITSettlement represents a Just-In-Time settlement.
+message JITSettlement {
+  // Settlement ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Source account number.
+  string source_account_number = 2 [(sebuf.http.field_examples) = { values: ["ABC123456"] }];
+
+  // Total settlement amount.
+  string total_amount = 3 [(sebuf.http.field_examples) = { values: ["10000.00"] }];
+
+  // Total interest amount accrued.
+  string interest_amount = 4 [(sebuf.http.field_examples) = { values: ["25.00"] }];
+
+  // Settlement status.
+  string status = 5 [(sebuf.http.field_examples) = { values: ["COMPLETED"] }];
+
+  // Reason for failure, if applicable.
+  string reason = 6 [(sebuf.http.field_examples) = { values: ["Insufficient funds"] }];
+
+  // Additional information.
+  string additional_info = 7 [(sebuf.http.field_examples) = { values: ["Manual review required"] }];
+
+  // Timestamp when settlement was completed.
+  string completed_at = 8 [(sebuf.http.field_examples) = { values: ["2024-01-15T12:00:00Z"] }];
+
+  // Timestamp when settlement was created.
+  string created_at = 9 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when settlement was last updated.
+  string updated_at = 10 [(sebuf.http.field_examples) = { values: ["2024-01-15T12:00:00Z"] }];
+
+  // Currency of the settlement.
+  string currency = 11 [(sebuf.http.field_examples) = { values: ["USD"] }];
+
+  // Asset class (crypto or us_equity).
+  string asset_class = 12 [(sebuf.http.field_examples) = { values: ["us_equity"] }];
+}
+
+// JITLedger represents a JIT ledger account.
+message JITLedger {
+  // Ledger ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["2896b9e2-3198-44cd-a08e-4cc4079aee33"] }];
+
+  // Ledger name.
+  string ledger_name = 2 [(sebuf.http.field_examples) = { values: ["Securities JIT IN"] }];
+
+  // Ledger status.
+  string status = 3 [(sebuf.http.field_examples) = { values: ["active"] }];
+
+  // Creation time in UNIX format.
+  string created_at = 4 [(sebuf.http.field_examples) = { values: ["1653532627"] }];
+}
+
+// JITLedgerBalance represents a balance entry for a JIT ledger.
+message JITLedgerBalance {
+  // Balance amount.
+  string balance = 1 [(sebuf.http.field_examples) = { values: ["5000.00"] }];
+
+  // Timestamp of the balance.
+  string as_of = 2 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// JITLimits represents JIT funding limits.
+message JITLimits {
+  // Maximum single transfer amount.
+  string max_transfer = 1 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Maximum daily total amount.
+  string max_daily = 2 [(sebuf.http.field_examples) = { values: ["250000.00"] }];
+
+  // Current daily usage.
+  string daily_used = 3 [(sebuf.http.field_examples) = { values: ["75000.00"] }];
+
+  // Remaining daily limit.
+  string daily_remaining = 4 [(sebuf.http.field_examples) = { values: ["175000.00"] }];
+}
+
+// ListJITSettlementsRequest is the request to list JIT settlements.
+message ListJITSettlementsRequest {
+  // Filter by comma-delimited list of statuses.
+  string statuses = 1 [
+    (sebuf.http.query) = { name: "statuses" },
+    (sebuf.http.field_examples) = { values: ["PENDING,COMPLETED"] }
+  ];
+}
+
+// ListJITSettlementsResponse is the response containing JIT settlements.
+message ListJITSettlementsResponse {
+  // List of settlements.
+  repeated JITSettlement settlements = 1;
+}
+
+// GetJITSettlementRequest is the request to get a specific JIT settlement.
+message GetJITSettlementRequest {
+  // The settlement ID (required).
+  string settlement_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// CreateJITSettlementRequest is the request to create a JIT settlement.
+message CreateJITSettlementRequest {
+  // List of transfer IDs to settle.
+  repeated string transfer_ids = 1;
+
+  // Source account number.
+  string source_account_number = 2 [
+    (sebuf.http.field_examples) = { values: ["ABC123456"] }
+  ];
+}
+
+// ListJITLedgersRequest is the request to list JIT ledgers.
+message ListJITLedgersRequest {}
+
+// ListJITLedgersResponse is the response containing JIT ledgers.
+message ListJITLedgersResponse {
+  // Map of ledger list.
+  map<string, JITLedgerList> ledgers = 1 [(sebuf.http.unwrap) = true];
+}
+
+message JITLedgerList {
+  repeated JITLedger ledgers = 1 [(sebuf.http.unwrap) = true];
+}
+
+// GetJITLedgerBalancesRequest is the request to get JIT ledger balances.
+message GetJITLedgerBalancesRequest {
+  // The ledger ID (required).
+  string ledger_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// GetJITLedgerBalancesResponse is the response containing ledger balances.
+message GetJITLedgerBalancesResponse {
+  // List of balance entries.
+  repeated JITLedgerBalance balances = 1;
+}
+
+// GetJITLimitsRequest is the request to get JIT limits.
+message GetJITLimitsRequest {}

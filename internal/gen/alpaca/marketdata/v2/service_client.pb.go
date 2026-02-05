@@ -5,6 +5,7 @@ package marketdatav2
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -28,31 +29,22 @@ const (
 type MarketDataServiceClient interface {
 	GetStockBars(ctx context.Context, req *GetStockBarsRequest, opts ...MarketDataServiceCallOption) (*GetStockBarsResponse, error)
 	GetLatestStockBars(ctx context.Context, req *GetLatestStockBarsRequest, opts ...MarketDataServiceCallOption) (*GetLatestStockBarsResponse, error)
+	GetStockBarsSingle(ctx context.Context, req *GetStockBarsSingleRequest, opts ...MarketDataServiceCallOption) (*GetStockBarsSingleResponse, error)
+	GetLatestStockBarSingle(ctx context.Context, req *GetLatestStockBarSingleRequest, opts ...MarketDataServiceCallOption) (*GetLatestStockBarSingleResponse, error)
 	GetStockTrades(ctx context.Context, req *GetStockTradesRequest, opts ...MarketDataServiceCallOption) (*GetStockTradesResponse, error)
 	GetLatestStockTrades(ctx context.Context, req *GetLatestStockTradesRequest, opts ...MarketDataServiceCallOption) (*GetLatestStockTradesResponse, error)
+	GetStockTradesSingle(ctx context.Context, req *GetStockTradesSingleRequest, opts ...MarketDataServiceCallOption) (*GetStockTradesSingleResponse, error)
+	GetLatestStockTradeSingle(ctx context.Context, req *GetLatestStockTradeSingleRequest, opts ...MarketDataServiceCallOption) (*GetLatestStockTradeSingleResponse, error)
 	GetStockQuotes(ctx context.Context, req *GetStockQuotesRequest, opts ...MarketDataServiceCallOption) (*GetStockQuotesResponse, error)
 	GetLatestStockQuotes(ctx context.Context, req *GetLatestStockQuotesRequest, opts ...MarketDataServiceCallOption) (*GetLatestStockQuotesResponse, error)
+	GetStockQuotesSingle(ctx context.Context, req *GetStockQuotesSingleRequest, opts ...MarketDataServiceCallOption) (*GetStockQuotesSingleResponse, error)
+	GetLatestStockQuoteSingle(ctx context.Context, req *GetLatestStockQuoteSingleRequest, opts ...MarketDataServiceCallOption) (*GetLatestStockQuoteSingleResponse, error)
 	GetStockSnapshots(ctx context.Context, req *GetStockSnapshotsRequest, opts ...MarketDataServiceCallOption) (*GetStockSnapshotsResponse, error)
 	GetStockSnapshot(ctx context.Context, req *GetStockSnapshotRequest, opts ...MarketDataServiceCallOption) (*Snapshot, error)
 	GetStockAuctions(ctx context.Context, req *GetStockAuctionsRequest, opts ...MarketDataServiceCallOption) (*GetStockAuctionsResponse, error)
-	GetCryptoBars(ctx context.Context, req *GetCryptoBarsRequest, opts ...MarketDataServiceCallOption) (*GetCryptoBarsResponse, error)
-	GetLatestCryptoBars(ctx context.Context, req *GetLatestCryptoBarsRequest, opts ...MarketDataServiceCallOption) (*GetLatestCryptoBarsResponse, error)
-	GetCryptoTrades(ctx context.Context, req *GetCryptoTradesRequest, opts ...MarketDataServiceCallOption) (*GetCryptoTradesResponse, error)
-	GetLatestCryptoTrades(ctx context.Context, req *GetLatestCryptoTradesRequest, opts ...MarketDataServiceCallOption) (*GetLatestCryptoTradesResponse, error)
-	GetCryptoQuotes(ctx context.Context, req *GetCryptoQuotesRequest, opts ...MarketDataServiceCallOption) (*GetCryptoQuotesResponse, error)
-	GetLatestCryptoQuotes(ctx context.Context, req *GetLatestCryptoQuotesRequest, opts ...MarketDataServiceCallOption) (*GetLatestCryptoQuotesResponse, error)
-	GetCryptoSnapshots(ctx context.Context, req *GetCryptoSnapshotsRequest, opts ...MarketDataServiceCallOption) (*GetCryptoSnapshotsResponse, error)
-	GetOptionBars(ctx context.Context, req *GetOptionBarsRequest, opts ...MarketDataServiceCallOption) (*GetOptionBarsResponse, error)
-	GetLatestOptionBars(ctx context.Context, req *GetLatestOptionBarsRequest, opts ...MarketDataServiceCallOption) (*GetLatestOptionBarsResponse, error)
-	GetOptionTrades(ctx context.Context, req *GetOptionTradesRequest, opts ...MarketDataServiceCallOption) (*GetOptionTradesResponse, error)
-	GetLatestOptionTrades(ctx context.Context, req *GetLatestOptionTradesRequest, opts ...MarketDataServiceCallOption) (*GetLatestOptionTradesResponse, error)
-	GetOptionQuotes(ctx context.Context, req *GetOptionQuotesRequest, opts ...MarketDataServiceCallOption) (*GetOptionQuotesResponse, error)
-	GetLatestOptionQuotes(ctx context.Context, req *GetLatestOptionQuotesRequest, opts ...MarketDataServiceCallOption) (*GetLatestOptionQuotesResponse, error)
-	GetOptionSnapshots(ctx context.Context, req *GetOptionSnapshotsRequest, opts ...MarketDataServiceCallOption) (*GetOptionSnapshotsResponse, error)
-	GetOptionChain(ctx context.Context, req *GetOptionChainRequest, opts ...MarketDataServiceCallOption) (*GetOptionChainResponse, error)
-	GetNews(ctx context.Context, req *GetNewsRequest, opts ...MarketDataServiceCallOption) (*GetNewsResponse, error)
-	GetMostActives(ctx context.Context, req *GetMostActivesRequest, opts ...MarketDataServiceCallOption) (*GetMostActivesResponse, error)
-	GetMovers(ctx context.Context, req *GetMoversRequest, opts ...MarketDataServiceCallOption) (*GetMoversResponse, error)
+	GetStockAuctionsSingle(ctx context.Context, req *GetStockAuctionsSingleRequest, opts ...MarketDataServiceCallOption) (*GetStockAuctionsSingleResponse, error)
+	GetStockMetaConditions(ctx context.Context, req *GetStockMetaConditionsRequest, opts ...MarketDataServiceCallOption) (*GetStockMetaConditionsResponse, error)
+	GetStockMetaExchanges(ctx context.Context, req *GetStockMetaExchangesRequest, opts ...MarketDataServiceCallOption) (*GetStockMetaExchangesResponse, error)
 }
 
 // marketDataServiceClient is the implementation of MarketDataServiceClient.
@@ -195,6 +187,12 @@ func (c *marketDataServiceClient) GetStockBars(ctx context.Context, req *GetStoc
 	if req.Sort != "" {
 		queryParams.Set("sort", fmt.Sprint(req.Sort))
 	}
+	if req.Asof != "" {
+		queryParams.Set("asof", fmt.Sprint(req.Asof))
+	}
+	if req.Currency != "" {
+		queryParams.Set("currency", fmt.Sprint(req.Currency))
+	}
 	if len(queryParams) > 0 {
 		reqURL += "?" + queryParams.Encode()
 	}
@@ -319,6 +317,172 @@ func (c *marketDataServiceClient) GetLatestStockBars(ctx context.Context, req *G
 	return result, nil
 }
 
+// GetStockBarsSingle calls the GetStockBarsSingle RPC.
+func (c *marketDataServiceClient) GetStockBarsSingle(ctx context.Context, req *GetStockBarsSingleRequest, opts ...MarketDataServiceCallOption) (*GetStockBarsSingleResponse, error) {
+	callOpts := &marketDataServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/stocks/{symbol}/bars"
+	path = strings.Replace(path, "{symbol}", url.PathEscape(fmt.Sprint(req.Symbol)), 1)
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Timeframe != "" {
+		queryParams.Set("timeframe", fmt.Sprint(req.Timeframe))
+	}
+	if req.Start != "" {
+		queryParams.Set("start", fmt.Sprint(req.Start))
+	}
+	if req.End != "" {
+		queryParams.Set("end", fmt.Sprint(req.End))
+	}
+	if req.Limit != 0 {
+		queryParams.Set("limit", fmt.Sprint(req.Limit))
+	}
+	if req.Adjustment != "" {
+		queryParams.Set("adjustment", fmt.Sprint(req.Adjustment))
+	}
+	if req.Feed != "" {
+		queryParams.Set("feed", fmt.Sprint(req.Feed))
+	}
+	if req.PageToken != "" {
+		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
+	}
+	if req.Sort != "" {
+		queryParams.Set("sort", fmt.Sprint(req.Sort))
+	}
+	if req.Asof != "" {
+		queryParams.Set("asof", fmt.Sprint(req.Asof))
+	}
+	if req.Currency != "" {
+		queryParams.Set("currency", fmt.Sprint(req.Currency))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &GetStockBarsSingleResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetLatestStockBarSingle calls the GetLatestStockBarSingle RPC.
+func (c *marketDataServiceClient) GetLatestStockBarSingle(ctx context.Context, req *GetLatestStockBarSingleRequest, opts ...MarketDataServiceCallOption) (*GetLatestStockBarSingleResponse, error) {
+	callOpts := &marketDataServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/stocks/{symbol}/bars/latest"
+	path = strings.Replace(path, "{symbol}", url.PathEscape(fmt.Sprint(req.Symbol)), 1)
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Feed != "" {
+		queryParams.Set("feed", fmt.Sprint(req.Feed))
+	}
+	if req.Currency != "" {
+		queryParams.Set("currency", fmt.Sprint(req.Currency))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &GetLatestStockBarSingleResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
 // GetStockTrades calls the GetStockTrades RPC.
 func (c *marketDataServiceClient) GetStockTrades(ctx context.Context, req *GetStockTradesRequest, opts ...MarketDataServiceCallOption) (*GetStockTradesResponse, error) {
 	callOpts := &marketDataServiceCallOptions{}
@@ -352,6 +516,12 @@ func (c *marketDataServiceClient) GetStockTrades(ctx context.Context, req *GetSt
 	}
 	if req.Sort != "" {
 		queryParams.Set("sort", fmt.Sprint(req.Sort))
+	}
+	if req.Asof != "" {
+		queryParams.Set("asof", fmt.Sprint(req.Asof))
+	}
+	if req.Currency != "" {
+		queryParams.Set("currency", fmt.Sprint(req.Currency))
 	}
 	if len(queryParams) > 0 {
 		reqURL += "?" + queryParams.Encode()
@@ -477,6 +647,166 @@ func (c *marketDataServiceClient) GetLatestStockTrades(ctx context.Context, req 
 	return result, nil
 }
 
+// GetStockTradesSingle calls the GetStockTradesSingle RPC.
+func (c *marketDataServiceClient) GetStockTradesSingle(ctx context.Context, req *GetStockTradesSingleRequest, opts ...MarketDataServiceCallOption) (*GetStockTradesSingleResponse, error) {
+	callOpts := &marketDataServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/stocks/{symbol}/trades"
+	path = strings.Replace(path, "{symbol}", url.PathEscape(fmt.Sprint(req.Symbol)), 1)
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Start != "" {
+		queryParams.Set("start", fmt.Sprint(req.Start))
+	}
+	if req.End != "" {
+		queryParams.Set("end", fmt.Sprint(req.End))
+	}
+	if req.Limit != 0 {
+		queryParams.Set("limit", fmt.Sprint(req.Limit))
+	}
+	if req.Feed != "" {
+		queryParams.Set("feed", fmt.Sprint(req.Feed))
+	}
+	if req.PageToken != "" {
+		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
+	}
+	if req.Sort != "" {
+		queryParams.Set("sort", fmt.Sprint(req.Sort))
+	}
+	if req.Asof != "" {
+		queryParams.Set("asof", fmt.Sprint(req.Asof))
+	}
+	if req.Currency != "" {
+		queryParams.Set("currency", fmt.Sprint(req.Currency))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &GetStockTradesSingleResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetLatestStockTradeSingle calls the GetLatestStockTradeSingle RPC.
+func (c *marketDataServiceClient) GetLatestStockTradeSingle(ctx context.Context, req *GetLatestStockTradeSingleRequest, opts ...MarketDataServiceCallOption) (*GetLatestStockTradeSingleResponse, error) {
+	callOpts := &marketDataServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/stocks/{symbol}/trades/latest"
+	path = strings.Replace(path, "{symbol}", url.PathEscape(fmt.Sprint(req.Symbol)), 1)
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Feed != "" {
+		queryParams.Set("feed", fmt.Sprint(req.Feed))
+	}
+	if req.Currency != "" {
+		queryParams.Set("currency", fmt.Sprint(req.Currency))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &GetLatestStockTradeSingleResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
 // GetStockQuotes calls the GetStockQuotes RPC.
 func (c *marketDataServiceClient) GetStockQuotes(ctx context.Context, req *GetStockQuotesRequest, opts ...MarketDataServiceCallOption) (*GetStockQuotesResponse, error) {
 	callOpts := &marketDataServiceCallOptions{}
@@ -510,6 +840,12 @@ func (c *marketDataServiceClient) GetStockQuotes(ctx context.Context, req *GetSt
 	}
 	if req.Sort != "" {
 		queryParams.Set("sort", fmt.Sprint(req.Sort))
+	}
+	if req.Asof != "" {
+		queryParams.Set("asof", fmt.Sprint(req.Asof))
+	}
+	if req.Currency != "" {
+		queryParams.Set("currency", fmt.Sprint(req.Currency))
 	}
 	if len(queryParams) > 0 {
 		reqURL += "?" + queryParams.Encode()
@@ -628,6 +964,166 @@ func (c *marketDataServiceClient) GetLatestStockQuotes(ctx context.Context, req 
 
 	// Unmarshal response
 	result := &GetLatestStockQuotesResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetStockQuotesSingle calls the GetStockQuotesSingle RPC.
+func (c *marketDataServiceClient) GetStockQuotesSingle(ctx context.Context, req *GetStockQuotesSingleRequest, opts ...MarketDataServiceCallOption) (*GetStockQuotesSingleResponse, error) {
+	callOpts := &marketDataServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/stocks/{symbol}/quotes"
+	path = strings.Replace(path, "{symbol}", url.PathEscape(fmt.Sprint(req.Symbol)), 1)
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Start != "" {
+		queryParams.Set("start", fmt.Sprint(req.Start))
+	}
+	if req.End != "" {
+		queryParams.Set("end", fmt.Sprint(req.End))
+	}
+	if req.Limit != 0 {
+		queryParams.Set("limit", fmt.Sprint(req.Limit))
+	}
+	if req.Feed != "" {
+		queryParams.Set("feed", fmt.Sprint(req.Feed))
+	}
+	if req.PageToken != "" {
+		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
+	}
+	if req.Sort != "" {
+		queryParams.Set("sort", fmt.Sprint(req.Sort))
+	}
+	if req.Asof != "" {
+		queryParams.Set("asof", fmt.Sprint(req.Asof))
+	}
+	if req.Currency != "" {
+		queryParams.Set("currency", fmt.Sprint(req.Currency))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &GetStockQuotesSingleResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetLatestStockQuoteSingle calls the GetLatestStockQuoteSingle RPC.
+func (c *marketDataServiceClient) GetLatestStockQuoteSingle(ctx context.Context, req *GetLatestStockQuoteSingleRequest, opts ...MarketDataServiceCallOption) (*GetLatestStockQuoteSingleResponse, error) {
+	callOpts := &marketDataServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/stocks/{symbol}/quotes/latest"
+	path = strings.Replace(path, "{symbol}", url.PathEscape(fmt.Sprint(req.Symbol)), 1)
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Feed != "" {
+		queryParams.Set("feed", fmt.Sprint(req.Feed))
+	}
+	if req.Currency != "" {
+		queryParams.Set("currency", fmt.Sprint(req.Currency))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &GetLatestStockQuoteSingleResponse{}
 	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
@@ -810,6 +1306,12 @@ func (c *marketDataServiceClient) GetStockAuctions(ctx context.Context, req *Get
 	if req.Sort != "" {
 		queryParams.Set("sort", fmt.Sprint(req.Sort))
 	}
+	if req.Asof != "" {
+		queryParams.Set("asof", fmt.Sprint(req.Asof))
+	}
+	if req.Currency != "" {
+		queryParams.Set("currency", fmt.Sprint(req.Currency))
+	}
 	if len(queryParams) > 0 {
 		reqURL += "?" + queryParams.Encode()
 	}
@@ -861,26 +1363,20 @@ func (c *marketDataServiceClient) GetStockAuctions(ctx context.Context, req *Get
 	return result, nil
 }
 
-// GetCryptoBars calls the GetCryptoBars RPC.
-func (c *marketDataServiceClient) GetCryptoBars(ctx context.Context, req *GetCryptoBarsRequest, opts ...MarketDataServiceCallOption) (*GetCryptoBarsResponse, error) {
+// GetStockAuctionsSingle calls the GetStockAuctionsSingle RPC.
+func (c *marketDataServiceClient) GetStockAuctionsSingle(ctx context.Context, req *GetStockAuctionsSingleRequest, opts ...MarketDataServiceCallOption) (*GetStockAuctionsSingleResponse, error) {
 	callOpts := &marketDataServiceCallOptions{}
 	for _, opt := range opts {
 		opt(callOpts)
 	}
 
 	// Build URL
-	path := "/v1beta3/crypto/{loc}/bars"
-	path = strings.Replace(path, "{loc}", url.PathEscape(fmt.Sprint(req.Loc)), 1)
+	path := "/v2/stocks/{symbol}/auctions"
+	path = strings.Replace(path, "{symbol}", url.PathEscape(fmt.Sprint(req.Symbol)), 1)
 	reqURL := c.baseURL + path
 
 	// Add query parameters
 	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if req.Timeframe != "" {
-		queryParams.Set("timeframe", fmt.Sprint(req.Timeframe))
-	}
 	if req.Start != "" {
 		queryParams.Set("start", fmt.Sprint(req.Start))
 	}
@@ -896,6 +1392,12 @@ func (c *marketDataServiceClient) GetCryptoBars(ctx context.Context, req *GetCry
 	if req.Sort != "" {
 		queryParams.Set("sort", fmt.Sprint(req.Sort))
 	}
+	if req.Asof != "" {
+		queryParams.Set("asof", fmt.Sprint(req.Asof))
+	}
+	if req.Currency != "" {
+		queryParams.Set("currency", fmt.Sprint(req.Currency))
+	}
 	if len(queryParams) > 0 {
 		reqURL += "?" + queryParams.Encode()
 	}
@@ -939,7 +1441,7 @@ func (c *marketDataServiceClient) GetCryptoBars(ctx context.Context, req *GetCry
 	}
 
 	// Unmarshal response
-	result := &GetCryptoBarsResponse{}
+	result := &GetStockAuctionsSingleResponse{}
 	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
@@ -947,22 +1449,22 @@ func (c *marketDataServiceClient) GetCryptoBars(ctx context.Context, req *GetCry
 	return result, nil
 }
 
-// GetLatestCryptoBars calls the GetLatestCryptoBars RPC.
-func (c *marketDataServiceClient) GetLatestCryptoBars(ctx context.Context, req *GetLatestCryptoBarsRequest, opts ...MarketDataServiceCallOption) (*GetLatestCryptoBarsResponse, error) {
+// GetStockMetaConditions calls the GetStockMetaConditions RPC.
+func (c *marketDataServiceClient) GetStockMetaConditions(ctx context.Context, req *GetStockMetaConditionsRequest, opts ...MarketDataServiceCallOption) (*GetStockMetaConditionsResponse, error) {
 	callOpts := &marketDataServiceCallOptions{}
 	for _, opt := range opts {
 		opt(callOpts)
 	}
 
 	// Build URL
-	path := "/v1beta3/crypto/{loc}/latest/bars"
-	path = strings.Replace(path, "{loc}", url.PathEscape(fmt.Sprint(req.Loc)), 1)
+	path := "/v2/stocks/meta/conditions/{ticktype}"
+	path = strings.Replace(path, "{ticktype}", url.PathEscape(fmt.Sprint(req.Ticktype)), 1)
 	reqURL := c.baseURL + path
 
 	// Add query parameters
 	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
+	if req.Tape != "" {
+		queryParams.Set("tape", fmt.Sprint(req.Tape))
 	}
 	if len(queryParams) > 0 {
 		reqURL += "?" + queryParams.Encode()
@@ -1007,7 +1509,7 @@ func (c *marketDataServiceClient) GetLatestCryptoBars(ctx context.Context, req *
 	}
 
 	// Unmarshal response
-	result := &GetLatestCryptoBarsResponse{}
+	result := &GetStockMetaConditionsResponse{}
 	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
@@ -1015,41 +1517,16 @@ func (c *marketDataServiceClient) GetLatestCryptoBars(ctx context.Context, req *
 	return result, nil
 }
 
-// GetCryptoTrades calls the GetCryptoTrades RPC.
-func (c *marketDataServiceClient) GetCryptoTrades(ctx context.Context, req *GetCryptoTradesRequest, opts ...MarketDataServiceCallOption) (*GetCryptoTradesResponse, error) {
+// GetStockMetaExchanges calls the GetStockMetaExchanges RPC.
+func (c *marketDataServiceClient) GetStockMetaExchanges(ctx context.Context, req *GetStockMetaExchangesRequest, opts ...MarketDataServiceCallOption) (*GetStockMetaExchangesResponse, error) {
 	callOpts := &marketDataServiceCallOptions{}
 	for _, opt := range opts {
 		opt(callOpts)
 	}
 
 	// Build URL
-	path := "/v1beta3/crypto/{loc}/trades"
-	path = strings.Replace(path, "{loc}", url.PathEscape(fmt.Sprint(req.Loc)), 1)
+	path := "/v2/stocks/meta/exchanges"
 	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if req.Start != "" {
-		queryParams.Set("start", fmt.Sprint(req.Start))
-	}
-	if req.End != "" {
-		queryParams.Set("end", fmt.Sprint(req.End))
-	}
-	if req.Limit != 0 {
-		queryParams.Set("limit", fmt.Sprint(req.Limit))
-	}
-	if req.PageToken != "" {
-		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
-	}
-	if req.Sort != "" {
-		queryParams.Set("sort", fmt.Sprint(req.Sort))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
 
 	contentType := c.contentType
 	if callOpts.contentType != "" {
@@ -1090,1138 +1567,7 @@ func (c *marketDataServiceClient) GetCryptoTrades(ctx context.Context, req *GetC
 	}
 
 	// Unmarshal response
-	result := &GetCryptoTradesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetLatestCryptoTrades calls the GetLatestCryptoTrades RPC.
-func (c *marketDataServiceClient) GetLatestCryptoTrades(ctx context.Context, req *GetLatestCryptoTradesRequest, opts ...MarketDataServiceCallOption) (*GetLatestCryptoTradesResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta3/crypto/{loc}/latest/trades"
-	path = strings.Replace(path, "{loc}", url.PathEscape(fmt.Sprint(req.Loc)), 1)
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetLatestCryptoTradesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetCryptoQuotes calls the GetCryptoQuotes RPC.
-func (c *marketDataServiceClient) GetCryptoQuotes(ctx context.Context, req *GetCryptoQuotesRequest, opts ...MarketDataServiceCallOption) (*GetCryptoQuotesResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta3/crypto/{loc}/quotes"
-	path = strings.Replace(path, "{loc}", url.PathEscape(fmt.Sprint(req.Loc)), 1)
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if req.Start != "" {
-		queryParams.Set("start", fmt.Sprint(req.Start))
-	}
-	if req.End != "" {
-		queryParams.Set("end", fmt.Sprint(req.End))
-	}
-	if req.Limit != 0 {
-		queryParams.Set("limit", fmt.Sprint(req.Limit))
-	}
-	if req.PageToken != "" {
-		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
-	}
-	if req.Sort != "" {
-		queryParams.Set("sort", fmt.Sprint(req.Sort))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetCryptoQuotesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetLatestCryptoQuotes calls the GetLatestCryptoQuotes RPC.
-func (c *marketDataServiceClient) GetLatestCryptoQuotes(ctx context.Context, req *GetLatestCryptoQuotesRequest, opts ...MarketDataServiceCallOption) (*GetLatestCryptoQuotesResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta3/crypto/{loc}/latest/quotes"
-	path = strings.Replace(path, "{loc}", url.PathEscape(fmt.Sprint(req.Loc)), 1)
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetLatestCryptoQuotesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetCryptoSnapshots calls the GetCryptoSnapshots RPC.
-func (c *marketDataServiceClient) GetCryptoSnapshots(ctx context.Context, req *GetCryptoSnapshotsRequest, opts ...MarketDataServiceCallOption) (*GetCryptoSnapshotsResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta3/crypto/{loc}/snapshots"
-	path = strings.Replace(path, "{loc}", url.PathEscape(fmt.Sprint(req.Loc)), 1)
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetCryptoSnapshotsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetOptionBars calls the GetOptionBars RPC.
-func (c *marketDataServiceClient) GetOptionBars(ctx context.Context, req *GetOptionBarsRequest, opts ...MarketDataServiceCallOption) (*GetOptionBarsResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta1/options/bars"
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if req.Timeframe != "" {
-		queryParams.Set("timeframe", fmt.Sprint(req.Timeframe))
-	}
-	if req.Start != "" {
-		queryParams.Set("start", fmt.Sprint(req.Start))
-	}
-	if req.End != "" {
-		queryParams.Set("end", fmt.Sprint(req.End))
-	}
-	if req.Limit != 0 {
-		queryParams.Set("limit", fmt.Sprint(req.Limit))
-	}
-	if req.PageToken != "" {
-		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
-	}
-	if req.Sort != "" {
-		queryParams.Set("sort", fmt.Sprint(req.Sort))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetOptionBarsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetLatestOptionBars calls the GetLatestOptionBars RPC.
-func (c *marketDataServiceClient) GetLatestOptionBars(ctx context.Context, req *GetLatestOptionBarsRequest, opts ...MarketDataServiceCallOption) (*GetLatestOptionBarsResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta1/options/bars/latest"
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if req.Feed != "" {
-		queryParams.Set("feed", fmt.Sprint(req.Feed))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetLatestOptionBarsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetOptionTrades calls the GetOptionTrades RPC.
-func (c *marketDataServiceClient) GetOptionTrades(ctx context.Context, req *GetOptionTradesRequest, opts ...MarketDataServiceCallOption) (*GetOptionTradesResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta1/options/trades"
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if req.Start != "" {
-		queryParams.Set("start", fmt.Sprint(req.Start))
-	}
-	if req.End != "" {
-		queryParams.Set("end", fmt.Sprint(req.End))
-	}
-	if req.Limit != 0 {
-		queryParams.Set("limit", fmt.Sprint(req.Limit))
-	}
-	if req.PageToken != "" {
-		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
-	}
-	if req.Sort != "" {
-		queryParams.Set("sort", fmt.Sprint(req.Sort))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetOptionTradesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetLatestOptionTrades calls the GetLatestOptionTrades RPC.
-func (c *marketDataServiceClient) GetLatestOptionTrades(ctx context.Context, req *GetLatestOptionTradesRequest, opts ...MarketDataServiceCallOption) (*GetLatestOptionTradesResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta1/options/trades/latest"
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if req.Feed != "" {
-		queryParams.Set("feed", fmt.Sprint(req.Feed))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetLatestOptionTradesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetOptionQuotes calls the GetOptionQuotes RPC.
-func (c *marketDataServiceClient) GetOptionQuotes(ctx context.Context, req *GetOptionQuotesRequest, opts ...MarketDataServiceCallOption) (*GetOptionQuotesResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta1/options/quotes"
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if req.Start != "" {
-		queryParams.Set("start", fmt.Sprint(req.Start))
-	}
-	if req.End != "" {
-		queryParams.Set("end", fmt.Sprint(req.End))
-	}
-	if req.Limit != 0 {
-		queryParams.Set("limit", fmt.Sprint(req.Limit))
-	}
-	if req.PageToken != "" {
-		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
-	}
-	if req.Sort != "" {
-		queryParams.Set("sort", fmt.Sprint(req.Sort))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetOptionQuotesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetLatestOptionQuotes calls the GetLatestOptionQuotes RPC.
-func (c *marketDataServiceClient) GetLatestOptionQuotes(ctx context.Context, req *GetLatestOptionQuotesRequest, opts ...MarketDataServiceCallOption) (*GetLatestOptionQuotesResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta1/options/quotes/latest"
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if req.Feed != "" {
-		queryParams.Set("feed", fmt.Sprint(req.Feed))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetLatestOptionQuotesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetOptionSnapshots calls the GetOptionSnapshots RPC.
-func (c *marketDataServiceClient) GetOptionSnapshots(ctx context.Context, req *GetOptionSnapshotsRequest, opts ...MarketDataServiceCallOption) (*GetOptionSnapshotsResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta1/options/snapshots"
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if req.Feed != "" {
-		queryParams.Set("feed", fmt.Sprint(req.Feed))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetOptionSnapshotsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetOptionChain calls the GetOptionChain RPC.
-func (c *marketDataServiceClient) GetOptionChain(ctx context.Context, req *GetOptionChainRequest, opts ...MarketDataServiceCallOption) (*GetOptionChainResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta1/options/snapshots/{underlying_symbol}"
-	path = strings.Replace(path, "{underlying_symbol}", url.PathEscape(fmt.Sprint(req.UnderlyingSymbol)), 1)
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Feed != "" {
-		queryParams.Set("feed", fmt.Sprint(req.Feed))
-	}
-	if req.Type != "" {
-		queryParams.Set("type", fmt.Sprint(req.Type))
-	}
-	if req.StrikePriceGte != 0 {
-		queryParams.Set("strike_price_gte", fmt.Sprint(req.StrikePriceGte))
-	}
-	if req.StrikePriceLte != 0 {
-		queryParams.Set("strike_price_lte", fmt.Sprint(req.StrikePriceLte))
-	}
-	if req.ExpirationDateGte != "" {
-		queryParams.Set("expiration_date_gte", fmt.Sprint(req.ExpirationDateGte))
-	}
-	if req.ExpirationDateLte != "" {
-		queryParams.Set("expiration_date_lte", fmt.Sprint(req.ExpirationDateLte))
-	}
-	if req.PageToken != "" {
-		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
-	}
-	if req.Limit != 0 {
-		queryParams.Set("limit", fmt.Sprint(req.Limit))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetOptionChainResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetNews calls the GetNews RPC.
-func (c *marketDataServiceClient) GetNews(ctx context.Context, req *GetNewsRequest, opts ...MarketDataServiceCallOption) (*GetNewsResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta1/news"
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Symbols != "" {
-		queryParams.Set("symbols", fmt.Sprint(req.Symbols))
-	}
-	if req.Start != "" {
-		queryParams.Set("start", fmt.Sprint(req.Start))
-	}
-	if req.End != "" {
-		queryParams.Set("end", fmt.Sprint(req.End))
-	}
-	if req.Limit != 0 {
-		queryParams.Set("limit", fmt.Sprint(req.Limit))
-	}
-	if req.Sort != "" {
-		queryParams.Set("sort", fmt.Sprint(req.Sort))
-	}
-	if req.IncludeContent != false {
-		queryParams.Set("include_content", fmt.Sprint(req.IncludeContent))
-	}
-	if req.PageToken != "" {
-		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
-	}
-	if req.ExcludeContentless != false {
-		queryParams.Set("exclude_contentless", fmt.Sprint(req.ExcludeContentless))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetNewsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetMostActives calls the GetMostActives RPC.
-func (c *marketDataServiceClient) GetMostActives(ctx context.Context, req *GetMostActivesRequest, opts ...MarketDataServiceCallOption) (*GetMostActivesResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta1/screener/stocks/most-actives"
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Top != 0 {
-		queryParams.Set("top", fmt.Sprint(req.Top))
-	}
-	if req.By != "" {
-		queryParams.Set("by", fmt.Sprint(req.By))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetMostActivesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
-}
-
-// GetMovers calls the GetMovers RPC.
-func (c *marketDataServiceClient) GetMovers(ctx context.Context, req *GetMoversRequest, opts ...MarketDataServiceCallOption) (*GetMoversResponse, error) {
-	callOpts := &marketDataServiceCallOptions{}
-	for _, opt := range opts {
-		opt(callOpts)
-	}
-
-	// Build URL
-	path := "/v1beta1/screener/{market_type}/movers"
-	path = strings.Replace(path, "{market_type}", url.PathEscape(fmt.Sprint(req.MarketType)), 1)
-	reqURL := c.baseURL + path
-
-	// Add query parameters
-	queryParams := url.Values{}
-	if req.Top != 0 {
-		queryParams.Set("top", fmt.Sprint(req.Top))
-	}
-	if len(queryParams) > 0 {
-		reqURL += "?" + queryParams.Encode()
-	}
-
-	contentType := c.contentType
-	if callOpts.contentType != "" {
-		contentType = callOpts.contentType
-	}
-
-	// Create HTTP request
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Set headers
-	httpReq.Header.Set("Content-Type", contentType)
-	for k, v := range c.defaultHeaders {
-		httpReq.Header.Set(k, v)
-	}
-	for k, v := range callOpts.headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(httpReq)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	// Check for error status codes
-	if resp.StatusCode >= 400 {
-		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
-	}
-
-	// Unmarshal response
-	result := &GetMoversResponse{}
+	result := &GetStockMetaExchangesResponse{}
 	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
@@ -2232,6 +1578,10 @@ func (c *marketDataServiceClient) GetMovers(ctx context.Context, req *GetMoversR
 func (c *marketDataServiceClient) marshalRequest(req proto.Message, contentType string) ([]byte, error) {
 	switch contentType {
 	case ContentTypeJSON:
+		// Check for custom JSON marshaler (unwrap support)
+		if marshaler, ok := req.(json.Marshaler); ok {
+			return marshaler.MarshalJSON()
+		}
 		return protojson.Marshal(req)
 	case ContentTypeProto:
 		return proto.Marshal(req)
@@ -2266,6 +1616,10 @@ func (c *marketDataServiceClient) unmarshalResponse(body []byte, msg proto.Messa
 
 	switch contentType {
 	case ContentTypeJSON:
+		// Check for custom JSON unmarshaler (unwrap support)
+		if unmarshaler, ok := msg.(json.Unmarshaler); ok {
+			return unmarshaler.UnmarshalJSON(body)
+		}
 		return protojson.Unmarshal(body, msg)
 	case ContentTypeProto:
 		return proto.Unmarshal(body, msg)

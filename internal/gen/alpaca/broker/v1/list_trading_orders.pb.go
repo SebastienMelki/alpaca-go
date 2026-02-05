@@ -7,13 +7,14 @@
 package brokerv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -207,9 +208,9 @@ const file_alpaca_broker_v1_list_trading_orders_proto_rawDesc = "" +
 	"\x06nestedR\x06nested\x126\n" +
 	"\asymbols\x18\b \x01(\tB\x1c\xba\xb5\x18\v\n" +
 	"\tAAPL,TSLAµ\x18\t\n" +
-	"\asymbolsR\asymbols\"R\n" +
-	"\x19ListTradingOrdersResponse\x125\n" +
-	"\x06orders\x18\x01 \x03(\v2\x1d.alpaca.broker.v1.BrokerOrderR\x06ordersB\xdc\x01\n" +
+	"\asymbolsR\asymbols\"X\n" +
+	"\x19ListTradingOrdersResponse\x12;\n" +
+	"\x06orders\x18\x01 \x03(\v2\x1d.alpaca.broker.v1.BrokerOrderB\x04ȵ\x18\x01R\x06ordersB\xdc\x01\n" +
 	"\x14com.alpaca.broker.v1B\x16ListTradingOrdersProtoP\x01ZJgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1;brokerv1\xa2\x02\x03ABX\xaa\x02\x10Alpaca.Broker.V1\xca\x02\x10Alpaca\\Broker\\V1\xe2\x02\x1cAlpaca\\Broker\\V1\\GPBMetadata\xea\x02\x12Alpaca::Broker::V1b\x06proto3"
 
 var (

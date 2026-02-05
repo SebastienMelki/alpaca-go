@@ -7,12 +7,13 @@
 package tradingv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -148,9 +149,9 @@ const file_alpaca_trading_v1_list_assets_proto_rawDesc = "" +
 	"\bexchange\x18\x03 \x01(\tB\x1a\xba\xb5\x18\b\n" +
 	"\x06NASDAQµ\x18\n" +
 	"\n" +
-	"\bexchangeR\bexchange\"F\n" +
-	"\x12ListAssetsResponse\x120\n" +
-	"\x06assets\x18\x01 \x03(\v2\x18.alpaca.trading.v1.AssetR\x06assetsB\xdc\x01\n" +
+	"\bexchangeR\bexchange\"L\n" +
+	"\x12ListAssetsResponse\x126\n" +
+	"\x06assets\x18\x01 \x03(\v2\x18.alpaca.trading.v1.AssetB\x04ȵ\x18\x01R\x06assetsB\xdc\x01\n" +
 	"\x15com.alpaca.trading.v1B\x0fListAssetsProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (

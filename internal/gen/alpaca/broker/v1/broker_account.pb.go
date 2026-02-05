@@ -7,12 +7,14 @@
 package brokerv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -21,198 +23,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-// BrokerAccountStatus represents the status of a broker account.
-type BrokerAccountStatus int32
-
-const (
-	BrokerAccountStatus_BROKER_ACCOUNT_STATUS_UNSPECIFIED       BrokerAccountStatus = 0
-	BrokerAccountStatus_BROKER_ACCOUNT_STATUS_ONBOARDING        BrokerAccountStatus = 1
-	BrokerAccountStatus_BROKER_ACCOUNT_STATUS_SUBMISSION_FAILED BrokerAccountStatus = 2
-	BrokerAccountStatus_BROKER_ACCOUNT_STATUS_SUBMITTED         BrokerAccountStatus = 3
-	BrokerAccountStatus_BROKER_ACCOUNT_STATUS_ACCOUNT_UPDATED   BrokerAccountStatus = 4
-	BrokerAccountStatus_BROKER_ACCOUNT_STATUS_APPROVAL_PENDING  BrokerAccountStatus = 5
-	BrokerAccountStatus_BROKER_ACCOUNT_STATUS_ACTIVE            BrokerAccountStatus = 6
-	BrokerAccountStatus_BROKER_ACCOUNT_STATUS_REJECTED          BrokerAccountStatus = 7
-	BrokerAccountStatus_BROKER_ACCOUNT_STATUS_DISABLED          BrokerAccountStatus = 8
-	BrokerAccountStatus_BROKER_ACCOUNT_STATUS_ACCOUNT_CLOSED    BrokerAccountStatus = 9
-)
-
-// Enum value maps for BrokerAccountStatus.
-var (
-	BrokerAccountStatus_name = map[int32]string{
-		0: "BROKER_ACCOUNT_STATUS_UNSPECIFIED",
-		1: "BROKER_ACCOUNT_STATUS_ONBOARDING",
-		2: "BROKER_ACCOUNT_STATUS_SUBMISSION_FAILED",
-		3: "BROKER_ACCOUNT_STATUS_SUBMITTED",
-		4: "BROKER_ACCOUNT_STATUS_ACCOUNT_UPDATED",
-		5: "BROKER_ACCOUNT_STATUS_APPROVAL_PENDING",
-		6: "BROKER_ACCOUNT_STATUS_ACTIVE",
-		7: "BROKER_ACCOUNT_STATUS_REJECTED",
-		8: "BROKER_ACCOUNT_STATUS_DISABLED",
-		9: "BROKER_ACCOUNT_STATUS_ACCOUNT_CLOSED",
-	}
-	BrokerAccountStatus_value = map[string]int32{
-		"BROKER_ACCOUNT_STATUS_UNSPECIFIED":       0,
-		"BROKER_ACCOUNT_STATUS_ONBOARDING":        1,
-		"BROKER_ACCOUNT_STATUS_SUBMISSION_FAILED": 2,
-		"BROKER_ACCOUNT_STATUS_SUBMITTED":         3,
-		"BROKER_ACCOUNT_STATUS_ACCOUNT_UPDATED":   4,
-		"BROKER_ACCOUNT_STATUS_APPROVAL_PENDING":  5,
-		"BROKER_ACCOUNT_STATUS_ACTIVE":            6,
-		"BROKER_ACCOUNT_STATUS_REJECTED":          7,
-		"BROKER_ACCOUNT_STATUS_DISABLED":          8,
-		"BROKER_ACCOUNT_STATUS_ACCOUNT_CLOSED":    9,
-	}
-)
-
-func (x BrokerAccountStatus) Enum() *BrokerAccountStatus {
-	p := new(BrokerAccountStatus)
-	*p = x
-	return p
-}
-
-func (x BrokerAccountStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (BrokerAccountStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_broker_account_proto_enumTypes[0].Descriptor()
-}
-
-func (BrokerAccountStatus) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_broker_account_proto_enumTypes[0]
-}
-
-func (x BrokerAccountStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use BrokerAccountStatus.Descriptor instead.
-func (BrokerAccountStatus) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{0}
-}
-
-// TaxIdType represents the type of tax ID.
-type TaxIdType int32
-
-const (
-	TaxIdType_TAX_ID_TYPE_UNSPECIFIED   TaxIdType = 0
-	TaxIdType_TAX_ID_TYPE_USA_SSN       TaxIdType = 1
-	TaxIdType_TAX_ID_TYPE_ARG_AR_CUIT   TaxIdType = 2
-	TaxIdType_TAX_ID_TYPE_AUS_TFN       TaxIdType = 3
-	TaxIdType_TAX_ID_TYPE_DEU_TAX_ID    TaxIdType = 4
-	TaxIdType_TAX_ID_TYPE_NOT_SPECIFIED TaxIdType = 5
-)
-
-// Enum value maps for TaxIdType.
-var (
-	TaxIdType_name = map[int32]string{
-		0: "TAX_ID_TYPE_UNSPECIFIED",
-		1: "TAX_ID_TYPE_USA_SSN",
-		2: "TAX_ID_TYPE_ARG_AR_CUIT",
-		3: "TAX_ID_TYPE_AUS_TFN",
-		4: "TAX_ID_TYPE_DEU_TAX_ID",
-		5: "TAX_ID_TYPE_NOT_SPECIFIED",
-	}
-	TaxIdType_value = map[string]int32{
-		"TAX_ID_TYPE_UNSPECIFIED":   0,
-		"TAX_ID_TYPE_USA_SSN":       1,
-		"TAX_ID_TYPE_ARG_AR_CUIT":   2,
-		"TAX_ID_TYPE_AUS_TFN":       3,
-		"TAX_ID_TYPE_DEU_TAX_ID":    4,
-		"TAX_ID_TYPE_NOT_SPECIFIED": 5,
-	}
-)
-
-func (x TaxIdType) Enum() *TaxIdType {
-	p := new(TaxIdType)
-	*p = x
-	return p
-}
-
-func (x TaxIdType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (TaxIdType) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_broker_account_proto_enumTypes[1].Descriptor()
-}
-
-func (TaxIdType) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_broker_account_proto_enumTypes[1]
-}
-
-func (x TaxIdType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use TaxIdType.Descriptor instead.
-func (TaxIdType) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{1}
-}
-
-// FundingSource represents the source of funding.
-type FundingSource int32
-
-const (
-	FundingSource_FUNDING_SOURCE_UNSPECIFIED       FundingSource = 0
-	FundingSource_FUNDING_SOURCE_EMPLOYMENT_INCOME FundingSource = 1
-	FundingSource_FUNDING_SOURCE_INVESTMENTS       FundingSource = 2
-	FundingSource_FUNDING_SOURCE_INHERITANCE       FundingSource = 3
-	FundingSource_FUNDING_SOURCE_BUSINESS_INCOME   FundingSource = 4
-	FundingSource_FUNDING_SOURCE_SAVINGS           FundingSource = 5
-	FundingSource_FUNDING_SOURCE_FAMILY            FundingSource = 6
-)
-
-// Enum value maps for FundingSource.
-var (
-	FundingSource_name = map[int32]string{
-		0: "FUNDING_SOURCE_UNSPECIFIED",
-		1: "FUNDING_SOURCE_EMPLOYMENT_INCOME",
-		2: "FUNDING_SOURCE_INVESTMENTS",
-		3: "FUNDING_SOURCE_INHERITANCE",
-		4: "FUNDING_SOURCE_BUSINESS_INCOME",
-		5: "FUNDING_SOURCE_SAVINGS",
-		6: "FUNDING_SOURCE_FAMILY",
-	}
-	FundingSource_value = map[string]int32{
-		"FUNDING_SOURCE_UNSPECIFIED":       0,
-		"FUNDING_SOURCE_EMPLOYMENT_INCOME": 1,
-		"FUNDING_SOURCE_INVESTMENTS":       2,
-		"FUNDING_SOURCE_INHERITANCE":       3,
-		"FUNDING_SOURCE_BUSINESS_INCOME":   4,
-		"FUNDING_SOURCE_SAVINGS":           5,
-		"FUNDING_SOURCE_FAMILY":            6,
-	}
-)
-
-func (x FundingSource) Enum() *FundingSource {
-	p := new(FundingSource)
-	*p = x
-	return p
-}
-
-func (x FundingSource) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (FundingSource) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_broker_account_proto_enumTypes[2].Descriptor()
-}
-
-func (FundingSource) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_broker_account_proto_enumTypes[2]
-}
-
-func (x FundingSource) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use FundingSource.Descriptor instead.
-func (FundingSource) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{2}
-}
 
 // Contact represents contact information.
 type Contact struct {
@@ -232,9 +42,11 @@ type Contact struct {
 	// Postal code.
 	PostalCode string `protobuf:"bytes,7,opt,name=postal_code,json=postalCode,proto3" json:"postal_code,omitempty"`
 	// Country (ISO 3166-1 alpha-3).
-	Country       string `protobuf:"bytes,8,opt,name=country,proto3" json:"country,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Country string `protobuf:"bytes,8,opt,name=country,proto3" json:"country,omitempty"`
+	// Local street address (for non-US addresses).
+	LocalStreetAddress []string `protobuf:"bytes,9,rep,name=local_street_address,json=localStreetAddress,proto3" json:"local_street_address,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *Contact) Reset() {
@@ -323,6 +135,13 @@ func (x *Contact) GetCountry() string {
 	return ""
 }
 
+func (x *Contact) GetLocalStreetAddress() []string {
+	if x != nil {
+		return x.LocalStreetAddress
+	}
+	return nil
+}
+
 // Identity represents identity information.
 type Identity struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -337,7 +156,7 @@ type Identity struct {
 	// Tax ID (SSN for US).
 	TaxId string `protobuf:"bytes,5,opt,name=tax_id,json=taxId,proto3" json:"tax_id,omitempty"`
 	// Tax ID type.
-	TaxIdType TaxIdType `protobuf:"varint,6,opt,name=tax_id_type,json=taxIdType,proto3,enum=alpaca.broker.v1.TaxIdType" json:"tax_id_type,omitempty"`
+	TaxIdType string `protobuf:"bytes,6,opt,name=tax_id_type,json=taxIdType,proto3" json:"tax_id_type,omitempty"`
 	// Country of citizenship (ISO 3166-1 alpha-3).
 	CountryOfCitizenship string `protobuf:"bytes,7,opt,name=country_of_citizenship,json=countryOfCitizenship,proto3" json:"country_of_citizenship,omitempty"`
 	// Country of birth (ISO 3166-1 alpha-3).
@@ -348,12 +167,12 @@ type Identity struct {
 	VisaType string `protobuf:"bytes,10,opt,name=visa_type,json=visaType,proto3" json:"visa_type,omitempty"`
 	// Visa expiration date (YYYY-MM-DD).
 	VisaExpirationDate string `protobuf:"bytes,11,opt,name=visa_expiration_date,json=visaExpirationDate,proto3" json:"visa_expiration_date,omitempty"`
-	// Date of departure from home country (YYYY-MM-DD).
-	DateOfDepartureFromHomeCountry string `protobuf:"bytes,12,opt,name=date_of_departure_from_home_country,json=dateOfDepartureFromHomeCountry,proto3" json:"date_of_departure_from_home_country,omitempty"`
+	// Date of departure from USA (YYYY-MM-DD).
+	DateOfDepartureFromUsa string `protobuf:"bytes,12,opt,name=date_of_departure_from_usa,json=dateOfDepartureFromUsa,proto3" json:"date_of_departure_from_usa,omitempty"`
 	// Permanent resident.
 	PermanentResident bool `protobuf:"varint,13,opt,name=permanent_resident,json=permanentResident,proto3" json:"permanent_resident,omitempty"`
 	// Funding source.
-	FundingSource []FundingSource `protobuf:"varint,14,rep,packed,name=funding_source,json=fundingSource,proto3,enum=alpaca.broker.v1.FundingSource" json:"funding_source,omitempty"`
+	FundingSource []string `protobuf:"bytes,14,rep,name=funding_source,json=fundingSource,proto3" json:"funding_source,omitempty"`
 	// Liquid net worth minimum.
 	LiquidNetWorthMin string `protobuf:"bytes,15,opt,name=liquid_net_worth_min,json=liquidNetWorthMin,proto3" json:"liquid_net_worth_min,omitempty"`
 	// Liquid net worth maximum.
@@ -366,8 +185,26 @@ type Identity struct {
 	TotalNetWorthMin string `protobuf:"bytes,19,opt,name=total_net_worth_min,json=totalNetWorthMin,proto3" json:"total_net_worth_min,omitempty"`
 	// Total net worth maximum.
 	TotalNetWorthMax string `protobuf:"bytes,20,opt,name=total_net_worth_max,json=totalNetWorthMax,proto3" json:"total_net_worth_max,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// Marital status.
+	MaritalStatus string `protobuf:"bytes,21,opt,name=marital_status,json=maritalStatus,proto3" json:"marital_status,omitempty"`
+	// Number of dependents.
+	NumberOfDependents int32 `protobuf:"varint,22,opt,name=number_of_dependents,json=numberOfDependents,proto3" json:"number_of_dependents,omitempty"`
+	// Investment experience with stocks.
+	InvestmentExperienceWithStocks string `protobuf:"bytes,23,opt,name=investment_experience_with_stocks,json=investmentExperienceWithStocks,proto3" json:"investment_experience_with_stocks,omitempty"`
+	// Investment experience with options.
+	InvestmentExperienceWithOptions string `protobuf:"bytes,24,opt,name=investment_experience_with_options,json=investmentExperienceWithOptions,proto3" json:"investment_experience_with_options,omitempty"`
+	// Liquidity needs (deprecated, use account level).
+	LiquidityNeeds string `protobuf:"bytes,25,opt,name=liquidity_needs,json=liquidityNeeds,proto3" json:"liquidity_needs,omitempty"`
+	// Risk tolerance (deprecated, use account level).
+	RiskTolerance string `protobuf:"bytes,26,opt,name=risk_tolerance,json=riskTolerance,proto3" json:"risk_tolerance,omitempty"`
+	// Investment objective (deprecated, use account level).
+	InvestmentObjective string `protobuf:"bytes,27,opt,name=investment_objective,json=investmentObjective,proto3" json:"investment_objective,omitempty"`
+	// Investment time horizon (deprecated, use account level).
+	InvestmentTimeHorizon string `protobuf:"bytes,28,opt,name=investment_time_horizon,json=investmentTimeHorizon,proto3" json:"investment_time_horizon,omitempty"`
+	// Party Type
+	PartyType     string `protobuf:"bytes,29,opt,name=party_type,json=partyType,proto3" json:"party_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Identity) Reset() {
@@ -435,11 +272,11 @@ func (x *Identity) GetTaxId() string {
 	return ""
 }
 
-func (x *Identity) GetTaxIdType() TaxIdType {
+func (x *Identity) GetTaxIdType() string {
 	if x != nil {
 		return x.TaxIdType
 	}
-	return TaxIdType_TAX_ID_TYPE_UNSPECIFIED
+	return ""
 }
 
 func (x *Identity) GetCountryOfCitizenship() string {
@@ -477,9 +314,9 @@ func (x *Identity) GetVisaExpirationDate() string {
 	return ""
 }
 
-func (x *Identity) GetDateOfDepartureFromHomeCountry() string {
+func (x *Identity) GetDateOfDepartureFromUsa() string {
 	if x != nil {
-		return x.DateOfDepartureFromHomeCountry
+		return x.DateOfDepartureFromUsa
 	}
 	return ""
 }
@@ -491,7 +328,7 @@ func (x *Identity) GetPermanentResident() bool {
 	return false
 }
 
-func (x *Identity) GetFundingSource() []FundingSource {
+func (x *Identity) GetFundingSource() []string {
 	if x != nil {
 		return x.FundingSource
 	}
@@ -540,6 +377,69 @@ func (x *Identity) GetTotalNetWorthMax() string {
 	return ""
 }
 
+func (x *Identity) GetMaritalStatus() string {
+	if x != nil {
+		return x.MaritalStatus
+	}
+	return ""
+}
+
+func (x *Identity) GetNumberOfDependents() int32 {
+	if x != nil {
+		return x.NumberOfDependents
+	}
+	return 0
+}
+
+func (x *Identity) GetInvestmentExperienceWithStocks() string {
+	if x != nil {
+		return x.InvestmentExperienceWithStocks
+	}
+	return ""
+}
+
+func (x *Identity) GetInvestmentExperienceWithOptions() string {
+	if x != nil {
+		return x.InvestmentExperienceWithOptions
+	}
+	return ""
+}
+
+func (x *Identity) GetLiquidityNeeds() string {
+	if x != nil {
+		return x.LiquidityNeeds
+	}
+	return ""
+}
+
+func (x *Identity) GetRiskTolerance() string {
+	if x != nil {
+		return x.RiskTolerance
+	}
+	return ""
+}
+
+func (x *Identity) GetInvestmentObjective() string {
+	if x != nil {
+		return x.InvestmentObjective
+	}
+	return ""
+}
+
+func (x *Identity) GetInvestmentTimeHorizon() string {
+	if x != nil {
+		return x.InvestmentTimeHorizon
+	}
+	return ""
+}
+
+func (x *Identity) GetPartyType() string {
+	if x != nil {
+		return x.PartyType
+	}
+	return ""
+}
+
 // Disclosures represents regulatory disclosures.
 type Disclosures struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -551,16 +451,24 @@ type Disclosures struct {
 	IsPoliticallyExposed bool `protobuf:"varint,3,opt,name=is_politically_exposed,json=isPoliticallyExposed,proto3" json:"is_politically_exposed,omitempty"`
 	// Whether the user has an immediate family member that is politically exposed.
 	ImmediateFamilyExposed bool `protobuf:"varint,4,opt,name=immediate_family_exposed,json=immediateFamilyExposed,proto3" json:"immediate_family_exposed,omitempty"`
+	// Whether the account is discretionary.
+	IsDiscretionary bool `protobuf:"varint,5,opt,name=is_discretionary,json=isDiscretionary,proto3" json:"is_discretionary,omitempty"`
 	// Employment status (employed, unemployed, student, retired).
-	EmploymentStatus string `protobuf:"bytes,5,opt,name=employment_status,json=employmentStatus,proto3" json:"employment_status,omitempty"`
+	EmploymentStatus string `protobuf:"bytes,6,opt,name=employment_status,json=employmentStatus,proto3" json:"employment_status,omitempty"`
 	// Employer name.
-	EmployerName string `protobuf:"bytes,6,opt,name=employer_name,json=employerName,proto3" json:"employer_name,omitempty"`
+	EmployerName string `protobuf:"bytes,7,opt,name=employer_name,json=employerName,proto3" json:"employer_name,omitempty"`
 	// Employer address.
-	EmployerAddress string `protobuf:"bytes,7,opt,name=employer_address,json=employerAddress,proto3" json:"employer_address,omitempty"`
+	EmployerAddress string `protobuf:"bytes,8,opt,name=employer_address,json=employerAddress,proto3" json:"employer_address,omitempty"`
 	// Employment position.
-	EmploymentPosition string `protobuf:"bytes,8,opt,name=employment_position,json=employmentPosition,proto3" json:"employment_position,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	EmploymentPosition string `protobuf:"bytes,9,opt,name=employment_position,json=employmentPosition,proto3" json:"employment_position,omitempty"`
+	// Employment sector.
+	EmploymentSector string `protobuf:"bytes,10,opt,name=employment_sector,json=employmentSector,proto3" json:"employment_sector,omitempty"`
+	// Context annotations for disclosures.
+	Context []*DisclosureContextAnnotation `protobuf:"bytes,11,rep,name=context,proto3" json:"context,omitempty"`
+	// Whether the user is affiliated with an exchange or IIROC (Canadian regulatory body).
+	IsAffiliatedExchangeOrIiroc bool `protobuf:"varint,12,opt,name=is_affiliated_exchange_or_iiroc,json=isAffiliatedExchangeOrIiroc,proto3" json:"is_affiliated_exchange_or_iiroc,omitempty"`
+	unknownFields               protoimpl.UnknownFields
+	sizeCache                   protoimpl.SizeCache
 }
 
 func (x *Disclosures) Reset() {
@@ -621,6 +529,13 @@ func (x *Disclosures) GetImmediateFamilyExposed() bool {
 	return false
 }
 
+func (x *Disclosures) GetIsDiscretionary() bool {
+	if x != nil {
+		return x.IsDiscretionary
+	}
+	return false
+}
+
 func (x *Disclosures) GetEmploymentStatus() string {
 	if x != nil {
 		return x.EmploymentStatus
@@ -649,6 +564,27 @@ func (x *Disclosures) GetEmploymentPosition() string {
 	return ""
 }
 
+func (x *Disclosures) GetEmploymentSector() string {
+	if x != nil {
+		return x.EmploymentSector
+	}
+	return ""
+}
+
+func (x *Disclosures) GetContext() []*DisclosureContextAnnotation {
+	if x != nil {
+		return x.Context
+	}
+	return nil
+}
+
+func (x *Disclosures) GetIsAffiliatedExchangeOrIiroc() bool {
+	if x != nil {
+		return x.IsAffiliatedExchangeOrIiroc
+	}
+	return false
+}
+
 // Agreement represents a signed agreement.
 type Agreement struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -659,7 +595,9 @@ type Agreement struct {
 	// IP address when signed.
 	IpAddress string `protobuf:"bytes,3,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
 	// Revision of the agreement.
-	Revision      string `protobuf:"bytes,4,opt,name=revision,proto3" json:"revision,omitempty"`
+	Revision string `protobuf:"bytes,4,opt,name=revision,proto3" json:"revision,omitempty"`
+	// Account ID this agreement belongs to.
+	AccountId     string `protobuf:"bytes,5,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -718,6 +656,13 @@ func (x *Agreement) GetIpAddress() string {
 func (x *Agreement) GetRevision() string {
 	if x != nil {
 		return x.Revision
+	}
+	return ""
+}
+
+func (x *Agreement) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
 	}
 	return ""
 }
@@ -840,6 +785,790 @@ func (x *TrustedContact) GetCountry() string {
 	return ""
 }
 
+// KYCResults represents the results of KYC verification.
+type KYCResults struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Reject reason.
+	Reject string `protobuf:"bytes,1,opt,name=reject,proto3" json:"reject,omitempty"`
+	// Accept reason.
+	Accept string `protobuf:"bytes,2,opt,name=accept,proto3" json:"accept,omitempty"`
+	// Indeterminate reason.
+	Indeterminate string `protobuf:"bytes,3,opt,name=indeterminate,proto3" json:"indeterminate,omitempty"`
+	// Additional information.
+	AdditionalInformation string `protobuf:"bytes,4,opt,name=additional_information,json=additionalInformation,proto3" json:"additional_information,omitempty"`
+	// Summary (pass or fail).
+	Summary       string `protobuf:"bytes,5,opt,name=summary,proto3" json:"summary,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KYCResults) Reset() {
+	*x = KYCResults{}
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KYCResults) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KYCResults) ProtoMessage() {}
+
+func (x *KYCResults) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KYCResults.ProtoReflect.Descriptor instead.
+func (*KYCResults) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *KYCResults) GetReject() string {
+	if x != nil {
+		return x.Reject
+	}
+	return ""
+}
+
+func (x *KYCResults) GetAccept() string {
+	if x != nil {
+		return x.Accept
+	}
+	return ""
+}
+
+func (x *KYCResults) GetIndeterminate() string {
+	if x != nil {
+		return x.Indeterminate
+	}
+	return ""
+}
+
+func (x *KYCResults) GetAdditionalInformation() string {
+	if x != nil {
+		return x.AdditionalInformation
+	}
+	return ""
+}
+
+func (x *KYCResults) GetSummary() string {
+	if x != nil {
+		return x.Summary
+	}
+	return ""
+}
+
+// OwnerDocument represents a document associated with an account owner.
+type OwnerDocument struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Document ID.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Document type.
+	DocumentType string `protobuf:"bytes,2,opt,name=document_type,json=documentType,proto3" json:"document_type,omitempty"`
+	// Document sub-type.
+	DocumentSubType string `protobuf:"bytes,3,opt,name=document_sub_type,json=documentSubType,proto3" json:"document_sub_type,omitempty"`
+	// MIME type.
+	MimeType string `protobuf:"bytes,4,opt,name=mime_type,json=mimeType,proto3" json:"mime_type,omitempty"`
+	// Content URL.
+	Content string `protobuf:"bytes,5,opt,name=content,proto3" json:"content,omitempty"`
+	// Created at timestamp.
+	CreatedAt     string `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OwnerDocument) Reset() {
+	*x = OwnerDocument{}
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OwnerDocument) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OwnerDocument) ProtoMessage() {}
+
+func (x *OwnerDocument) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OwnerDocument.ProtoReflect.Descriptor instead.
+func (*OwnerDocument) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *OwnerDocument) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *OwnerDocument) GetDocumentType() string {
+	if x != nil {
+		return x.DocumentType
+	}
+	return ""
+}
+
+func (x *OwnerDocument) GetDocumentSubType() string {
+	if x != nil {
+		return x.DocumentSubType
+	}
+	return ""
+}
+
+func (x *OwnerDocument) GetMimeType() string {
+	if x != nil {
+		return x.MimeType
+	}
+	return ""
+}
+
+func (x *OwnerDocument) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+func (x *OwnerDocument) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+// MinorIdentity represents identity info for a minor in custodial accounts.
+type MinorIdentity struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Given name.
+	GivenName string `protobuf:"bytes,1,opt,name=given_name,json=givenName,proto3" json:"given_name,omitempty"`
+	// Family name.
+	FamilyName string `protobuf:"bytes,2,opt,name=family_name,json=familyName,proto3" json:"family_name,omitempty"`
+	// Date of birth.
+	DateOfBirth string `protobuf:"bytes,3,opt,name=date_of_birth,json=dateOfBirth,proto3" json:"date_of_birth,omitempty"`
+	// Tax ID.
+	TaxId string `protobuf:"bytes,4,opt,name=tax_id,json=taxId,proto3" json:"tax_id,omitempty"`
+	// Tax ID type.
+	TaxIdType string `protobuf:"bytes,5,opt,name=tax_id_type,json=taxIdType,proto3" json:"tax_id_type,omitempty"`
+	// Country of citizenship.
+	CountryOfCitizenship string `protobuf:"bytes,6,opt,name=country_of_citizenship,json=countryOfCitizenship,proto3" json:"country_of_citizenship,omitempty"`
+	// Country of birth.
+	CountryOfBirth string `protobuf:"bytes,7,opt,name=country_of_birth,json=countryOfBirth,proto3" json:"country_of_birth,omitempty"`
+	// Country of tax residence.
+	CountryOfTaxResidence string `protobuf:"bytes,8,opt,name=country_of_tax_residence,json=countryOfTaxResidence,proto3" json:"country_of_tax_residence,omitempty"`
+	// State.
+	State string `protobuf:"bytes,9,opt,name=state,proto3" json:"state,omitempty"`
+	// Email.
+	Email         string `protobuf:"bytes,10,opt,name=email,proto3" json:"email,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MinorIdentity) Reset() {
+	*x = MinorIdentity{}
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MinorIdentity) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MinorIdentity) ProtoMessage() {}
+
+func (x *MinorIdentity) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MinorIdentity.ProtoReflect.Descriptor instead.
+func (*MinorIdentity) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *MinorIdentity) GetGivenName() string {
+	if x != nil {
+		return x.GivenName
+	}
+	return ""
+}
+
+func (x *MinorIdentity) GetFamilyName() string {
+	if x != nil {
+		return x.FamilyName
+	}
+	return ""
+}
+
+func (x *MinorIdentity) GetDateOfBirth() string {
+	if x != nil {
+		return x.DateOfBirth
+	}
+	return ""
+}
+
+func (x *MinorIdentity) GetTaxId() string {
+	if x != nil {
+		return x.TaxId
+	}
+	return ""
+}
+
+func (x *MinorIdentity) GetTaxIdType() string {
+	if x != nil {
+		return x.TaxIdType
+	}
+	return ""
+}
+
+func (x *MinorIdentity) GetCountryOfCitizenship() string {
+	if x != nil {
+		return x.CountryOfCitizenship
+	}
+	return ""
+}
+
+func (x *MinorIdentity) GetCountryOfBirth() string {
+	if x != nil {
+		return x.CountryOfBirth
+	}
+	return ""
+}
+
+func (x *MinorIdentity) GetCountryOfTaxResidence() string {
+	if x != nil {
+		return x.CountryOfTaxResidence
+	}
+	return ""
+}
+
+func (x *MinorIdentity) GetState() string {
+	if x != nil {
+		return x.State
+	}
+	return ""
+}
+
+func (x *MinorIdentity) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+// USDValues represents USD values for LCT accounts.
+type USDValues struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Last equity in USD.
+	LastEquity    string `protobuf:"bytes,1,opt,name=last_equity,json=lastEquity,proto3" json:"last_equity,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *USDValues) Reset() {
+	*x = USDValues{}
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *USDValues) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*USDValues) ProtoMessage() {}
+
+func (x *USDValues) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use USDValues.ProtoReflect.Descriptor instead.
+func (*USDValues) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *USDValues) GetLastEquity() string {
+	if x != nil {
+		return x.LastEquity
+	}
+	return ""
+}
+
+// Beneficiary represents an account beneficiary.
+type Beneficiary struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Given name.
+	GivenName string `protobuf:"bytes,1,opt,name=given_name,json=givenName,proto3" json:"given_name,omitempty"`
+	// Middle name.
+	MiddleName string `protobuf:"bytes,2,opt,name=middle_name,json=middleName,proto3" json:"middle_name,omitempty"`
+	// Family name.
+	FamilyName string `protobuf:"bytes,3,opt,name=family_name,json=familyName,proto3" json:"family_name,omitempty"`
+	// Date of birth.
+	DateOfBirth string `protobuf:"bytes,4,opt,name=date_of_birth,json=dateOfBirth,proto3" json:"date_of_birth,omitempty"`
+	// Tax ID.
+	TaxId string `protobuf:"bytes,5,opt,name=tax_id,json=taxId,proto3" json:"tax_id,omitempty"`
+	// Tax ID type.
+	TaxIdType string `protobuf:"bytes,6,opt,name=tax_id_type,json=taxIdType,proto3" json:"tax_id_type,omitempty"`
+	// Relationship.
+	Relationship string `protobuf:"bytes,7,opt,name=relationship,proto3" json:"relationship,omitempty"`
+	// Beneficiary type (primary, contingent).
+	Type string `protobuf:"bytes,8,opt,name=type,proto3" json:"type,omitempty"`
+	// Share percentage.
+	SharePct      string `protobuf:"bytes,9,opt,name=share_pct,json=sharePct,proto3" json:"share_pct,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Beneficiary) Reset() {
+	*x = Beneficiary{}
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Beneficiary) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Beneficiary) ProtoMessage() {}
+
+func (x *Beneficiary) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Beneficiary.ProtoReflect.Descriptor instead.
+func (*Beneficiary) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *Beneficiary) GetGivenName() string {
+	if x != nil {
+		return x.GivenName
+	}
+	return ""
+}
+
+func (x *Beneficiary) GetMiddleName() string {
+	if x != nil {
+		return x.MiddleName
+	}
+	return ""
+}
+
+func (x *Beneficiary) GetFamilyName() string {
+	if x != nil {
+		return x.FamilyName
+	}
+	return ""
+}
+
+func (x *Beneficiary) GetDateOfBirth() string {
+	if x != nil {
+		return x.DateOfBirth
+	}
+	return ""
+}
+
+func (x *Beneficiary) GetTaxId() string {
+	if x != nil {
+		return x.TaxId
+	}
+	return ""
+}
+
+func (x *Beneficiary) GetTaxIdType() string {
+	if x != nil {
+		return x.TaxIdType
+	}
+	return ""
+}
+
+func (x *Beneficiary) GetRelationship() string {
+	if x != nil {
+		return x.Relationship
+	}
+	return ""
+}
+
+func (x *Beneficiary) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *Beneficiary) GetSharePct() string {
+	if x != nil {
+		return x.SharePct
+	}
+	return ""
+}
+
+// AccountCashInterestProgram represents cash interest program status.
+type AccountCashInterestProgram struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// APR tier name.
+	AprTierName string `protobuf:"bytes,1,opt,name=apr_tier_name,json=aprTierName,proto3" json:"apr_tier_name,omitempty"`
+	// Program status.
+	Status        string `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AccountCashInterestProgram) Reset() {
+	*x = AccountCashInterestProgram{}
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AccountCashInterestProgram) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AccountCashInterestProgram) ProtoMessage() {}
+
+func (x *AccountCashInterestProgram) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AccountCashInterestProgram.ProtoReflect.Descriptor instead.
+func (*AccountCashInterestProgram) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *AccountCashInterestProgram) GetAprTierName() string {
+	if x != nil {
+		return x.AprTierName
+	}
+	return ""
+}
+
+func (x *AccountCashInterestProgram) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+// AccountCashInterest represents the cash interest configuration.
+type AccountCashInterest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// USD cash interest program.
+	Usd           *AccountCashInterestProgram `protobuf:"bytes,1,opt,name=usd,json=USD,proto3" json:"usd,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AccountCashInterest) Reset() {
+	*x = AccountCashInterest{}
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AccountCashInterest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AccountCashInterest) ProtoMessage() {}
+
+func (x *AccountCashInterest) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AccountCashInterest.ProtoReflect.Descriptor instead.
+func (*AccountCashInterest) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *AccountCashInterest) GetUsd() *AccountCashInterestProgram {
+	if x != nil {
+		return x.Usd
+	}
+	return nil
+}
+
+// AccountFPSLItem represents FPSL status for a market.
+type AccountFPSLItem struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Tier ID.
+	TierId string `protobuf:"bytes,1,opt,name=tier_id,json=tierId,proto3" json:"tier_id,omitempty"`
+	// Status.
+	Status        string `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AccountFPSLItem) Reset() {
+	*x = AccountFPSLItem{}
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AccountFPSLItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AccountFPSLItem) ProtoMessage() {}
+
+func (x *AccountFPSLItem) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AccountFPSLItem.ProtoReflect.Descriptor instead.
+func (*AccountFPSLItem) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *AccountFPSLItem) GetTierId() string {
+	if x != nil {
+		return x.TierId
+	}
+	return ""
+}
+
+func (x *AccountFPSLItem) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+// AccountFPSL represents the FPSL configuration.
+type AccountFPSL struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// US market FPSL status.
+	Us            *AccountFPSLItem `protobuf:"bytes,1,opt,name=us,json=US,proto3" json:"us,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AccountFPSL) Reset() {
+	*x = AccountFPSL{}
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AccountFPSL) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AccountFPSL) ProtoMessage() {}
+
+func (x *AccountFPSL) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AccountFPSL.ProtoReflect.Descriptor instead.
+func (*AccountFPSL) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *AccountFPSL) GetUs() *AccountFPSLItem {
+	if x != nil {
+		return x.Us
+	}
+	return nil
+}
+
+// DisclosureContextAnnotation represents disclosure context details.
+type DisclosureContextAnnotation struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Context type.
+	ContextType string `protobuf:"bytes,1,opt,name=context_type,json=contextType,proto3" json:"context_type,omitempty"`
+	// Company name.
+	CompanyName string `protobuf:"bytes,2,opt,name=company_name,json=companyName,proto3" json:"company_name,omitempty"`
+	// Company street address.
+	CompanyStreetAddress string `protobuf:"bytes,3,opt,name=company_street_address,json=companyStreetAddress,proto3" json:"company_street_address,omitempty"`
+	// Company city.
+	CompanyCity string `protobuf:"bytes,4,opt,name=company_city,json=companyCity,proto3" json:"company_city,omitempty"`
+	// Company state.
+	CompanyState string `protobuf:"bytes,5,opt,name=company_state,json=companyState,proto3" json:"company_state,omitempty"`
+	// Company country.
+	CompanyCountry string `protobuf:"bytes,6,opt,name=company_country,json=companyCountry,proto3" json:"company_country,omitempty"`
+	// Company compliance email.
+	CompanyComplianceEmail string `protobuf:"bytes,7,opt,name=company_compliance_email,json=companyComplianceEmail,proto3" json:"company_compliance_email,omitempty"`
+	// Given name (for family member PEP).
+	GivenName string `protobuf:"bytes,8,opt,name=given_name,json=givenName,proto3" json:"given_name,omitempty"`
+	// Family name (for family member PEP).
+	FamilyName    string `protobuf:"bytes,9,opt,name=family_name,json=familyName,proto3" json:"family_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DisclosureContextAnnotation) Reset() {
+	*x = DisclosureContextAnnotation{}
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DisclosureContextAnnotation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DisclosureContextAnnotation) ProtoMessage() {}
+
+func (x *DisclosureContextAnnotation) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DisclosureContextAnnotation.ProtoReflect.Descriptor instead.
+func (*DisclosureContextAnnotation) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *DisclosureContextAnnotation) GetContextType() string {
+	if x != nil {
+		return x.ContextType
+	}
+	return ""
+}
+
+func (x *DisclosureContextAnnotation) GetCompanyName() string {
+	if x != nil {
+		return x.CompanyName
+	}
+	return ""
+}
+
+func (x *DisclosureContextAnnotation) GetCompanyStreetAddress() string {
+	if x != nil {
+		return x.CompanyStreetAddress
+	}
+	return ""
+}
+
+func (x *DisclosureContextAnnotation) GetCompanyCity() string {
+	if x != nil {
+		return x.CompanyCity
+	}
+	return ""
+}
+
+func (x *DisclosureContextAnnotation) GetCompanyState() string {
+	if x != nil {
+		return x.CompanyState
+	}
+	return ""
+}
+
+func (x *DisclosureContextAnnotation) GetCompanyCountry() string {
+	if x != nil {
+		return x.CompanyCountry
+	}
+	return ""
+}
+
+func (x *DisclosureContextAnnotation) GetCompanyComplianceEmail() string {
+	if x != nil {
+		return x.CompanyComplianceEmail
+	}
+	return ""
+}
+
+func (x *DisclosureContextAnnotation) GetGivenName() string {
+	if x != nil {
+		return x.GivenName
+	}
+	return ""
+}
+
+func (x *DisclosureContextAnnotation) GetFamilyName() string {
+	if x != nil {
+		return x.FamilyName
+	}
+	return ""
+}
+
 // BrokerAccount represents a broker-managed trading account.
 type BrokerAccount struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -848,38 +1577,68 @@ type BrokerAccount struct {
 	// Account number.
 	AccountNumber string `protobuf:"bytes,2,opt,name=account_number,json=accountNumber,proto3" json:"account_number,omitempty"`
 	// Account status.
-	Status BrokerAccountStatus `protobuf:"varint,3,opt,name=status,proto3,enum=alpaca.broker.v1.BrokerAccountStatus" json:"status,omitempty"`
+	Status string `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	// Crypto status.
 	CryptoStatus string `protobuf:"bytes,4,opt,name=crypto_status,json=cryptoStatus,proto3" json:"crypto_status,omitempty"`
+	// KYC results.
+	KycResults *KYCResults `protobuf:"bytes,5,opt,name=kyc_results,json=kycResults,proto3" json:"kyc_results,omitempty"`
 	// Currency (USD).
-	Currency string `protobuf:"bytes,5,opt,name=currency,proto3" json:"currency,omitempty"`
+	Currency string `protobuf:"bytes,6,opt,name=currency,proto3" json:"currency,omitempty"`
 	// Last equity value.
-	LastEquity string `protobuf:"bytes,6,opt,name=last_equity,json=lastEquity,proto3" json:"last_equity,omitempty"`
+	LastEquity string `protobuf:"bytes,7,opt,name=last_equity,json=lastEquity,proto3" json:"last_equity,omitempty"`
 	// Creation timestamp (RFC 3339).
-	CreatedAt string `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	CreatedAt string `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// Contact information.
-	Contact *Contact `protobuf:"bytes,8,opt,name=contact,proto3" json:"contact,omitempty"`
+	Contact *Contact `protobuf:"bytes,9,opt,name=contact,proto3" json:"contact,omitempty"`
 	// Identity information.
-	Identity *Identity `protobuf:"bytes,9,opt,name=identity,proto3" json:"identity,omitempty"`
+	Identity *Identity `protobuf:"bytes,10,opt,name=identity,proto3" json:"identity,omitempty"`
 	// Disclosures.
-	Disclosures *Disclosures `protobuf:"bytes,10,opt,name=disclosures,proto3" json:"disclosures,omitempty"`
+	Disclosures *Disclosures `protobuf:"bytes,11,opt,name=disclosures,proto3" json:"disclosures,omitempty"`
 	// Signed agreements.
-	Agreements []*Agreement `protobuf:"bytes,11,rep,name=agreements,proto3" json:"agreements,omitempty"`
+	Agreements []*Agreement `protobuf:"bytes,12,rep,name=agreements,proto3" json:"agreements,omitempty"`
+	// Documents.
+	Documents []*OwnerDocument `protobuf:"bytes,13,rep,name=documents,proto3" json:"documents,omitempty"`
 	// Trusted contact.
-	TrustedContact *TrustedContact `protobuf:"bytes,12,opt,name=trusted_contact,json=trustedContact,proto3" json:"trusted_contact,omitempty"`
-	// Account type (trading, custodial).
-	AccountType string `protobuf:"bytes,13,opt,name=account_type,json=accountType,proto3" json:"account_type,omitempty"`
+	TrustedContact *TrustedContact `protobuf:"bytes,14,opt,name=trusted_contact,json=trustedContact,proto3" json:"trusted_contact,omitempty"`
+	// Account name.
+	AccountName string `protobuf:"bytes,15,opt,name=account_name,json=accountName,proto3" json:"account_name,omitempty"`
+	// Account type (trading, custodial, donor_advised, ira).
+	AccountType string `protobuf:"bytes,16,opt,name=account_type,json=accountType,proto3" json:"account_type,omitempty"`
+	// Account sub-type (for IRA: traditional, roth).
+	AccountSubType string `protobuf:"bytes,17,opt,name=account_sub_type,json=accountSubType,proto3" json:"account_sub_type,omitempty"`
+	// Custodial account type (CustodianTypeUTMA, CustodianTypeUGMA).
+	CustodialAccountType string `protobuf:"bytes,18,opt,name=custodial_account_type,json=custodialAccountType,proto3" json:"custodial_account_type,omitempty"`
+	// Minor identity (for custodial accounts).
+	MinorIdentity *MinorIdentity `protobuf:"bytes,19,opt,name=minor_identity,json=minorIdentity,proto3" json:"minor_identity,omitempty"`
 	// Trading configurations.
-	TradingConfigurations *BrokerAccountTradingConfigurations `protobuf:"bytes,14,opt,name=trading_configurations,json=tradingConfigurations,proto3" json:"trading_configurations,omitempty"`
-	// Whether margin trading is enabled.
-	EnabledAssetsMargin bool `protobuf:"varint,15,opt,name=enabled_assets_margin,json=enabledAssetsMargin,proto3" json:"enabled_assets_margin,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	TradingConfigurations *BrokerAccountTradingConfigurations `protobuf:"bytes,20,opt,name=trading_configurations,json=tradingConfigurations,proto3" json:"trading_configurations,omitempty"`
+	// USD values (for LCT accounts).
+	Usd *USDValues `protobuf:"bytes,21,opt,name=usd,proto3" json:"usd,omitempty"`
+	// Enabled asset classes.
+	EnabledAssets []string `protobuf:"bytes,22,rep,name=enabled_assets,json=enabledAssets,proto3" json:"enabled_assets,omitempty"`
+	// Beneficiaries.
+	Beneficiaries []*Beneficiary `protobuf:"bytes,23,rep,name=beneficiaries,proto3" json:"beneficiaries,omitempty"`
+	// Cash interest configuration.
+	CashInterest *AccountCashInterest `protobuf:"bytes,24,opt,name=cash_interest,json=cashInterest,proto3" json:"cash_interest,omitempty"`
+	// FPSL configuration.
+	Fpsl *AccountFPSL `protobuf:"bytes,25,opt,name=fpsl,proto3" json:"fpsl,omitempty"`
+	// Risk tolerance (at account level).
+	RiskTolerance string `protobuf:"bytes,26,opt,name=risk_tolerance,json=riskTolerance,proto3" json:"risk_tolerance,omitempty"`
+	// Investment objective (at account level).
+	InvestmentObjective string `protobuf:"bytes,27,opt,name=investment_objective,json=investmentObjective,proto3" json:"investment_objective,omitempty"`
+	// Investment time horizon (at account level).
+	InvestmentTimeHorizon string `protobuf:"bytes,28,opt,name=investment_time_horizon,json=investmentTimeHorizon,proto3" json:"investment_time_horizon,omitempty"`
+	// Liquidity needs (at account level).
+	LiquidityNeeds string `protobuf:"bytes,29,opt,name=liquidity_needs,json=liquidityNeeds,proto3" json:"liquidity_needs,omitempty"`
+	// Trading type.
+	TradingType   string `protobuf:"bytes,30,opt,name=trading_type,json=tradingType,proto3" json:"trading_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *BrokerAccount) Reset() {
 	*x = BrokerAccount{}
-	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[5]
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -891,7 +1650,7 @@ func (x *BrokerAccount) String() string {
 func (*BrokerAccount) ProtoMessage() {}
 
 func (x *BrokerAccount) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[5]
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -904,7 +1663,7 @@ func (x *BrokerAccount) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BrokerAccount.ProtoReflect.Descriptor instead.
 func (*BrokerAccount) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{5}
+	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *BrokerAccount) GetId() string {
@@ -921,11 +1680,11 @@ func (x *BrokerAccount) GetAccountNumber() string {
 	return ""
 }
 
-func (x *BrokerAccount) GetStatus() BrokerAccountStatus {
+func (x *BrokerAccount) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
-	return BrokerAccountStatus_BROKER_ACCOUNT_STATUS_UNSPECIFIED
+	return ""
 }
 
 func (x *BrokerAccount) GetCryptoStatus() string {
@@ -933,6 +1692,13 @@ func (x *BrokerAccount) GetCryptoStatus() string {
 		return x.CryptoStatus
 	}
 	return ""
+}
+
+func (x *BrokerAccount) GetKycResults() *KYCResults {
+	if x != nil {
+		return x.KycResults
+	}
+	return nil
 }
 
 func (x *BrokerAccount) GetCurrency() string {
@@ -984,11 +1750,25 @@ func (x *BrokerAccount) GetAgreements() []*Agreement {
 	return nil
 }
 
+func (x *BrokerAccount) GetDocuments() []*OwnerDocument {
+	if x != nil {
+		return x.Documents
+	}
+	return nil
+}
+
 func (x *BrokerAccount) GetTrustedContact() *TrustedContact {
 	if x != nil {
 		return x.TrustedContact
 	}
 	return nil
+}
+
+func (x *BrokerAccount) GetAccountName() string {
+	if x != nil {
+		return x.AccountName
+	}
+	return ""
 }
 
 func (x *BrokerAccount) GetAccountType() string {
@@ -998,6 +1778,27 @@ func (x *BrokerAccount) GetAccountType() string {
 	return ""
 }
 
+func (x *BrokerAccount) GetAccountSubType() string {
+	if x != nil {
+		return x.AccountSubType
+	}
+	return ""
+}
+
+func (x *BrokerAccount) GetCustodialAccountType() string {
+	if x != nil {
+		return x.CustodialAccountType
+	}
+	return ""
+}
+
+func (x *BrokerAccount) GetMinorIdentity() *MinorIdentity {
+	if x != nil {
+		return x.MinorIdentity
+	}
+	return nil
+}
+
 func (x *BrokerAccount) GetTradingConfigurations() *BrokerAccountTradingConfigurations {
 	if x != nil {
 		return x.TradingConfigurations
@@ -1005,11 +1806,74 @@ func (x *BrokerAccount) GetTradingConfigurations() *BrokerAccountTradingConfigur
 	return nil
 }
 
-func (x *BrokerAccount) GetEnabledAssetsMargin() bool {
+func (x *BrokerAccount) GetUsd() *USDValues {
 	if x != nil {
-		return x.EnabledAssetsMargin
+		return x.Usd
 	}
-	return false
+	return nil
+}
+
+func (x *BrokerAccount) GetEnabledAssets() []string {
+	if x != nil {
+		return x.EnabledAssets
+	}
+	return nil
+}
+
+func (x *BrokerAccount) GetBeneficiaries() []*Beneficiary {
+	if x != nil {
+		return x.Beneficiaries
+	}
+	return nil
+}
+
+func (x *BrokerAccount) GetCashInterest() *AccountCashInterest {
+	if x != nil {
+		return x.CashInterest
+	}
+	return nil
+}
+
+func (x *BrokerAccount) GetFpsl() *AccountFPSL {
+	if x != nil {
+		return x.Fpsl
+	}
+	return nil
+}
+
+func (x *BrokerAccount) GetRiskTolerance() string {
+	if x != nil {
+		return x.RiskTolerance
+	}
+	return ""
+}
+
+func (x *BrokerAccount) GetInvestmentObjective() string {
+	if x != nil {
+		return x.InvestmentObjective
+	}
+	return ""
+}
+
+func (x *BrokerAccount) GetInvestmentTimeHorizon() string {
+	if x != nil {
+		return x.InvestmentTimeHorizon
+	}
+	return ""
+}
+
+func (x *BrokerAccount) GetLiquidityNeeds() string {
+	if x != nil {
+		return x.LiquidityNeeds
+	}
+	return ""
+}
+
+func (x *BrokerAccount) GetTradingType() string {
+	if x != nil {
+		return x.TradingType
+	}
+	return ""
 }
 
 // BrokerAccountTradingConfigurations represents trading configurations for a broker account.
@@ -1022,18 +1886,26 @@ type BrokerAccountTradingConfigurations struct {
 	// Maximum margin multiplier.
 	MaxMarginMultiplier string `protobuf:"bytes,3,opt,name=max_margin_multiplier,json=maxMarginMultiplier,proto3" json:"max_margin_multiplier,omitempty"`
 	// Whether PDT protection is enabled.
-	PdtCheck bool `protobuf:"varint,4,opt,name=pdt_check,json=pdtCheck,proto3" json:"pdt_check,omitempty"`
+	PdtCheck string `protobuf:"bytes,4,opt,name=pdt_check,json=pdtCheck,proto3" json:"pdt_check,omitempty"`
 	// Trade confirmation email setting.
 	TradeConfirmEmail string `protobuf:"bytes,5,opt,name=trade_confirm_email,json=tradeConfirmEmail,proto3" json:"trade_confirm_email,omitempty"`
 	// Whether trading is suspended.
-	SuspendTrade  bool `protobuf:"varint,6,opt,name=suspend_trade,json=suspendTrade,proto3" json:"suspend_trade,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	SuspendTrade bool `protobuf:"varint,6,opt,name=suspend_trade,json=suspendTrade,proto3" json:"suspend_trade,omitempty"`
+	// Whether shorting is disabled.
+	NoShorting bool `protobuf:"varint,7,opt,name=no_shorting,json=noShorting,proto3" json:"no_shorting,omitempty"`
+	// Maximum options trading level (0-3).
+	MaxOptionsTradingLevel int32 `protobuf:"varint,8,opt,name=max_options_trading_level,json=maxOptionsTradingLevel,proto3" json:"max_options_trading_level,omitempty"`
+	// PTP no exception entry setting.
+	PtpNoExceptionEntry string `protobuf:"bytes,9,opt,name=ptp_no_exception_entry,json=ptpNoExceptionEntry,proto3" json:"ptp_no_exception_entry,omitempty"`
+	// Whether overnight trading is disabled.
+	DisableOvernightTrading bool `protobuf:"varint,10,opt,name=disable_overnight_trading,json=disableOvernightTrading,proto3" json:"disable_overnight_trading,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *BrokerAccountTradingConfigurations) Reset() {
 	*x = BrokerAccountTradingConfigurations{}
-	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[6]
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1045,7 +1917,7 @@ func (x *BrokerAccountTradingConfigurations) String() string {
 func (*BrokerAccountTradingConfigurations) ProtoMessage() {}
 
 func (x *BrokerAccountTradingConfigurations) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[6]
+	mi := &file_alpaca_broker_v1_broker_account_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1058,7 +1930,7 @@ func (x *BrokerAccountTradingConfigurations) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use BrokerAccountTradingConfigurations.ProtoReflect.Descriptor instead.
 func (*BrokerAccountTradingConfigurations) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{6}
+	return file_alpaca_broker_v1_broker_account_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *BrokerAccountTradingConfigurations) GetDtbpCheck() string {
@@ -1082,11 +1954,11 @@ func (x *BrokerAccountTradingConfigurations) GetMaxMarginMultiplier() string {
 	return ""
 }
 
-func (x *BrokerAccountTradingConfigurations) GetPdtCheck() bool {
+func (x *BrokerAccountTradingConfigurations) GetPdtCheck() string {
 	if x != nil {
 		return x.PdtCheck
 	}
-	return false
+	return ""
 }
 
 func (x *BrokerAccountTradingConfigurations) GetTradeConfirmEmail() string {
@@ -1103,11 +1975,39 @@ func (x *BrokerAccountTradingConfigurations) GetSuspendTrade() bool {
 	return false
 }
 
+func (x *BrokerAccountTradingConfigurations) GetNoShorting() bool {
+	if x != nil {
+		return x.NoShorting
+	}
+	return false
+}
+
+func (x *BrokerAccountTradingConfigurations) GetMaxOptionsTradingLevel() int32 {
+	if x != nil {
+		return x.MaxOptionsTradingLevel
+	}
+	return 0
+}
+
+func (x *BrokerAccountTradingConfigurations) GetPtpNoExceptionEntry() string {
+	if x != nil {
+		return x.PtpNoExceptionEntry
+	}
+	return ""
+}
+
+func (x *BrokerAccountTradingConfigurations) GetDisableOvernightTrading() bool {
+	if x != nil {
+		return x.DisableOvernightTrading
+	}
+	return false
+}
+
 var File_alpaca_broker_v1_broker_account_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v1_broker_account_proto_rawDesc = "" +
 	"\n" +
-	"%alpaca/broker/v1/broker_account.proto\x12\x10alpaca.broker.v1\x1a\x1csebuf/http/annotations.proto\"\xfb\x02\n" +
+	"%alpaca/broker/v1/broker_account.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xc1\x03\n" +
 	"\aContact\x12?\n" +
 	"\remail_address\x18\x01 \x01(\tB\x1a\xba\xb5\x18\x16\n" +
 	"\x14john.doe@example.comR\femailAddress\x128\n" +
@@ -1127,7 +2027,9 @@ const file_alpaca_broker_v1_broker_account_proto_rawDesc = "" +
 	"\x0510001R\n" +
 	"postalCode\x12#\n" +
 	"\acountry\x18\b \x01(\tB\t\xba\xb5\x18\x05\n" +
-	"\x03USAR\acountry\"\xb5\t\n" +
+	"\x03USAR\acountry\x12D\n" +
+	"\x14local_street_address\x18\t \x03(\tB\x12\xba\xb5\x18\x0e\n" +
+	"\f123 Local StR\x12localStreetAddress\"\xbf\r\n" +
 	"\bIdentity\x12)\n" +
 	"\n" +
 	"given_name\x18\x01 \x01(\tB\n" +
@@ -1143,9 +2045,10 @@ const file_alpaca_broker_v1_broker_account_proto_rawDesc = "" +
 	"\n" +
 	"1990-01-15R\vdateOfBirth\x12(\n" +
 	"\x06tax_id\x18\x05 \x01(\tB\x11\xba\xb5\x18\r\n" +
-	"\v123-45-6789R\x05taxId\x12D\n" +
-	"\vtax_id_type\x18\x06 \x01(\x0e2\x1b.alpaca.broker.v1.TaxIdTypeB\a\xba\xb5\x18\x03\n" +
-	"\x011R\ttaxIdType\x12?\n" +
+	"\v123-45-6789R\x05taxId\x12n\n" +
+	"\vtax_id_type\x18\x06 \x01(\tBN\xbaH>r<R\x00R\aUSA_SSNR\vARG_AR_CUITR\aAUS_TFNR\n" +
+	"DEU_TAX_IDR\rNOT_SPECIFIED\xba\xb5\x18\t\n" +
+	"\aUSA_SSNR\ttaxIdType\x12?\n" +
 	"\x16country_of_citizenship\x18\a \x01(\tB\t\xba\xb5\x18\x05\n" +
 	"\x03USAR\x14countryOfCitizenship\x123\n" +
 	"\x10country_of_birth\x18\b \x01(\tB\t\xba\xb5\x18\x05\n" +
@@ -1157,14 +2060,14 @@ const file_alpaca_broker_v1_broker_account_proto_rawDesc = "" +
 	"\x03H1BR\bvisaType\x12B\n" +
 	"\x14visa_expiration_date\x18\v \x01(\tB\x10\xba\xb5\x18\f\n" +
 	"\n" +
-	"2025-12-31R\x12visaExpirationDate\x12]\n" +
-	"#date_of_departure_from_home_country\x18\f \x01(\tB\x10\xba\xb5\x18\f\n" +
+	"2025-12-31R\x12visaExpirationDate\x12L\n" +
+	"\x1adate_of_departure_from_usa\x18\f \x01(\tB\x10\xba\xb5\x18\f\n" +
 	"\n" +
-	"2020-01-01R\x1edateOfDepartureFromHomeCountry\x12:\n" +
+	"2020-01-01R\x16dateOfDepartureFromUsa\x12:\n" +
 	"\x12permanent_resident\x18\r \x01(\bB\v\xba\xb5\x18\a\n" +
-	"\x05falseR\x11permanentResident\x12O\n" +
-	"\x0efunding_source\x18\x0e \x03(\x0e2\x1f.alpaca.broker.v1.FundingSourceB\a\xba\xb5\x18\x03\n" +
-	"\x011R\rfundingSource\x12=\n" +
+	"\x05falseR\x11permanentResident\x12>\n" +
+	"\x0efunding_source\x18\x0e \x03(\tB\x17\xba\xb5\x18\x13\n" +
+	"\x11employment_incomeR\rfundingSource\x12=\n" +
 	"\x14liquid_net_worth_min\x18\x0f \x01(\tB\f\xba\xb5\x18\b\n" +
 	"\x06100000R\x11liquidNetWorthMin\x12=\n" +
 	"\x14liquid_net_worth_max\x18\x10 \x01(\tB\f\xba\xb5\x18\b\n" +
@@ -1176,7 +2079,22 @@ const file_alpaca_broker_v1_broker_account_proto_rawDesc = "" +
 	"\x13total_net_worth_min\x18\x13 \x01(\tB\f\xba\xb5\x18\b\n" +
 	"\x06200000R\x10totalNetWorthMin\x12<\n" +
 	"\x13total_net_worth_max\x18\x14 \x01(\tB\r\xba\xb5\x18\t\n" +
-	"\a1000000R\x10totalNetWorthMax\"\xbc\x04\n" +
+	"\a1000000R\x10totalNetWorthMax\x123\n" +
+	"\x0emarital_status\x18\x15 \x01(\tB\f\xba\xb5\x18\b\n" +
+	"\x06SINGLER\rmaritalStatus\x129\n" +
+	"\x14number_of_dependents\x18\x16 \x01(\x05B\a\xba\xb5\x18\x03\n" +
+	"\x010R\x12numberOfDependents\x12]\n" +
+	"!investment_experience_with_stocks\x18\x17 \x01(\tB\x12\xba\xb5\x18\x0e\n" +
+	"\f1_to_5_yearsR\x1einvestmentExperienceWithStocks\x12W\n" +
+	"\"investment_experience_with_options\x18\x18 \x01(\tB\n" +
+	"\xba\xb5\x18\x06\n" +
+	"\x04noneR\x1finvestmentExperienceWithOptions\x12'\n" +
+	"\x0fliquidity_needs\x18\x19 \x01(\tR\x0eliquidityNeeds\x12%\n" +
+	"\x0erisk_tolerance\x18\x1a \x01(\tR\rriskTolerance\x121\n" +
+	"\x14investment_objective\x18\x1b \x01(\tR\x13investmentObjective\x126\n" +
+	"\x17investment_time_horizon\x18\x1c \x01(\tR\x15investmentTimeHorizon\x12\x1d\n" +
+	"\n" +
+	"party_type\x18\x1d \x01(\tR\tpartyType\"\xcc\x06\n" +
 	"\vDisclosures\x127\n" +
 	"\x11is_control_person\x18\x01 \x01(\bB\v\xba\xb5\x18\a\n" +
 	"\x05falseR\x0fisControlPerson\x12Q\n" +
@@ -1185,16 +2103,24 @@ const file_alpaca_broker_v1_broker_account_proto_rawDesc = "" +
 	"\x16is_politically_exposed\x18\x03 \x01(\bB\v\xba\xb5\x18\a\n" +
 	"\x05falseR\x14isPoliticallyExposed\x12E\n" +
 	"\x18immediate_family_exposed\x18\x04 \x01(\bB\v\xba\xb5\x18\a\n" +
-	"\x05falseR\x16immediateFamilyExposed\x12;\n" +
-	"\x11employment_status\x18\x05 \x01(\tB\x0e\xba\xb5\x18\n" +
+	"\x05falseR\x16immediateFamilyExposed\x126\n" +
+	"\x10is_discretionary\x18\x05 \x01(\bB\v\xba\xb5\x18\a\n" +
+	"\x05falseR\x0fisDiscretionary\x12;\n" +
+	"\x11employment_status\x18\x06 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
 	"\bemployedR\x10employmentStatus\x124\n" +
-	"\remployer_name\x18\x06 \x01(\tB\x0f\xba\xb5\x18\v\n" +
+	"\remployer_name\x18\a \x01(\tB\x0f\xba\xb5\x18\v\n" +
 	"\tAcme CorpR\femployerName\x12Z\n" +
-	"\x10employer_address\x18\a \x01(\tB/\xba\xb5\x18+\n" +
+	"\x10employer_address\x18\b \x01(\tB/\xba\xb5\x18+\n" +
 	")456 Business Ave, San Francisco, CA 94107R\x0femployerAddress\x12H\n" +
-	"\x13employment_position\x18\b \x01(\tB\x17\xba\xb5\x18\x13\n" +
-	"\x11Software EngineerR\x12employmentPosition\"\xd9\x01\n" +
+	"\x13employment_position\x18\t \x01(\tB\x17\xba\xb5\x18\x13\n" +
+	"\x11Software EngineerR\x12employmentPosition\x12:\n" +
+	"\x11employment_sector\x18\n" +
+	" \x01(\tB\r\xba\xb5\x18\t\n" +
+	"\afinanceR\x10employmentSector\x12G\n" +
+	"\acontext\x18\v \x03(\v2-.alpaca.broker.v1.DisclosureContextAnnotationR\acontext\x12Q\n" +
+	"\x1fis_affiliated_exchange_or_iiroc\x18\f \x01(\bB\v\xba\xb5\x18\a\n" +
+	"\x05falseR\x1bisAffiliatedExchangeOrIiroc\"\xa4\x02\n" +
 	"\tAgreement\x126\n" +
 	"\tagreement\x18\x01 \x01(\tB\x18\xba\xb5\x18\x14\n" +
 	"\x12customer_agreementR\tagreement\x127\n" +
@@ -1204,7 +2130,10 @@ const file_alpaca_broker_v1_broker_account_proto_rawDesc = "" +
 	"ip_address\x18\x03 \x01(\tB\x11\xba\xb5\x18\r\n" +
 	"\v192.168.1.1R\tipAddress\x12)\n" +
 	"\brevision\x18\x04 \x01(\tB\r\xba\xb5\x18\t\n" +
-	"\a2024.01R\brevision\"\xc6\x03\n" +
+	"\a2024.01R\brevision\x12I\n" +
+	"\n" +
+	"account_id\x18\x05 \x01(\tB*\xba\xb5\x18&\n" +
+	"$517dc9b6-1e23-4ce0-98b5-25bce762fa56R\taccountId\"\xc6\x03\n" +
 	"\x0eTrustedContact\x12)\n" +
 	"\n" +
 	"given_name\x18\x01 \x01(\tB\n" +
@@ -1227,40 +2156,129 @@ const file_alpaca_broker_v1_broker_account_proto_rawDesc = "" +
 	"\x0560601R\n" +
 	"postalCode\x12#\n" +
 	"\acountry\x18\t \x01(\tB\t\xba\xb5\x18\x05\n" +
-	"\x03USAR\acountry\"\xa7\a\n" +
-	"\rBrokerAccount\x12:\n" +
+	"\x03USAR\acountry\"\xb3\x01\n" +
+	"\n" +
+	"KYCResults\x12\x16\n" +
+	"\x06reject\x18\x01 \x01(\tR\x06reject\x12\x16\n" +
+	"\x06accept\x18\x02 \x01(\tR\x06accept\x12$\n" +
+	"\rindeterminate\x18\x03 \x01(\tR\rindeterminate\x125\n" +
+	"\x16additional_information\x18\x04 \x01(\tR\x15additionalInformation\x12\x18\n" +
+	"\asummary\x18\x05 \x01(\tR\asummary\"\xcd\x02\n" +
+	"\rOwnerDocument\x12:\n" +
 	"\x02id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
+	"$d5af1585-6c60-494d-9ea5-c5df62704229R\x02id\x12@\n" +
+	"\rdocument_type\x18\x02 \x01(\tB\x1b\xba\xb5\x18\x17\n" +
+	"\x15identity_verificationR\fdocumentType\x12:\n" +
+	"\x11document_sub_type\x18\x03 \x01(\tB\x0e\xba\xb5\x18\n" +
+	"\n" +
+	"\bpassportR\x0fdocumentSubType\x12-\n" +
+	"\tmime_type\x18\x04 \x01(\tB\x10\xba\xb5\x18\f\n" +
+	"\n" +
+	"image/jpegR\bmimeType\x12\x18\n" +
+	"\acontent\x18\x05 \x01(\tR\acontent\x129\n" +
+	"\n" +
+	"created_at\x18\x06 \x01(\tB\x1a\xba\xb5\x18\x16\n" +
+	"\x142024-01-15T10:30:00ZR\tcreatedAt\"\xef\x02\n" +
+	"\rMinorIdentity\x12\x1d\n" +
+	"\n" +
+	"given_name\x18\x01 \x01(\tR\tgivenName\x12\x1f\n" +
+	"\vfamily_name\x18\x02 \x01(\tR\n" +
+	"familyName\x12\"\n" +
+	"\rdate_of_birth\x18\x03 \x01(\tR\vdateOfBirth\x12\x15\n" +
+	"\x06tax_id\x18\x04 \x01(\tR\x05taxId\x12\x1e\n" +
+	"\vtax_id_type\x18\x05 \x01(\tR\ttaxIdType\x124\n" +
+	"\x16country_of_citizenship\x18\x06 \x01(\tR\x14countryOfCitizenship\x12(\n" +
+	"\x10country_of_birth\x18\a \x01(\tR\x0ecountryOfBirth\x127\n" +
+	"\x18country_of_tax_residence\x18\b \x01(\tR\x15countryOfTaxResidence\x12\x14\n" +
+	"\x05state\x18\t \x01(\tR\x05state\x12\x14\n" +
+	"\x05email\x18\n" +
+	" \x01(\tR\x05email\":\n" +
+	"\tUSDValues\x12-\n" +
+	"\vlast_equity\x18\x01 \x01(\tB\f\xba\xb5\x18\b\n" +
+	"\x06123.45R\n" +
+	"lastEquity\"\x9e\x02\n" +
+	"\vBeneficiary\x12\x1d\n" +
+	"\n" +
+	"given_name\x18\x01 \x01(\tR\tgivenName\x12\x1f\n" +
+	"\vmiddle_name\x18\x02 \x01(\tR\n" +
+	"middleName\x12\x1f\n" +
+	"\vfamily_name\x18\x03 \x01(\tR\n" +
+	"familyName\x12\"\n" +
+	"\rdate_of_birth\x18\x04 \x01(\tR\vdateOfBirth\x12\x15\n" +
+	"\x06tax_id\x18\x05 \x01(\tR\x05taxId\x12\x1e\n" +
+	"\vtax_id_type\x18\x06 \x01(\tR\ttaxIdType\x12\"\n" +
+	"\frelationship\x18\a \x01(\tR\frelationship\x12\x12\n" +
+	"\x04type\x18\b \x01(\tR\x04type\x12\x1b\n" +
+	"\tshare_pct\x18\t \x01(\tR\bsharePct\"X\n" +
+	"\x1aAccountCashInterestProgram\x12\"\n" +
+	"\rapr_tier_name\x18\x01 \x01(\tR\vaprTierName\x12\x16\n" +
+	"\x06status\x18\x02 \x01(\tR\x06status\"U\n" +
+	"\x13AccountCashInterest\x12>\n" +
+	"\x03usd\x18\x01 \x01(\v2,.alpaca.broker.v1.AccountCashInterestProgramR\x03USD\"B\n" +
+	"\x0fAccountFPSLItem\x12\x17\n" +
+	"\atier_id\x18\x01 \x01(\tR\x06tierId\x12\x16\n" +
+	"\x06status\x18\x02 \x01(\tR\x06status\"@\n" +
+	"\vAccountFPSL\x121\n" +
+	"\x02us\x18\x01 \x01(\v2!.alpaca.broker.v1.AccountFPSLItemR\x02US\"\x84\x03\n" +
+	"\x1bDisclosureContextAnnotation\x12!\n" +
+	"\fcontext_type\x18\x01 \x01(\tR\vcontextType\x12!\n" +
+	"\fcompany_name\x18\x02 \x01(\tR\vcompanyName\x124\n" +
+	"\x16company_street_address\x18\x03 \x01(\tR\x14companyStreetAddress\x12!\n" +
+	"\fcompany_city\x18\x04 \x01(\tR\vcompanyCity\x12#\n" +
+	"\rcompany_state\x18\x05 \x01(\tR\fcompanyState\x12'\n" +
+	"\x0fcompany_country\x18\x06 \x01(\tR\x0ecompanyCountry\x128\n" +
+	"\x18company_compliance_email\x18\a \x01(\tR\x16companyComplianceEmail\x12\x1d\n" +
+	"\n" +
+	"given_name\x18\b \x01(\tR\tgivenName\x12\x1f\n" +
+	"\vfamily_name\x18\t \x01(\tR\n" +
+	"familyName\"\x8e\r\n" +
+	"\rBrokerAccount\x12B\n" +
+	"\x02id\x18\x01 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$904837e3-3b76-47ec-b432-046db621571bR\x02id\x127\n" +
 	"\x0eaccount_number\x18\x02 \x01(\tB\x10\xba\xb5\x18\f\n" +
 	"\n" +
-	"010203ABCDR\raccountNumber\x12F\n" +
-	"\x06status\x18\x03 \x01(\x0e2%.alpaca.broker.v1.BrokerAccountStatusB\a\xba\xb5\x18\x03\n" +
-	"\x016R\x06status\x121\n" +
+	"010203ABCDR\raccountNumber\x12$\n" +
+	"\x06status\x18\x03 \x01(\tB\f\xba\xb5\x18\b\n" +
+	"\x06ACTIVER\x06status\x121\n" +
 	"\rcrypto_status\x18\x04 \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06ACTIVER\fcryptoStatus\x12%\n" +
-	"\bcurrency\x18\x05 \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"\x06ACTIVER\fcryptoStatus\x12=\n" +
+	"\vkyc_results\x18\x05 \x01(\v2\x1c.alpaca.broker.v1.KYCResultsR\n" +
+	"kycResults\x12%\n" +
+	"\bcurrency\x18\x06 \x01(\tB\t\xba\xb5\x18\x05\n" +
 	"\x03USDR\bcurrency\x12/\n" +
-	"\vlast_equity\x18\x06 \x01(\tB\x0e\xba\xb5\x18\n" +
+	"\vlast_equity\x18\a \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
 	"\b50000.00R\n" +
 	"lastEquity\x129\n" +
 	"\n" +
-	"created_at\x18\a \x01(\tB\x1a\xba\xb5\x18\x16\n" +
+	"created_at\x18\b \x01(\tB\x1a\xba\xb5\x18\x16\n" +
 	"\x142024-01-01T00:00:00ZR\tcreatedAt\x123\n" +
-	"\acontact\x18\b \x01(\v2\x19.alpaca.broker.v1.ContactR\acontact\x126\n" +
-	"\bidentity\x18\t \x01(\v2\x1a.alpaca.broker.v1.IdentityR\bidentity\x12?\n" +
-	"\vdisclosures\x18\n" +
-	" \x01(\v2\x1d.alpaca.broker.v1.DisclosuresR\vdisclosures\x12;\n" +
+	"\acontact\x18\t \x01(\v2\x19.alpaca.broker.v1.ContactR\acontact\x126\n" +
+	"\bidentity\x18\n" +
+	" \x01(\v2\x1a.alpaca.broker.v1.IdentityR\bidentity\x12?\n" +
+	"\vdisclosures\x18\v \x01(\v2\x1d.alpaca.broker.v1.DisclosuresR\vdisclosures\x12;\n" +
 	"\n" +
-	"agreements\x18\v \x03(\v2\x1b.alpaca.broker.v1.AgreementR\n" +
-	"agreements\x12I\n" +
-	"\x0ftrusted_contact\x18\f \x01(\v2 .alpaca.broker.v1.TrustedContactR\x0etrustedContact\x120\n" +
-	"\faccount_type\x18\r \x01(\tB\r\xba\xb5\x18\t\n" +
-	"\atradingR\vaccountType\x12k\n" +
-	"\x16trading_configurations\x18\x0e \x01(\v24.alpaca.broker.v1.BrokerAccountTradingConfigurationsR\x15tradingConfigurations\x12>\n" +
-	"\x15enabled_assets_margin\x18\x0f \x01(\bB\n" +
-	"\xba\xb5\x18\x06\n" +
-	"\x04trueR\x13enabledAssetsMargin\"\xdd\x02\n" +
+	"agreements\x18\f \x03(\v2\x1b.alpaca.broker.v1.AgreementR\n" +
+	"agreements\x12=\n" +
+	"\tdocuments\x18\r \x03(\v2\x1f.alpaca.broker.v1.OwnerDocumentR\tdocuments\x12I\n" +
+	"\x0ftrusted_contact\x18\x0e \x01(\v2 .alpaca.broker.v1.TrustedContactR\x0etrustedContact\x12!\n" +
+	"\faccount_name\x18\x0f \x01(\tR\vaccountName\x120\n" +
+	"\faccount_type\x18\x10 \x01(\tB\r\xba\xb5\x18\t\n" +
+	"\atradingR\vaccountType\x12(\n" +
+	"\x10account_sub_type\x18\x11 \x01(\tR\x0eaccountSubType\x124\n" +
+	"\x16custodial_account_type\x18\x12 \x01(\tR\x14custodialAccountType\x12F\n" +
+	"\x0eminor_identity\x18\x13 \x01(\v2\x1f.alpaca.broker.v1.MinorIdentityR\rminorIdentity\x12k\n" +
+	"\x16trading_configurations\x18\x14 \x01(\v24.alpaca.broker.v1.BrokerAccountTradingConfigurationsR\x15tradingConfigurations\x12-\n" +
+	"\x03usd\x18\x15 \x01(\v2\x1b.alpaca.broker.v1.USDValuesR\x03usd\x12%\n" +
+	"\x0eenabled_assets\x18\x16 \x03(\tR\renabledAssets\x12C\n" +
+	"\rbeneficiaries\x18\x17 \x03(\v2\x1d.alpaca.broker.v1.BeneficiaryR\rbeneficiaries\x12J\n" +
+	"\rcash_interest\x18\x18 \x01(\v2%.alpaca.broker.v1.AccountCashInterestR\fcashInterest\x121\n" +
+	"\x04fpsl\x18\x19 \x01(\v2\x1d.alpaca.broker.v1.AccountFPSLR\x04fpsl\x12%\n" +
+	"\x0erisk_tolerance\x18\x1a \x01(\tR\rriskTolerance\x121\n" +
+	"\x14investment_objective\x18\x1b \x01(\tR\x13investmentObjective\x126\n" +
+	"\x17investment_time_horizon\x18\x1c \x01(\tR\x15investmentTimeHorizon\x12'\n" +
+	"\x0fliquidity_needs\x18\x1d \x01(\tR\x0eliquidityNeeds\x12!\n" +
+	"\ftrading_type\x18\x1e \x01(\tR\vtradingType\"\xce\x04\n" +
 	"\"BrokerAccountTradingConfigurations\x12)\n" +
 	"\n" +
 	"dtbp_check\x18\x01 \x01(\tB\n" +
@@ -1270,40 +2288,22 @@ const file_alpaca_broker_v1_broker_account_proto_rawDesc = "" +
 	"\xba\xb5\x18\x06\n" +
 	"\x04trueR\x11fractionalTrading\x12;\n" +
 	"\x15max_margin_multiplier\x18\x03 \x01(\tB\a\xba\xb5\x18\x03\n" +
-	"\x014R\x13maxMarginMultiplier\x12'\n" +
-	"\tpdt_check\x18\x04 \x01(\bB\n" +
-	"\xba\xb5\x18\x06\n" +
-	"\x04trueR\bpdtCheck\x129\n" +
+	"\x014R\x13maxMarginMultiplier\x12(\n" +
+	"\tpdt_check\x18\x04 \x01(\tB\v\xba\xb5\x18\a\n" +
+	"\x05entryR\bpdtCheck\x129\n" +
 	"\x13trade_confirm_email\x18\x05 \x01(\tB\t\xba\xb5\x18\x05\n" +
 	"\x03allR\x11tradeConfirmEmail\x120\n" +
 	"\rsuspend_trade\x18\x06 \x01(\bB\v\xba\xb5\x18\a\n" +
-	"\x05falseR\fsuspendTrade*\x9f\x03\n" +
-	"\x13BrokerAccountStatus\x12%\n" +
-	"!BROKER_ACCOUNT_STATUS_UNSPECIFIED\x10\x00\x12$\n" +
-	" BROKER_ACCOUNT_STATUS_ONBOARDING\x10\x01\x12+\n" +
-	"'BROKER_ACCOUNT_STATUS_SUBMISSION_FAILED\x10\x02\x12#\n" +
-	"\x1fBROKER_ACCOUNT_STATUS_SUBMITTED\x10\x03\x12)\n" +
-	"%BROKER_ACCOUNT_STATUS_ACCOUNT_UPDATED\x10\x04\x12*\n" +
-	"&BROKER_ACCOUNT_STATUS_APPROVAL_PENDING\x10\x05\x12 \n" +
-	"\x1cBROKER_ACCOUNT_STATUS_ACTIVE\x10\x06\x12\"\n" +
-	"\x1eBROKER_ACCOUNT_STATUS_REJECTED\x10\a\x12\"\n" +
-	"\x1eBROKER_ACCOUNT_STATUS_DISABLED\x10\b\x12(\n" +
-	"$BROKER_ACCOUNT_STATUS_ACCOUNT_CLOSED\x10\t*\xb2\x01\n" +
-	"\tTaxIdType\x12\x1b\n" +
-	"\x17TAX_ID_TYPE_UNSPECIFIED\x10\x00\x12\x17\n" +
-	"\x13TAX_ID_TYPE_USA_SSN\x10\x01\x12\x1b\n" +
-	"\x17TAX_ID_TYPE_ARG_AR_CUIT\x10\x02\x12\x17\n" +
-	"\x13TAX_ID_TYPE_AUS_TFN\x10\x03\x12\x1a\n" +
-	"\x16TAX_ID_TYPE_DEU_TAX_ID\x10\x04\x12\x1d\n" +
-	"\x19TAX_ID_TYPE_NOT_SPECIFIED\x10\x05*\xf0\x01\n" +
-	"\rFundingSource\x12\x1e\n" +
-	"\x1aFUNDING_SOURCE_UNSPECIFIED\x10\x00\x12$\n" +
-	" FUNDING_SOURCE_EMPLOYMENT_INCOME\x10\x01\x12\x1e\n" +
-	"\x1aFUNDING_SOURCE_INVESTMENTS\x10\x02\x12\x1e\n" +
-	"\x1aFUNDING_SOURCE_INHERITANCE\x10\x03\x12\"\n" +
-	"\x1eFUNDING_SOURCE_BUSINESS_INCOME\x10\x04\x12\x1a\n" +
-	"\x16FUNDING_SOURCE_SAVINGS\x10\x05\x12\x19\n" +
-	"\x15FUNDING_SOURCE_FAMILY\x10\x06B\xd8\x01\n" +
+	"\x05falseR\fsuspendTrade\x12,\n" +
+	"\vno_shorting\x18\a \x01(\bB\v\xba\xb5\x18\a\n" +
+	"\x05falseR\n" +
+	"noShorting\x12B\n" +
+	"\x19max_options_trading_level\x18\b \x01(\x05B\a\xba\xb5\x18\x03\n" +
+	"\x012R\x16maxOptionsTradingLevel\x123\n" +
+	"\x16ptp_no_exception_entry\x18\t \x01(\tR\x13ptpNoExceptionEntry\x12G\n" +
+	"\x19disable_overnight_trading\x18\n" +
+	" \x01(\bB\v\xba\xb5\x18\a\n" +
+	"\x05falseR\x17disableOvernightTradingB\xd8\x01\n" +
 	"\x14com.alpaca.broker.v1B\x12BrokerAccountProtoP\x01ZJgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1;brokerv1\xa2\x02\x03ABX\xaa\x02\x10Alpaca.Broker.V1\xca\x02\x10Alpaca\\Broker\\V1\xe2\x02\x1cAlpaca\\Broker\\V1\\GPBMetadata\xea\x02\x12Alpaca::Broker::V1b\x06proto3"
 
 var (
@@ -1318,35 +2318,48 @@ func file_alpaca_broker_v1_broker_account_proto_rawDescGZIP() []byte {
 	return file_alpaca_broker_v1_broker_account_proto_rawDescData
 }
 
-var file_alpaca_broker_v1_broker_account_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_alpaca_broker_v1_broker_account_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_alpaca_broker_v1_broker_account_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_alpaca_broker_v1_broker_account_proto_goTypes = []any{
-	(BrokerAccountStatus)(0),                   // 0: alpaca.broker.v1.BrokerAccountStatus
-	(TaxIdType)(0),                             // 1: alpaca.broker.v1.TaxIdType
-	(FundingSource)(0),                         // 2: alpaca.broker.v1.FundingSource
-	(*Contact)(nil),                            // 3: alpaca.broker.v1.Contact
-	(*Identity)(nil),                           // 4: alpaca.broker.v1.Identity
-	(*Disclosures)(nil),                        // 5: alpaca.broker.v1.Disclosures
-	(*Agreement)(nil),                          // 6: alpaca.broker.v1.Agreement
-	(*TrustedContact)(nil),                     // 7: alpaca.broker.v1.TrustedContact
-	(*BrokerAccount)(nil),                      // 8: alpaca.broker.v1.BrokerAccount
-	(*BrokerAccountTradingConfigurations)(nil), // 9: alpaca.broker.v1.BrokerAccountTradingConfigurations
+	(*Contact)(nil),                            // 0: alpaca.broker.v1.Contact
+	(*Identity)(nil),                           // 1: alpaca.broker.v1.Identity
+	(*Disclosures)(nil),                        // 2: alpaca.broker.v1.Disclosures
+	(*Agreement)(nil),                          // 3: alpaca.broker.v1.Agreement
+	(*TrustedContact)(nil),                     // 4: alpaca.broker.v1.TrustedContact
+	(*KYCResults)(nil),                         // 5: alpaca.broker.v1.KYCResults
+	(*OwnerDocument)(nil),                      // 6: alpaca.broker.v1.OwnerDocument
+	(*MinorIdentity)(nil),                      // 7: alpaca.broker.v1.MinorIdentity
+	(*USDValues)(nil),                          // 8: alpaca.broker.v1.USDValues
+	(*Beneficiary)(nil),                        // 9: alpaca.broker.v1.Beneficiary
+	(*AccountCashInterestProgram)(nil),         // 10: alpaca.broker.v1.AccountCashInterestProgram
+	(*AccountCashInterest)(nil),                // 11: alpaca.broker.v1.AccountCashInterest
+	(*AccountFPSLItem)(nil),                    // 12: alpaca.broker.v1.AccountFPSLItem
+	(*AccountFPSL)(nil),                        // 13: alpaca.broker.v1.AccountFPSL
+	(*DisclosureContextAnnotation)(nil),        // 14: alpaca.broker.v1.DisclosureContextAnnotation
+	(*BrokerAccount)(nil),                      // 15: alpaca.broker.v1.BrokerAccount
+	(*BrokerAccountTradingConfigurations)(nil), // 16: alpaca.broker.v1.BrokerAccountTradingConfigurations
 }
 var file_alpaca_broker_v1_broker_account_proto_depIdxs = []int32{
-	1, // 0: alpaca.broker.v1.Identity.tax_id_type:type_name -> alpaca.broker.v1.TaxIdType
-	2, // 1: alpaca.broker.v1.Identity.funding_source:type_name -> alpaca.broker.v1.FundingSource
-	0, // 2: alpaca.broker.v1.BrokerAccount.status:type_name -> alpaca.broker.v1.BrokerAccountStatus
-	3, // 3: alpaca.broker.v1.BrokerAccount.contact:type_name -> alpaca.broker.v1.Contact
-	4, // 4: alpaca.broker.v1.BrokerAccount.identity:type_name -> alpaca.broker.v1.Identity
-	5, // 5: alpaca.broker.v1.BrokerAccount.disclosures:type_name -> alpaca.broker.v1.Disclosures
-	6, // 6: alpaca.broker.v1.BrokerAccount.agreements:type_name -> alpaca.broker.v1.Agreement
-	7, // 7: alpaca.broker.v1.BrokerAccount.trusted_contact:type_name -> alpaca.broker.v1.TrustedContact
-	9, // 8: alpaca.broker.v1.BrokerAccount.trading_configurations:type_name -> alpaca.broker.v1.BrokerAccountTradingConfigurations
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	14, // 0: alpaca.broker.v1.Disclosures.context:type_name -> alpaca.broker.v1.DisclosureContextAnnotation
+	10, // 1: alpaca.broker.v1.AccountCashInterest.usd:type_name -> alpaca.broker.v1.AccountCashInterestProgram
+	12, // 2: alpaca.broker.v1.AccountFPSL.us:type_name -> alpaca.broker.v1.AccountFPSLItem
+	5,  // 3: alpaca.broker.v1.BrokerAccount.kyc_results:type_name -> alpaca.broker.v1.KYCResults
+	0,  // 4: alpaca.broker.v1.BrokerAccount.contact:type_name -> alpaca.broker.v1.Contact
+	1,  // 5: alpaca.broker.v1.BrokerAccount.identity:type_name -> alpaca.broker.v1.Identity
+	2,  // 6: alpaca.broker.v1.BrokerAccount.disclosures:type_name -> alpaca.broker.v1.Disclosures
+	3,  // 7: alpaca.broker.v1.BrokerAccount.agreements:type_name -> alpaca.broker.v1.Agreement
+	6,  // 8: alpaca.broker.v1.BrokerAccount.documents:type_name -> alpaca.broker.v1.OwnerDocument
+	4,  // 9: alpaca.broker.v1.BrokerAccount.trusted_contact:type_name -> alpaca.broker.v1.TrustedContact
+	7,  // 10: alpaca.broker.v1.BrokerAccount.minor_identity:type_name -> alpaca.broker.v1.MinorIdentity
+	16, // 11: alpaca.broker.v1.BrokerAccount.trading_configurations:type_name -> alpaca.broker.v1.BrokerAccountTradingConfigurations
+	8,  // 12: alpaca.broker.v1.BrokerAccount.usd:type_name -> alpaca.broker.v1.USDValues
+	9,  // 13: alpaca.broker.v1.BrokerAccount.beneficiaries:type_name -> alpaca.broker.v1.Beneficiary
+	11, // 14: alpaca.broker.v1.BrokerAccount.cash_interest:type_name -> alpaca.broker.v1.AccountCashInterest
+	13, // 15: alpaca.broker.v1.BrokerAccount.fpsl:type_name -> alpaca.broker.v1.AccountFPSL
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_broker_v1_broker_account_proto_init() }
@@ -1359,14 +2372,13 @@ func file_alpaca_broker_v1_broker_account_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_broker_v1_broker_account_proto_rawDesc), len(file_alpaca_broker_v1_broker_account_proto_rawDesc)),
-			NumEnums:      3,
-			NumMessages:   7,
+			NumEnums:      0,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_alpaca_broker_v1_broker_account_proto_goTypes,
 		DependencyIndexes: file_alpaca_broker_v1_broker_account_proto_depIdxs,
-		EnumInfos:         file_alpaca_broker_v1_broker_account_proto_enumTypes,
 		MessageInfos:      file_alpaca_broker_v1_broker_account_proto_msgTypes,
 	}.Build()
 	File_alpaca_broker_v1_broker_account_proto = out.File

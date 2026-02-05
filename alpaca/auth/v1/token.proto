@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package alpaca.auth.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// IssueTokenRequest is the request to issue OAuth2 tokens.
+message IssueTokenRequest {
+  // Grant type (required). Currently only "client_credentials" is supported.
+  string grant_type = 1 [
+    (buf.validate.field) = {
+      required: true,
+      string: {
+        in: ["client_credentials"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["client_credentials"] }
+  ];
+
+  // Client ID (required).
+  string client_id = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AKSF5FVOKXYKG4ATGCJQBA"] }
+  ];
+
+  // Client secret (if using client_secret authentication).
+  string client_secret = 3 [
+    (sebuf.http.field_examples) = { values: ["MFRGGZDFMZTWQYLCMNSGKZTHNBQWEY3EMVTGO2DBMJRWIZLGM5UGCYTDMRSWMZ3I"] }
+  ];
+
+  // Client assertion type (if using private_key_jwt authentication).
+  string client_assertion_type = 4 [
+    (sebuf.http.field_examples) = { values: ["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"] }
+  ];
+
+  // Client assertion JWT (if using private_key_jwt authentication).
+  string client_assertion = 5;
+}
+
+// IssueTokenResponse is the response containing the issued OAuth2 tokens.
+message IssueTokenResponse {
+  // The access token.
+  string access_token = 1 [(sebuf.http.field_examples) = { values: ["eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."] }];
+
+  // Time in seconds until the token expires.
+  int32 expires_in = 2 [(sebuf.http.field_examples) = { values: ["900"] }];
+
+  // Type of the token (e.g., Bearer).
+  string token_type = 3 [(sebuf.http.field_examples) = { values: ["Bearer"] }];
+}

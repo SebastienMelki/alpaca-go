@@ -56,10 +56,28 @@ message ListOrdersRequest {
     (sebuf.http.query) = { name: "side" },
     (sebuf.http.field_examples) = { values: ["buy"] }
   ];
+
+  // Filter by asset class (comma-separated: us_equity, us_option, crypto, all).
+  string asset_class = 9 [
+    (sebuf.http.query) = { name: "asset_class" },
+    (sebuf.http.field_examples) = { values: ["us_equity,us_option"] }
+  ];
+
+  // Return orders submitted before this order ID (exclusive).
+  string before_order_id = 10 [
+    (sebuf.http.query) = { name: "before_order_id" },
+    (sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }
+  ];
+
+  // Return orders submitted after this order ID (exclusive).
+  string after_order_id = 11 [
+    (sebuf.http.query) = { name: "after_order_id" },
+    (sebuf.http.field_examples) = { values: ["71e69015-8549-4bfd-b9c3-01e75843f47d"] }
+  ];
 }
 
 // ListOrdersResponse is the response containing a list of orders.
 message ListOrdersResponse {
   // List of orders.
-  repeated Order orders = 1;
+  repeated Order orders = 1 [(sebuf.http.unwrap) = true];
 }

@@ -7,13 +7,14 @@
 package marketdatav2
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -43,7 +44,11 @@ type GetStockBarsRequest struct {
 	// Page token for pagination.
 	PageToken string `protobuf:"bytes,8,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// Sort order (asc, desc).
-	Sort          string `protobuf:"bytes,9,opt,name=sort,proto3" json:"sort,omitempty"`
+	Sort string `protobuf:"bytes,9,opt,name=sort,proto3" json:"sort,omitempty"`
+	// As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
+	Asof string `protobuf:"bytes,10,opt,name=asof,proto3" json:"asof,omitempty"`
+	// Currency for response prices (ISO 4217).
+	Currency      string `protobuf:"bytes,11,opt,name=currency,proto3" json:"currency,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -137,6 +142,20 @@ func (x *GetStockBarsRequest) GetPageToken() string {
 func (x *GetStockBarsRequest) GetSort() string {
 	if x != nil {
 		return x.Sort
+	}
+	return ""
+}
+
+func (x *GetStockBarsRequest) GetAsof() string {
+	if x != nil {
+		return x.Asof
+	}
+	return ""
+}
+
+func (x *GetStockBarsRequest) GetCurrency() string {
+	if x != nil {
+		return x.Currency
 	}
 	return ""
 }
@@ -397,11 +416,330 @@ func (x *GetLatestStockBarsResponse) GetBars() map[string]*Bar {
 	return nil
 }
 
+// GetStockBarsSingleRequest is the request to get historical bars for a single symbol.
+type GetStockBarsSingleRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The stock symbol (required).
+	Symbol string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	// Bar timeframe (1Min, 5Min, 15Min, 30Min, 1Hour, 4Hour, 1Day, 1Week, 1Month).
+	Timeframe string `protobuf:"bytes,2,opt,name=timeframe,proto3" json:"timeframe,omitempty"`
+	// Start timestamp (RFC 3339 or YYYY-MM-DD).
+	Start string `protobuf:"bytes,3,opt,name=start,proto3" json:"start,omitempty"`
+	// End timestamp (RFC 3339 or YYYY-MM-DD).
+	End string `protobuf:"bytes,4,opt,name=end,proto3" json:"end,omitempty"`
+	// Maximum number of bars to return (1-10000, default 1000).
+	Limit int32 `protobuf:"varint,5,opt,name=limit,proto3" json:"limit,omitempty"`
+	// Adjustment type (raw, split, dividend, all).
+	Adjustment string `protobuf:"bytes,6,opt,name=adjustment,proto3" json:"adjustment,omitempty"`
+	// Data feed (iex, sip).
+	Feed string `protobuf:"bytes,7,opt,name=feed,proto3" json:"feed,omitempty"`
+	// Page token for pagination.
+	PageToken string `protobuf:"bytes,8,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	// Sort order (asc, desc).
+	Sort string `protobuf:"bytes,9,opt,name=sort,proto3" json:"sort,omitempty"`
+	// As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
+	Asof string `protobuf:"bytes,10,opt,name=asof,proto3" json:"asof,omitempty"`
+	// Currency for response prices (ISO 4217).
+	Currency      string `protobuf:"bytes,11,opt,name=currency,proto3" json:"currency,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetStockBarsSingleRequest) Reset() {
+	*x = GetStockBarsSingleRequest{}
+	mi := &file_alpaca_marketdata_v2_stock_bars_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetStockBarsSingleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetStockBarsSingleRequest) ProtoMessage() {}
+
+func (x *GetStockBarsSingleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_marketdata_v2_stock_bars_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetStockBarsSingleRequest.ProtoReflect.Descriptor instead.
+func (*GetStockBarsSingleRequest) Descriptor() ([]byte, []int) {
+	return file_alpaca_marketdata_v2_stock_bars_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetStockBarsSingleRequest) GetSymbol() string {
+	if x != nil {
+		return x.Symbol
+	}
+	return ""
+}
+
+func (x *GetStockBarsSingleRequest) GetTimeframe() string {
+	if x != nil {
+		return x.Timeframe
+	}
+	return ""
+}
+
+func (x *GetStockBarsSingleRequest) GetStart() string {
+	if x != nil {
+		return x.Start
+	}
+	return ""
+}
+
+func (x *GetStockBarsSingleRequest) GetEnd() string {
+	if x != nil {
+		return x.End
+	}
+	return ""
+}
+
+func (x *GetStockBarsSingleRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *GetStockBarsSingleRequest) GetAdjustment() string {
+	if x != nil {
+		return x.Adjustment
+	}
+	return ""
+}
+
+func (x *GetStockBarsSingleRequest) GetFeed() string {
+	if x != nil {
+		return x.Feed
+	}
+	return ""
+}
+
+func (x *GetStockBarsSingleRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *GetStockBarsSingleRequest) GetSort() string {
+	if x != nil {
+		return x.Sort
+	}
+	return ""
+}
+
+func (x *GetStockBarsSingleRequest) GetAsof() string {
+	if x != nil {
+		return x.Asof
+	}
+	return ""
+}
+
+func (x *GetStockBarsSingleRequest) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
+// GetStockBarsSingleResponse is the response containing bars for a single symbol.
+type GetStockBarsSingleResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// List of bars.
+	Bars []*Bar `protobuf:"bytes,1,rep,name=bars,proto3" json:"bars,omitempty"`
+	// The symbol.
+	Symbol string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	// Next page token.
+	NextPageToken string `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetStockBarsSingleResponse) Reset() {
+	*x = GetStockBarsSingleResponse{}
+	mi := &file_alpaca_marketdata_v2_stock_bars_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetStockBarsSingleResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetStockBarsSingleResponse) ProtoMessage() {}
+
+func (x *GetStockBarsSingleResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_marketdata_v2_stock_bars_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetStockBarsSingleResponse.ProtoReflect.Descriptor instead.
+func (*GetStockBarsSingleResponse) Descriptor() ([]byte, []int) {
+	return file_alpaca_marketdata_v2_stock_bars_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *GetStockBarsSingleResponse) GetBars() []*Bar {
+	if x != nil {
+		return x.Bars
+	}
+	return nil
+}
+
+func (x *GetStockBarsSingleResponse) GetSymbol() string {
+	if x != nil {
+		return x.Symbol
+	}
+	return ""
+}
+
+func (x *GetStockBarsSingleResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+// GetLatestStockBarSingleRequest is the request to get the latest bar for a single symbol.
+type GetLatestStockBarSingleRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The stock symbol (required).
+	Symbol string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	// Data feed (iex, sip).
+	Feed string `protobuf:"bytes,2,opt,name=feed,proto3" json:"feed,omitempty"`
+	// Currency for the response prices.
+	Currency      string `protobuf:"bytes,3,opt,name=currency,proto3" json:"currency,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetLatestStockBarSingleRequest) Reset() {
+	*x = GetLatestStockBarSingleRequest{}
+	mi := &file_alpaca_marketdata_v2_stock_bars_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetLatestStockBarSingleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLatestStockBarSingleRequest) ProtoMessage() {}
+
+func (x *GetLatestStockBarSingleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_marketdata_v2_stock_bars_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLatestStockBarSingleRequest.ProtoReflect.Descriptor instead.
+func (*GetLatestStockBarSingleRequest) Descriptor() ([]byte, []int) {
+	return file_alpaca_marketdata_v2_stock_bars_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetLatestStockBarSingleRequest) GetSymbol() string {
+	if x != nil {
+		return x.Symbol
+	}
+	return ""
+}
+
+func (x *GetLatestStockBarSingleRequest) GetFeed() string {
+	if x != nil {
+		return x.Feed
+	}
+	return ""
+}
+
+func (x *GetLatestStockBarSingleRequest) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
+// GetLatestStockBarSingleResponse is the response containing the latest bar for a single symbol.
+type GetLatestStockBarSingleResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The latest bar.
+	Bar *Bar `protobuf:"bytes,1,opt,name=bar,proto3" json:"bar,omitempty"`
+	// The symbol.
+	Symbol        string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetLatestStockBarSingleResponse) Reset() {
+	*x = GetLatestStockBarSingleResponse{}
+	mi := &file_alpaca_marketdata_v2_stock_bars_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetLatestStockBarSingleResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLatestStockBarSingleResponse) ProtoMessage() {}
+
+func (x *GetLatestStockBarSingleResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_marketdata_v2_stock_bars_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLatestStockBarSingleResponse.ProtoReflect.Descriptor instead.
+func (*GetLatestStockBarSingleResponse) Descriptor() ([]byte, []int) {
+	return file_alpaca_marketdata_v2_stock_bars_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetLatestStockBarSingleResponse) GetBar() *Bar {
+	if x != nil {
+		return x.Bar
+	}
+	return nil
+}
+
+func (x *GetLatestStockBarSingleResponse) GetSymbol() string {
+	if x != nil {
+		return x.Symbol
+	}
+	return ""
+}
+
 var File_alpaca_marketdata_v2_stock_bars_proto protoreflect.FileDescriptor
 
 const file_alpaca_marketdata_v2_stock_bars_proto_rawDesc = "" +
 	"\n" +
-	"%alpaca/marketdata/v2/stock_bars.proto\x12\x14alpaca.marketdata.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a!alpaca/marketdata/v2/common.proto\"\xfa\x03\n" +
+	"%alpaca/marketdata/v2/stock_bars.proto\x12\x14alpaca.marketdata.v2\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a!alpaca/marketdata/v2/common.proto\"\xdf\x04\n" +
 	"\x13GetStockBarsRequest\x12A\n" +
 	"\asymbols\x18\x01 \x01(\tB'\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x10\n" +
 	"\x0eAAPL,TSLA,MSFTµ\x18\t\n" +
@@ -437,14 +775,23 @@ const file_alpaca_marketdata_v2_stock_bars_proto_rawDesc = "" +
 	"page_tokenR\tpageToken\x12'\n" +
 	"\x04sort\x18\t \x01(\tB\x13\xba\xb5\x18\x05\n" +
 	"\x03ascµ\x18\x06\n" +
-	"\x04sortR\x04sort\"\xae\x01\n" +
+	"\x04sortR\x04sort\x12.\n" +
+	"\x04asof\x18\n" +
+	" \x01(\tB\x1a\xba\xb5\x18\f\n" +
+	"\n" +
+	"2024-01-15µ\x18\x06\n" +
+	"\x04asofR\x04asof\x123\n" +
+	"\bcurrency\x18\v \x01(\tB\x17\xba\xb5\x18\x05\n" +
+	"\x03USDµ\x18\n" +
+	"\n" +
+	"\bcurrencyR\bcurrency\"\xae\x01\n" +
 	"\fStockBarsMap\x12@\n" +
 	"\x04bars\x18\x01 \x03(\v2,.alpaca.marketdata.v2.StockBarsMap.BarsEntryR\x04bars\x1a\\\n" +
 	"\tBarsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x129\n" +
-	"\x05value\x18\x02 \x01(\v2#.alpaca.marketdata.v2.StockBarsListR\x05value:\x028\x01\">\n" +
-	"\rStockBarsList\x12-\n" +
-	"\x04bars\x18\x01 \x03(\v2\x19.alpaca.marketdata.v2.BarR\x04bars\"\xf6\x01\n" +
+	"\x05value\x18\x02 \x01(\v2#.alpaca.marketdata.v2.StockBarsListR\x05value:\x028\x01\"D\n" +
+	"\rStockBarsList\x123\n" +
+	"\x04bars\x18\x01 \x03(\v2\x19.alpaca.marketdata.v2.BarB\x04ȵ\x18\x01R\x04bars\"\xf6\x01\n" +
 	"\x14GetStockBarsResponse\x12H\n" +
 	"\x04bars\x18\x01 \x03(\v24.alpaca.marketdata.v2.GetStockBarsResponse.BarsEntryR\x04bars\x126\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\x0e\xba\xb5\x18\n" +
@@ -468,7 +815,74 @@ const file_alpaca_marketdata_v2_stock_bars_proto_rawDesc = "" +
 	"\x04bars\x18\x01 \x03(\v2:.alpaca.marketdata.v2.GetLatestStockBarsResponse.BarsEntryR\x04bars\x1aR\n" +
 	"\tBarsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12/\n" +
-	"\x05value\x18\x02 \x01(\v2\x19.alpaca.marketdata.v2.BarR\x05value:\x028\x01B\xf0\x01\n" +
+	"\x05value\x18\x02 \x01(\v2\x19.alpaca.marketdata.v2.BarR\x05value:\x028\x01\"\xcc\x04\n" +
+	"\x19GetStockBarsSingleRequest\x12(\n" +
+	"\x06symbol\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x06\n" +
+	"\x04AAPLR\x06symbol\x12=\n" +
+	"\ttimeframe\x18\x02 \x01(\tB\x1f\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x06\n" +
+	"\x041Dayµ\x18\v\n" +
+	"\ttimeframeR\ttimeframe\x121\n" +
+	"\x05start\x18\x03 \x01(\tB\x1b\xba\xb5\x18\f\n" +
+	"\n" +
+	"2024-01-01µ\x18\a\n" +
+	"\x05startR\x05start\x12+\n" +
+	"\x03end\x18\x04 \x01(\tB\x19\xba\xb5\x18\f\n" +
+	"\n" +
+	"2024-01-31µ\x18\x05\n" +
+	"\x03endR\x03end\x125\n" +
+	"\x05limit\x18\x05 \x01(\x05B\x1f\xbaH\a\x1a\x05\x18\x90N(\x01\xba\xb5\x18\x06\n" +
+	"\x041000µ\x18\a\n" +
+	"\x05limitR\x05limit\x129\n" +
+	"\n" +
+	"adjustment\x18\x06 \x01(\tB\x19\xba\xb5\x18\x05\n" +
+	"\x03rawµ\x18\f\n" +
+	"\n" +
+	"adjustmentR\n" +
+	"adjustment\x12'\n" +
+	"\x04feed\x18\a \x01(\tB\x13\xba\xb5\x18\x05\n" +
+	"\x03sipµ\x18\x06\n" +
+	"\x04feedR\x04feed\x12=\n" +
+	"\n" +
+	"page_token\x18\b \x01(\tB\x1e\xba\xb5\x18\n" +
+	"\n" +
+	"\btoken123µ\x18\f\n" +
+	"\n" +
+	"page_tokenR\tpageToken\x12'\n" +
+	"\x04sort\x18\t \x01(\tB\x13\xba\xb5\x18\x05\n" +
+	"\x03ascµ\x18\x06\n" +
+	"\x04sortR\x04sort\x12.\n" +
+	"\x04asof\x18\n" +
+	" \x01(\tB\x1a\xba\xb5\x18\f\n" +
+	"\n" +
+	"2024-01-15µ\x18\x06\n" +
+	"\x04asofR\x04asof\x123\n" +
+	"\bcurrency\x18\v \x01(\tB\x17\xba\xb5\x18\x05\n" +
+	"\x03USDµ\x18\n" +
+	"\n" +
+	"\bcurrencyR\bcurrency\"\xad\x01\n" +
+	"\x1aGetStockBarsSingleResponse\x123\n" +
+	"\x04bars\x18\x01 \x03(\v2\x19.alpaca.marketdata.v2.BarB\x04ȵ\x18\x01R\x04bars\x12\"\n" +
+	"\x06symbol\x18\x02 \x01(\tB\n" +
+	"\xba\xb5\x18\x06\n" +
+	"\x04AAPLR\x06symbol\x126\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tB\x0e\xba\xb5\x18\n" +
+	"\n" +
+	"\bYWJjZGVmR\rnextPageToken\"\xa8\x01\n" +
+	"\x1eGetLatestStockBarSingleRequest\x12(\n" +
+	"\x06symbol\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x06\n" +
+	"\x04AAPLR\x06symbol\x12'\n" +
+	"\x04feed\x18\x02 \x01(\tB\x13\xba\xb5\x18\x05\n" +
+	"\x03sipµ\x18\x06\n" +
+	"\x04feedR\x04feed\x123\n" +
+	"\bcurrency\x18\x03 \x01(\tB\x17\xba\xb5\x18\x05\n" +
+	"\x03USDµ\x18\n" +
+	"\n" +
+	"\bcurrencyR\bcurrency\"r\n" +
+	"\x1fGetLatestStockBarSingleResponse\x12+\n" +
+	"\x03bar\x18\x01 \x01(\v2\x19.alpaca.marketdata.v2.BarR\x03bar\x12\"\n" +
+	"\x06symbol\x18\x02 \x01(\tB\n" +
+	"\xba\xb5\x18\x06\n" +
+	"\x04AAPLR\x06symbolB\xf0\x01\n" +
 	"\x18com.alpaca.marketdata.v2B\x0eStockBarsProtoP\x01ZRgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/marketdata/v2;marketdatav2\xa2\x02\x03AMX\xaa\x02\x14Alpaca.Marketdata.V2\xca\x02\x14Alpaca\\Marketdata\\V2\xe2\x02 Alpaca\\Marketdata\\V2\\GPBMetadata\xea\x02\x16Alpaca::Marketdata::V2b\x06proto3"
 
 var (
@@ -483,32 +897,38 @@ func file_alpaca_marketdata_v2_stock_bars_proto_rawDescGZIP() []byte {
 	return file_alpaca_marketdata_v2_stock_bars_proto_rawDescData
 }
 
-var file_alpaca_marketdata_v2_stock_bars_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_alpaca_marketdata_v2_stock_bars_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_alpaca_marketdata_v2_stock_bars_proto_goTypes = []any{
-	(*GetStockBarsRequest)(nil),        // 0: alpaca.marketdata.v2.GetStockBarsRequest
-	(*StockBarsMap)(nil),               // 1: alpaca.marketdata.v2.StockBarsMap
-	(*StockBarsList)(nil),              // 2: alpaca.marketdata.v2.StockBarsList
-	(*GetStockBarsResponse)(nil),       // 3: alpaca.marketdata.v2.GetStockBarsResponse
-	(*GetLatestStockBarsRequest)(nil),  // 4: alpaca.marketdata.v2.GetLatestStockBarsRequest
-	(*GetLatestStockBarsResponse)(nil), // 5: alpaca.marketdata.v2.GetLatestStockBarsResponse
-	nil,                                // 6: alpaca.marketdata.v2.StockBarsMap.BarsEntry
-	nil,                                // 7: alpaca.marketdata.v2.GetStockBarsResponse.BarsEntry
-	nil,                                // 8: alpaca.marketdata.v2.GetLatestStockBarsResponse.BarsEntry
-	(*Bar)(nil),                        // 9: alpaca.marketdata.v2.Bar
+	(*GetStockBarsRequest)(nil),             // 0: alpaca.marketdata.v2.GetStockBarsRequest
+	(*StockBarsMap)(nil),                    // 1: alpaca.marketdata.v2.StockBarsMap
+	(*StockBarsList)(nil),                   // 2: alpaca.marketdata.v2.StockBarsList
+	(*GetStockBarsResponse)(nil),            // 3: alpaca.marketdata.v2.GetStockBarsResponse
+	(*GetLatestStockBarsRequest)(nil),       // 4: alpaca.marketdata.v2.GetLatestStockBarsRequest
+	(*GetLatestStockBarsResponse)(nil),      // 5: alpaca.marketdata.v2.GetLatestStockBarsResponse
+	(*GetStockBarsSingleRequest)(nil),       // 6: alpaca.marketdata.v2.GetStockBarsSingleRequest
+	(*GetStockBarsSingleResponse)(nil),      // 7: alpaca.marketdata.v2.GetStockBarsSingleResponse
+	(*GetLatestStockBarSingleRequest)(nil),  // 8: alpaca.marketdata.v2.GetLatestStockBarSingleRequest
+	(*GetLatestStockBarSingleResponse)(nil), // 9: alpaca.marketdata.v2.GetLatestStockBarSingleResponse
+	nil,                                     // 10: alpaca.marketdata.v2.StockBarsMap.BarsEntry
+	nil,                                     // 11: alpaca.marketdata.v2.GetStockBarsResponse.BarsEntry
+	nil,                                     // 12: alpaca.marketdata.v2.GetLatestStockBarsResponse.BarsEntry
+	(*Bar)(nil),                             // 13: alpaca.marketdata.v2.Bar
 }
 var file_alpaca_marketdata_v2_stock_bars_proto_depIdxs = []int32{
-	6, // 0: alpaca.marketdata.v2.StockBarsMap.bars:type_name -> alpaca.marketdata.v2.StockBarsMap.BarsEntry
-	9, // 1: alpaca.marketdata.v2.StockBarsList.bars:type_name -> alpaca.marketdata.v2.Bar
-	7, // 2: alpaca.marketdata.v2.GetStockBarsResponse.bars:type_name -> alpaca.marketdata.v2.GetStockBarsResponse.BarsEntry
-	8, // 3: alpaca.marketdata.v2.GetLatestStockBarsResponse.bars:type_name -> alpaca.marketdata.v2.GetLatestStockBarsResponse.BarsEntry
-	2, // 4: alpaca.marketdata.v2.StockBarsMap.BarsEntry.value:type_name -> alpaca.marketdata.v2.StockBarsList
-	2, // 5: alpaca.marketdata.v2.GetStockBarsResponse.BarsEntry.value:type_name -> alpaca.marketdata.v2.StockBarsList
-	9, // 6: alpaca.marketdata.v2.GetLatestStockBarsResponse.BarsEntry.value:type_name -> alpaca.marketdata.v2.Bar
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	10, // 0: alpaca.marketdata.v2.StockBarsMap.bars:type_name -> alpaca.marketdata.v2.StockBarsMap.BarsEntry
+	13, // 1: alpaca.marketdata.v2.StockBarsList.bars:type_name -> alpaca.marketdata.v2.Bar
+	11, // 2: alpaca.marketdata.v2.GetStockBarsResponse.bars:type_name -> alpaca.marketdata.v2.GetStockBarsResponse.BarsEntry
+	12, // 3: alpaca.marketdata.v2.GetLatestStockBarsResponse.bars:type_name -> alpaca.marketdata.v2.GetLatestStockBarsResponse.BarsEntry
+	13, // 4: alpaca.marketdata.v2.GetStockBarsSingleResponse.bars:type_name -> alpaca.marketdata.v2.Bar
+	13, // 5: alpaca.marketdata.v2.GetLatestStockBarSingleResponse.bar:type_name -> alpaca.marketdata.v2.Bar
+	2,  // 6: alpaca.marketdata.v2.StockBarsMap.BarsEntry.value:type_name -> alpaca.marketdata.v2.StockBarsList
+	2,  // 7: alpaca.marketdata.v2.GetStockBarsResponse.BarsEntry.value:type_name -> alpaca.marketdata.v2.StockBarsList
+	13, // 8: alpaca.marketdata.v2.GetLatestStockBarsResponse.BarsEntry.value:type_name -> alpaca.marketdata.v2.Bar
+	9,  // [9:9] is the sub-list for method output_type
+	9,  // [9:9] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_marketdata_v2_stock_bars_proto_init() }
@@ -523,7 +943,7 @@ func file_alpaca_marketdata_v2_stock_bars_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_marketdata_v2_stock_bars_proto_rawDesc), len(file_alpaca_marketdata_v2_stock_bars_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

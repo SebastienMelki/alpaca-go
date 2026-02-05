@@ -7,12 +7,14 @@
 package brokerv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -21,316 +23,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-// BrokerOrderSide represents the side of an order.
-type BrokerOrderSide int32
-
-const (
-	BrokerOrderSide_BROKER_ORDER_SIDE_UNSPECIFIED BrokerOrderSide = 0
-	BrokerOrderSide_BROKER_ORDER_SIDE_BUY         BrokerOrderSide = 1
-	BrokerOrderSide_BROKER_ORDER_SIDE_SELL        BrokerOrderSide = 2
-)
-
-// Enum value maps for BrokerOrderSide.
-var (
-	BrokerOrderSide_name = map[int32]string{
-		0: "BROKER_ORDER_SIDE_UNSPECIFIED",
-		1: "BROKER_ORDER_SIDE_BUY",
-		2: "BROKER_ORDER_SIDE_SELL",
-	}
-	BrokerOrderSide_value = map[string]int32{
-		"BROKER_ORDER_SIDE_UNSPECIFIED": 0,
-		"BROKER_ORDER_SIDE_BUY":         1,
-		"BROKER_ORDER_SIDE_SELL":        2,
-	}
-)
-
-func (x BrokerOrderSide) Enum() *BrokerOrderSide {
-	p := new(BrokerOrderSide)
-	*p = x
-	return p
-}
-
-func (x BrokerOrderSide) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (BrokerOrderSide) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_trading_order_proto_enumTypes[0].Descriptor()
-}
-
-func (BrokerOrderSide) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_trading_order_proto_enumTypes[0]
-}
-
-func (x BrokerOrderSide) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use BrokerOrderSide.Descriptor instead.
-func (BrokerOrderSide) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_order_proto_rawDescGZIP(), []int{0}
-}
-
-// BrokerOrderType represents the type of order.
-type BrokerOrderType int32
-
-const (
-	BrokerOrderType_BROKER_ORDER_TYPE_UNSPECIFIED   BrokerOrderType = 0
-	BrokerOrderType_BROKER_ORDER_TYPE_MARKET        BrokerOrderType = 1
-	BrokerOrderType_BROKER_ORDER_TYPE_LIMIT         BrokerOrderType = 2
-	BrokerOrderType_BROKER_ORDER_TYPE_STOP          BrokerOrderType = 3
-	BrokerOrderType_BROKER_ORDER_TYPE_STOP_LIMIT    BrokerOrderType = 4
-	BrokerOrderType_BROKER_ORDER_TYPE_TRAILING_STOP BrokerOrderType = 5
-)
-
-// Enum value maps for BrokerOrderType.
-var (
-	BrokerOrderType_name = map[int32]string{
-		0: "BROKER_ORDER_TYPE_UNSPECIFIED",
-		1: "BROKER_ORDER_TYPE_MARKET",
-		2: "BROKER_ORDER_TYPE_LIMIT",
-		3: "BROKER_ORDER_TYPE_STOP",
-		4: "BROKER_ORDER_TYPE_STOP_LIMIT",
-		5: "BROKER_ORDER_TYPE_TRAILING_STOP",
-	}
-	BrokerOrderType_value = map[string]int32{
-		"BROKER_ORDER_TYPE_UNSPECIFIED":   0,
-		"BROKER_ORDER_TYPE_MARKET":        1,
-		"BROKER_ORDER_TYPE_LIMIT":         2,
-		"BROKER_ORDER_TYPE_STOP":          3,
-		"BROKER_ORDER_TYPE_STOP_LIMIT":    4,
-		"BROKER_ORDER_TYPE_TRAILING_STOP": 5,
-	}
-)
-
-func (x BrokerOrderType) Enum() *BrokerOrderType {
-	p := new(BrokerOrderType)
-	*p = x
-	return p
-}
-
-func (x BrokerOrderType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (BrokerOrderType) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_trading_order_proto_enumTypes[1].Descriptor()
-}
-
-func (BrokerOrderType) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_trading_order_proto_enumTypes[1]
-}
-
-func (x BrokerOrderType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use BrokerOrderType.Descriptor instead.
-func (BrokerOrderType) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_order_proto_rawDescGZIP(), []int{1}
-}
-
-// BrokerTimeInForce represents the time in force.
-type BrokerTimeInForce int32
-
-const (
-	BrokerTimeInForce_BROKER_TIME_IN_FORCE_UNSPECIFIED BrokerTimeInForce = 0
-	BrokerTimeInForce_BROKER_TIME_IN_FORCE_DAY         BrokerTimeInForce = 1
-	BrokerTimeInForce_BROKER_TIME_IN_FORCE_GTC         BrokerTimeInForce = 2
-	BrokerTimeInForce_BROKER_TIME_IN_FORCE_OPG         BrokerTimeInForce = 3
-	BrokerTimeInForce_BROKER_TIME_IN_FORCE_CLS         BrokerTimeInForce = 4
-	BrokerTimeInForce_BROKER_TIME_IN_FORCE_IOC         BrokerTimeInForce = 5
-	BrokerTimeInForce_BROKER_TIME_IN_FORCE_FOK         BrokerTimeInForce = 6
-)
-
-// Enum value maps for BrokerTimeInForce.
-var (
-	BrokerTimeInForce_name = map[int32]string{
-		0: "BROKER_TIME_IN_FORCE_UNSPECIFIED",
-		1: "BROKER_TIME_IN_FORCE_DAY",
-		2: "BROKER_TIME_IN_FORCE_GTC",
-		3: "BROKER_TIME_IN_FORCE_OPG",
-		4: "BROKER_TIME_IN_FORCE_CLS",
-		5: "BROKER_TIME_IN_FORCE_IOC",
-		6: "BROKER_TIME_IN_FORCE_FOK",
-	}
-	BrokerTimeInForce_value = map[string]int32{
-		"BROKER_TIME_IN_FORCE_UNSPECIFIED": 0,
-		"BROKER_TIME_IN_FORCE_DAY":         1,
-		"BROKER_TIME_IN_FORCE_GTC":         2,
-		"BROKER_TIME_IN_FORCE_OPG":         3,
-		"BROKER_TIME_IN_FORCE_CLS":         4,
-		"BROKER_TIME_IN_FORCE_IOC":         5,
-		"BROKER_TIME_IN_FORCE_FOK":         6,
-	}
-)
-
-func (x BrokerTimeInForce) Enum() *BrokerTimeInForce {
-	p := new(BrokerTimeInForce)
-	*p = x
-	return p
-}
-
-func (x BrokerTimeInForce) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (BrokerTimeInForce) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_trading_order_proto_enumTypes[2].Descriptor()
-}
-
-func (BrokerTimeInForce) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_trading_order_proto_enumTypes[2]
-}
-
-func (x BrokerTimeInForce) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use BrokerTimeInForce.Descriptor instead.
-func (BrokerTimeInForce) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_order_proto_rawDescGZIP(), []int{2}
-}
-
-// BrokerOrderStatus represents the status of an order.
-type BrokerOrderStatus int32
-
-const (
-	BrokerOrderStatus_BROKER_ORDER_STATUS_UNSPECIFIED      BrokerOrderStatus = 0
-	BrokerOrderStatus_BROKER_ORDER_STATUS_NEW              BrokerOrderStatus = 1
-	BrokerOrderStatus_BROKER_ORDER_STATUS_PARTIALLY_FILLED BrokerOrderStatus = 2
-	BrokerOrderStatus_BROKER_ORDER_STATUS_FILLED           BrokerOrderStatus = 3
-	BrokerOrderStatus_BROKER_ORDER_STATUS_DONE_FOR_DAY     BrokerOrderStatus = 4
-	BrokerOrderStatus_BROKER_ORDER_STATUS_CANCELED         BrokerOrderStatus = 5
-	BrokerOrderStatus_BROKER_ORDER_STATUS_EXPIRED          BrokerOrderStatus = 6
-	BrokerOrderStatus_BROKER_ORDER_STATUS_REPLACED         BrokerOrderStatus = 7
-	BrokerOrderStatus_BROKER_ORDER_STATUS_PENDING_CANCEL   BrokerOrderStatus = 8
-	BrokerOrderStatus_BROKER_ORDER_STATUS_PENDING_REPLACE  BrokerOrderStatus = 9
-	BrokerOrderStatus_BROKER_ORDER_STATUS_PENDING_NEW      BrokerOrderStatus = 10
-	BrokerOrderStatus_BROKER_ORDER_STATUS_ACCEPTED         BrokerOrderStatus = 11
-	BrokerOrderStatus_BROKER_ORDER_STATUS_REJECTED         BrokerOrderStatus = 14
-	BrokerOrderStatus_BROKER_ORDER_STATUS_HELD             BrokerOrderStatus = 17
-)
-
-// Enum value maps for BrokerOrderStatus.
-var (
-	BrokerOrderStatus_name = map[int32]string{
-		0:  "BROKER_ORDER_STATUS_UNSPECIFIED",
-		1:  "BROKER_ORDER_STATUS_NEW",
-		2:  "BROKER_ORDER_STATUS_PARTIALLY_FILLED",
-		3:  "BROKER_ORDER_STATUS_FILLED",
-		4:  "BROKER_ORDER_STATUS_DONE_FOR_DAY",
-		5:  "BROKER_ORDER_STATUS_CANCELED",
-		6:  "BROKER_ORDER_STATUS_EXPIRED",
-		7:  "BROKER_ORDER_STATUS_REPLACED",
-		8:  "BROKER_ORDER_STATUS_PENDING_CANCEL",
-		9:  "BROKER_ORDER_STATUS_PENDING_REPLACE",
-		10: "BROKER_ORDER_STATUS_PENDING_NEW",
-		11: "BROKER_ORDER_STATUS_ACCEPTED",
-		14: "BROKER_ORDER_STATUS_REJECTED",
-		17: "BROKER_ORDER_STATUS_HELD",
-	}
-	BrokerOrderStatus_value = map[string]int32{
-		"BROKER_ORDER_STATUS_UNSPECIFIED":      0,
-		"BROKER_ORDER_STATUS_NEW":              1,
-		"BROKER_ORDER_STATUS_PARTIALLY_FILLED": 2,
-		"BROKER_ORDER_STATUS_FILLED":           3,
-		"BROKER_ORDER_STATUS_DONE_FOR_DAY":     4,
-		"BROKER_ORDER_STATUS_CANCELED":         5,
-		"BROKER_ORDER_STATUS_EXPIRED":          6,
-		"BROKER_ORDER_STATUS_REPLACED":         7,
-		"BROKER_ORDER_STATUS_PENDING_CANCEL":   8,
-		"BROKER_ORDER_STATUS_PENDING_REPLACE":  9,
-		"BROKER_ORDER_STATUS_PENDING_NEW":      10,
-		"BROKER_ORDER_STATUS_ACCEPTED":         11,
-		"BROKER_ORDER_STATUS_REJECTED":         14,
-		"BROKER_ORDER_STATUS_HELD":             17,
-	}
-)
-
-func (x BrokerOrderStatus) Enum() *BrokerOrderStatus {
-	p := new(BrokerOrderStatus)
-	*p = x
-	return p
-}
-
-func (x BrokerOrderStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (BrokerOrderStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_trading_order_proto_enumTypes[3].Descriptor()
-}
-
-func (BrokerOrderStatus) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_trading_order_proto_enumTypes[3]
-}
-
-func (x BrokerOrderStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use BrokerOrderStatus.Descriptor instead.
-func (BrokerOrderStatus) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_order_proto_rawDescGZIP(), []int{3}
-}
-
-// BrokerOrderClass represents the class of order.
-type BrokerOrderClass int32
-
-const (
-	BrokerOrderClass_BROKER_ORDER_CLASS_UNSPECIFIED BrokerOrderClass = 0
-	BrokerOrderClass_BROKER_ORDER_CLASS_SIMPLE      BrokerOrderClass = 1
-	BrokerOrderClass_BROKER_ORDER_CLASS_BRACKET     BrokerOrderClass = 2
-	BrokerOrderClass_BROKER_ORDER_CLASS_OCO         BrokerOrderClass = 3
-	BrokerOrderClass_BROKER_ORDER_CLASS_OTO         BrokerOrderClass = 4
-)
-
-// Enum value maps for BrokerOrderClass.
-var (
-	BrokerOrderClass_name = map[int32]string{
-		0: "BROKER_ORDER_CLASS_UNSPECIFIED",
-		1: "BROKER_ORDER_CLASS_SIMPLE",
-		2: "BROKER_ORDER_CLASS_BRACKET",
-		3: "BROKER_ORDER_CLASS_OCO",
-		4: "BROKER_ORDER_CLASS_OTO",
-	}
-	BrokerOrderClass_value = map[string]int32{
-		"BROKER_ORDER_CLASS_UNSPECIFIED": 0,
-		"BROKER_ORDER_CLASS_SIMPLE":      1,
-		"BROKER_ORDER_CLASS_BRACKET":     2,
-		"BROKER_ORDER_CLASS_OCO":         3,
-		"BROKER_ORDER_CLASS_OTO":         4,
-	}
-)
-
-func (x BrokerOrderClass) Enum() *BrokerOrderClass {
-	p := new(BrokerOrderClass)
-	*p = x
-	return p
-}
-
-func (x BrokerOrderClass) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (BrokerOrderClass) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_trading_order_proto_enumTypes[4].Descriptor()
-}
-
-func (BrokerOrderClass) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_trading_order_proto_enumTypes[4]
-}
-
-func (x BrokerOrderClass) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use BrokerOrderClass.Descriptor instead.
-func (BrokerOrderClass) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_order_proto_rawDescGZIP(), []int{4}
-}
 
 // BrokerOrder represents a trading order for a broker account.
 type BrokerOrder struct {
@@ -355,50 +47,69 @@ type BrokerOrder struct {
 	FailedAt string `protobuf:"bytes,9,opt,name=failed_at,json=failedAt,proto3" json:"failed_at,omitempty"`
 	// Replacement timestamp.
 	ReplacedAt string `protobuf:"bytes,10,opt,name=replaced_at,json=replacedAt,proto3" json:"replaced_at,omitempty"`
-	// Order ID that replaced this order.
-	ReplacedBy string `protobuf:"bytes,11,opt,name=replaced_by,json=replacedBy,proto3" json:"replaced_by,omitempty"`
-	// Order ID that this order replaces.
-	Replaces string `protobuf:"bytes,12,opt,name=replaces,proto3" json:"replaces,omitempty"`
+	// Cancel requested timestamp.
+	CancelRequestedAt string `protobuf:"bytes,11,opt,name=cancel_requested_at,json=cancelRequestedAt,proto3" json:"cancel_requested_at,omitempty"`
+	// Order ID that replaced this order (optional, UUID format when present).
+	ReplacedBy string `protobuf:"bytes,12,opt,name=replaced_by,json=replacedBy,proto3" json:"replaced_by,omitempty"`
+	// Order ID that this order replaces (optional, UUID format when present).
+	Replaces string `protobuf:"bytes,13,opt,name=replaces,proto3" json:"replaces,omitempty"`
 	// Asset ID.
-	AssetId string `protobuf:"bytes,13,opt,name=asset_id,json=assetId,proto3" json:"asset_id,omitempty"`
+	AssetId string `protobuf:"bytes,14,opt,name=asset_id,json=assetId,proto3" json:"asset_id,omitempty"`
 	// Symbol.
-	Symbol string `protobuf:"bytes,14,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	Symbol string `protobuf:"bytes,15,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	// Asset class.
-	AssetClass string `protobuf:"bytes,15,opt,name=asset_class,json=assetClass,proto3" json:"asset_class,omitempty"`
+	AssetClass string `protobuf:"bytes,16,opt,name=asset_class,json=assetClass,proto3" json:"asset_class,omitempty"`
 	// Notional value (for fractional orders).
-	Notional string `protobuf:"bytes,16,opt,name=notional,proto3" json:"notional,omitempty"`
+	Notional string `protobuf:"bytes,17,opt,name=notional,proto3" json:"notional,omitempty"`
 	// Quantity ordered.
-	Qty string `protobuf:"bytes,17,opt,name=qty,proto3" json:"qty,omitempty"`
+	Qty string `protobuf:"bytes,18,opt,name=qty,proto3" json:"qty,omitempty"`
 	// Quantity filled.
-	FilledQty string `protobuf:"bytes,18,opt,name=filled_qty,json=filledQty,proto3" json:"filled_qty,omitempty"`
+	FilledQty string `protobuf:"bytes,19,opt,name=filled_qty,json=filledQty,proto3" json:"filled_qty,omitempty"`
 	// Average fill price.
-	FilledAvgPrice string `protobuf:"bytes,19,opt,name=filled_avg_price,json=filledAvgPrice,proto3" json:"filled_avg_price,omitempty"`
+	FilledAvgPrice string `protobuf:"bytes,20,opt,name=filled_avg_price,json=filledAvgPrice,proto3" json:"filled_avg_price,omitempty"`
 	// Order class.
-	OrderClass BrokerOrderClass `protobuf:"varint,20,opt,name=order_class,json=orderClass,proto3,enum=alpaca.broker.v1.BrokerOrderClass" json:"order_class,omitempty"`
+	OrderClass string `protobuf:"bytes,21,opt,name=order_class,json=orderClass,proto3" json:"order_class,omitempty"`
+	// Order type (alias for type).
+	OrderType string `protobuf:"bytes,22,opt,name=order_type,json=orderType,proto3" json:"order_type,omitempty"`
 	// Order type.
-	Type BrokerOrderType `protobuf:"varint,21,opt,name=type,proto3,enum=alpaca.broker.v1.BrokerOrderType" json:"type,omitempty"`
+	Type string `protobuf:"bytes,23,opt,name=type,proto3" json:"type,omitempty"`
 	// Order side.
-	Side BrokerOrderSide `protobuf:"varint,22,opt,name=side,proto3,enum=alpaca.broker.v1.BrokerOrderSide" json:"side,omitempty"`
+	Side string `protobuf:"bytes,24,opt,name=side,proto3" json:"side,omitempty"`
 	// Time in force.
-	TimeInForce BrokerTimeInForce `protobuf:"varint,23,opt,name=time_in_force,json=timeInForce,proto3,enum=alpaca.broker.v1.BrokerTimeInForce" json:"time_in_force,omitempty"`
+	TimeInForce string `protobuf:"bytes,25,opt,name=time_in_force,json=timeInForce,proto3" json:"time_in_force,omitempty"`
 	// Limit price.
-	LimitPrice string `protobuf:"bytes,24,opt,name=limit_price,json=limitPrice,proto3" json:"limit_price,omitempty"`
+	LimitPrice string `protobuf:"bytes,26,opt,name=limit_price,json=limitPrice,proto3" json:"limit_price,omitempty"`
 	// Stop price.
-	StopPrice string `protobuf:"bytes,25,opt,name=stop_price,json=stopPrice,proto3" json:"stop_price,omitempty"`
+	StopPrice string `protobuf:"bytes,27,opt,name=stop_price,json=stopPrice,proto3" json:"stop_price,omitempty"`
 	// Order status.
-	Status BrokerOrderStatus `protobuf:"varint,26,opt,name=status,proto3,enum=alpaca.broker.v1.BrokerOrderStatus" json:"status,omitempty"`
+	Status string `protobuf:"bytes,28,opt,name=status,proto3" json:"status,omitempty"`
 	// Extended hours trading.
-	ExtendedHours bool `protobuf:"varint,27,opt,name=extended_hours,json=extendedHours,proto3" json:"extended_hours,omitempty"`
+	ExtendedHours bool `protobuf:"varint,29,opt,name=extended_hours,json=extendedHours,proto3" json:"extended_hours,omitempty"`
 	// Leg orders.
-	Legs []*BrokerOrder `protobuf:"bytes,28,rep,name=legs,proto3" json:"legs,omitempty"`
+	Legs []*BrokerOrder `protobuf:"bytes,30,rep,name=legs,proto3" json:"legs,omitempty"`
 	// Trail percent.
-	TrailPercent string `protobuf:"bytes,29,opt,name=trail_percent,json=trailPercent,proto3" json:"trail_percent,omitempty"`
+	TrailPercent string `protobuf:"bytes,31,opt,name=trail_percent,json=trailPercent,proto3" json:"trail_percent,omitempty"`
 	// Trail price.
-	TrailPrice string `protobuf:"bytes,30,opt,name=trail_price,json=trailPrice,proto3" json:"trail_price,omitempty"`
+	TrailPrice string `protobuf:"bytes,32,opt,name=trail_price,json=trailPrice,proto3" json:"trail_price,omitempty"`
 	// High water mark.
-	Hwm string `protobuf:"bytes,31,opt,name=hwm,proto3" json:"hwm,omitempty"`
+	Hwm string `protobuf:"bytes,33,opt,name=hwm,proto3" json:"hwm,omitempty"`
 	// Commission charged.
-	Commission    string `protobuf:"bytes,32,opt,name=commission,proto3" json:"commission,omitempty"`
+	Commission string `protobuf:"bytes,34,opt,name=commission,proto3" json:"commission,omitempty"`
+	// Commission in basis points.
+	CommissionBps string `protobuf:"bytes,35,opt,name=commission_bps,json=commissionBps,proto3" json:"commission_bps,omitempty"`
+	// Commission type.
+	CommissionType string `protobuf:"bytes,36,opt,name=commission_type,json=commissionType,proto3" json:"commission_type,omitempty"`
+	// Position intent for options.
+	PositionIntent string `protobuf:"bytes,37,opt,name=position_intent,json=positionIntent,proto3" json:"position_intent,omitempty"`
+	// Order subtag.
+	Subtag string `protobuf:"bytes,38,opt,name=subtag,proto3" json:"subtag,omitempty"`
+	// Order source.
+	Source string `protobuf:"bytes,39,opt,name=source,proto3" json:"source,omitempty"`
+	// Swap fee in basis points.
+	SwapFeeBps string `protobuf:"bytes,40,opt,name=swap_fee_bps,json=swapFeeBps,proto3" json:"swap_fee_bps,omitempty"`
+	// Swap rate.
+	SwapRate      string `protobuf:"bytes,41,opt,name=swap_rate,json=swapRate,proto3" json:"swap_rate,omitempty"`
+	ExpiresAt     string `protobuf:"bytes,42,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -503,6 +214,13 @@ func (x *BrokerOrder) GetReplacedAt() string {
 	return ""
 }
 
+func (x *BrokerOrder) GetCancelRequestedAt() string {
+	if x != nil {
+		return x.CancelRequestedAt
+	}
+	return ""
+}
+
 func (x *BrokerOrder) GetReplacedBy() string {
 	if x != nil {
 		return x.ReplacedBy
@@ -566,32 +284,39 @@ func (x *BrokerOrder) GetFilledAvgPrice() string {
 	return ""
 }
 
-func (x *BrokerOrder) GetOrderClass() BrokerOrderClass {
+func (x *BrokerOrder) GetOrderClass() string {
 	if x != nil {
 		return x.OrderClass
 	}
-	return BrokerOrderClass_BROKER_ORDER_CLASS_UNSPECIFIED
+	return ""
 }
 
-func (x *BrokerOrder) GetType() BrokerOrderType {
+func (x *BrokerOrder) GetOrderType() string {
+	if x != nil {
+		return x.OrderType
+	}
+	return ""
+}
+
+func (x *BrokerOrder) GetType() string {
 	if x != nil {
 		return x.Type
 	}
-	return BrokerOrderType_BROKER_ORDER_TYPE_UNSPECIFIED
+	return ""
 }
 
-func (x *BrokerOrder) GetSide() BrokerOrderSide {
+func (x *BrokerOrder) GetSide() string {
 	if x != nil {
 		return x.Side
 	}
-	return BrokerOrderSide_BROKER_ORDER_SIDE_UNSPECIFIED
+	return ""
 }
 
-func (x *BrokerOrder) GetTimeInForce() BrokerTimeInForce {
+func (x *BrokerOrder) GetTimeInForce() string {
 	if x != nil {
 		return x.TimeInForce
 	}
-	return BrokerTimeInForce_BROKER_TIME_IN_FORCE_UNSPECIFIED
+	return ""
 }
 
 func (x *BrokerOrder) GetLimitPrice() string {
@@ -608,11 +333,11 @@ func (x *BrokerOrder) GetStopPrice() string {
 	return ""
 }
 
-func (x *BrokerOrder) GetStatus() BrokerOrderStatus {
+func (x *BrokerOrder) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
-	return BrokerOrderStatus_BROKER_ORDER_STATUS_UNSPECIFIED
+	return ""
 }
 
 func (x *BrokerOrder) GetExtendedHours() bool {
@@ -657,13 +382,69 @@ func (x *BrokerOrder) GetCommission() string {
 	return ""
 }
 
+func (x *BrokerOrder) GetCommissionBps() string {
+	if x != nil {
+		return x.CommissionBps
+	}
+	return ""
+}
+
+func (x *BrokerOrder) GetCommissionType() string {
+	if x != nil {
+		return x.CommissionType
+	}
+	return ""
+}
+
+func (x *BrokerOrder) GetPositionIntent() string {
+	if x != nil {
+		return x.PositionIntent
+	}
+	return ""
+}
+
+func (x *BrokerOrder) GetSubtag() string {
+	if x != nil {
+		return x.Subtag
+	}
+	return ""
+}
+
+func (x *BrokerOrder) GetSource() string {
+	if x != nil {
+		return x.Source
+	}
+	return ""
+}
+
+func (x *BrokerOrder) GetSwapFeeBps() string {
+	if x != nil {
+		return x.SwapFeeBps
+	}
+	return ""
+}
+
+func (x *BrokerOrder) GetSwapRate() string {
+	if x != nil {
+		return x.SwapRate
+	}
+	return ""
+}
+
+func (x *BrokerOrder) GetExpiresAt() string {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return ""
+}
+
 var File_alpaca_broker_v1_trading_order_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v1_trading_order_proto_rawDesc = "" +
 	"\n" +
-	"$alpaca/broker/v1/trading_order.proto\x12\x10alpaca.broker.v1\x1a\x1csebuf/http/annotations.proto\"\xc5\f\n" +
-	"\vBrokerOrder\x12:\n" +
-	"\x02id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
+	"$alpaca/broker/v1/trading_order.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\x9d\x0f\n" +
+	"\vBrokerOrder\x12B\n" +
+	"\x02id\x18\x01 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$61e69015-8549-4bfd-b9c3-01e75843f47dR\x02id\x12:\n" +
 	"\x0fclient_order_id\x18\x02 \x01(\tB\x12\xba\xb5\x18\x0e\n" +
 	"\fmy_order_123R\rclientOrderId\x129\n" +
@@ -684,101 +465,78 @@ const file_alpaca_broker_v1_trading_order_proto_rawDesc = "" +
 	"\tfailed_at\x18\t \x01(\tR\bfailedAt\x12\x1f\n" +
 	"\vreplaced_at\x18\n" +
 	" \x01(\tR\n" +
-	"replacedAt\x12\x1f\n" +
-	"\vreplaced_by\x18\v \x01(\tR\n" +
-	"replacedBy\x12\x1a\n" +
-	"\breplaces\x18\f \x01(\tR\breplaces\x12E\n" +
-	"\basset_id\x18\r \x01(\tB*\xba\xb5\x18&\n" +
+	"replacedAt\x12.\n" +
+	"\x13cancel_requested_at\x18\v \x01(\tR\x11cancelRequestedAt\x12K\n" +
+	"\vreplaced_by\x18\f \x01(\tB*\xba\xb5\x18&\n" +
+	"$71e69015-8549-4bfd-b9c3-01e75843f47dR\n" +
+	"replacedBy\x12F\n" +
+	"\breplaces\x18\r \x01(\tB*\xba\xb5\x18&\n" +
+	"$81e69015-8549-4bfd-b9c3-01e75843f47dR\breplaces\x12M\n" +
+	"\basset_id\x18\x0e \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$b0b6dd9d-8b9b-48a9-ba46-b9d54906e415R\aassetId\x12\"\n" +
-	"\x06symbol\x18\x0e \x01(\tB\n" +
+	"\x06symbol\x18\x0f \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
 	"\x04AAPLR\x06symbol\x120\n" +
-	"\vasset_class\x18\x0f \x01(\tB\x0f\xba\xb5\x18\v\n" +
+	"\vasset_class\x18\x10 \x01(\tB\x0f\xba\xb5\x18\v\n" +
 	"\tus_equityR\n" +
 	"assetClass\x12)\n" +
-	"\bnotional\x18\x10 \x01(\tB\r\xba\xb5\x18\t\n" +
+	"\bnotional\x18\x11 \x01(\tB\r\xba\xb5\x18\t\n" +
 	"\a1000.00R\bnotional\x12\x1a\n" +
-	"\x03qty\x18\x11 \x01(\tB\b\xba\xb5\x18\x04\n" +
+	"\x03qty\x18\x12 \x01(\tB\b\xba\xb5\x18\x04\n" +
 	"\x0210R\x03qty\x12'\n" +
 	"\n" +
-	"filled_qty\x18\x12 \x01(\tB\b\xba\xb5\x18\x04\n" +
+	"filled_qty\x18\x13 \x01(\tB\b\xba\xb5\x18\x04\n" +
 	"\x0210R\tfilledQty\x126\n" +
-	"\x10filled_avg_price\x18\x13 \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06150.25R\x0efilledAvgPrice\x12L\n" +
-	"\vorder_class\x18\x14 \x01(\x0e2\".alpaca.broker.v1.BrokerOrderClassB\a\xba\xb5\x18\x03\n" +
-	"\x011R\n" +
-	"orderClass\x12>\n" +
-	"\x04type\x18\x15 \x01(\x0e2!.alpaca.broker.v1.BrokerOrderTypeB\a\xba\xb5\x18\x03\n" +
-	"\x012R\x04type\x12>\n" +
-	"\x04side\x18\x16 \x01(\x0e2!.alpaca.broker.v1.BrokerOrderSideB\a\xba\xb5\x18\x03\n" +
-	"\x011R\x04side\x12P\n" +
-	"\rtime_in_force\x18\x17 \x01(\x0e2#.alpaca.broker.v1.BrokerTimeInForceB\a\xba\xb5\x18\x03\n" +
-	"\x011R\vtimeInForce\x12-\n" +
-	"\vlimit_price\x18\x18 \x01(\tB\f\xba\xb5\x18\b\n" +
+	"\x10filled_avg_price\x18\x14 \x01(\tB\f\xba\xb5\x18\b\n" +
+	"\x06150.25R\x0efilledAvgPrice\x12-\n" +
+	"\vorder_class\x18\x15 \x01(\tB\f\xba\xb5\x18\b\n" +
+	"\x06simpleR\n" +
+	"orderClass\x12*\n" +
+	"\n" +
+	"order_type\x18\x16 \x01(\tB\v\xba\xb5\x18\a\n" +
+	"\x05limitR\torderType\x12\x1f\n" +
+	"\x04type\x18\x17 \x01(\tB\v\xba\xb5\x18\a\n" +
+	"\x05limitR\x04type\x12\x1d\n" +
+	"\x04side\x18\x18 \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"\x03buyR\x04side\x12-\n" +
+	"\rtime_in_force\x18\x19 \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"\x03dayR\vtimeInForce\x12-\n" +
+	"\vlimit_price\x18\x1a \x01(\tB\f\xba\xb5\x18\b\n" +
 	"\x06150.00R\n" +
 	"limitPrice\x12+\n" +
 	"\n" +
-	"stop_price\x18\x19 \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06145.00R\tstopPrice\x12D\n" +
-	"\x06status\x18\x1a \x01(\x0e2#.alpaca.broker.v1.BrokerOrderStatusB\a\xba\xb5\x18\x03\n" +
-	"\x013R\x06status\x122\n" +
-	"\x0eextended_hours\x18\x1b \x01(\bB\v\xba\xb5\x18\a\n" +
+	"stop_price\x18\x1b \x01(\tB\f\xba\xb5\x18\b\n" +
+	"\x06145.00R\tstopPrice\x12$\n" +
+	"\x06status\x18\x1c \x01(\tB\f\xba\xb5\x18\b\n" +
+	"\x06filledR\x06status\x122\n" +
+	"\x0eextended_hours\x18\x1d \x01(\bB\v\xba\xb5\x18\a\n" +
 	"\x05falseR\rextendedHours\x121\n" +
-	"\x04legs\x18\x1c \x03(\v2\x1d.alpaca.broker.v1.BrokerOrderR\x04legs\x12.\n" +
-	"\rtrail_percent\x18\x1d \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"\x04legs\x18\x1e \x03(\v2\x1d.alpaca.broker.v1.BrokerOrderR\x04legs\x12.\n" +
+	"\rtrail_percent\x18\x1f \x01(\tB\t\xba\xb5\x18\x05\n" +
 	"\x035.0R\ftrailPercent\x12+\n" +
-	"\vtrail_price\x18\x1e \x01(\tB\n" +
+	"\vtrail_price\x18  \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
 	"\x045.00R\n" +
 	"trailPrice\x12\x1e\n" +
-	"\x03hwm\x18\x1f \x01(\tB\f\xba\xb5\x18\b\n" +
+	"\x03hwm\x18! \x01(\tB\f\xba\xb5\x18\b\n" +
 	"\x06155.00R\x03hwm\x12*\n" +
 	"\n" +
-	"commission\x18  \x01(\tB\n" +
+	"commission\x18\" \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
 	"\x040.00R\n" +
-	"commission*k\n" +
-	"\x0fBrokerOrderSide\x12!\n" +
-	"\x1dBROKER_ORDER_SIDE_UNSPECIFIED\x10\x00\x12\x19\n" +
-	"\x15BROKER_ORDER_SIDE_BUY\x10\x01\x12\x1a\n" +
-	"\x16BROKER_ORDER_SIDE_SELL\x10\x02*\xd2\x01\n" +
-	"\x0fBrokerOrderType\x12!\n" +
-	"\x1dBROKER_ORDER_TYPE_UNSPECIFIED\x10\x00\x12\x1c\n" +
-	"\x18BROKER_ORDER_TYPE_MARKET\x10\x01\x12\x1b\n" +
-	"\x17BROKER_ORDER_TYPE_LIMIT\x10\x02\x12\x1a\n" +
-	"\x16BROKER_ORDER_TYPE_STOP\x10\x03\x12 \n" +
-	"\x1cBROKER_ORDER_TYPE_STOP_LIMIT\x10\x04\x12#\n" +
-	"\x1fBROKER_ORDER_TYPE_TRAILING_STOP\x10\x05*\xed\x01\n" +
-	"\x11BrokerTimeInForce\x12$\n" +
-	" BROKER_TIME_IN_FORCE_UNSPECIFIED\x10\x00\x12\x1c\n" +
-	"\x18BROKER_TIME_IN_FORCE_DAY\x10\x01\x12\x1c\n" +
-	"\x18BROKER_TIME_IN_FORCE_GTC\x10\x02\x12\x1c\n" +
-	"\x18BROKER_TIME_IN_FORCE_OPG\x10\x03\x12\x1c\n" +
-	"\x18BROKER_TIME_IN_FORCE_CLS\x10\x04\x12\x1c\n" +
-	"\x18BROKER_TIME_IN_FORCE_IOC\x10\x05\x12\x1c\n" +
-	"\x18BROKER_TIME_IN_FORCE_FOK\x10\x06*\x82\x04\n" +
-	"\x11BrokerOrderStatus\x12#\n" +
-	"\x1fBROKER_ORDER_STATUS_UNSPECIFIED\x10\x00\x12\x1b\n" +
-	"\x17BROKER_ORDER_STATUS_NEW\x10\x01\x12(\n" +
-	"$BROKER_ORDER_STATUS_PARTIALLY_FILLED\x10\x02\x12\x1e\n" +
-	"\x1aBROKER_ORDER_STATUS_FILLED\x10\x03\x12$\n" +
-	" BROKER_ORDER_STATUS_DONE_FOR_DAY\x10\x04\x12 \n" +
-	"\x1cBROKER_ORDER_STATUS_CANCELED\x10\x05\x12\x1f\n" +
-	"\x1bBROKER_ORDER_STATUS_EXPIRED\x10\x06\x12 \n" +
-	"\x1cBROKER_ORDER_STATUS_REPLACED\x10\a\x12&\n" +
-	"\"BROKER_ORDER_STATUS_PENDING_CANCEL\x10\b\x12'\n" +
-	"#BROKER_ORDER_STATUS_PENDING_REPLACE\x10\t\x12#\n" +
-	"\x1fBROKER_ORDER_STATUS_PENDING_NEW\x10\n" +
-	"\x12 \n" +
-	"\x1cBROKER_ORDER_STATUS_ACCEPTED\x10\v\x12 \n" +
-	"\x1cBROKER_ORDER_STATUS_REJECTED\x10\x0e\x12\x1c\n" +
-	"\x18BROKER_ORDER_STATUS_HELD\x10\x11*\xad\x01\n" +
-	"\x10BrokerOrderClass\x12\"\n" +
-	"\x1eBROKER_ORDER_CLASS_UNSPECIFIED\x10\x00\x12\x1d\n" +
-	"\x19BROKER_ORDER_CLASS_SIMPLE\x10\x01\x12\x1e\n" +
-	"\x1aBROKER_ORDER_CLASS_BRACKET\x10\x02\x12\x1a\n" +
-	"\x16BROKER_ORDER_CLASS_OCO\x10\x03\x12\x1a\n" +
-	"\x16BROKER_ORDER_CLASS_OTO\x10\x04B\xd7\x01\n" +
+	"commission\x12%\n" +
+	"\x0ecommission_bps\x18# \x01(\tR\rcommissionBps\x12'\n" +
+	"\x0fcommission_type\x18$ \x01(\tR\x0ecommissionType\x12:\n" +
+	"\x0fposition_intent\x18% \x01(\tB\x11\xba\xb5\x18\r\n" +
+	"\vbuy_to_openR\x0epositionIntent\x12\x16\n" +
+	"\x06subtag\x18& \x01(\tR\x06subtag\x12\x16\n" +
+	"\x06source\x18' \x01(\tR\x06source\x12 \n" +
+	"\fswap_fee_bps\x18( \x01(\tR\n" +
+	"swapFeeBps\x12\x1b\n" +
+	"\tswap_rate\x18) \x01(\tR\bswapRate\x129\n" +
+	"\n" +
+	"expires_at\x18* \x01(\tB\x1a\xba\xb5\x18\x16\n" +
+	"\x142024-01-15T10:30:05ZR\texpiresAtB\xd7\x01\n" +
 	"\x14com.alpaca.broker.v1B\x11TradingOrderProtoP\x01ZJgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1;brokerv1\xa2\x02\x03ABX\xaa\x02\x10Alpaca.Broker.V1\xca\x02\x10Alpaca\\Broker\\V1\xe2\x02\x1cAlpaca\\Broker\\V1\\GPBMetadata\xea\x02\x12Alpaca::Broker::V1b\x06proto3"
 
 var (
@@ -793,28 +551,17 @@ func file_alpaca_broker_v1_trading_order_proto_rawDescGZIP() []byte {
 	return file_alpaca_broker_v1_trading_order_proto_rawDescData
 }
 
-var file_alpaca_broker_v1_trading_order_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
 var file_alpaca_broker_v1_trading_order_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_alpaca_broker_v1_trading_order_proto_goTypes = []any{
-	(BrokerOrderSide)(0),   // 0: alpaca.broker.v1.BrokerOrderSide
-	(BrokerOrderType)(0),   // 1: alpaca.broker.v1.BrokerOrderType
-	(BrokerTimeInForce)(0), // 2: alpaca.broker.v1.BrokerTimeInForce
-	(BrokerOrderStatus)(0), // 3: alpaca.broker.v1.BrokerOrderStatus
-	(BrokerOrderClass)(0),  // 4: alpaca.broker.v1.BrokerOrderClass
-	(*BrokerOrder)(nil),    // 5: alpaca.broker.v1.BrokerOrder
+	(*BrokerOrder)(nil), // 0: alpaca.broker.v1.BrokerOrder
 }
 var file_alpaca_broker_v1_trading_order_proto_depIdxs = []int32{
-	4, // 0: alpaca.broker.v1.BrokerOrder.order_class:type_name -> alpaca.broker.v1.BrokerOrderClass
-	1, // 1: alpaca.broker.v1.BrokerOrder.type:type_name -> alpaca.broker.v1.BrokerOrderType
-	0, // 2: alpaca.broker.v1.BrokerOrder.side:type_name -> alpaca.broker.v1.BrokerOrderSide
-	2, // 3: alpaca.broker.v1.BrokerOrder.time_in_force:type_name -> alpaca.broker.v1.BrokerTimeInForce
-	3, // 4: alpaca.broker.v1.BrokerOrder.status:type_name -> alpaca.broker.v1.BrokerOrderStatus
-	5, // 5: alpaca.broker.v1.BrokerOrder.legs:type_name -> alpaca.broker.v1.BrokerOrder
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	0, // 0: alpaca.broker.v1.BrokerOrder.legs:type_name -> alpaca.broker.v1.BrokerOrder
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_broker_v1_trading_order_proto_init() }
@@ -827,14 +574,13 @@ func file_alpaca_broker_v1_trading_order_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_broker_v1_trading_order_proto_rawDesc), len(file_alpaca_broker_v1_trading_order_proto_rawDesc)),
-			NumEnums:      5,
+			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_alpaca_broker_v1_trading_order_proto_goTypes,
 		DependencyIndexes: file_alpaca_broker_v1_trading_order_proto_depIdxs,
-		EnumInfos:         file_alpaca_broker_v1_trading_order_proto_enumTypes,
 		MessageInfos:      file_alpaca_broker_v1_trading_order_proto_msgTypes,
 	}.Build()
 	File_alpaca_broker_v1_trading_order_proto = out.File

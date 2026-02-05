@@ -23,3 +23,21 @@ message UpdateWatchlistRequest {
   // New symbols (replaces existing symbols).
   repeated string symbols = 3 [(sebuf.http.field_examples) = { values: ["AAPL", "GOOGL", "MSFT"] }];
 }
+
+// UpdateWatchlistByNameRequest is the request to update a watchlist by name.
+message UpdateWatchlistByNameRequest {
+  // The current watchlist name (bound from path variable).
+  string current_name = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["My Tech Stocks"] }
+  ];
+
+  // New watchlist name.
+  string name = 2 [
+    (buf.validate.field).string = { max_len: 64 },
+    (sebuf.http.field_examples) = { values: ["Updated Tech Stocks"] }
+  ];
+
+  // New symbols (replaces existing symbols).
+  repeated string symbols = 3 [(sebuf.http.field_examples) = { values: ["AAPL", "GOOGL", "MSFT"] }];
+}

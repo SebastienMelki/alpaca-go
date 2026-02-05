@@ -2,42 +2,8 @@ syntax = "proto3";
 
 package alpaca.broker.v1;
 
+import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
-
-// BrokerAccountStatus represents the status of a broker account.
-enum BrokerAccountStatus {
-  BROKER_ACCOUNT_STATUS_UNSPECIFIED = 0;
-  BROKER_ACCOUNT_STATUS_ONBOARDING = 1;
-  BROKER_ACCOUNT_STATUS_SUBMISSION_FAILED = 2;
-  BROKER_ACCOUNT_STATUS_SUBMITTED = 3;
-  BROKER_ACCOUNT_STATUS_ACCOUNT_UPDATED = 4;
-  BROKER_ACCOUNT_STATUS_APPROVAL_PENDING = 5;
-  BROKER_ACCOUNT_STATUS_ACTIVE = 6;
-  BROKER_ACCOUNT_STATUS_REJECTED = 7;
-  BROKER_ACCOUNT_STATUS_DISABLED = 8;
-  BROKER_ACCOUNT_STATUS_ACCOUNT_CLOSED = 9;
-}
-
-// TaxIdType represents the type of tax ID.
-enum TaxIdType {
-  TAX_ID_TYPE_UNSPECIFIED = 0;
-  TAX_ID_TYPE_USA_SSN = 1;
-  TAX_ID_TYPE_ARG_AR_CUIT = 2;
-  TAX_ID_TYPE_AUS_TFN = 3;
-  TAX_ID_TYPE_DEU_TAX_ID = 4;
-  TAX_ID_TYPE_NOT_SPECIFIED = 5;
-}
-
-// FundingSource represents the source of funding.
-enum FundingSource {
-  FUNDING_SOURCE_UNSPECIFIED = 0;
-  FUNDING_SOURCE_EMPLOYMENT_INCOME = 1;
-  FUNDING_SOURCE_INVESTMENTS = 2;
-  FUNDING_SOURCE_INHERITANCE = 3;
-  FUNDING_SOURCE_BUSINESS_INCOME = 4;
-  FUNDING_SOURCE_SAVINGS = 5;
-  FUNDING_SOURCE_FAMILY = 6;
-}
 
 // Contact represents contact information.
 message Contact {
@@ -64,6 +30,9 @@ message Contact {
 
   // Country (ISO 3166-1 alpha-3).
   string country = 8 [(sebuf.http.field_examples) = { values: ["USA"] }];
+
+  // Local street address (for non-US addresses).
+  repeated string local_street_address = 9 [(sebuf.http.field_examples) = { values: ["123 Local St"] }];
 }
 
 // Identity represents identity information.
@@ -84,7 +53,14 @@ message Identity {
   string tax_id = 5 [(sebuf.http.field_examples) = { values: ["123-45-6789"] }];
 
   // Tax ID type.
-  TaxIdType tax_id_type = 6 [(sebuf.http.field_examples) = { values: ["1"] }];
+  string tax_id_type = 6 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "USA_SSN", "ARG_AR_CUIT", "AUS_TFN", "DEU_TAX_ID", "NOT_SPECIFIED"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["USA_SSN"] }
+  ];
 
   // Country of citizenship (ISO 3166-1 alpha-3).
   string country_of_citizenship = 7 [(sebuf.http.field_examples) = { values: ["USA"] }];
@@ -101,14 +77,14 @@ message Identity {
   // Visa expiration date (YYYY-MM-DD).
   string visa_expiration_date = 11 [(sebuf.http.field_examples) = { values: ["2025-12-31"] }];
 
-  // Date of departure from home country (YYYY-MM-DD).
-  string date_of_departure_from_home_country = 12 [(sebuf.http.field_examples) = { values: ["2020-01-01"] }];
+  // Date of departure from USA (YYYY-MM-DD).
+  string date_of_departure_from_usa = 12 [(sebuf.http.field_examples) = { values: ["2020-01-01"] }];
 
   // Permanent resident.
   bool permanent_resident = 13 [(sebuf.http.field_examples) = { values: ["false"] }];
 
   // Funding source.
-  repeated FundingSource funding_source = 14 [(sebuf.http.field_examples) = { values: ["1"] }];
+  repeated string funding_source = 14 [(sebuf.http.field_examples) = { values: ["employment_income"] }];
 
   // Liquid net worth minimum.
   string liquid_net_worth_min = 15 [(sebuf.http.field_examples) = { values: ["100000"] }];
@@ -127,6 +103,33 @@ message Identity {
 
   // Total net worth maximum.
   string total_net_worth_max = 20 [(sebuf.http.field_examples) = { values: ["1000000"] }];
+
+  // Marital status.
+  string marital_status = 21 [(sebuf.http.field_examples) = { values: ["SINGLE"] }];
+
+  // Number of dependents.
+  int32 number_of_dependents = 22 [(sebuf.http.field_examples) = { values: ["0"] }];
+
+  // Investment experience with stocks.
+  string investment_experience_with_stocks = 23 [(sebuf.http.field_examples) = { values: ["1_to_5_years"] }];
+
+  // Investment experience with options.
+  string investment_experience_with_options = 24 [(sebuf.http.field_examples) = { values: ["none"] }];
+
+  // Liquidity needs (deprecated, use account level).
+  string liquidity_needs = 25;
+
+  // Risk tolerance (deprecated, use account level).
+  string risk_tolerance = 26;
+
+  // Investment objective (deprecated, use account level).
+  string investment_objective = 27;
+
+  // Investment time horizon (deprecated, use account level).
+  string investment_time_horizon = 28;
+
+  // Party Type
+  string party_type = 29;
 }
 
 // Disclosures represents regulatory disclosures.
@@ -143,17 +146,29 @@ message Disclosures {
   // Whether the user has an immediate family member that is politically exposed.
   bool immediate_family_exposed = 4 [(sebuf.http.field_examples) = { values: ["false"] }];
 
+  // Whether the account is discretionary.
+  bool is_discretionary = 5 [(sebuf.http.field_examples) = { values: ["false"] }];
+
   // Employment status (employed, unemployed, student, retired).
-  string employment_status = 5 [(sebuf.http.field_examples) = { values: ["employed"] }];
+  string employment_status = 6 [(sebuf.http.field_examples) = { values: ["employed"] }];
 
   // Employer name.
-  string employer_name = 6 [(sebuf.http.field_examples) = { values: ["Acme Corp"] }];
+  string employer_name = 7 [(sebuf.http.field_examples) = { values: ["Acme Corp"] }];
 
   // Employer address.
-  string employer_address = 7 [(sebuf.http.field_examples) = { values: ["456 Business Ave, San Francisco, CA 94107"] }];
+  string employer_address = 8 [(sebuf.http.field_examples) = { values: ["456 Business Ave, San Francisco, CA 94107"] }];
 
   // Employment position.
-  string employment_position = 8 [(sebuf.http.field_examples) = { values: ["Software Engineer"] }];
+  string employment_position = 9 [(sebuf.http.field_examples) = { values: ["Software Engineer"] }];
+
+  // Employment sector.
+  string employment_sector = 10 [(sebuf.http.field_examples) = { values: ["finance"] }];
+
+  // Context annotations for disclosures.
+  repeated DisclosureContextAnnotation context = 11;
+
+  // Whether the user is affiliated with an exchange or IIROC (Canadian regulatory body).
+  bool is_affiliated_exchange_or_iiroc = 12 [(sebuf.http.field_examples) = { values: ["false"] }];
 }
 
 // Agreement represents a signed agreement.
@@ -169,6 +184,9 @@ message Agreement {
 
   // Revision of the agreement.
   string revision = 4 [(sebuf.http.field_examples) = { values: ["2024.01"] }];
+
+  // Account ID this agreement belongs to.
+  string account_id = 5 [(sebuf.http.field_examples) = { values: ["517dc9b6-1e23-4ce0-98b5-25bce762fa56"] }];
 }
 
 // TrustedContact represents a trusted contact.
@@ -201,52 +219,232 @@ message TrustedContact {
   string country = 9 [(sebuf.http.field_examples) = { values: ["USA"] }];
 }
 
+// KYCResults represents the results of KYC verification.
+message KYCResults {
+  // Reject reason.
+  string reject = 1;
+  // Accept reason.
+  string accept = 2;
+  // Indeterminate reason.
+  string indeterminate = 3;
+  // Additional information.
+  string additional_information = 4;
+  // Summary (pass or fail).
+  string summary = 5;
+}
+
+// OwnerDocument represents a document associated with an account owner.
+message OwnerDocument {
+  // Document ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["d5af1585-6c60-494d-9ea5-c5df62704229"] }];
+  // Document type.
+  string document_type = 2 [(sebuf.http.field_examples) = { values: ["identity_verification"] }];
+  // Document sub-type.
+  string document_sub_type = 3 [(sebuf.http.field_examples) = { values: ["passport"] }];
+  // MIME type.
+  string mime_type = 4 [(sebuf.http.field_examples) = { values: ["image/jpeg"] }];
+  // Content URL.
+  string content = 5;
+  // Created at timestamp.
+  string created_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// MinorIdentity represents identity info for a minor in custodial accounts.
+message MinorIdentity {
+  // Given name.
+  string given_name = 1;
+  // Family name.
+  string family_name = 2;
+  // Date of birth.
+  string date_of_birth = 3;
+  // Tax ID.
+  string tax_id = 4;
+  // Tax ID type.
+  string tax_id_type = 5;
+  // Country of citizenship.
+  string country_of_citizenship = 6;
+  // Country of birth.
+  string country_of_birth = 7;
+  // Country of tax residence.
+  string country_of_tax_residence = 8;
+  // State.
+  string state = 9;
+  // Email.
+  string email = 10;
+}
+
+// USDValues represents USD values for LCT accounts.
+message USDValues {
+  // Last equity in USD.
+  string last_equity = 1 [(sebuf.http.field_examples) = { values: ["123.45"] }];
+}
+
+// Beneficiary represents an account beneficiary.
+message Beneficiary {
+  // Given name.
+  string given_name = 1;
+  // Middle name.
+  string middle_name = 2;
+  // Family name.
+  string family_name = 3;
+  // Date of birth.
+  string date_of_birth = 4;
+  // Tax ID.
+  string tax_id = 5;
+  // Tax ID type.
+  string tax_id_type = 6;
+  // Relationship.
+  string relationship = 7;
+  // Beneficiary type (primary, contingent).
+  string type = 8;
+  // Share percentage.
+  string share_pct = 9;
+}
+
+// AccountCashInterestProgram represents cash interest program status.
+message AccountCashInterestProgram {
+  // APR tier name.
+  string apr_tier_name = 1;
+  // Program status.
+  string status = 2;
+}
+
+// AccountCashInterest represents the cash interest configuration.
+message AccountCashInterest {
+  // USD cash interest program.
+  AccountCashInterestProgram usd = 1 [json_name = "USD"];
+}
+
+// AccountFPSLItem represents FPSL status for a market.
+message AccountFPSLItem {
+  // Tier ID.
+  string tier_id = 1;
+  // Status.
+  string status = 2;
+}
+
+// AccountFPSL represents the FPSL configuration.
+message AccountFPSL {
+  // US market FPSL status.
+  AccountFPSLItem us = 1 [json_name = "US"];
+}
+
+// DisclosureContextAnnotation represents disclosure context details.
+message DisclosureContextAnnotation {
+  // Context type.
+  string context_type = 1;
+  // Company name.
+  string company_name = 2;
+  // Company street address.
+  string company_street_address = 3;
+  // Company city.
+  string company_city = 4;
+  // Company state.
+  string company_state = 5;
+  // Company country.
+  string company_country = 6;
+  // Company compliance email.
+  string company_compliance_email = 7;
+  // Given name (for family member PEP).
+  string given_name = 8;
+  // Family name (for family member PEP).
+  string family_name = 9;
+}
+
 // BrokerAccount represents a broker-managed trading account.
 message BrokerAccount {
   // Account ID (UUID).
-  string id = 1 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+  string id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
 
   // Account number.
   string account_number = 2 [(sebuf.http.field_examples) = { values: ["010203ABCD"] }];
 
   // Account status.
-  BrokerAccountStatus status = 3 [(sebuf.http.field_examples) = { values: ["6"] }];
+  string status = 3 [(sebuf.http.field_examples) = { values: ["ACTIVE"] }];
 
   // Crypto status.
   string crypto_status = 4 [(sebuf.http.field_examples) = { values: ["ACTIVE"] }];
 
+  // KYC results.
+  KYCResults kyc_results = 5;
+
   // Currency (USD).
-  string currency = 5 [(sebuf.http.field_examples) = { values: ["USD"] }];
+  string currency = 6 [(sebuf.http.field_examples) = { values: ["USD"] }];
 
   // Last equity value.
-  string last_equity = 6 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+  string last_equity = 7 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
 
   // Creation timestamp (RFC 3339).
-  string created_at = 7 [(sebuf.http.field_examples) = { values: ["2024-01-01T00:00:00Z"] }];
+  string created_at = 8 [(sebuf.http.field_examples) = { values: ["2024-01-01T00:00:00Z"] }];
 
   // Contact information.
-  Contact contact = 8;
+  Contact contact = 9;
 
   // Identity information.
-  Identity identity = 9;
+  Identity identity = 10;
 
   // Disclosures.
-  Disclosures disclosures = 10;
+  Disclosures disclosures = 11;
 
   // Signed agreements.
-  repeated Agreement agreements = 11;
+  repeated Agreement agreements = 12;
+
+  // Documents.
+  repeated OwnerDocument documents = 13;
 
   // Trusted contact.
-  TrustedContact trusted_contact = 12;
+  TrustedContact trusted_contact = 14;
 
-  // Account type (trading, custodial).
-  string account_type = 13 [(sebuf.http.field_examples) = { values: ["trading"] }];
+  // Account name.
+  string account_name = 15;
+
+  // Account type (trading, custodial, donor_advised, ira).
+  string account_type = 16 [(sebuf.http.field_examples) = { values: ["trading"] }];
+
+  // Account sub-type (for IRA: traditional, roth).
+  string account_sub_type = 17;
+
+  // Custodial account type (CustodianTypeUTMA, CustodianTypeUGMA).
+  string custodial_account_type = 18;
+
+  // Minor identity (for custodial accounts).
+  MinorIdentity minor_identity = 19;
 
   // Trading configurations.
-  BrokerAccountTradingConfigurations trading_configurations = 14;
+  BrokerAccountTradingConfigurations trading_configurations = 20;
 
-  // Whether margin trading is enabled.
-  bool enabled_assets_margin = 15 [(sebuf.http.field_examples) = { values: ["true"] }];
+  // USD values (for LCT accounts).
+  USDValues usd = 21;
+
+  // Enabled asset classes.
+  repeated string enabled_assets = 22;
+
+  // Beneficiaries.
+  repeated Beneficiary beneficiaries = 23;
+
+  // Cash interest configuration.
+  AccountCashInterest cash_interest = 24;
+
+  // FPSL configuration.
+  AccountFPSL fpsl = 25;
+
+  // Risk tolerance (at account level).
+  string risk_tolerance = 26;
+
+  // Investment objective (at account level).
+  string investment_objective = 27;
+
+  // Investment time horizon (at account level).
+  string investment_time_horizon = 28;
+
+  // Liquidity needs (at account level).
+  string liquidity_needs = 29;
+
+  // Trading type.
+  string trading_type = 30;
 }
 
 // BrokerAccountTradingConfigurations represents trading configurations for a broker account.
@@ -261,11 +459,23 @@ message BrokerAccountTradingConfigurations {
   string max_margin_multiplier = 3 [(sebuf.http.field_examples) = { values: ["4"] }];
 
   // Whether PDT protection is enabled.
-  bool pdt_check = 4 [(sebuf.http.field_examples) = { values: ["true"] }];
+  string pdt_check = 4 [(sebuf.http.field_examples) = { values: ["entry"] }];
 
   // Trade confirmation email setting.
   string trade_confirm_email = 5 [(sebuf.http.field_examples) = { values: ["all"] }];
 
   // Whether trading is suspended.
   bool suspend_trade = 6 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Whether shorting is disabled.
+  bool no_shorting = 7 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Maximum options trading level (0-3).
+  int32 max_options_trading_level = 8 [(sebuf.http.field_examples) = { values: ["2"] }];
+
+  // PTP no exception entry setting.
+  string ptp_no_exception_entry = 9;
+
+  // Whether overnight trading is disabled.
+  bool disable_overnight_trading = 10 [(sebuf.http.field_examples) = { values: ["false"] }];
 }

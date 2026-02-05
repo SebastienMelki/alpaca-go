@@ -7,13 +7,14 @@
 package tradingv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -41,7 +42,13 @@ type ListOrdersRequest struct {
 	// Filter by symbols (comma-separated).
 	Symbols string `protobuf:"bytes,7,opt,name=symbols,proto3" json:"symbols,omitempty"`
 	// Filter by side (buy or sell).
-	Side          string `protobuf:"bytes,8,opt,name=side,proto3" json:"side,omitempty"`
+	Side string `protobuf:"bytes,8,opt,name=side,proto3" json:"side,omitempty"`
+	// Filter by asset class (comma-separated: us_equity, us_option, crypto, all).
+	AssetClass string `protobuf:"bytes,9,opt,name=asset_class,json=assetClass,proto3" json:"asset_class,omitempty"`
+	// Return orders submitted before this order ID (exclusive).
+	BeforeOrderId string `protobuf:"bytes,10,opt,name=before_order_id,json=beforeOrderId,proto3" json:"before_order_id,omitempty"`
+	// Return orders submitted after this order ID (exclusive).
+	AfterOrderId  string `protobuf:"bytes,11,opt,name=after_order_id,json=afterOrderId,proto3" json:"after_order_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -132,6 +139,27 @@ func (x *ListOrdersRequest) GetSide() string {
 	return ""
 }
 
+func (x *ListOrdersRequest) GetAssetClass() string {
+	if x != nil {
+		return x.AssetClass
+	}
+	return ""
+}
+
+func (x *ListOrdersRequest) GetBeforeOrderId() string {
+	if x != nil {
+		return x.BeforeOrderId
+	}
+	return ""
+}
+
+func (x *ListOrdersRequest) GetAfterOrderId() string {
+	if x != nil {
+		return x.AfterOrderId
+	}
+	return ""
+}
+
 // ListOrdersResponse is the response containing a list of orders.
 type ListOrdersResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -182,7 +210,7 @@ var File_alpaca_trading_v1_list_orders_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_list_orders_proto_rawDesc = "" +
 	"\n" +
-	"#alpaca/trading/v1/list_orders.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a\x1dalpaca/trading/v1/order.proto\"\xcd\x03\n" +
+	"#alpaca/trading/v1/list_orders.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a\x1dalpaca/trading/v1/order.proto\"\xe9\x05\n" +
 	"\x11ListOrdersRequest\x12.\n" +
 	"\x06status\x18\x01 \x01(\tB\x16\xba\xb5\x18\x06\n" +
 	"\x04openµ\x18\b\n" +
@@ -207,9 +235,20 @@ const file_alpaca_trading_v1_list_orders_proto_rawDesc = "" +
 	"\asymbolsR\asymbols\x12'\n" +
 	"\x04side\x18\b \x01(\tB\x13\xba\xb5\x18\x05\n" +
 	"\x03buyµ\x18\x06\n" +
-	"\x04sideR\x04side\"F\n" +
-	"\x12ListOrdersResponse\x120\n" +
-	"\x06orders\x18\x01 \x03(\v2\x18.alpaca.trading.v1.OrderR\x06ordersB\xdc\x01\n" +
+	"\x04sideR\x04side\x12K\n" +
+	"\vasset_class\x18\t \x01(\tB*\xba\xb5\x18\x15\n" +
+	"\x13us_equity,us_optionµ\x18\r\n" +
+	"\vasset_classR\n" +
+	"assetClass\x12g\n" +
+	"\x0fbefore_order_id\x18\n" +
+	" \x01(\tB?\xba\xb5\x18&\n" +
+	"$61e69015-8549-4bfd-b9c3-01e75843f47dµ\x18\x11\n" +
+	"\x0fbefore_order_idR\rbeforeOrderId\x12d\n" +
+	"\x0eafter_order_id\x18\v \x01(\tB>\xba\xb5\x18&\n" +
+	"$71e69015-8549-4bfd-b9c3-01e75843f47dµ\x18\x10\n" +
+	"\x0eafter_order_idR\fafterOrderId\"L\n" +
+	"\x12ListOrdersResponse\x126\n" +
+	"\x06orders\x18\x01 \x03(\v2\x18.alpaca.trading.v1.OrderB\x04ȵ\x18\x01R\x06ordersB\xdc\x01\n" +
 	"\x15com.alpaca.trading.v1B\x0fListOrdersProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (

@@ -7,11 +7,12 @@
 package tradingv1
 
 import (
+	reflect "reflect"
+	unsafe "unsafe"
+
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	unsafe "unsafe"
 )
 
 const (
@@ -25,7 +26,7 @@ var File_alpaca_trading_v1_service_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1falpaca/trading/v1/service.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\x1a\x18sebuf/http/headers.proto\x1a\x1falpaca/trading/v1/account.proto\x1a#alpaca/trading/v1/get_account.proto\x1a\x1dalpaca/trading/v1/order.proto\x1a$alpaca/trading/v1/create_order.proto\x1a!alpaca/trading/v1/get_order.proto\x1a#alpaca/trading/v1/list_orders.proto\x1a$alpaca/trading/v1/cancel_order.proto\x1a)alpaca/trading/v1/cancel_all_orders.proto\x1a%alpaca/trading/v1/replace_order.proto\x1a.alpaca/trading/v1/get_order_by_client_id.proto\x1a alpaca/trading/v1/position.proto\x1a&alpaca/trading/v1/list_positions.proto\x1a$alpaca/trading/v1/get_position.proto\x1a&alpaca/trading/v1/close_position.proto\x1a+alpaca/trading/v1/close_all_positions.proto\x1a'alpaca/trading/v1/exercise_option.proto\x1a\x1dalpaca/trading/v1/asset.proto\x1a#alpaca/trading/v1/list_assets.proto\x1a!alpaca/trading/v1/get_asset.proto\x1a\x1dalpaca/trading/v1/clock.proto\x1a alpaca/trading/v1/calendar.proto\x1a!alpaca/trading/v1/watchlist.proto\x1a'alpaca/trading/v1/list_watchlists.proto\x1a(alpaca/trading/v1/create_watchlist.proto\x1a%alpaca/trading/v1/get_watchlist.proto\x1a(alpaca/trading/v1/update_watchlist.proto\x1a(alpaca/trading/v1/delete_watchlist.proto\x1a+alpaca/trading/v1/add_watchlist_asset.proto\x1a.alpaca/trading/v1/remove_watchlist_asset.proto\x1a.alpaca/trading/v1/account_configurations.proto\x1a)alpaca/trading/v1/portfolio_history.proto\x1a(alpaca/trading/v1/account_activity.proto2\x9a\x1e\n" +
+	"\x1falpaca/trading/v1/service.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\x1a\x18sebuf/http/headers.proto\x1a\x1falpaca/trading/v1/account.proto\x1a#alpaca/trading/v1/get_account.proto\x1a\x1dalpaca/trading/v1/order.proto\x1a$alpaca/trading/v1/create_order.proto\x1a!alpaca/trading/v1/get_order.proto\x1a#alpaca/trading/v1/list_orders.proto\x1a$alpaca/trading/v1/cancel_order.proto\x1a)alpaca/trading/v1/cancel_all_orders.proto\x1a%alpaca/trading/v1/replace_order.proto\x1a.alpaca/trading/v1/get_order_by_client_id.proto\x1a alpaca/trading/v1/position.proto\x1a&alpaca/trading/v1/list_positions.proto\x1a$alpaca/trading/v1/get_position.proto\x1a&alpaca/trading/v1/close_position.proto\x1a+alpaca/trading/v1/close_all_positions.proto\x1a'alpaca/trading/v1/exercise_option.proto\x1a\x1dalpaca/trading/v1/asset.proto\x1a#alpaca/trading/v1/list_assets.proto\x1a!alpaca/trading/v1/get_asset.proto\x1a\x1dalpaca/trading/v1/clock.proto\x1a alpaca/trading/v1/calendar.proto\x1a!alpaca/trading/v1/watchlist.proto\x1a'alpaca/trading/v1/list_watchlists.proto\x1a(alpaca/trading/v1/create_watchlist.proto\x1a%alpaca/trading/v1/get_watchlist.proto\x1a(alpaca/trading/v1/update_watchlist.proto\x1a(alpaca/trading/v1/delete_watchlist.proto\x1a+alpaca/trading/v1/add_watchlist_asset.proto\x1a.alpaca/trading/v1/remove_watchlist_asset.proto\x1a.alpaca/trading/v1/account_configurations.proto\x1a)alpaca/trading/v1/portfolio_history.proto\x1a(alpaca/trading/v1/account_activity.proto\x1a'alpaca/trading/v1/option_contract.proto\x1a&alpaca/trading/v1/crypto_funding.proto2\xfd/\n" +
 	"\x0eTradingService\x12`\n" +
 	"\n" +
 	"GetAccount\x12$.alpaca.trading.v1.GetAccountRequest\x1a\x1a.alpaca.trading.v1.Account\"\x10\x9a\xb5\x18\f\n" +
@@ -57,21 +58,27 @@ const file_alpaca_trading_v1_service_proto_rawDesc = "" +
 	"\a/orders\x10\x04\x12v\n" +
 	"\rListPositions\x12'.alpaca.trading.v1.ListPositionsRequest\x1a(.alpaca.trading.v1.ListPositionsResponse\"\x12\x9a\xb5\x18\x0e\n" +
 	"\n" +
-	"/positions\x10\x01\x12n\n" +
-	"\vGetPosition\x12%.alpaca.trading.v1.GetPositionRequest\x1a\x1b.alpaca.trading.v1.Position\"\x1b\x9a\xb5\x18\x17\n" +
-	"\x13/positions/{symbol}\x10\x01\x12o\n" +
-	"\rClosePosition\x12'.alpaca.trading.v1.ClosePositionRequest\x1a\x18.alpaca.trading.v1.Order\"\x1b\x9a\xb5\x18\x17\n" +
-	"\x13/positions/{symbol}\x10\x04\x12\x82\x01\n" +
+	"/positions\x10\x01\x12z\n" +
+	"\vGetPosition\x12%.alpaca.trading.v1.GetPositionRequest\x1a\x1b.alpaca.trading.v1.Position\"'\x9a\xb5\x18#\n" +
+	"\x1f/positions/{symbol_or_asset_id}\x10\x01\x12{\n" +
+	"\rClosePosition\x12'.alpaca.trading.v1.ClosePositionRequest\x1a\x18.alpaca.trading.v1.Order\"'\x9a\xb5\x18#\n" +
+	"\x1f/positions/{symbol_or_asset_id}\x10\x04\x12\x82\x01\n" +
 	"\x11CloseAllPositions\x12+.alpaca.trading.v1.CloseAllPositionsRequest\x1a,.alpaca.trading.v1.CloseAllPositionsResponse\"\x12\x9a\xb5\x18\x0e\n" +
 	"\n" +
 	"/positions\x10\x04\x12\x9a\x01\n" +
 	"\x0eExerciseOption\x12(.alpaca.trading.v1.ExerciseOptionRequest\x1a).alpaca.trading.v1.ExerciseOptionResponse\"3\x9a\xb5\x18/\n" +
-	"+/positions/{symbol_or_contract_id}/exercise\x10\x02\x12j\n" +
+	"+/positions/{symbol_or_contract_id}/exercise\x10\x02\x12\xb0\x01\n" +
+	"\x13DoNotExerciseOption\x12-.alpaca.trading.v1.DoNotExerciseOptionRequest\x1a..alpaca.trading.v1.DoNotExerciseOptionResponse\":\x9a\xb5\x186\n" +
+	"2/positions/{symbol_or_contract_id}/do-not-exercise\x10\x02\x12j\n" +
 	"\n" +
 	"ListAssets\x12$.alpaca.trading.v1.ListAssetsRequest\x1a%.alpaca.trading.v1.ListAssetsResponse\"\x0f\x9a\xb5\x18\v\n" +
 	"\a/assets\x10\x01\x12h\n" +
 	"\bGetAsset\x12\".alpaca.trading.v1.GetAssetRequest\x1a\x18.alpaca.trading.v1.Asset\"\x1e\x9a\xb5\x18\x1a\n" +
-	"\x16/assets/{symbol_or_id}\x10\x01\x12X\n" +
+	"\x16/assets/{symbol_or_id}\x10\x01\x12\x90\x01\n" +
+	"\x13ListOptionContracts\x12-.alpaca.trading.v1.ListOptionContractsRequest\x1a..alpaca.trading.v1.ListOptionContractsResponse\"\x1a\x9a\xb5\x18\x16\n" +
+	"\x12/options/contracts\x10\x01\x12\x8e\x01\n" +
+	"\x11GetOptionContract\x12+.alpaca.trading.v1.GetOptionContractRequest\x1a!.alpaca.trading.v1.OptionContract\")\x9a\xb5\x18%\n" +
+	"!/options/contracts/{symbol_or_id}\x10\x01\x12X\n" +
 	"\bGetClock\x12\".alpaca.trading.v1.GetClockRequest\x1a\x18.alpaca.trading.v1.Clock\"\x0e\x9a\xb5\x18\n" +
 	"\n" +
 	"\x06/clock\x10\x01\x12o\n" +
@@ -90,7 +97,31 @@ const file_alpaca_trading_v1_service_proto_rawDesc = "" +
 	"\x11AddWatchlistAsset\x12+.alpaca.trading.v1.AddWatchlistAssetRequest\x1a\x1c.alpaca.trading.v1.Watchlist\"\"\x9a\xb5\x18\x1e\n" +
 	"\x1a/watchlists/{watchlist_id}\x10\x02\x12\xa4\x01\n" +
 	"\x14RemoveWatchlistAsset\x12..alpaca.trading.v1.RemoveWatchlistAssetRequest\x1a/.alpaca.trading.v1.RemoveWatchlistAssetResponse\"+\x9a\xb5\x18'\n" +
-	"#/watchlists/{watchlist_id}/{symbol}\x10\x04\x1a\xb6\x01\xa2\xb5\x18\x05\n" +
+	"#/watchlists/{watchlist_id}/{symbol}\x10\x04\x12}\n" +
+	"\x12GetWatchlistByName\x12,.alpaca.trading.v1.GetWatchlistByNameRequest\x1a\x1c.alpaca.trading.v1.Watchlist\"\x1b\x9a\xb5\x18\x17\n" +
+	"\x13/watchlists:by_name\x10\x01\x12\x83\x01\n" +
+	"\x15UpdateWatchlistByName\x12/.alpaca.trading.v1.UpdateWatchlistByNameRequest\x1a\x1c.alpaca.trading.v1.Watchlist\"\x1b\x9a\xb5\x18\x17\n" +
+	"\x13/watchlists:by_name\x10\x03\x12\x91\x01\n" +
+	"\x15DeleteWatchlistByName\x12/.alpaca.trading.v1.DeleteWatchlistByNameRequest\x1a*.alpaca.trading.v1.DeleteWatchlistResponse\"\x1b\x9a\xb5\x18\x17\n" +
+	"\x13/watchlists:by_name\x10\x04\x12\x98\x01\n" +
+	"\x17AddWatchlistAssetByName\x121.alpaca.trading.v1.AddWatchlistAssetByNameRequest\x1a\x1c.alpaca.trading.v1.Watchlist\",\x9a\xb5\x18(\n" +
+	"$/watchlists:by_name/{watchlist_name}\x10\x02\x12\x80\x01\n" +
+	"\x11ListCryptoWallets\x12+.alpaca.trading.v1.ListCryptoWalletsRequest\x1a,.alpaca.trading.v1.ListCryptoWalletsResponse\"\x10\x9a\xb5\x18\f\n" +
+	"\b/wallets\x10\x01\x12\x90\x01\n" +
+	"\x13ListCryptoTransfers\x12-.alpaca.trading.v1.ListCryptoTransfersRequest\x1a..alpaca.trading.v1.ListCryptoTransfersResponse\"\x1a\x9a\xb5\x18\x16\n" +
+	"\x12/wallets/transfers\x10\x01\x12\x8d\x01\n" +
+	"\x11GetCryptoTransfer\x12+.alpaca.trading.v1.GetCryptoTransferRequest\x1a!.alpaca.trading.v1.CryptoTransfer\"(\x9a\xb5\x18$\n" +
+	" /wallets/transfers/{transfer_id}\x10\x01\x12\x85\x01\n" +
+	"\x14CreateCryptoTransfer\x12..alpaca.trading.v1.CreateCryptoTransferRequest\x1a!.alpaca.trading.v1.CryptoTransfer\"\x1a\x9a\xb5\x18\x16\n" +
+	"\x12/wallets/transfers\x10\x02\x12\x9b\x01\n" +
+	"\x19GetCryptoTransferEstimate\x123.alpaca.trading.v1.GetCryptoTransferEstimateRequest\x1a).alpaca.trading.v1.CryptoTransferEstimate\"\x1e\x9a\xb5\x18\x1a\n" +
+	"\x16/wallets/fees/estimate\x10\x01\x12\xa0\x01\n" +
+	"\x18ListWhitelistedAddresses\x122.alpaca.trading.v1.ListWhitelistedAddressesRequest\x1a3.alpaca.trading.v1.ListWhitelistedAddressesResponse\"\x1b\x9a\xb5\x18\x17\n" +
+	"\x13/wallets/whitelists\x10\x01\x12\x92\x01\n" +
+	"\x18CreateWhitelistedAddress\x122.alpaca.trading.v1.CreateWhitelistedAddressRequest\x1a%.alpaca.trading.v1.WhitelistedAddress\"\x1b\x9a\xb5\x18\x17\n" +
+	"\x13/wallets/whitelists\x10\x02\x12\xb9\x01\n" +
+	"\x18DeleteWhitelistedAddress\x122.alpaca.trading.v1.DeleteWhitelistedAddressRequest\x1a3.alpaca.trading.v1.DeleteWhitelistedAddressResponse\"4\x9a\xb5\x180\n" +
+	",/wallets/whitelists/{whitelisted_address_id}\x10\x04\x1a\xb6\x01\xa2\xb5\x18\x05\n" +
 	"\x03/v2\xaa\xb5\x18\xa8\x01\n" +
 	"D\n" +
 	"\x0fAPCA-API-KEY-ID\x12\x11Alpaca API key ID\x1a\x06string \x012\x14PKXXXXXXXXXXXXXXXXXX\n" +
@@ -117,37 +148,62 @@ var file_alpaca_trading_v1_service_proto_goTypes = []any{
 	(*ClosePositionRequest)(nil),               // 15: alpaca.trading.v1.ClosePositionRequest
 	(*CloseAllPositionsRequest)(nil),           // 16: alpaca.trading.v1.CloseAllPositionsRequest
 	(*ExerciseOptionRequest)(nil),              // 17: alpaca.trading.v1.ExerciseOptionRequest
-	(*ListAssetsRequest)(nil),                  // 18: alpaca.trading.v1.ListAssetsRequest
-	(*GetAssetRequest)(nil),                    // 19: alpaca.trading.v1.GetAssetRequest
-	(*GetClockRequest)(nil),                    // 20: alpaca.trading.v1.GetClockRequest
-	(*GetCalendarRequest)(nil),                 // 21: alpaca.trading.v1.GetCalendarRequest
-	(*ListWatchlistsRequest)(nil),              // 22: alpaca.trading.v1.ListWatchlistsRequest
-	(*CreateWatchlistRequest)(nil),             // 23: alpaca.trading.v1.CreateWatchlistRequest
-	(*GetWatchlistRequest)(nil),                // 24: alpaca.trading.v1.GetWatchlistRequest
-	(*UpdateWatchlistRequest)(nil),             // 25: alpaca.trading.v1.UpdateWatchlistRequest
-	(*DeleteWatchlistRequest)(nil),             // 26: alpaca.trading.v1.DeleteWatchlistRequest
-	(*AddWatchlistAssetRequest)(nil),           // 27: alpaca.trading.v1.AddWatchlistAssetRequest
-	(*RemoveWatchlistAssetRequest)(nil),        // 28: alpaca.trading.v1.RemoveWatchlistAssetRequest
-	(*Account)(nil),                            // 29: alpaca.trading.v1.Account
-	(*AccountConfigurations)(nil),              // 30: alpaca.trading.v1.AccountConfigurations
-	(*PortfolioHistory)(nil),                   // 31: alpaca.trading.v1.PortfolioHistory
-	(*GetAccountActivitiesResponse)(nil),       // 32: alpaca.trading.v1.GetAccountActivitiesResponse
-	(*Order)(nil),                              // 33: alpaca.trading.v1.Order
-	(*ListOrdersResponse)(nil),                 // 34: alpaca.trading.v1.ListOrdersResponse
-	(*CancelOrderResponse)(nil),                // 35: alpaca.trading.v1.CancelOrderResponse
-	(*CancelAllOrdersResponse)(nil),            // 36: alpaca.trading.v1.CancelAllOrdersResponse
-	(*ListPositionsResponse)(nil),              // 37: alpaca.trading.v1.ListPositionsResponse
-	(*Position)(nil),                           // 38: alpaca.trading.v1.Position
-	(*CloseAllPositionsResponse)(nil),          // 39: alpaca.trading.v1.CloseAllPositionsResponse
-	(*ExerciseOptionResponse)(nil),             // 40: alpaca.trading.v1.ExerciseOptionResponse
-	(*ListAssetsResponse)(nil),                 // 41: alpaca.trading.v1.ListAssetsResponse
-	(*Asset)(nil),                              // 42: alpaca.trading.v1.Asset
-	(*Clock)(nil),                              // 43: alpaca.trading.v1.Clock
-	(*GetCalendarResponse)(nil),                // 44: alpaca.trading.v1.GetCalendarResponse
-	(*ListWatchlistsResponse)(nil),             // 45: alpaca.trading.v1.ListWatchlistsResponse
-	(*Watchlist)(nil),                          // 46: alpaca.trading.v1.Watchlist
-	(*DeleteWatchlistResponse)(nil),            // 47: alpaca.trading.v1.DeleteWatchlistResponse
-	(*RemoveWatchlistAssetResponse)(nil),       // 48: alpaca.trading.v1.RemoveWatchlistAssetResponse
+	(*DoNotExerciseOptionRequest)(nil),         // 18: alpaca.trading.v1.DoNotExerciseOptionRequest
+	(*ListAssetsRequest)(nil),                  // 19: alpaca.trading.v1.ListAssetsRequest
+	(*GetAssetRequest)(nil),                    // 20: alpaca.trading.v1.GetAssetRequest
+	(*ListOptionContractsRequest)(nil),         // 21: alpaca.trading.v1.ListOptionContractsRequest
+	(*GetOptionContractRequest)(nil),           // 22: alpaca.trading.v1.GetOptionContractRequest
+	(*GetClockRequest)(nil),                    // 23: alpaca.trading.v1.GetClockRequest
+	(*GetCalendarRequest)(nil),                 // 24: alpaca.trading.v1.GetCalendarRequest
+	(*ListWatchlistsRequest)(nil),              // 25: alpaca.trading.v1.ListWatchlistsRequest
+	(*CreateWatchlistRequest)(nil),             // 26: alpaca.trading.v1.CreateWatchlistRequest
+	(*GetWatchlistRequest)(nil),                // 27: alpaca.trading.v1.GetWatchlistRequest
+	(*UpdateWatchlistRequest)(nil),             // 28: alpaca.trading.v1.UpdateWatchlistRequest
+	(*DeleteWatchlistRequest)(nil),             // 29: alpaca.trading.v1.DeleteWatchlistRequest
+	(*AddWatchlistAssetRequest)(nil),           // 30: alpaca.trading.v1.AddWatchlistAssetRequest
+	(*RemoveWatchlistAssetRequest)(nil),        // 31: alpaca.trading.v1.RemoveWatchlistAssetRequest
+	(*GetWatchlistByNameRequest)(nil),          // 32: alpaca.trading.v1.GetWatchlistByNameRequest
+	(*UpdateWatchlistByNameRequest)(nil),       // 33: alpaca.trading.v1.UpdateWatchlistByNameRequest
+	(*DeleteWatchlistByNameRequest)(nil),       // 34: alpaca.trading.v1.DeleteWatchlistByNameRequest
+	(*AddWatchlistAssetByNameRequest)(nil),     // 35: alpaca.trading.v1.AddWatchlistAssetByNameRequest
+	(*ListCryptoWalletsRequest)(nil),           // 36: alpaca.trading.v1.ListCryptoWalletsRequest
+	(*ListCryptoTransfersRequest)(nil),         // 37: alpaca.trading.v1.ListCryptoTransfersRequest
+	(*GetCryptoTransferRequest)(nil),           // 38: alpaca.trading.v1.GetCryptoTransferRequest
+	(*CreateCryptoTransferRequest)(nil),        // 39: alpaca.trading.v1.CreateCryptoTransferRequest
+	(*GetCryptoTransferEstimateRequest)(nil),   // 40: alpaca.trading.v1.GetCryptoTransferEstimateRequest
+	(*ListWhitelistedAddressesRequest)(nil),    // 41: alpaca.trading.v1.ListWhitelistedAddressesRequest
+	(*CreateWhitelistedAddressRequest)(nil),    // 42: alpaca.trading.v1.CreateWhitelistedAddressRequest
+	(*DeleteWhitelistedAddressRequest)(nil),    // 43: alpaca.trading.v1.DeleteWhitelistedAddressRequest
+	(*Account)(nil),                            // 44: alpaca.trading.v1.Account
+	(*AccountConfigurations)(nil),              // 45: alpaca.trading.v1.AccountConfigurations
+	(*PortfolioHistory)(nil),                   // 46: alpaca.trading.v1.PortfolioHistory
+	(*GetAccountActivitiesResponse)(nil),       // 47: alpaca.trading.v1.GetAccountActivitiesResponse
+	(*Order)(nil),                              // 48: alpaca.trading.v1.Order
+	(*ListOrdersResponse)(nil),                 // 49: alpaca.trading.v1.ListOrdersResponse
+	(*CancelOrderResponse)(nil),                // 50: alpaca.trading.v1.CancelOrderResponse
+	(*CancelAllOrdersResponse)(nil),            // 51: alpaca.trading.v1.CancelAllOrdersResponse
+	(*ListPositionsResponse)(nil),              // 52: alpaca.trading.v1.ListPositionsResponse
+	(*Position)(nil),                           // 53: alpaca.trading.v1.Position
+	(*CloseAllPositionsResponse)(nil),          // 54: alpaca.trading.v1.CloseAllPositionsResponse
+	(*ExerciseOptionResponse)(nil),             // 55: alpaca.trading.v1.ExerciseOptionResponse
+	(*DoNotExerciseOptionResponse)(nil),        // 56: alpaca.trading.v1.DoNotExerciseOptionResponse
+	(*ListAssetsResponse)(nil),                 // 57: alpaca.trading.v1.ListAssetsResponse
+	(*Asset)(nil),                              // 58: alpaca.trading.v1.Asset
+	(*ListOptionContractsResponse)(nil),        // 59: alpaca.trading.v1.ListOptionContractsResponse
+	(*OptionContract)(nil),                     // 60: alpaca.trading.v1.OptionContract
+	(*Clock)(nil),                              // 61: alpaca.trading.v1.Clock
+	(*GetCalendarResponse)(nil),                // 62: alpaca.trading.v1.GetCalendarResponse
+	(*ListWatchlistsResponse)(nil),             // 63: alpaca.trading.v1.ListWatchlistsResponse
+	(*Watchlist)(nil),                          // 64: alpaca.trading.v1.Watchlist
+	(*DeleteWatchlistResponse)(nil),            // 65: alpaca.trading.v1.DeleteWatchlistResponse
+	(*RemoveWatchlistAssetResponse)(nil),       // 66: alpaca.trading.v1.RemoveWatchlistAssetResponse
+	(*ListCryptoWalletsResponse)(nil),          // 67: alpaca.trading.v1.ListCryptoWalletsResponse
+	(*ListCryptoTransfersResponse)(nil),        // 68: alpaca.trading.v1.ListCryptoTransfersResponse
+	(*CryptoTransfer)(nil),                     // 69: alpaca.trading.v1.CryptoTransfer
+	(*CryptoTransferEstimate)(nil),             // 70: alpaca.trading.v1.CryptoTransferEstimate
+	(*ListWhitelistedAddressesResponse)(nil),   // 71: alpaca.trading.v1.ListWhitelistedAddressesResponse
+	(*WhitelistedAddress)(nil),                 // 72: alpaca.trading.v1.WhitelistedAddress
+	(*DeleteWhitelistedAddressResponse)(nil),   // 73: alpaca.trading.v1.DeleteWhitelistedAddressResponse
 }
 var file_alpaca_trading_v1_service_proto_depIdxs = []int32{
 	0,  // 0: alpaca.trading.v1.TradingService.GetAccount:input_type -> alpaca.trading.v1.GetAccountRequest
@@ -168,48 +224,78 @@ var file_alpaca_trading_v1_service_proto_depIdxs = []int32{
 	15, // 15: alpaca.trading.v1.TradingService.ClosePosition:input_type -> alpaca.trading.v1.ClosePositionRequest
 	16, // 16: alpaca.trading.v1.TradingService.CloseAllPositions:input_type -> alpaca.trading.v1.CloseAllPositionsRequest
 	17, // 17: alpaca.trading.v1.TradingService.ExerciseOption:input_type -> alpaca.trading.v1.ExerciseOptionRequest
-	18, // 18: alpaca.trading.v1.TradingService.ListAssets:input_type -> alpaca.trading.v1.ListAssetsRequest
-	19, // 19: alpaca.trading.v1.TradingService.GetAsset:input_type -> alpaca.trading.v1.GetAssetRequest
-	20, // 20: alpaca.trading.v1.TradingService.GetClock:input_type -> alpaca.trading.v1.GetClockRequest
-	21, // 21: alpaca.trading.v1.TradingService.GetCalendar:input_type -> alpaca.trading.v1.GetCalendarRequest
-	22, // 22: alpaca.trading.v1.TradingService.ListWatchlists:input_type -> alpaca.trading.v1.ListWatchlistsRequest
-	23, // 23: alpaca.trading.v1.TradingService.CreateWatchlist:input_type -> alpaca.trading.v1.CreateWatchlistRequest
-	24, // 24: alpaca.trading.v1.TradingService.GetWatchlist:input_type -> alpaca.trading.v1.GetWatchlistRequest
-	25, // 25: alpaca.trading.v1.TradingService.UpdateWatchlist:input_type -> alpaca.trading.v1.UpdateWatchlistRequest
-	26, // 26: alpaca.trading.v1.TradingService.DeleteWatchlist:input_type -> alpaca.trading.v1.DeleteWatchlistRequest
-	27, // 27: alpaca.trading.v1.TradingService.AddWatchlistAsset:input_type -> alpaca.trading.v1.AddWatchlistAssetRequest
-	28, // 28: alpaca.trading.v1.TradingService.RemoveWatchlistAsset:input_type -> alpaca.trading.v1.RemoveWatchlistAssetRequest
-	29, // 29: alpaca.trading.v1.TradingService.GetAccount:output_type -> alpaca.trading.v1.Account
-	30, // 30: alpaca.trading.v1.TradingService.GetAccountConfigurations:output_type -> alpaca.trading.v1.AccountConfigurations
-	30, // 31: alpaca.trading.v1.TradingService.UpdateAccountConfigurations:output_type -> alpaca.trading.v1.AccountConfigurations
-	31, // 32: alpaca.trading.v1.TradingService.GetPortfolioHistory:output_type -> alpaca.trading.v1.PortfolioHistory
-	32, // 33: alpaca.trading.v1.TradingService.GetAccountActivities:output_type -> alpaca.trading.v1.GetAccountActivitiesResponse
-	32, // 34: alpaca.trading.v1.TradingService.GetAccountActivitiesByType:output_type -> alpaca.trading.v1.GetAccountActivitiesResponse
-	33, // 35: alpaca.trading.v1.TradingService.CreateOrder:output_type -> alpaca.trading.v1.Order
-	34, // 36: alpaca.trading.v1.TradingService.ListOrders:output_type -> alpaca.trading.v1.ListOrdersResponse
-	33, // 37: alpaca.trading.v1.TradingService.GetOrder:output_type -> alpaca.trading.v1.Order
-	33, // 38: alpaca.trading.v1.TradingService.GetOrderByClientId:output_type -> alpaca.trading.v1.Order
-	33, // 39: alpaca.trading.v1.TradingService.ReplaceOrder:output_type -> alpaca.trading.v1.Order
-	35, // 40: alpaca.trading.v1.TradingService.CancelOrder:output_type -> alpaca.trading.v1.CancelOrderResponse
-	36, // 41: alpaca.trading.v1.TradingService.CancelAllOrders:output_type -> alpaca.trading.v1.CancelAllOrdersResponse
-	37, // 42: alpaca.trading.v1.TradingService.ListPositions:output_type -> alpaca.trading.v1.ListPositionsResponse
-	38, // 43: alpaca.trading.v1.TradingService.GetPosition:output_type -> alpaca.trading.v1.Position
-	33, // 44: alpaca.trading.v1.TradingService.ClosePosition:output_type -> alpaca.trading.v1.Order
-	39, // 45: alpaca.trading.v1.TradingService.CloseAllPositions:output_type -> alpaca.trading.v1.CloseAllPositionsResponse
-	40, // 46: alpaca.trading.v1.TradingService.ExerciseOption:output_type -> alpaca.trading.v1.ExerciseOptionResponse
-	41, // 47: alpaca.trading.v1.TradingService.ListAssets:output_type -> alpaca.trading.v1.ListAssetsResponse
-	42, // 48: alpaca.trading.v1.TradingService.GetAsset:output_type -> alpaca.trading.v1.Asset
-	43, // 49: alpaca.trading.v1.TradingService.GetClock:output_type -> alpaca.trading.v1.Clock
-	44, // 50: alpaca.trading.v1.TradingService.GetCalendar:output_type -> alpaca.trading.v1.GetCalendarResponse
-	45, // 51: alpaca.trading.v1.TradingService.ListWatchlists:output_type -> alpaca.trading.v1.ListWatchlistsResponse
-	46, // 52: alpaca.trading.v1.TradingService.CreateWatchlist:output_type -> alpaca.trading.v1.Watchlist
-	46, // 53: alpaca.trading.v1.TradingService.GetWatchlist:output_type -> alpaca.trading.v1.Watchlist
-	46, // 54: alpaca.trading.v1.TradingService.UpdateWatchlist:output_type -> alpaca.trading.v1.Watchlist
-	47, // 55: alpaca.trading.v1.TradingService.DeleteWatchlist:output_type -> alpaca.trading.v1.DeleteWatchlistResponse
-	46, // 56: alpaca.trading.v1.TradingService.AddWatchlistAsset:output_type -> alpaca.trading.v1.Watchlist
-	48, // 57: alpaca.trading.v1.TradingService.RemoveWatchlistAsset:output_type -> alpaca.trading.v1.RemoveWatchlistAssetResponse
-	29, // [29:58] is the sub-list for method output_type
-	0,  // [0:29] is the sub-list for method input_type
+	18, // 18: alpaca.trading.v1.TradingService.DoNotExerciseOption:input_type -> alpaca.trading.v1.DoNotExerciseOptionRequest
+	19, // 19: alpaca.trading.v1.TradingService.ListAssets:input_type -> alpaca.trading.v1.ListAssetsRequest
+	20, // 20: alpaca.trading.v1.TradingService.GetAsset:input_type -> alpaca.trading.v1.GetAssetRequest
+	21, // 21: alpaca.trading.v1.TradingService.ListOptionContracts:input_type -> alpaca.trading.v1.ListOptionContractsRequest
+	22, // 22: alpaca.trading.v1.TradingService.GetOptionContract:input_type -> alpaca.trading.v1.GetOptionContractRequest
+	23, // 23: alpaca.trading.v1.TradingService.GetClock:input_type -> alpaca.trading.v1.GetClockRequest
+	24, // 24: alpaca.trading.v1.TradingService.GetCalendar:input_type -> alpaca.trading.v1.GetCalendarRequest
+	25, // 25: alpaca.trading.v1.TradingService.ListWatchlists:input_type -> alpaca.trading.v1.ListWatchlistsRequest
+	26, // 26: alpaca.trading.v1.TradingService.CreateWatchlist:input_type -> alpaca.trading.v1.CreateWatchlistRequest
+	27, // 27: alpaca.trading.v1.TradingService.GetWatchlist:input_type -> alpaca.trading.v1.GetWatchlistRequest
+	28, // 28: alpaca.trading.v1.TradingService.UpdateWatchlist:input_type -> alpaca.trading.v1.UpdateWatchlistRequest
+	29, // 29: alpaca.trading.v1.TradingService.DeleteWatchlist:input_type -> alpaca.trading.v1.DeleteWatchlistRequest
+	30, // 30: alpaca.trading.v1.TradingService.AddWatchlistAsset:input_type -> alpaca.trading.v1.AddWatchlistAssetRequest
+	31, // 31: alpaca.trading.v1.TradingService.RemoveWatchlistAsset:input_type -> alpaca.trading.v1.RemoveWatchlistAssetRequest
+	32, // 32: alpaca.trading.v1.TradingService.GetWatchlistByName:input_type -> alpaca.trading.v1.GetWatchlistByNameRequest
+	33, // 33: alpaca.trading.v1.TradingService.UpdateWatchlistByName:input_type -> alpaca.trading.v1.UpdateWatchlistByNameRequest
+	34, // 34: alpaca.trading.v1.TradingService.DeleteWatchlistByName:input_type -> alpaca.trading.v1.DeleteWatchlistByNameRequest
+	35, // 35: alpaca.trading.v1.TradingService.AddWatchlistAssetByName:input_type -> alpaca.trading.v1.AddWatchlistAssetByNameRequest
+	36, // 36: alpaca.trading.v1.TradingService.ListCryptoWallets:input_type -> alpaca.trading.v1.ListCryptoWalletsRequest
+	37, // 37: alpaca.trading.v1.TradingService.ListCryptoTransfers:input_type -> alpaca.trading.v1.ListCryptoTransfersRequest
+	38, // 38: alpaca.trading.v1.TradingService.GetCryptoTransfer:input_type -> alpaca.trading.v1.GetCryptoTransferRequest
+	39, // 39: alpaca.trading.v1.TradingService.CreateCryptoTransfer:input_type -> alpaca.trading.v1.CreateCryptoTransferRequest
+	40, // 40: alpaca.trading.v1.TradingService.GetCryptoTransferEstimate:input_type -> alpaca.trading.v1.GetCryptoTransferEstimateRequest
+	41, // 41: alpaca.trading.v1.TradingService.ListWhitelistedAddresses:input_type -> alpaca.trading.v1.ListWhitelistedAddressesRequest
+	42, // 42: alpaca.trading.v1.TradingService.CreateWhitelistedAddress:input_type -> alpaca.trading.v1.CreateWhitelistedAddressRequest
+	43, // 43: alpaca.trading.v1.TradingService.DeleteWhitelistedAddress:input_type -> alpaca.trading.v1.DeleteWhitelistedAddressRequest
+	44, // 44: alpaca.trading.v1.TradingService.GetAccount:output_type -> alpaca.trading.v1.Account
+	45, // 45: alpaca.trading.v1.TradingService.GetAccountConfigurations:output_type -> alpaca.trading.v1.AccountConfigurations
+	45, // 46: alpaca.trading.v1.TradingService.UpdateAccountConfigurations:output_type -> alpaca.trading.v1.AccountConfigurations
+	46, // 47: alpaca.trading.v1.TradingService.GetPortfolioHistory:output_type -> alpaca.trading.v1.PortfolioHistory
+	47, // 48: alpaca.trading.v1.TradingService.GetAccountActivities:output_type -> alpaca.trading.v1.GetAccountActivitiesResponse
+	47, // 49: alpaca.trading.v1.TradingService.GetAccountActivitiesByType:output_type -> alpaca.trading.v1.GetAccountActivitiesResponse
+	48, // 50: alpaca.trading.v1.TradingService.CreateOrder:output_type -> alpaca.trading.v1.Order
+	49, // 51: alpaca.trading.v1.TradingService.ListOrders:output_type -> alpaca.trading.v1.ListOrdersResponse
+	48, // 52: alpaca.trading.v1.TradingService.GetOrder:output_type -> alpaca.trading.v1.Order
+	48, // 53: alpaca.trading.v1.TradingService.GetOrderByClientId:output_type -> alpaca.trading.v1.Order
+	48, // 54: alpaca.trading.v1.TradingService.ReplaceOrder:output_type -> alpaca.trading.v1.Order
+	50, // 55: alpaca.trading.v1.TradingService.CancelOrder:output_type -> alpaca.trading.v1.CancelOrderResponse
+	51, // 56: alpaca.trading.v1.TradingService.CancelAllOrders:output_type -> alpaca.trading.v1.CancelAllOrdersResponse
+	52, // 57: alpaca.trading.v1.TradingService.ListPositions:output_type -> alpaca.trading.v1.ListPositionsResponse
+	53, // 58: alpaca.trading.v1.TradingService.GetPosition:output_type -> alpaca.trading.v1.Position
+	48, // 59: alpaca.trading.v1.TradingService.ClosePosition:output_type -> alpaca.trading.v1.Order
+	54, // 60: alpaca.trading.v1.TradingService.CloseAllPositions:output_type -> alpaca.trading.v1.CloseAllPositionsResponse
+	55, // 61: alpaca.trading.v1.TradingService.ExerciseOption:output_type -> alpaca.trading.v1.ExerciseOptionResponse
+	56, // 62: alpaca.trading.v1.TradingService.DoNotExerciseOption:output_type -> alpaca.trading.v1.DoNotExerciseOptionResponse
+	57, // 63: alpaca.trading.v1.TradingService.ListAssets:output_type -> alpaca.trading.v1.ListAssetsResponse
+	58, // 64: alpaca.trading.v1.TradingService.GetAsset:output_type -> alpaca.trading.v1.Asset
+	59, // 65: alpaca.trading.v1.TradingService.ListOptionContracts:output_type -> alpaca.trading.v1.ListOptionContractsResponse
+	60, // 66: alpaca.trading.v1.TradingService.GetOptionContract:output_type -> alpaca.trading.v1.OptionContract
+	61, // 67: alpaca.trading.v1.TradingService.GetClock:output_type -> alpaca.trading.v1.Clock
+	62, // 68: alpaca.trading.v1.TradingService.GetCalendar:output_type -> alpaca.trading.v1.GetCalendarResponse
+	63, // 69: alpaca.trading.v1.TradingService.ListWatchlists:output_type -> alpaca.trading.v1.ListWatchlistsResponse
+	64, // 70: alpaca.trading.v1.TradingService.CreateWatchlist:output_type -> alpaca.trading.v1.Watchlist
+	64, // 71: alpaca.trading.v1.TradingService.GetWatchlist:output_type -> alpaca.trading.v1.Watchlist
+	64, // 72: alpaca.trading.v1.TradingService.UpdateWatchlist:output_type -> alpaca.trading.v1.Watchlist
+	65, // 73: alpaca.trading.v1.TradingService.DeleteWatchlist:output_type -> alpaca.trading.v1.DeleteWatchlistResponse
+	64, // 74: alpaca.trading.v1.TradingService.AddWatchlistAsset:output_type -> alpaca.trading.v1.Watchlist
+	66, // 75: alpaca.trading.v1.TradingService.RemoveWatchlistAsset:output_type -> alpaca.trading.v1.RemoveWatchlistAssetResponse
+	64, // 76: alpaca.trading.v1.TradingService.GetWatchlistByName:output_type -> alpaca.trading.v1.Watchlist
+	64, // 77: alpaca.trading.v1.TradingService.UpdateWatchlistByName:output_type -> alpaca.trading.v1.Watchlist
+	65, // 78: alpaca.trading.v1.TradingService.DeleteWatchlistByName:output_type -> alpaca.trading.v1.DeleteWatchlistResponse
+	64, // 79: alpaca.trading.v1.TradingService.AddWatchlistAssetByName:output_type -> alpaca.trading.v1.Watchlist
+	67, // 80: alpaca.trading.v1.TradingService.ListCryptoWallets:output_type -> alpaca.trading.v1.ListCryptoWalletsResponse
+	68, // 81: alpaca.trading.v1.TradingService.ListCryptoTransfers:output_type -> alpaca.trading.v1.ListCryptoTransfersResponse
+	69, // 82: alpaca.trading.v1.TradingService.GetCryptoTransfer:output_type -> alpaca.trading.v1.CryptoTransfer
+	69, // 83: alpaca.trading.v1.TradingService.CreateCryptoTransfer:output_type -> alpaca.trading.v1.CryptoTransfer
+	70, // 84: alpaca.trading.v1.TradingService.GetCryptoTransferEstimate:output_type -> alpaca.trading.v1.CryptoTransferEstimate
+	71, // 85: alpaca.trading.v1.TradingService.ListWhitelistedAddresses:output_type -> alpaca.trading.v1.ListWhitelistedAddressesResponse
+	72, // 86: alpaca.trading.v1.TradingService.CreateWhitelistedAddress:output_type -> alpaca.trading.v1.WhitelistedAddress
+	73, // 87: alpaca.trading.v1.TradingService.DeleteWhitelistedAddress:output_type -> alpaca.trading.v1.DeleteWhitelistedAddressResponse
+	44, // [44:88] is the sub-list for method output_type
+	0,  // [0:44] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -252,6 +338,8 @@ func file_alpaca_trading_v1_service_proto_init() {
 	file_alpaca_trading_v1_account_configurations_proto_init()
 	file_alpaca_trading_v1_portfolio_history_proto_init()
 	file_alpaca_trading_v1_account_activity_proto_init()
+	file_alpaca_trading_v1_option_contract_proto_init()
+	file_alpaca_trading_v1_crypto_funding_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

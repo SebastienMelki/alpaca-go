@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "sebuf/http/annotations.proto";
+
+// CountryInfo represents information for a country.
+message CountryInfo {
+  // Full name of the country as defined by ISO 3166-1.
+  string full_name = 1 [(sebuf.http.field_examples) = { values: ["United States of America"] }];
+
+  // Crypto risk rating of the country.
+  string crypto_risk_rating = 2 [(sebuf.http.field_examples) = { values: ["medium"] }];
+
+  // Securities risk rating of the country.
+  string securities_risk_rating = 3 [(sebuf.http.field_examples) = { values: ["medium"] }];
+
+  // States where Alpaca supports crypto trading.
+  repeated string crypto_supported_states = 4;
+}
+
+// State represents a state/province/region within a country.
+message State {
+  // State code (e.g., CA, NY).
+  string code = 1 [(sebuf.http.field_examples) = { values: ["CA"] }];
+
+  // State name.
+  string name = 2 [(sebuf.http.field_examples) = { values: ["California"] }];
+
+  // Country code.
+  string country_code = 3 [(sebuf.http.field_examples) = { values: ["US"] }];
+}
+
+// ListCountriesRequest is the request to list countries.
+message ListCountriesRequest {}
+
+// ListCountriesResponse is the response containing countries as a map.
+// Keys are ISO 3166-1 alpha-3 country codes.
+message ListCountriesResponse {
+  // Map of country codes to country info.
+  map<string, CountryInfo> countries = 1 [(sebuf.http.unwrap) = true];
+}
+
+// GetCountryRequest is the request to get a specific country.
+message GetCountryRequest {
+  // The country code (ISO 3166-1 alpha-2).
+  string country_code = 1 [
+    (sebuf.http.field_examples) = { values: ["US"] }
+  ];
+}
+
+// ListStatesRequest is the request to list states for a country.
+message ListStatesRequest {
+  // The country code (ISO 3166-1 alpha-2).
+  string country_code = 1 [
+    (sebuf.http.field_examples) = { values: ["US"] }
+  ];
+}
+
+// ListStatesResponse is the response containing states.
+message ListStatesResponse {
+  // List of states.
+  repeated State states = 1 [(sebuf.http.unwrap) = true];
+}

@@ -49,9 +49,10 @@ All API definitions live in `.proto` files. The sebuf generators produce:
 ### Alpaca API Coverage
 
 The SDK covers these Alpaca APIs:
-- **Trading API**: Orders, positions, account management (`api.alpaca.markets`)
-- **Market Data API**: Real-time and historical quotes/bars (`data.alpaca.markets`)
-- **Broker API**: Multi-account management for B2B use cases
+- **Trading API**: Orders, positions, account management, crypto funding, option contracts (`api.alpaca.markets`)
+- **Market Data API**: Real-time and historical quotes/bars for stocks (v2), crypto/options/news (v1beta) (`data.alpaca.markets`)
+- **Broker API**: Multi-account management with v1 (core), v1beta (funding wallets), v2 (SSE events)
+- **Auth API**: OAuth2 token issuance (`api.alpaca.markets`)
 - **Paper Trading**: Same endpoints at `paper-api.alpaca.markets`
 
 ### Authentication Pattern
@@ -68,16 +69,37 @@ Define these as required service headers in proto files using `sebuf.http.servic
 
 ```
 alpaca/
-├── core/v1/              # Shared types (identifiers)
-│   └── identifiers.proto
+├── auth/v1/              # Auth/OAuth API
+│   ├── service.proto     # AuthService definition
+│   └── token.proto       # Token request/response
 ├── trading/v1/           # Trading API (orders, positions, account)
 │   ├── service.proto     # TradingService definition
 │   ├── account.proto     # Account model
 │   ├── order.proto       # Order model + enums
 │   ├── position.proto    # Position model
+│   ├── option_contract.proto  # Option contracts
+│   ├── crypto_funding.proto   # Crypto wallets/transfers
 │   └── *.proto           # Request/response per operation
-├── marketdata/v2/        # Market Data API (stocks, crypto, options)
-└── broker/v1/            # Broker API (multi-account management)
+├── marketdata/
+│   ├── v2/               # Market Data v2 (stable - stocks only)
+│   │   ├── service.proto
+│   │   └── stock_*.proto
+│   └── v1beta/           # Market Data v1beta (beta - crypto, options, news)
+│       ├── service.proto
+│       ├── crypto_*.proto
+│       ├── option_*.proto
+│       └── news.proto
+└── broker/
+    ├── v1/               # Broker v1 (core operations)
+    │   ├── service.proto # 80+ RPC methods
+    │   ├── broker_account.proto
+    │   ├── journal.proto
+    │   ├── rebalancing.proto
+    │   └── *.proto
+    ├── v1beta/           # Broker v1beta (funding wallets)
+    │   └── service.proto
+    └── v2/               # Broker v2 (SSE events)
+        └── service.proto
 ```
 
 ### Generated Code Structure
@@ -85,9 +107,11 @@ alpaca/
 ```
 internal/gen/             # Generated Go clients (private)
 pkg/                      # Public client wrappers
+├── auth/                 # Auth API client
 ├── trading/              # Trading API client
-├── marketdata/           # Market Data API client
-└── broker/               # Broker API client
+├── marketdata/           # Market Data API client (V2 + V1Beta)
+└── broker/               # Broker API client (V1 + V1Beta + V2)
+cmd/apitest/              # API test harness for validation
 docs/                     # Generated OpenAPI 3.1 specs per service
 ```
 
@@ -169,3 +193,18 @@ service TradingService {
 - Paper Trading: `https://paper-api.alpaca.markets`
 - Market Data: `https://data.alpaca.markets`
 - Broker API: `https://broker-api.alpaca.markets`
+- Broker Sandbox: `https://broker-api.sandbox.alpaca.markets`
+- Auth API: `https://api.alpaca.markets`
+
+## API Test Harness
+
+The `cmd/apitest` directory contains a test harness for validating generated clients:
+
+```bash
+# Test against live APIs (requires .env with credentials)
+make test-marketdata
+make test-broker
+make test-trading
+```
+
+Environment variables: `ALPACA_API_KEY`, `ALPACA_API_SECRET`, `TEST_ACCOUNT_ID`

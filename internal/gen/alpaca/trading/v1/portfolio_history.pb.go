@@ -7,12 +7,13 @@
 package tradingv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -126,10 +127,12 @@ type GetPortfolioHistoryRequest struct {
 	Start string `protobuf:"bytes,4,opt,name=start,proto3" json:"start,omitempty"`
 	// End date/time (RFC-3339 or YYYY-MM-DD).
 	End string `protobuf:"bytes,5,opt,name=end,proto3" json:"end,omitempty"`
-	// Whether to use PnL calculation instead of market value.
-	PnlReset bool `protobuf:"varint,6,opt,name=pnl_reset,json=pnlReset,proto3" json:"pnl_reset,omitempty"`
-	// Whether to include extended hours data.
-	ExtendedHours bool `protobuf:"varint,7,opt,name=extended_hours,json=extendedHours,proto3" json:"extended_hours,omitempty"`
+	// PnL reset mode for intraday queries (no_reset or per_day).
+	PnlReset string `protobuf:"bytes,6,opt,name=pnl_reset,json=pnlReset,proto3" json:"pnl_reset,omitempty"`
+	// Whether to include extended hours data (deprecated, use intraday_reporting).
+	ExtendedHours string `protobuf:"bytes,7,opt,name=extended_hours,json=extendedHours,proto3" json:"extended_hours,omitempty"`
+	// Cashflow activities to include (ALL, NONE, or comma-separated list of activity types).
+	CashflowTypes string `protobuf:"bytes,8,opt,name=cashflow_types,json=cashflowTypes,proto3" json:"cashflow_types,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -199,18 +202,25 @@ func (x *GetPortfolioHistoryRequest) GetEnd() string {
 	return ""
 }
 
-func (x *GetPortfolioHistoryRequest) GetPnlReset() bool {
+func (x *GetPortfolioHistoryRequest) GetPnlReset() string {
 	if x != nil {
 		return x.PnlReset
 	}
-	return false
+	return ""
 }
 
-func (x *GetPortfolioHistoryRequest) GetExtendedHours() bool {
+func (x *GetPortfolioHistoryRequest) GetExtendedHours() string {
 	if x != nil {
 		return x.ExtendedHours
 	}
-	return false
+	return ""
+}
+
+func (x *GetPortfolioHistoryRequest) GetCashflowTypes() string {
+	if x != nil {
+		return x.CashflowTypes
+	}
+	return ""
 }
 
 var File_alpaca_trading_v1_portfolio_history_proto protoreflect.FileDescriptor
@@ -229,7 +239,7 @@ const file_alpaca_trading_v1_portfolio_history_proto_rawDesc = "" +
 	"\n" +
 	"\b50000.00R\tbaseValue\x12&\n" +
 	"\ttimeframe\x18\x06 \x01(\tB\b\xba\xb5\x18\x04\n" +
-	"\x021DR\ttimeframe\"\xbd\x03\n" +
+	"\x021DR\ttimeframe\"\x9d\x04\n" +
 	"\x1aGetPortfolioHistoryRequest\x12,\n" +
 	"\x06period\x18\x01 \x01(\tB\x14\xba\xb5\x18\x04\n" +
 	"\x021Mµ\x18\b\n" +
@@ -247,13 +257,19 @@ const file_alpaca_trading_v1_portfolio_history_proto_rawDesc = "" +
 	"\x03end\x18\x05 \x01(\tB\x19\xba\xb5\x18\f\n" +
 	"\n" +
 	"2024-01-31µ\x18\x05\n" +
-	"\x03endR\x03end\x127\n" +
-	"\tpnl_reset\x18\x06 \x01(\bB\x1a\xba\xb5\x18\a\n" +
-	"\x05falseµ\x18\v\n" +
-	"\tpnl_resetR\bpnlReset\x12F\n" +
-	"\x0eextended_hours\x18\a \x01(\bB\x1f\xba\xb5\x18\a\n" +
-	"\x05falseµ\x18\x10\n" +
-	"\x0eextended_hoursR\rextendedHoursB\xe2\x01\n" +
+	"\x03endR\x03end\x12C\n" +
+	"\tpnl_reset\x18\x06 \x01(\tB&\xba\xb5\x18\x13\n" +
+	"\aper_day\n" +
+	"\bno_resetµ\x18\v\n" +
+	"\tpnl_resetR\bpnlReset\x12E\n" +
+	"\x0eextended_hours\x18\a \x01(\tB\x1e\xba\xb5\x18\x06\n" +
+	"\x04trueµ\x18\x10\n" +
+	"\x0eextended_hoursR\rextendedHours\x12S\n" +
+	"\x0ecashflow_types\x18\b \x01(\tB,\xba\xb5\x18\x14\n" +
+	"\x03ALL\n" +
+	"\x04NONE\n" +
+	"\aDIV,INTµ\x18\x10\n" +
+	"\x0ecashflow_typesR\rcashflowTypesB\xe2\x01\n" +
 	"\x15com.alpaca.trading.v1B\x15PortfolioHistoryProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (

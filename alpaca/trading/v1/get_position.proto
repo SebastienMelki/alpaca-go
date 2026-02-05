@@ -5,12 +5,11 @@ package alpaca.trading.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-// GetPositionRequest is the request to get a position by symbol.
+// GetPositionRequest is the request to get a position by symbol or asset ID.
 message GetPositionRequest {
-  // The symbol of the position (bound from path variable).
-  string symbol = 1 [
+  // The symbol or asset ID of the position (bound from path variable).
+  string symbol_or_asset_id = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).string = { min_len: 1, max_len: 12 },
-    (sebuf.http.field_examples) = { values: ["AAPL"] }
+    (sebuf.http.field_examples) = { values: ["AAPL", "904837e3-3b76-47ec-b432-046db621571b"] }
   ];
 }

@@ -3,6 +3,7 @@ syntax = "proto3";
 package alpaca.trading.v1;
 
 import "alpaca/trading/v1/watchlist.proto";
+import "sebuf/http/annotations.proto";
 
 // ListWatchlistsRequest is the request to list watchlists.
 message ListWatchlistsRequest {}
@@ -10,5 +11,5 @@ message ListWatchlistsRequest {}
 // ListWatchlistsResponse is the response containing a list of watchlists.
 message ListWatchlistsResponse {
   // List of watchlists.
-  repeated Watchlist watchlists = 1;
+  repeated Watchlist watchlists = 1 [(sebuf.http.unwrap) = true];
 }

@@ -7,12 +7,14 @@
 package tradingv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -21,124 +23,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-// AssetStatus represents the status of an asset.
-type AssetStatus int32
-
-const (
-	AssetStatus_ASSET_STATUS_UNSPECIFIED AssetStatus = 0
-	AssetStatus_ASSET_STATUS_ACTIVE      AssetStatus = 1
-	AssetStatus_ASSET_STATUS_INACTIVE    AssetStatus = 2
-)
-
-// Enum value maps for AssetStatus.
-var (
-	AssetStatus_name = map[int32]string{
-		0: "ASSET_STATUS_UNSPECIFIED",
-		1: "ASSET_STATUS_ACTIVE",
-		2: "ASSET_STATUS_INACTIVE",
-	}
-	AssetStatus_value = map[string]int32{
-		"ASSET_STATUS_UNSPECIFIED": 0,
-		"ASSET_STATUS_ACTIVE":      1,
-		"ASSET_STATUS_INACTIVE":    2,
-	}
-)
-
-func (x AssetStatus) Enum() *AssetStatus {
-	p := new(AssetStatus)
-	*p = x
-	return p
-}
-
-func (x AssetStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (AssetStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_asset_proto_enumTypes[0].Descriptor()
-}
-
-func (AssetStatus) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_asset_proto_enumTypes[0]
-}
-
-func (x AssetStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use AssetStatus.Descriptor instead.
-func (AssetStatus) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_asset_proto_rawDescGZIP(), []int{0}
-}
-
-// AssetExchange represents the exchange where an asset is traded.
-type AssetExchange int32
-
-const (
-	AssetExchange_ASSET_EXCHANGE_UNSPECIFIED AssetExchange = 0
-	AssetExchange_ASSET_EXCHANGE_AMEX        AssetExchange = 1
-	AssetExchange_ASSET_EXCHANGE_ARCA        AssetExchange = 2
-	AssetExchange_ASSET_EXCHANGE_BATS        AssetExchange = 3
-	AssetExchange_ASSET_EXCHANGE_NYSE        AssetExchange = 4
-	AssetExchange_ASSET_EXCHANGE_NASDAQ      AssetExchange = 5
-	AssetExchange_ASSET_EXCHANGE_NYSEARCA    AssetExchange = 6
-	AssetExchange_ASSET_EXCHANGE_OTC         AssetExchange = 7
-	AssetExchange_ASSET_EXCHANGE_CRYPTO      AssetExchange = 8
-)
-
-// Enum value maps for AssetExchange.
-var (
-	AssetExchange_name = map[int32]string{
-		0: "ASSET_EXCHANGE_UNSPECIFIED",
-		1: "ASSET_EXCHANGE_AMEX",
-		2: "ASSET_EXCHANGE_ARCA",
-		3: "ASSET_EXCHANGE_BATS",
-		4: "ASSET_EXCHANGE_NYSE",
-		5: "ASSET_EXCHANGE_NASDAQ",
-		6: "ASSET_EXCHANGE_NYSEARCA",
-		7: "ASSET_EXCHANGE_OTC",
-		8: "ASSET_EXCHANGE_CRYPTO",
-	}
-	AssetExchange_value = map[string]int32{
-		"ASSET_EXCHANGE_UNSPECIFIED": 0,
-		"ASSET_EXCHANGE_AMEX":        1,
-		"ASSET_EXCHANGE_ARCA":        2,
-		"ASSET_EXCHANGE_BATS":        3,
-		"ASSET_EXCHANGE_NYSE":        4,
-		"ASSET_EXCHANGE_NASDAQ":      5,
-		"ASSET_EXCHANGE_NYSEARCA":    6,
-		"ASSET_EXCHANGE_OTC":         7,
-		"ASSET_EXCHANGE_CRYPTO":      8,
-	}
-)
-
-func (x AssetExchange) Enum() *AssetExchange {
-	p := new(AssetExchange)
-	*p = x
-	return p
-}
-
-func (x AssetExchange) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (AssetExchange) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_asset_proto_enumTypes[1].Descriptor()
-}
-
-func (AssetExchange) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_asset_proto_enumTypes[1]
-}
-
-func (x AssetExchange) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use AssetExchange.Descriptor instead.
-func (AssetExchange) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_asset_proto_rawDescGZIP(), []int{1}
-}
 
 // Asset represents a tradeable asset.
 type Asset struct {
@@ -316,9 +200,9 @@ var File_alpaca_trading_v1_asset_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_asset_proto_rawDesc = "" +
 	"\n" +
-	"\x1dalpaca/trading/v1/asset.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\"\xd6\x05\n" +
-	"\x05Asset\x12:\n" +
-	"\x02id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
+	"\x1dalpaca/trading/v1/asset.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xde\x05\n" +
+	"\x05Asset\x12B\n" +
+	"\x02id\x18\x01 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$b0b6dd9d-8b9b-48a9-ba46-b9d54906e415R\x02id\x12%\n" +
 	"\x05class\x18\x02 \x01(\tB\x0f\xba\xb5\x18\v\n" +
 	"\tus_equityR\x05class\x12(\n" +
@@ -358,21 +242,7 @@ const file_alpaca_trading_v1_asset_proto_rawDesc = "" +
 	"\x060.0001R\x11minTradeIncrement\x123\n" +
 	"\x0fprice_increment\x18\x0f \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
-	"\x040.01R\x0epriceIncrement*_\n" +
-	"\vAssetStatus\x12\x1c\n" +
-	"\x18ASSET_STATUS_UNSPECIFIED\x10\x00\x12\x17\n" +
-	"\x13ASSET_STATUS_ACTIVE\x10\x01\x12\x19\n" +
-	"\x15ASSET_STATUS_INACTIVE\x10\x02*\xfe\x01\n" +
-	"\rAssetExchange\x12\x1e\n" +
-	"\x1aASSET_EXCHANGE_UNSPECIFIED\x10\x00\x12\x17\n" +
-	"\x13ASSET_EXCHANGE_AMEX\x10\x01\x12\x17\n" +
-	"\x13ASSET_EXCHANGE_ARCA\x10\x02\x12\x17\n" +
-	"\x13ASSET_EXCHANGE_BATS\x10\x03\x12\x17\n" +
-	"\x13ASSET_EXCHANGE_NYSE\x10\x04\x12\x19\n" +
-	"\x15ASSET_EXCHANGE_NASDAQ\x10\x05\x12\x1b\n" +
-	"\x17ASSET_EXCHANGE_NYSEARCA\x10\x06\x12\x16\n" +
-	"\x12ASSET_EXCHANGE_OTC\x10\a\x12\x19\n" +
-	"\x15ASSET_EXCHANGE_CRYPTO\x10\bB\xd7\x01\n" +
+	"\x040.01R\x0epriceIncrementB\xd7\x01\n" +
 	"\x15com.alpaca.trading.v1B\n" +
 	"AssetProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
@@ -388,12 +258,9 @@ func file_alpaca_trading_v1_asset_proto_rawDescGZIP() []byte {
 	return file_alpaca_trading_v1_asset_proto_rawDescData
 }
 
-var file_alpaca_trading_v1_asset_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_alpaca_trading_v1_asset_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_alpaca_trading_v1_asset_proto_goTypes = []any{
-	(AssetStatus)(0),   // 0: alpaca.trading.v1.AssetStatus
-	(AssetExchange)(0), // 1: alpaca.trading.v1.AssetExchange
-	(*Asset)(nil),      // 2: alpaca.trading.v1.Asset
+	(*Asset)(nil), // 0: alpaca.trading.v1.Asset
 }
 var file_alpaca_trading_v1_asset_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -413,14 +280,13 @@ func file_alpaca_trading_v1_asset_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_trading_v1_asset_proto_rawDesc), len(file_alpaca_trading_v1_asset_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_alpaca_trading_v1_asset_proto_goTypes,
 		DependencyIndexes: file_alpaca_trading_v1_asset_proto_depIdxs,
-		EnumInfos:         file_alpaca_trading_v1_asset_proto_enumTypes,
 		MessageInfos:      file_alpaca_trading_v1_asset_proto_msgTypes,
 	}.Build()
 	File_alpaca_trading_v1_asset_proto = out.File

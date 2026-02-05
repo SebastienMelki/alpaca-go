@@ -7,13 +7,14 @@
 package brokerv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -136,11 +137,11 @@ type CreateTradingOrderRequest struct {
 	// Notional value to trade (required if qty not specified).
 	Notional string `protobuf:"bytes,4,opt,name=notional,proto3" json:"notional,omitempty"`
 	// Order side.
-	Side BrokerOrderSide `protobuf:"varint,5,opt,name=side,proto3,enum=alpaca.broker.v1.BrokerOrderSide" json:"side,omitempty"`
+	Side string `protobuf:"bytes,5,opt,name=side,proto3" json:"side,omitempty"`
 	// Order type.
-	Type BrokerOrderType `protobuf:"varint,6,opt,name=type,proto3,enum=alpaca.broker.v1.BrokerOrderType" json:"type,omitempty"`
+	Type string `protobuf:"bytes,6,opt,name=type,proto3" json:"type,omitempty"`
 	// Time in force.
-	TimeInForce BrokerTimeInForce `protobuf:"varint,7,opt,name=time_in_force,json=timeInForce,proto3,enum=alpaca.broker.v1.BrokerTimeInForce" json:"time_in_force,omitempty"`
+	TimeInForce string `protobuf:"bytes,7,opt,name=time_in_force,json=timeInForce,proto3" json:"time_in_force,omitempty"`
 	// Limit price (for limit orders).
 	LimitPrice string `protobuf:"bytes,8,opt,name=limit_price,json=limitPrice,proto3" json:"limit_price,omitempty"`
 	// Stop price (for stop orders).
@@ -154,7 +155,7 @@ type CreateTradingOrderRequest struct {
 	// Client order ID.
 	ClientOrderId string `protobuf:"bytes,13,opt,name=client_order_id,json=clientOrderId,proto3" json:"client_order_id,omitempty"`
 	// Order class.
-	OrderClass BrokerOrderClass `protobuf:"varint,14,opt,name=order_class,json=orderClass,proto3,enum=alpaca.broker.v1.BrokerOrderClass" json:"order_class,omitempty"`
+	OrderClass string `protobuf:"bytes,14,opt,name=order_class,json=orderClass,proto3" json:"order_class,omitempty"`
 	// Take profit spec (for bracket orders).
 	TakeProfit *BrokerTakeProfitSpec `protobuf:"bytes,15,opt,name=take_profit,json=takeProfit,proto3" json:"take_profit,omitempty"`
 	// Stop loss spec (for bracket orders).
@@ -223,25 +224,25 @@ func (x *CreateTradingOrderRequest) GetNotional() string {
 	return ""
 }
 
-func (x *CreateTradingOrderRequest) GetSide() BrokerOrderSide {
+func (x *CreateTradingOrderRequest) GetSide() string {
 	if x != nil {
 		return x.Side
 	}
-	return BrokerOrderSide_BROKER_ORDER_SIDE_UNSPECIFIED
+	return ""
 }
 
-func (x *CreateTradingOrderRequest) GetType() BrokerOrderType {
+func (x *CreateTradingOrderRequest) GetType() string {
 	if x != nil {
 		return x.Type
 	}
-	return BrokerOrderType_BROKER_ORDER_TYPE_UNSPECIFIED
+	return ""
 }
 
-func (x *CreateTradingOrderRequest) GetTimeInForce() BrokerTimeInForce {
+func (x *CreateTradingOrderRequest) GetTimeInForce() string {
 	if x != nil {
 		return x.TimeInForce
 	}
-	return BrokerTimeInForce_BROKER_TIME_IN_FORCE_UNSPECIFIED
+	return ""
 }
 
 func (x *CreateTradingOrderRequest) GetLimitPrice() string {
@@ -286,11 +287,11 @@ func (x *CreateTradingOrderRequest) GetClientOrderId() string {
 	return ""
 }
 
-func (x *CreateTradingOrderRequest) GetOrderClass() BrokerOrderClass {
+func (x *CreateTradingOrderRequest) GetOrderClass() string {
 	if x != nil {
 		return x.OrderClass
 	}
-	return BrokerOrderClass_BROKER_ORDER_CLASS_UNSPECIFIED
+	return ""
 }
 
 func (x *CreateTradingOrderRequest) GetTakeProfit() *BrokerTakeProfitSpec {
@@ -318,7 +319,7 @@ var File_alpaca_broker_v1_create_trading_order_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v1_create_trading_order_proto_rawDesc = "" +
 	"\n" +
-	"+alpaca/broker/v1/create_trading_order.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a$alpaca/broker/v1/trading_order.proto\"K\n" +
+	"+alpaca/broker/v1/create_trading_order.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"K\n" +
 	"\x14BrokerTakeProfitSpec\x123\n" +
 	"\vlimit_price\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xba\xb5\x18\b\n" +
 	"\x06160.00R\n" +
@@ -329,7 +330,7 @@ const file_alpaca_broker_v1_create_trading_order_proto_rawDesc = "" +
 	"\x06140.00R\tstopPrice\x12-\n" +
 	"\vlimit_price\x18\x02 \x01(\tB\f\xba\xb5\x18\b\n" +
 	"\x06139.00R\n" +
-	"limitPrice\"\x82\b\n" +
+	"limitPrice\"\xfb\a\n" +
 	"\x19CreateTradingOrderRequest\x12T\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
@@ -339,13 +340,14 @@ const file_alpaca_broker_v1_create_trading_order_proto_rawDesc = "" +
 	"\x03qty\x18\x03 \x01(\tB\b\xba\xb5\x18\x04\n" +
 	"\x0210R\x03qty\x12)\n" +
 	"\bnotional\x18\x04 \x01(\tB\r\xba\xb5\x18\t\n" +
-	"\a1000.00R\bnotional\x12F\n" +
-	"\x04side\x18\x05 \x01(\x0e2!.alpaca.broker.v1.BrokerOrderSideB\x0f\xbaH\x05\x82\x01\x02 \x00\xba\xb5\x18\x03\n" +
-	"\x011R\x04side\x12F\n" +
-	"\x04type\x18\x06 \x01(\x0e2!.alpaca.broker.v1.BrokerOrderTypeB\x0f\xbaH\x05\x82\x01\x02 \x00\xba\xb5\x18\x03\n" +
-	"\x012R\x04type\x12X\n" +
-	"\rtime_in_force\x18\a \x01(\x0e2#.alpaca.broker.v1.BrokerTimeInForceB\x0f\xbaH\x05\x82\x01\x02 \x00\xba\xb5\x18\x03\n" +
-	"\x011R\vtimeInForce\x12-\n" +
+	"\a1000.00R\bnotional\x120\n" +
+	"\x04side\x18\x05 \x01(\tB\x1c\xbaH\x10\xc8\x01\x01r\vR\x03buyR\x04sell\xba\xb5\x18\x05\n" +
+	"\x03buyR\x04side\x12W\n" +
+	"\x04type\x18\x06 \x01(\tBC\xbaH5\xc8\x01\x01r0R\x06marketR\x05limitR\x04stopR\n" +
+	"stop_limitR\rtrailing_stop\xba\xb5\x18\a\n" +
+	"\x05limitR\x04type\x12S\n" +
+	"\rtime_in_force\x18\a \x01(\tB/\xbaH#\xc8\x01\x01r\x1eR\x03dayR\x03gtcR\x03opgR\x03clsR\x03iocR\x03fok\xba\xb5\x18\x05\n" +
+	"\x03dayR\vtimeInForce\x12-\n" +
 	"\vlimit_price\x18\b \x01(\tB\f\xba\xb5\x18\b\n" +
 	"\x06150.00R\n" +
 	"limitPrice\x12+\n" +
@@ -362,9 +364,9 @@ const file_alpaca_broker_v1_create_trading_order_proto_rawDesc = "" +
 	"\x0eextended_hours\x18\f \x01(\bB\v\xba\xb5\x18\a\n" +
 	"\x05falseR\rextendedHours\x12A\n" +
 	"\x0fclient_order_id\x18\r \x01(\tB\x19\xbaH\x04r\x02\x180\xba\xb5\x18\x0e\n" +
-	"\fmy_order_123R\rclientOrderId\x12L\n" +
-	"\vorder_class\x18\x0e \x01(\x0e2\".alpaca.broker.v1.BrokerOrderClassB\a\xba\xb5\x18\x03\n" +
-	"\x011R\n" +
+	"\fmy_order_123R\rclientOrderId\x12O\n" +
+	"\vorder_class\x18\x0e \x01(\tB.\xbaH\x1fr\x1dR\x00R\x06simpleR\abracketR\x03ocoR\x03oto\xba\xb5\x18\b\n" +
+	"\x06simpleR\n" +
 	"orderClass\x12G\n" +
 	"\vtake_profit\x18\x0f \x01(\v2&.alpaca.broker.v1.BrokerTakeProfitSpecR\n" +
 	"takeProfit\x12A\n" +
@@ -393,23 +395,15 @@ var file_alpaca_broker_v1_create_trading_order_proto_goTypes = []any{
 	(*BrokerTakeProfitSpec)(nil),      // 0: alpaca.broker.v1.BrokerTakeProfitSpec
 	(*BrokerStopLossSpec)(nil),        // 1: alpaca.broker.v1.BrokerStopLossSpec
 	(*CreateTradingOrderRequest)(nil), // 2: alpaca.broker.v1.CreateTradingOrderRequest
-	(BrokerOrderSide)(0),              // 3: alpaca.broker.v1.BrokerOrderSide
-	(BrokerOrderType)(0),              // 4: alpaca.broker.v1.BrokerOrderType
-	(BrokerTimeInForce)(0),            // 5: alpaca.broker.v1.BrokerTimeInForce
-	(BrokerOrderClass)(0),             // 6: alpaca.broker.v1.BrokerOrderClass
 }
 var file_alpaca_broker_v1_create_trading_order_proto_depIdxs = []int32{
-	3, // 0: alpaca.broker.v1.CreateTradingOrderRequest.side:type_name -> alpaca.broker.v1.BrokerOrderSide
-	4, // 1: alpaca.broker.v1.CreateTradingOrderRequest.type:type_name -> alpaca.broker.v1.BrokerOrderType
-	5, // 2: alpaca.broker.v1.CreateTradingOrderRequest.time_in_force:type_name -> alpaca.broker.v1.BrokerTimeInForce
-	6, // 3: alpaca.broker.v1.CreateTradingOrderRequest.order_class:type_name -> alpaca.broker.v1.BrokerOrderClass
-	0, // 4: alpaca.broker.v1.CreateTradingOrderRequest.take_profit:type_name -> alpaca.broker.v1.BrokerTakeProfitSpec
-	1, // 5: alpaca.broker.v1.CreateTradingOrderRequest.stop_loss:type_name -> alpaca.broker.v1.BrokerStopLossSpec
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	0, // 0: alpaca.broker.v1.CreateTradingOrderRequest.take_profit:type_name -> alpaca.broker.v1.BrokerTakeProfitSpec
+	1, // 1: alpaca.broker.v1.CreateTradingOrderRequest.stop_loss:type_name -> alpaca.broker.v1.BrokerStopLossSpec
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_broker_v1_create_trading_order_proto_init() }
@@ -417,7 +411,6 @@ func file_alpaca_broker_v1_create_trading_order_proto_init() {
 	if File_alpaca_broker_v1_create_trading_order_proto != nil {
 		return
 	}
-	file_alpaca_broker_v1_trading_order_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

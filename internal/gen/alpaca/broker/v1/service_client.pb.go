@@ -6,6 +6,7 @@ package brokerv1
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -47,6 +48,89 @@ type BrokerServiceClient interface {
 	GetTradingPosition(ctx context.Context, req *GetTradingPositionRequest, opts ...BrokerServiceCallOption) (*BrokerPosition, error)
 	CloseTradingPosition(ctx context.Context, req *CloseTradingPositionRequest, opts ...BrokerServiceCallOption) (*BrokerOrder, error)
 	CloseAllTradingPositions(ctx context.Context, req *CloseAllTradingPositionsRequest, opts ...BrokerServiceCallOption) (*CloseAllTradingPositionsResponse, error)
+	ListAccountDocuments(ctx context.Context, req *ListAccountDocumentsRequest, opts ...BrokerServiceCallOption) (*ListAccountDocumentsResponse, error)
+	DownloadAccountDocument(ctx context.Context, req *DownloadAccountDocumentRequest, opts ...BrokerServiceCallOption) (*DownloadAccountDocumentResponse, error)
+	DownloadW8BenDocument(ctx context.Context, req *DownloadW8BenDocumentRequest, opts ...BrokerServiceCallOption) (*DownloadAccountDocumentResponse, error)
+	ListBrokerWatchlists(ctx context.Context, req *ListBrokerWatchlistsRequest, opts ...BrokerServiceCallOption) (*ListBrokerWatchlistsResponse, error)
+	CreateBrokerWatchlist(ctx context.Context, req *CreateBrokerWatchlistRequest, opts ...BrokerServiceCallOption) (*BrokerWatchlist, error)
+	GetBrokerWatchlist(ctx context.Context, req *GetBrokerWatchlistRequest, opts ...BrokerServiceCallOption) (*BrokerWatchlist, error)
+	UpdateBrokerWatchlist(ctx context.Context, req *UpdateBrokerWatchlistRequest, opts ...BrokerServiceCallOption) (*BrokerWatchlist, error)
+	DeleteBrokerWatchlist(ctx context.Context, req *DeleteBrokerWatchlistRequest, opts ...BrokerServiceCallOption) (*DeleteBrokerWatchlistResponse, error)
+	AddBrokerWatchlistAsset(ctx context.Context, req *AddBrokerWatchlistAssetRequest, opts ...BrokerServiceCallOption) (*BrokerWatchlist, error)
+	RemoveBrokerWatchlistAsset(ctx context.Context, req *RemoveBrokerWatchlistAssetRequest, opts ...BrokerServiceCallOption) (*RemoveBrokerWatchlistAssetResponse, error)
+	ListBrokerCryptoWallets(ctx context.Context, req *ListBrokerCryptoWalletsRequest, opts ...BrokerServiceCallOption) (*ListBrokerCryptoWalletsResponse, error)
+	ListBrokerCryptoTransfers(ctx context.Context, req *ListBrokerCryptoTransfersRequest, opts ...BrokerServiceCallOption) (*ListBrokerCryptoTransfersResponse, error)
+	GetBrokerCryptoTransfer(ctx context.Context, req *GetBrokerCryptoTransferRequest, opts ...BrokerServiceCallOption) (*BrokerCryptoTransfer, error)
+	CreateBrokerCryptoTransfer(ctx context.Context, req *CreateBrokerCryptoTransferRequest, opts ...BrokerServiceCallOption) (*BrokerCryptoTransfer, error)
+	ListBrokerWhitelistedAddresses(ctx context.Context, req *ListBrokerWhitelistedAddressesRequest, opts ...BrokerServiceCallOption) (*ListBrokerWhitelistedAddressesResponse, error)
+	CreateBrokerWhitelistedAddress(ctx context.Context, req *CreateBrokerWhitelistedAddressRequest, opts ...BrokerServiceCallOption) (*BrokerWhitelistedAddress, error)
+	DeleteBrokerWhitelistedAddress(ctx context.Context, req *DeleteBrokerWhitelistedAddressRequest, opts ...BrokerServiceCallOption) (*DeleteBrokerWhitelistedAddressResponse, error)
+	CreateJournal(ctx context.Context, req *CreateJournalRequest, opts ...BrokerServiceCallOption) (*Journal, error)
+	ListJournals(ctx context.Context, req *ListJournalsRequest, opts ...BrokerServiceCallOption) (*ListJournalsResponse, error)
+	GetJournal(ctx context.Context, req *GetJournalRequest, opts ...BrokerServiceCallOption) (*Journal, error)
+	DeleteJournal(ctx context.Context, req *DeleteJournalRequest, opts ...BrokerServiceCallOption) (*DeleteJournalResponse, error)
+	CreateBatchJournal(ctx context.Context, req *CreateBatchJournalRequest, opts ...BrokerServiceCallOption) (*CreateBatchJournalResponse, error)
+	ReverseBatchJournal(ctx context.Context, req *ReverseBatchJournalRequest, opts ...BrokerServiceCallOption) (*ReverseBatchJournalResponse, error)
+	ListPortfolios(ctx context.Context, req *ListPortfoliosRequest, opts ...BrokerServiceCallOption) (*ListPortfoliosResponse, error)
+	CreatePortfolio(ctx context.Context, req *CreatePortfolioRequest, opts ...BrokerServiceCallOption) (*RebalancingPortfolio, error)
+	GetPortfolio(ctx context.Context, req *GetPortfolioRequest, opts ...BrokerServiceCallOption) (*RebalancingPortfolio, error)
+	UpdatePortfolio(ctx context.Context, req *UpdatePortfolioRequest, opts ...BrokerServiceCallOption) (*RebalancingPortfolio, error)
+	DeletePortfolio(ctx context.Context, req *DeletePortfolioRequest, opts ...BrokerServiceCallOption) (*DeletePortfolioResponse, error)
+	ListSubscriptions(ctx context.Context, req *ListSubscriptionsRequest, opts ...BrokerServiceCallOption) (*ListSubscriptionsResponse, error)
+	CreateSubscription(ctx context.Context, req *CreateSubscriptionRequest, opts ...BrokerServiceCallOption) (*RebalancingSubscription, error)
+	GetSubscription(ctx context.Context, req *GetSubscriptionRequest, opts ...BrokerServiceCallOption) (*RebalancingSubscription, error)
+	DeleteSubscription(ctx context.Context, req *DeleteSubscriptionRequest, opts ...BrokerServiceCallOption) (*DeleteSubscriptionResponse, error)
+	ListRuns(ctx context.Context, req *ListRunsRequest, opts ...BrokerServiceCallOption) (*ListRunsResponse, error)
+	CreateRun(ctx context.Context, req *CreateRunRequest, opts ...BrokerServiceCallOption) (*RebalancingRun, error)
+	GetRun(ctx context.Context, req *GetRunRequest, opts ...BrokerServiceCallOption) (*RebalancingRun, error)
+	CancelRun(ctx context.Context, req *CancelRunRequest, opts ...BrokerServiceCallOption) (*CancelRunResponse, error)
+	ListJITSettlements(ctx context.Context, req *ListJITSettlementsRequest, opts ...BrokerServiceCallOption) (*ListJITSettlementsResponse, error)
+	GetJITSettlement(ctx context.Context, req *GetJITSettlementRequest, opts ...BrokerServiceCallOption) (*JITSettlement, error)
+	CreateJITSettlement(ctx context.Context, req *CreateJITSettlementRequest, opts ...BrokerServiceCallOption) (*JITSettlement, error)
+	ListJITLedgers(ctx context.Context, req *ListJITLedgersRequest, opts ...BrokerServiceCallOption) (*ListJITLedgersResponse, error)
+	GetJITLedgerBalances(ctx context.Context, req *GetJITLedgerBalancesRequest, opts ...BrokerServiceCallOption) (*GetJITLedgerBalancesResponse, error)
+	GetJITLimits(ctx context.Context, req *GetJITLimitsRequest, opts ...BrokerServiceCallOption) (*JITLimits, error)
+	ListInstantFunding(ctx context.Context, req *ListInstantFundingRequest, opts ...BrokerServiceCallOption) (*ListInstantFundingResponse, error)
+	DeleteInstantFunding(ctx context.Context, req *DeleteInstantFundingRequest, opts ...BrokerServiceCallOption) (*DeleteInstantFundingResponse, error)
+	ListInstantFundingSettlements(ctx context.Context, req *ListInstantFundingSettlementsRequest, opts ...BrokerServiceCallOption) (*ListInstantFundingSettlementsResponse, error)
+	CreateInstantFundingSettlement(ctx context.Context, req *CreateInstantFundingSettlementRequest, opts ...BrokerServiceCallOption) (*InstantFundingSettlement, error)
+	ListFPSLTiers(ctx context.Context, req *ListFPSLTiersRequest, opts ...BrokerServiceCallOption) (*ListFPSLTiersResponse, error)
+	ListFPSLLoans(ctx context.Context, req *ListFPSLLoansRequest, opts ...BrokerServiceCallOption) (*ListFPSLLoansResponse, error)
+	ListAPRTiers(ctx context.Context, req *ListAPRTiersRequest, opts ...BrokerServiceCallOption) (*ListAPRTiersResponse, error)
+	CreateOAuthToken(ctx context.Context, req *CreateOAuthTokenRequest, opts ...BrokerServiceCallOption) (*OAuthToken, error)
+	AuthorizeOAuth(ctx context.Context, req *AuthorizeOAuthRequest, opts ...BrokerServiceCallOption) (*AuthorizeOAuthResponse, error)
+	GetOAuthClient(ctx context.Context, req *GetOAuthClientRequest, opts ...BrokerServiceCallOption) (*OAuthClient, error)
+	CreateOAuthClient(ctx context.Context, req *CreateOAuthClientRequest, opts ...BrokerServiceCallOption) (*OAuthClient, error)
+	UpdateOAuthClient(ctx context.Context, req *UpdateOAuthClientRequest, opts ...BrokerServiceCallOption) (*OAuthClient, error)
+	DeleteOAuthClient(ctx context.Context, req *DeleteOAuthClientRequest, opts ...BrokerServiceCallOption) (*DeleteOAuthClientResponse, error)
+	RevokeOAuthAuthorization(ctx context.Context, req *RevokeOAuthAuthorizationRequest, opts ...BrokerServiceCallOption) (*RevokeOAuthAuthorizationResponse, error)
+	SubscribeAccountEvents(ctx context.Context, req *SubscribeAccountEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error)
+	SubscribeTradeEvents(ctx context.Context, req *SubscribeTradeEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error)
+	SubscribeTransferEvents(ctx context.Context, req *SubscribeTransferEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error)
+	SubscribeJournalEvents(ctx context.Context, req *SubscribeJournalEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error)
+	SubscribeNTAEvents(ctx context.Context, req *SubscribeNTAEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error)
+	GetCIPInfo(ctx context.Context, req *GetCIPInfoRequest, opts ...BrokerServiceCallOption) (*CIPInfo, error)
+	UpdateCIPInfo(ctx context.Context, req *UpdateCIPInfoRequest, opts ...BrokerServiceCallOption) (*CIPInfo, error)
+	CreateOnfidoApplicant(ctx context.Context, req *CreateOnfidoApplicantRequest, opts ...BrokerServiceCallOption) (*OnfidoApplicant, error)
+	GetOnfidoApplicant(ctx context.Context, req *GetOnfidoApplicantRequest, opts ...BrokerServiceCallOption) (*OnfidoApplicant, error)
+	GenerateOnfidoSDKToken(ctx context.Context, req *GenerateOnfidoSDKTokenRequest, opts ...BrokerServiceCallOption) (*OnfidoSDKToken, error)
+	CreateOnfidoCheck(ctx context.Context, req *CreateOnfidoCheckRequest, opts ...BrokerServiceCallOption) (*OnfidoCheck, error)
+	GetOnfidoCheck(ctx context.Context, req *GetOnfidoCheckRequest, opts ...BrokerServiceCallOption) (*OnfidoCheck, error)
+	ListOnfidoChecks(ctx context.Context, req *ListOnfidoChecksRequest, opts ...BrokerServiceCallOption) (*ListOnfidoChecksResponse, error)
+	UploadOnfidoDocument(ctx context.Context, req *UploadOnfidoDocumentRequest, opts ...BrokerServiceCallOption) (*OnfidoDocument, error)
+	UploadOnfidoPhoto(ctx context.Context, req *UploadOnfidoPhotoRequest, opts ...BrokerServiceCallOption) (*OnfidoPhoto, error)
+	GetMarketCalendar(ctx context.Context, req *GetMarketCalendarRequest, opts ...BrokerServiceCallOption) (*GetMarketCalendarResponse, error)
+	GetMarketClock(ctx context.Context, req *GetMarketClockRequest, opts ...BrokerServiceCallOption) (*MarketClock, error)
+	GetOptionsApproval(ctx context.Context, req *GetOptionsApprovalRequest, opts ...BrokerServiceCallOption) (*OptionsApproval, error)
+	RequestOptionsApproval(ctx context.Context, req *RequestOptionsApprovalRequest, opts ...BrokerServiceCallOption) (*OptionsApproval, error)
+	UpdateOptionsApproval(ctx context.Context, req *UpdateOptionsApprovalRequest, opts ...BrokerServiceCallOption) (*OptionsApproval, error)
+	ListBrokerOptionContracts(ctx context.Context, req *ListBrokerOptionContractsRequest, opts ...BrokerServiceCallOption) (*ListBrokerOptionContractsResponse, error)
+	GetBrokerOptionContract(ctx context.Context, req *GetBrokerOptionContractRequest, opts ...BrokerServiceCallOption) (*BrokerOptionContract, error)
+	ListIRAExcessContributions(ctx context.Context, req *ListIRAExcessContributionsRequest, opts ...BrokerServiceCallOption) (*ListIRAExcessContributionsResponse, error)
+	GetIRAExcessContribution(ctx context.Context, req *GetIRAExcessContributionRequest, opts ...BrokerServiceCallOption) (*IRAExcessContribution, error)
+	CreateIRAExcessContribution(ctx context.Context, req *CreateIRAExcessContributionRequest, opts ...BrokerServiceCallOption) (*IRAExcessContribution, error)
+	GetIRAContributionLimits(ctx context.Context, req *GetIRAContributionLimitsRequest, opts ...BrokerServiceCallOption) (*IRAContributionLimits, error)
+	ListCountries(ctx context.Context, req *ListCountriesRequest, opts ...BrokerServiceCallOption) (*ListCountriesResponse, error)
 }
 
 // brokerServiceClient is the implementation of BrokerServiceClient.
@@ -1459,9 +1543,5417 @@ func (c *brokerServiceClient) CloseAllTradingPositions(ctx context.Context, req 
 	return result, nil
 }
 
+// ListAccountDocuments calls the ListAccountDocuments RPC.
+func (c *brokerServiceClient) ListAccountDocuments(ctx context.Context, req *ListAccountDocumentsRequest, opts ...BrokerServiceCallOption) (*ListAccountDocumentsResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/documents"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Type != "" {
+		queryParams.Set("type", fmt.Sprint(req.Type))
+	}
+	if req.Start != "" {
+		queryParams.Set("start", fmt.Sprint(req.Start))
+	}
+	if req.End != "" {
+		queryParams.Set("end", fmt.Sprint(req.End))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListAccountDocumentsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// DownloadAccountDocument calls the DownloadAccountDocument RPC.
+func (c *brokerServiceClient) DownloadAccountDocument(ctx context.Context, req *DownloadAccountDocumentRequest, opts ...BrokerServiceCallOption) (*DownloadAccountDocumentResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/documents/{document_id}/download"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	path = strings.Replace(path, "{document_id}", url.PathEscape(fmt.Sprint(req.DocumentId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &DownloadAccountDocumentResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// DownloadW8BenDocument calls the DownloadW8BenDocument RPC.
+func (c *brokerServiceClient) DownloadW8BenDocument(ctx context.Context, req *DownloadW8BenDocumentRequest, opts ...BrokerServiceCallOption) (*DownloadAccountDocumentResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/documents/w8ben/{document_id}/download"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	path = strings.Replace(path, "{document_id}", url.PathEscape(fmt.Sprint(req.DocumentId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &DownloadAccountDocumentResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListBrokerWatchlists calls the ListBrokerWatchlists RPC.
+func (c *brokerServiceClient) ListBrokerWatchlists(ctx context.Context, req *ListBrokerWatchlistsRequest, opts ...BrokerServiceCallOption) (*ListBrokerWatchlistsResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/trading/accounts/{account_id}/watchlists"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListBrokerWatchlistsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateBrokerWatchlist calls the CreateBrokerWatchlist RPC.
+func (c *brokerServiceClient) CreateBrokerWatchlist(ctx context.Context, req *CreateBrokerWatchlistRequest, opts ...BrokerServiceCallOption) (*BrokerWatchlist, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/trading/accounts/{account_id}/watchlists"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &BrokerWatchlist{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetBrokerWatchlist calls the GetBrokerWatchlist RPC.
+func (c *brokerServiceClient) GetBrokerWatchlist(ctx context.Context, req *GetBrokerWatchlistRequest, opts ...BrokerServiceCallOption) (*BrokerWatchlist, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/trading/accounts/{account_id}/watchlists/{watchlist_id}"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	path = strings.Replace(path, "{watchlist_id}", url.PathEscape(fmt.Sprint(req.WatchlistId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &BrokerWatchlist{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// UpdateBrokerWatchlist calls the UpdateBrokerWatchlist RPC.
+func (c *brokerServiceClient) UpdateBrokerWatchlist(ctx context.Context, req *UpdateBrokerWatchlistRequest, opts ...BrokerServiceCallOption) (*BrokerWatchlist, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/trading/accounts/{account_id}/watchlists/{watchlist_id}"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	path = strings.Replace(path, "{watchlist_id}", url.PathEscape(fmt.Sprint(req.WatchlistId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "PUT", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &BrokerWatchlist{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// DeleteBrokerWatchlist calls the DeleteBrokerWatchlist RPC.
+func (c *brokerServiceClient) DeleteBrokerWatchlist(ctx context.Context, req *DeleteBrokerWatchlistRequest, opts ...BrokerServiceCallOption) (*DeleteBrokerWatchlistResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/trading/accounts/{account_id}/watchlists/{watchlist_id}"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	path = strings.Replace(path, "{watchlist_id}", url.PathEscape(fmt.Sprint(req.WatchlistId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "DELETE", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &DeleteBrokerWatchlistResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// AddBrokerWatchlistAsset calls the AddBrokerWatchlistAsset RPC.
+func (c *brokerServiceClient) AddBrokerWatchlistAsset(ctx context.Context, req *AddBrokerWatchlistAssetRequest, opts ...BrokerServiceCallOption) (*BrokerWatchlist, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/trading/accounts/{account_id}/watchlists/{watchlist_id}"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	path = strings.Replace(path, "{watchlist_id}", url.PathEscape(fmt.Sprint(req.WatchlistId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &BrokerWatchlist{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// RemoveBrokerWatchlistAsset calls the RemoveBrokerWatchlistAsset RPC.
+func (c *brokerServiceClient) RemoveBrokerWatchlistAsset(ctx context.Context, req *RemoveBrokerWatchlistAssetRequest, opts ...BrokerServiceCallOption) (*RemoveBrokerWatchlistAssetResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/trading/accounts/{account_id}/watchlists/{watchlist_id}/{symbol}"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	path = strings.Replace(path, "{watchlist_id}", url.PathEscape(fmt.Sprint(req.WatchlistId)), 1)
+	path = strings.Replace(path, "{symbol}", url.PathEscape(fmt.Sprint(req.Symbol)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "DELETE", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &RemoveBrokerWatchlistAssetResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListBrokerCryptoWallets calls the ListBrokerCryptoWallets RPC.
+func (c *brokerServiceClient) ListBrokerCryptoWallets(ctx context.Context, req *ListBrokerCryptoWalletsRequest, opts ...BrokerServiceCallOption) (*ListBrokerCryptoWalletsResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/wallets"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Asset != "" {
+		queryParams.Set("asset", fmt.Sprint(req.Asset))
+	}
+	if req.Network != "" {
+		queryParams.Set("network", fmt.Sprint(req.Network))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListBrokerCryptoWalletsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListBrokerCryptoTransfers calls the ListBrokerCryptoTransfers RPC.
+func (c *brokerServiceClient) ListBrokerCryptoTransfers(ctx context.Context, req *ListBrokerCryptoTransfersRequest, opts ...BrokerServiceCallOption) (*ListBrokerCryptoTransfersResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/wallets/transfers"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListBrokerCryptoTransfersResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetBrokerCryptoTransfer calls the GetBrokerCryptoTransfer RPC.
+func (c *brokerServiceClient) GetBrokerCryptoTransfer(ctx context.Context, req *GetBrokerCryptoTransferRequest, opts ...BrokerServiceCallOption) (*BrokerCryptoTransfer, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/wallets/transfers/{transfer_id}"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	path = strings.Replace(path, "{transfer_id}", url.PathEscape(fmt.Sprint(req.TransferId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &BrokerCryptoTransfer{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateBrokerCryptoTransfer calls the CreateBrokerCryptoTransfer RPC.
+func (c *brokerServiceClient) CreateBrokerCryptoTransfer(ctx context.Context, req *CreateBrokerCryptoTransferRequest, opts ...BrokerServiceCallOption) (*BrokerCryptoTransfer, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/wallets/transfers"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &BrokerCryptoTransfer{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListBrokerWhitelistedAddresses calls the ListBrokerWhitelistedAddresses RPC.
+func (c *brokerServiceClient) ListBrokerWhitelistedAddresses(ctx context.Context, req *ListBrokerWhitelistedAddressesRequest, opts ...BrokerServiceCallOption) (*ListBrokerWhitelistedAddressesResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/wallets/whitelisted_addresses"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListBrokerWhitelistedAddressesResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateBrokerWhitelistedAddress calls the CreateBrokerWhitelistedAddress RPC.
+func (c *brokerServiceClient) CreateBrokerWhitelistedAddress(ctx context.Context, req *CreateBrokerWhitelistedAddressRequest, opts ...BrokerServiceCallOption) (*BrokerWhitelistedAddress, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/wallets/whitelisted_addresses"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &BrokerWhitelistedAddress{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// DeleteBrokerWhitelistedAddress calls the DeleteBrokerWhitelistedAddress RPC.
+func (c *brokerServiceClient) DeleteBrokerWhitelistedAddress(ctx context.Context, req *DeleteBrokerWhitelistedAddressRequest, opts ...BrokerServiceCallOption) (*DeleteBrokerWhitelistedAddressResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/wallets/whitelisted_addresses/{whitelisted_address_id}"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	path = strings.Replace(path, "{whitelisted_address_id}", url.PathEscape(fmt.Sprint(req.WhitelistedAddressId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "DELETE", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &DeleteBrokerWhitelistedAddressResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateJournal calls the CreateJournal RPC.
+func (c *brokerServiceClient) CreateJournal(ctx context.Context, req *CreateJournalRequest, opts ...BrokerServiceCallOption) (*Journal, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/journals"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &Journal{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListJournals calls the ListJournals RPC.
+func (c *brokerServiceClient) ListJournals(ctx context.Context, req *ListJournalsRequest, opts ...BrokerServiceCallOption) (*ListJournalsResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/journals"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.After != "" {
+		queryParams.Set("after", fmt.Sprint(req.After))
+	}
+	if req.Before != "" {
+		queryParams.Set("before", fmt.Sprint(req.Before))
+	}
+	if req.Status != "" {
+		queryParams.Set("status", fmt.Sprint(req.Status))
+	}
+	if req.EntryType != "" {
+		queryParams.Set("entry_type", fmt.Sprint(req.EntryType))
+	}
+	if req.ToAccount != "" {
+		queryParams.Set("to_account", fmt.Sprint(req.ToAccount))
+	}
+	if req.FromAccount != "" {
+		queryParams.Set("from_account", fmt.Sprint(req.FromAccount))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListJournalsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetJournal calls the GetJournal RPC.
+func (c *brokerServiceClient) GetJournal(ctx context.Context, req *GetJournalRequest, opts ...BrokerServiceCallOption) (*Journal, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/journals/{journal_id}"
+	path = strings.Replace(path, "{journal_id}", url.PathEscape(fmt.Sprint(req.JournalId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &Journal{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// DeleteJournal calls the DeleteJournal RPC.
+func (c *brokerServiceClient) DeleteJournal(ctx context.Context, req *DeleteJournalRequest, opts ...BrokerServiceCallOption) (*DeleteJournalResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/journals/{journal_id}"
+	path = strings.Replace(path, "{journal_id}", url.PathEscape(fmt.Sprint(req.JournalId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "DELETE", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &DeleteJournalResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateBatchJournal calls the CreateBatchJournal RPC.
+func (c *brokerServiceClient) CreateBatchJournal(ctx context.Context, req *CreateBatchJournalRequest, opts ...BrokerServiceCallOption) (*CreateBatchJournalResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/journals/batch"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &CreateBatchJournalResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ReverseBatchJournal calls the ReverseBatchJournal RPC.
+func (c *brokerServiceClient) ReverseBatchJournal(ctx context.Context, req *ReverseBatchJournalRequest, opts ...BrokerServiceCallOption) (*ReverseBatchJournalResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/journals/reverse_batch"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ReverseBatchJournalResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListPortfolios calls the ListPortfolios RPC.
+func (c *brokerServiceClient) ListPortfolios(ctx context.Context, req *ListPortfoliosRequest, opts ...BrokerServiceCallOption) (*ListPortfoliosResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/portfolios"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Name != "" {
+		queryParams.Set("name", fmt.Sprint(req.Name))
+	}
+	if req.Description != "" {
+		queryParams.Set("description", fmt.Sprint(req.Description))
+	}
+	if req.Symbol != "" {
+		queryParams.Set("symbol", fmt.Sprint(req.Symbol))
+	}
+	if req.PortfolioId != "" {
+		queryParams.Set("portfolio_id", fmt.Sprint(req.PortfolioId))
+	}
+	if req.Status != "" {
+		queryParams.Set("status", fmt.Sprint(req.Status))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListPortfoliosResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreatePortfolio calls the CreatePortfolio RPC.
+func (c *brokerServiceClient) CreatePortfolio(ctx context.Context, req *CreatePortfolioRequest, opts ...BrokerServiceCallOption) (*RebalancingPortfolio, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/portfolios"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &RebalancingPortfolio{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetPortfolio calls the GetPortfolio RPC.
+func (c *brokerServiceClient) GetPortfolio(ctx context.Context, req *GetPortfolioRequest, opts ...BrokerServiceCallOption) (*RebalancingPortfolio, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/portfolios/{portfolio_id}"
+	path = strings.Replace(path, "{portfolio_id}", url.PathEscape(fmt.Sprint(req.PortfolioId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &RebalancingPortfolio{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// UpdatePortfolio calls the UpdatePortfolio RPC.
+func (c *brokerServiceClient) UpdatePortfolio(ctx context.Context, req *UpdatePortfolioRequest, opts ...BrokerServiceCallOption) (*RebalancingPortfolio, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/portfolios/{portfolio_id}"
+	path = strings.Replace(path, "{portfolio_id}", url.PathEscape(fmt.Sprint(req.PortfolioId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "PATCH", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &RebalancingPortfolio{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// DeletePortfolio calls the DeletePortfolio RPC.
+func (c *brokerServiceClient) DeletePortfolio(ctx context.Context, req *DeletePortfolioRequest, opts ...BrokerServiceCallOption) (*DeletePortfolioResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/portfolios/{portfolio_id}"
+	path = strings.Replace(path, "{portfolio_id}", url.PathEscape(fmt.Sprint(req.PortfolioId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "DELETE", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &DeletePortfolioResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListSubscriptions calls the ListSubscriptions RPC.
+func (c *brokerServiceClient) ListSubscriptions(ctx context.Context, req *ListSubscriptionsRequest, opts ...BrokerServiceCallOption) (*ListSubscriptionsResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/subscriptions"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.AccountId != "" {
+		queryParams.Set("account_id", fmt.Sprint(req.AccountId))
+	}
+	if req.PortfolioId != "" {
+		queryParams.Set("portfolio_id", fmt.Sprint(req.PortfolioId))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListSubscriptionsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateSubscription calls the CreateSubscription RPC.
+func (c *brokerServiceClient) CreateSubscription(ctx context.Context, req *CreateSubscriptionRequest, opts ...BrokerServiceCallOption) (*RebalancingSubscription, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/subscriptions"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &RebalancingSubscription{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetSubscription calls the GetSubscription RPC.
+func (c *brokerServiceClient) GetSubscription(ctx context.Context, req *GetSubscriptionRequest, opts ...BrokerServiceCallOption) (*RebalancingSubscription, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/subscriptions/{subscription_id}"
+	path = strings.Replace(path, "{subscription_id}", url.PathEscape(fmt.Sprint(req.SubscriptionId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &RebalancingSubscription{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// DeleteSubscription calls the DeleteSubscription RPC.
+func (c *brokerServiceClient) DeleteSubscription(ctx context.Context, req *DeleteSubscriptionRequest, opts ...BrokerServiceCallOption) (*DeleteSubscriptionResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/subscriptions/{subscription_id}"
+	path = strings.Replace(path, "{subscription_id}", url.PathEscape(fmt.Sprint(req.SubscriptionId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "DELETE", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &DeleteSubscriptionResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListRuns calls the ListRuns RPC.
+func (c *brokerServiceClient) ListRuns(ctx context.Context, req *ListRunsRequest, opts ...BrokerServiceCallOption) (*ListRunsResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/runs"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.PortfolioId != "" {
+		queryParams.Set("portfolio_id", fmt.Sprint(req.PortfolioId))
+	}
+	if req.Status != "" {
+		queryParams.Set("status", fmt.Sprint(req.Status))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListRunsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateRun calls the CreateRun RPC.
+func (c *brokerServiceClient) CreateRun(ctx context.Context, req *CreateRunRequest, opts ...BrokerServiceCallOption) (*RebalancingRun, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/runs"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &RebalancingRun{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetRun calls the GetRun RPC.
+func (c *brokerServiceClient) GetRun(ctx context.Context, req *GetRunRequest, opts ...BrokerServiceCallOption) (*RebalancingRun, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/runs/{run_id}"
+	path = strings.Replace(path, "{run_id}", url.PathEscape(fmt.Sprint(req.RunId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &RebalancingRun{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CancelRun calls the CancelRun RPC.
+func (c *brokerServiceClient) CancelRun(ctx context.Context, req *CancelRunRequest, opts ...BrokerServiceCallOption) (*CancelRunResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/rebalancing/runs/{run_id}"
+	path = strings.Replace(path, "{run_id}", url.PathEscape(fmt.Sprint(req.RunId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "DELETE", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &CancelRunResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListJITSettlements calls the ListJITSettlements RPC.
+func (c *brokerServiceClient) ListJITSettlements(ctx context.Context, req *ListJITSettlementsRequest, opts ...BrokerServiceCallOption) (*ListJITSettlementsResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/jit/settlements"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Statuses != "" {
+		queryParams.Set("statuses", fmt.Sprint(req.Statuses))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListJITSettlementsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetJITSettlement calls the GetJITSettlement RPC.
+func (c *brokerServiceClient) GetJITSettlement(ctx context.Context, req *GetJITSettlementRequest, opts ...BrokerServiceCallOption) (*JITSettlement, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/jit/settlements/{settlement_id}"
+	path = strings.Replace(path, "{settlement_id}", url.PathEscape(fmt.Sprint(req.SettlementId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &JITSettlement{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateJITSettlement calls the CreateJITSettlement RPC.
+func (c *brokerServiceClient) CreateJITSettlement(ctx context.Context, req *CreateJITSettlementRequest, opts ...BrokerServiceCallOption) (*JITSettlement, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/jit/settlements"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &JITSettlement{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListJITLedgers calls the ListJITLedgers RPC.
+func (c *brokerServiceClient) ListJITLedgers(ctx context.Context, req *ListJITLedgersRequest, opts ...BrokerServiceCallOption) (*ListJITLedgersResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/transfers/jit/ledgers"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListJITLedgersResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetJITLedgerBalances calls the GetJITLedgerBalances RPC.
+func (c *brokerServiceClient) GetJITLedgerBalances(ctx context.Context, req *GetJITLedgerBalancesRequest, opts ...BrokerServiceCallOption) (*GetJITLedgerBalancesResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/transfers/jit/ledgers/{ledger_id}/balances"
+	path = strings.Replace(path, "{ledger_id}", url.PathEscape(fmt.Sprint(req.LedgerId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &GetJITLedgerBalancesResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetJITLimits calls the GetJITLimits RPC.
+func (c *brokerServiceClient) GetJITLimits(ctx context.Context, req *GetJITLimitsRequest, opts ...BrokerServiceCallOption) (*JITLimits, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/transfers/jit/limits"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &JITLimits{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListInstantFunding calls the ListInstantFunding RPC.
+func (c *brokerServiceClient) ListInstantFunding(ctx context.Context, req *ListInstantFundingRequest, opts ...BrokerServiceCallOption) (*ListInstantFundingResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/instant_funding"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.SortBy != "" {
+		queryParams.Set("sort_by", fmt.Sprint(req.SortBy))
+	}
+	if req.SortOrder != "" {
+		queryParams.Set("sort_order", fmt.Sprint(req.SortOrder))
+	}
+	if req.Limit != 0 {
+		queryParams.Set("limit", fmt.Sprint(req.Limit))
+	}
+	if req.Offset != 0 {
+		queryParams.Set("offset", fmt.Sprint(req.Offset))
+	}
+	if req.SystemDate != "" {
+		queryParams.Set("system_date", fmt.Sprint(req.SystemDate))
+	}
+	if req.Deadline != "" {
+		queryParams.Set("deadline", fmt.Sprint(req.Deadline))
+	}
+	if req.Status != "" {
+		queryParams.Set("status", fmt.Sprint(req.Status))
+	}
+	if req.Before != "" {
+		queryParams.Set("before", fmt.Sprint(req.Before))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListInstantFundingResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// DeleteInstantFunding calls the DeleteInstantFunding RPC.
+func (c *brokerServiceClient) DeleteInstantFunding(ctx context.Context, req *DeleteInstantFundingRequest, opts ...BrokerServiceCallOption) (*DeleteInstantFundingResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/instant_funding/{instant_funding_id}"
+	path = strings.Replace(path, "{instant_funding_id}", url.PathEscape(fmt.Sprint(req.InstantFundingId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "DELETE", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &DeleteInstantFundingResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListInstantFundingSettlements calls the ListInstantFundingSettlements RPC.
+func (c *brokerServiceClient) ListInstantFundingSettlements(ctx context.Context, req *ListInstantFundingSettlementsRequest, opts ...BrokerServiceCallOption) (*ListInstantFundingSettlementsResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/instant_funding/settlements"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListInstantFundingSettlementsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateInstantFundingSettlement calls the CreateInstantFundingSettlement RPC.
+func (c *brokerServiceClient) CreateInstantFundingSettlement(ctx context.Context, req *CreateInstantFundingSettlementRequest, opts ...BrokerServiceCallOption) (*InstantFundingSettlement, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/instant_funding/settlements"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &InstantFundingSettlement{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListFPSLTiers calls the ListFPSLTiers RPC.
+func (c *brokerServiceClient) ListFPSLTiers(ctx context.Context, req *ListFPSLTiersRequest, opts ...BrokerServiceCallOption) (*ListFPSLTiersResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/fpsl/tiers"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListFPSLTiersResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListFPSLLoans calls the ListFPSLLoans RPC.
+func (c *brokerServiceClient) ListFPSLLoans(ctx context.Context, req *ListFPSLLoansRequest, opts ...BrokerServiceCallOption) (*ListFPSLLoansResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/fpsl/loans"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.AccountId != "" {
+		queryParams.Set("account_id", fmt.Sprint(req.AccountId))
+	}
+	if req.Symbol != "" {
+		queryParams.Set("symbol", fmt.Sprint(req.Symbol))
+	}
+	if req.Status != "" {
+		queryParams.Set("status", fmt.Sprint(req.Status))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListFPSLLoansResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListAPRTiers calls the ListAPRTiers RPC.
+func (c *brokerServiceClient) ListAPRTiers(ctx context.Context, req *ListAPRTiersRequest, opts ...BrokerServiceCallOption) (*ListAPRTiersResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/apr/tiers"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListAPRTiersResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateOAuthToken calls the CreateOAuthToken RPC.
+func (c *brokerServiceClient) CreateOAuthToken(ctx context.Context, req *CreateOAuthTokenRequest, opts ...BrokerServiceCallOption) (*OAuthToken, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/oauth/token"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OAuthToken{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// AuthorizeOAuth calls the AuthorizeOAuth RPC.
+func (c *brokerServiceClient) AuthorizeOAuth(ctx context.Context, req *AuthorizeOAuthRequest, opts ...BrokerServiceCallOption) (*AuthorizeOAuthResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/oauth/authorize"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.ResponseType != "" {
+		queryParams.Set("response_type", fmt.Sprint(req.ResponseType))
+	}
+	if req.ClientId != "" {
+		queryParams.Set("client_id", fmt.Sprint(req.ClientId))
+	}
+	if req.RedirectUri != "" {
+		queryParams.Set("redirect_uri", fmt.Sprint(req.RedirectUri))
+	}
+	if req.Scope != "" {
+		queryParams.Set("scope", fmt.Sprint(req.Scope))
+	}
+	if req.State != "" {
+		queryParams.Set("state", fmt.Sprint(req.State))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &AuthorizeOAuthResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetOAuthClient calls the GetOAuthClient RPC.
+func (c *brokerServiceClient) GetOAuthClient(ctx context.Context, req *GetOAuthClientRequest, opts ...BrokerServiceCallOption) (*OAuthClient, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/oauth/clients/{client_id}"
+	path = strings.Replace(path, "{client_id}", url.PathEscape(fmt.Sprint(req.ClientId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OAuthClient{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateOAuthClient calls the CreateOAuthClient RPC.
+func (c *brokerServiceClient) CreateOAuthClient(ctx context.Context, req *CreateOAuthClientRequest, opts ...BrokerServiceCallOption) (*OAuthClient, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/oauth/clients"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OAuthClient{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// UpdateOAuthClient calls the UpdateOAuthClient RPC.
+func (c *brokerServiceClient) UpdateOAuthClient(ctx context.Context, req *UpdateOAuthClientRequest, opts ...BrokerServiceCallOption) (*OAuthClient, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/oauth/clients/{client_id}"
+	path = strings.Replace(path, "{client_id}", url.PathEscape(fmt.Sprint(req.ClientId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "PATCH", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OAuthClient{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// DeleteOAuthClient calls the DeleteOAuthClient RPC.
+func (c *brokerServiceClient) DeleteOAuthClient(ctx context.Context, req *DeleteOAuthClientRequest, opts ...BrokerServiceCallOption) (*DeleteOAuthClientResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/oauth/clients/{client_id}"
+	path = strings.Replace(path, "{client_id}", url.PathEscape(fmt.Sprint(req.ClientId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "DELETE", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &DeleteOAuthClientResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// RevokeOAuthAuthorization calls the RevokeOAuthAuthorization RPC.
+func (c *brokerServiceClient) RevokeOAuthAuthorization(ctx context.Context, req *RevokeOAuthAuthorizationRequest, opts ...BrokerServiceCallOption) (*RevokeOAuthAuthorizationResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/oauth/authorizations/{authorization_id}"
+	path = strings.Replace(path, "{authorization_id}", url.PathEscape(fmt.Sprint(req.AuthorizationId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "DELETE", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &RevokeOAuthAuthorizationResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// SubscribeAccountEvents calls the SubscribeAccountEvents RPC.
+func (c *brokerServiceClient) SubscribeAccountEvents(ctx context.Context, req *SubscribeAccountEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/events/accounts/status"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Since != "" {
+		queryParams.Set("since", fmt.Sprint(req.Since))
+	}
+	if req.Until != "" {
+		queryParams.Set("until", fmt.Sprint(req.Until))
+	}
+	if req.SinceId != 0 {
+		queryParams.Set("since_id", fmt.Sprint(req.SinceId))
+	}
+	if req.UntilId != 0 {
+		queryParams.Set("until_id", fmt.Sprint(req.UntilId))
+	}
+	if req.SinceUlid != "" {
+		queryParams.Set("since_ulid", fmt.Sprint(req.SinceUlid))
+	}
+	if req.UntilUlid != "" {
+		queryParams.Set("until_ulid", fmt.Sprint(req.UntilUlid))
+	}
+	if req.Id != "" {
+		queryParams.Set("id", fmt.Sprint(req.Id))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &SubscribeSSEResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// SubscribeTradeEvents calls the SubscribeTradeEvents RPC.
+func (c *brokerServiceClient) SubscribeTradeEvents(ctx context.Context, req *SubscribeTradeEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/events/trades"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Since != "" {
+		queryParams.Set("since", fmt.Sprint(req.Since))
+	}
+	if req.Until != "" {
+		queryParams.Set("until", fmt.Sprint(req.Until))
+	}
+	if req.SinceId != 0 {
+		queryParams.Set("since_id", fmt.Sprint(req.SinceId))
+	}
+	if req.UntilId != 0 {
+		queryParams.Set("until_id", fmt.Sprint(req.UntilId))
+	}
+	if req.SinceUlid != "" {
+		queryParams.Set("since_ulid", fmt.Sprint(req.SinceUlid))
+	}
+	if req.UntilUlid != "" {
+		queryParams.Set("until_ulid", fmt.Sprint(req.UntilUlid))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &SubscribeSSEResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// SubscribeTransferEvents calls the SubscribeTransferEvents RPC.
+func (c *brokerServiceClient) SubscribeTransferEvents(ctx context.Context, req *SubscribeTransferEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/events/transfers/status"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Since != "" {
+		queryParams.Set("since", fmt.Sprint(req.Since))
+	}
+	if req.Until != "" {
+		queryParams.Set("until", fmt.Sprint(req.Until))
+	}
+	if req.SinceId != 0 {
+		queryParams.Set("since_id", fmt.Sprint(req.SinceId))
+	}
+	if req.UntilId != 0 {
+		queryParams.Set("until_id", fmt.Sprint(req.UntilId))
+	}
+	if req.SinceUlid != "" {
+		queryParams.Set("since_ulid", fmt.Sprint(req.SinceUlid))
+	}
+	if req.UntilUlid != "" {
+		queryParams.Set("until_ulid", fmt.Sprint(req.UntilUlid))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &SubscribeSSEResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// SubscribeJournalEvents calls the SubscribeJournalEvents RPC.
+func (c *brokerServiceClient) SubscribeJournalEvents(ctx context.Context, req *SubscribeJournalEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/events/journals/status"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Since != "" {
+		queryParams.Set("since", fmt.Sprint(req.Since))
+	}
+	if req.Until != "" {
+		queryParams.Set("until", fmt.Sprint(req.Until))
+	}
+	if req.SinceId != 0 {
+		queryParams.Set("since_id", fmt.Sprint(req.SinceId))
+	}
+	if req.UntilId != 0 {
+		queryParams.Set("until_id", fmt.Sprint(req.UntilId))
+	}
+	if req.SinceUlid != "" {
+		queryParams.Set("since_ulid", fmt.Sprint(req.SinceUlid))
+	}
+	if req.UntilUlid != "" {
+		queryParams.Set("until_ulid", fmt.Sprint(req.UntilUlid))
+	}
+	if req.Id != "" {
+		queryParams.Set("id", fmt.Sprint(req.Id))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &SubscribeSSEResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// SubscribeNTAEvents calls the SubscribeNTAEvents RPC.
+func (c *brokerServiceClient) SubscribeNTAEvents(ctx context.Context, req *SubscribeNTAEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/events/nta"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Id != "" {
+		queryParams.Set("id", fmt.Sprint(req.Id))
+	}
+	if req.Since != "" {
+		queryParams.Set("since", fmt.Sprint(req.Since))
+	}
+	if req.Until != "" {
+		queryParams.Set("until", fmt.Sprint(req.Until))
+	}
+	if req.SinceId != 0 {
+		queryParams.Set("since_id", fmt.Sprint(req.SinceId))
+	}
+	if req.UntilId != 0 {
+		queryParams.Set("until_id", fmt.Sprint(req.UntilId))
+	}
+	if req.SinceUlid != "" {
+		queryParams.Set("since_ulid", fmt.Sprint(req.SinceUlid))
+	}
+	if req.UntilUlid != "" {
+		queryParams.Set("until_ulid", fmt.Sprint(req.UntilUlid))
+	}
+	if req.IncludePreprocessing != false {
+		queryParams.Set("include_preprocessing", fmt.Sprint(req.IncludePreprocessing))
+	}
+	if req.GroupId != "" {
+		queryParams.Set("group_id", fmt.Sprint(req.GroupId))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &SubscribeSSEResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetCIPInfo calls the GetCIPInfo RPC.
+func (c *brokerServiceClient) GetCIPInfo(ctx context.Context, req *GetCIPInfoRequest, opts ...BrokerServiceCallOption) (*CIPInfo, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/cip"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &CIPInfo{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// UpdateCIPInfo calls the UpdateCIPInfo RPC.
+func (c *brokerServiceClient) UpdateCIPInfo(ctx context.Context, req *UpdateCIPInfoRequest, opts ...BrokerServiceCallOption) (*CIPInfo, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/cip"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "PATCH", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &CIPInfo{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateOnfidoApplicant calls the CreateOnfidoApplicant RPC.
+func (c *brokerServiceClient) CreateOnfidoApplicant(ctx context.Context, req *CreateOnfidoApplicantRequest, opts ...BrokerServiceCallOption) (*OnfidoApplicant, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/onfido/applicants"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OnfidoApplicant{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetOnfidoApplicant calls the GetOnfidoApplicant RPC.
+func (c *brokerServiceClient) GetOnfidoApplicant(ctx context.Context, req *GetOnfidoApplicantRequest, opts ...BrokerServiceCallOption) (*OnfidoApplicant, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/onfido/applicants"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OnfidoApplicant{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GenerateOnfidoSDKToken calls the GenerateOnfidoSDKToken RPC.
+func (c *brokerServiceClient) GenerateOnfidoSDKToken(ctx context.Context, req *GenerateOnfidoSDKTokenRequest, opts ...BrokerServiceCallOption) (*OnfidoSDKToken, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/onfido/sdk_tokens"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OnfidoSDKToken{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateOnfidoCheck calls the CreateOnfidoCheck RPC.
+func (c *brokerServiceClient) CreateOnfidoCheck(ctx context.Context, req *CreateOnfidoCheckRequest, opts ...BrokerServiceCallOption) (*OnfidoCheck, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/onfido/checks"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OnfidoCheck{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetOnfidoCheck calls the GetOnfidoCheck RPC.
+func (c *brokerServiceClient) GetOnfidoCheck(ctx context.Context, req *GetOnfidoCheckRequest, opts ...BrokerServiceCallOption) (*OnfidoCheck, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/onfido/checks/{check_id}"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	path = strings.Replace(path, "{check_id}", url.PathEscape(fmt.Sprint(req.CheckId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OnfidoCheck{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListOnfidoChecks calls the ListOnfidoChecks RPC.
+func (c *brokerServiceClient) ListOnfidoChecks(ctx context.Context, req *ListOnfidoChecksRequest, opts ...BrokerServiceCallOption) (*ListOnfidoChecksResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/onfido/checks"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListOnfidoChecksResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// UploadOnfidoDocument calls the UploadOnfidoDocument RPC.
+func (c *brokerServiceClient) UploadOnfidoDocument(ctx context.Context, req *UploadOnfidoDocumentRequest, opts ...BrokerServiceCallOption) (*OnfidoDocument, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/onfido/documents"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OnfidoDocument{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// UploadOnfidoPhoto calls the UploadOnfidoPhoto RPC.
+func (c *brokerServiceClient) UploadOnfidoPhoto(ctx context.Context, req *UploadOnfidoPhotoRequest, opts ...BrokerServiceCallOption) (*OnfidoPhoto, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/onfido/photos"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OnfidoPhoto{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetMarketCalendar calls the GetMarketCalendar RPC.
+func (c *brokerServiceClient) GetMarketCalendar(ctx context.Context, req *GetMarketCalendarRequest, opts ...BrokerServiceCallOption) (*GetMarketCalendarResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/calendar"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Start != "" {
+		queryParams.Set("start", fmt.Sprint(req.Start))
+	}
+	if req.End != "" {
+		queryParams.Set("end", fmt.Sprint(req.End))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &GetMarketCalendarResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetMarketClock calls the GetMarketClock RPC.
+func (c *brokerServiceClient) GetMarketClock(ctx context.Context, req *GetMarketClockRequest, opts ...BrokerServiceCallOption) (*MarketClock, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/clock"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &MarketClock{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetOptionsApproval calls the GetOptionsApproval RPC.
+func (c *brokerServiceClient) GetOptionsApproval(ctx context.Context, req *GetOptionsApprovalRequest, opts ...BrokerServiceCallOption) (*OptionsApproval, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/options"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OptionsApproval{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// RequestOptionsApproval calls the RequestOptionsApproval RPC.
+func (c *brokerServiceClient) RequestOptionsApproval(ctx context.Context, req *RequestOptionsApprovalRequest, opts ...BrokerServiceCallOption) (*OptionsApproval, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/options"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OptionsApproval{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// UpdateOptionsApproval calls the UpdateOptionsApproval RPC.
+func (c *brokerServiceClient) UpdateOptionsApproval(ctx context.Context, req *UpdateOptionsApprovalRequest, opts ...BrokerServiceCallOption) (*OptionsApproval, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/{account_id}/options"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "PATCH", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &OptionsApproval{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListBrokerOptionContracts calls the ListBrokerOptionContracts RPC.
+func (c *brokerServiceClient) ListBrokerOptionContracts(ctx context.Context, req *ListBrokerOptionContractsRequest, opts ...BrokerServiceCallOption) (*ListBrokerOptionContractsResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/options/contracts"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.UnderlyingSymbol != "" {
+		queryParams.Set("underlying_symbol", fmt.Sprint(req.UnderlyingSymbol))
+	}
+	if req.Type != "" {
+		queryParams.Set("type", fmt.Sprint(req.Type))
+	}
+	if req.ExpirationDateGte != "" {
+		queryParams.Set("expiration_date_gte", fmt.Sprint(req.ExpirationDateGte))
+	}
+	if req.ExpirationDateLte != "" {
+		queryParams.Set("expiration_date_lte", fmt.Sprint(req.ExpirationDateLte))
+	}
+	if req.StrikePriceGte != "" {
+		queryParams.Set("strike_price_gte", fmt.Sprint(req.StrikePriceGte))
+	}
+	if req.StrikePriceLte != "" {
+		queryParams.Set("strike_price_lte", fmt.Sprint(req.StrikePriceLte))
+	}
+	if req.Status != "" {
+		queryParams.Set("status", fmt.Sprint(req.Status))
+	}
+	if req.Limit != 0 {
+		queryParams.Set("limit", fmt.Sprint(req.Limit))
+	}
+	if req.PageToken != "" {
+		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListBrokerOptionContractsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetBrokerOptionContract calls the GetBrokerOptionContract RPC.
+func (c *brokerServiceClient) GetBrokerOptionContract(ctx context.Context, req *GetBrokerOptionContractRequest, opts ...BrokerServiceCallOption) (*BrokerOptionContract, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/options/contracts/{symbol_or_id}"
+	path = strings.Replace(path, "{symbol_or_id}", url.PathEscape(fmt.Sprint(req.SymbolOrId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &BrokerOptionContract{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListIRAExcessContributions calls the ListIRAExcessContributions RPC.
+func (c *brokerServiceClient) ListIRAExcessContributions(ctx context.Context, req *ListIRAExcessContributionsRequest, opts ...BrokerServiceCallOption) (*ListIRAExcessContributionsResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/ira/excess_contributions"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.AccountId != "" {
+		queryParams.Set("account_id", fmt.Sprint(req.AccountId))
+	}
+	if req.TaxYear != 0 {
+		queryParams.Set("tax_year", fmt.Sprint(req.TaxYear))
+	}
+	if req.Status != "" {
+		queryParams.Set("status", fmt.Sprint(req.Status))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListIRAExcessContributionsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetIRAExcessContribution calls the GetIRAExcessContribution RPC.
+func (c *brokerServiceClient) GetIRAExcessContribution(ctx context.Context, req *GetIRAExcessContributionRequest, opts ...BrokerServiceCallOption) (*IRAExcessContribution, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/ira/excess_contributions/{excess_contribution_id}"
+	path = strings.Replace(path, "{excess_contribution_id}", url.PathEscape(fmt.Sprint(req.ExcessContributionId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &IRAExcessContribution{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// CreateIRAExcessContribution calls the CreateIRAExcessContribution RPC.
+func (c *brokerServiceClient) CreateIRAExcessContribution(ctx context.Context, req *CreateIRAExcessContributionRequest, opts ...BrokerServiceCallOption) (*IRAExcessContribution, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/ira/excess_contributions"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Marshal request body
+	body, err := c.marshalRequest(req, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal request: %w", err)
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", reqURL, bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &IRAExcessContribution{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetIRAContributionLimits calls the GetIRAContributionLimits RPC.
+func (c *brokerServiceClient) GetIRAContributionLimits(ctx context.Context, req *GetIRAContributionLimitsRequest, opts ...BrokerServiceCallOption) (*IRAContributionLimits, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/ira/limits"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.TaxYear != 0 {
+		queryParams.Set("tax_year", fmt.Sprint(req.TaxYear))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &IRAContributionLimits{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListCountries calls the ListCountries RPC.
+func (c *brokerServiceClient) ListCountries(ctx context.Context, req *ListCountriesRequest, opts ...BrokerServiceCallOption) (*ListCountriesResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/country-info"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Unmarshal response
+	result := &ListCountriesResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
 func (c *brokerServiceClient) marshalRequest(req proto.Message, contentType string) ([]byte, error) {
 	switch contentType {
 	case ContentTypeJSON:
+		// Check for custom JSON marshaler (unwrap support)
+		if marshaler, ok := req.(json.Marshaler); ok {
+			return marshaler.MarshalJSON()
+		}
 		return protojson.Marshal(req)
 	case ContentTypeProto:
 		return proto.Marshal(req)
@@ -1496,6 +6988,10 @@ func (c *brokerServiceClient) unmarshalResponse(body []byte, msg proto.Message, 
 
 	switch contentType {
 	case ContentTypeJSON:
+		// Check for custom JSON unmarshaler (unwrap support)
+		if unmarshaler, ok := msg.(json.Unmarshaler); ok {
+			return unmarshaler.UnmarshalJSON(body)
+		}
 		return protojson.Unmarshal(body, msg)
 	case ContentTypeProto:
 		return proto.Unmarshal(body, msg)

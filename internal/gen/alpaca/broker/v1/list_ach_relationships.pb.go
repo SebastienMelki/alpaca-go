@@ -7,13 +7,14 @@
 package brokerv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -136,9 +137,9 @@ const file_alpaca_broker_v1_list_ach_relationships_proto_rawDesc = "" +
 	"\bstatuses\x18\x02 \x01(\tB#\xba\xb5\x18\x11\n" +
 	"\x0fAPPROVED,QUEUEDµ\x18\n" +
 	"\n" +
-	"\bstatusesR\bstatuses\"n\n" +
-	"\x1cListACHRelationshipsResponse\x12N\n" +
-	"\x11ach_relationships\x18\x01 \x03(\v2!.alpaca.broker.v1.ACHRelationshipR\x10achRelationshipsB\xdf\x01\n" +
+	"\bstatusesR\bstatuses\"t\n" +
+	"\x1cListACHRelationshipsResponse\x12T\n" +
+	"\x11ach_relationships\x18\x01 \x03(\v2!.alpaca.broker.v1.ACHRelationshipB\x04ȵ\x18\x01R\x10achRelationshipsB\xdf\x01\n" +
 	"\x14com.alpaca.broker.v1B\x19ListAchRelationshipsProtoP\x01ZJgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1;brokerv1\xa2\x02\x03ABX\xaa\x02\x10Alpaca.Broker.V1\xca\x02\x10Alpaca\\Broker\\V1\xe2\x02\x1cAlpaca\\Broker\\V1\\GPBMetadata\xea\x02\x12Alpaca::Broker::V1b\x06proto3"
 
 var (

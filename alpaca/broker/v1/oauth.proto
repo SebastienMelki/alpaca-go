@@ -1,0 +1,267 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// OAuthToken represents an OAuth access token.
+message OAuthToken {
+  // Access token.
+  string access_token = 1 [(sebuf.http.field_examples) = { values: ["eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."] }];
+
+  // Token type (typically "Bearer").
+  string token_type = 2 [(sebuf.http.field_examples) = { values: ["Bearer"] }];
+
+  // Token expiration time in seconds.
+  int64 expires_in = 3 [(sebuf.http.field_examples) = { values: ["3600"] }];
+
+  // Refresh token (if applicable).
+  string refresh_token = 4 [(sebuf.http.field_examples) = { values: ["dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4..."] }];
+
+  // Scope of the token.
+  string scope = 5 [(sebuf.http.field_examples) = { values: ["account:write trading data"] }];
+}
+
+// OAuthClient represents an OAuth client application.
+message OAuthClient {
+  // Client ID.
+  string client_id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Client name.
+  string name = 2 [(sebuf.http.field_examples) = { values: ["My Trading App"] }];
+
+  // Client description.
+  string description = 3 [(sebuf.http.field_examples) = { values: ["A trading application for retail investors"] }];
+
+  // Redirect URIs.
+  repeated string redirect_uris = 4;
+
+  // Allowed scopes.
+  repeated string scopes = 5;
+
+  // Whether the client is active.
+  bool active = 6 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Timestamp when the client was created.
+  string created_at = 7 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the client was last updated.
+  string updated_at = 8 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// OAuthAuthorization represents an OAuth authorization.
+message OAuthAuthorization {
+  // Authorization ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Client ID.
+  string client_id = 2 [(sebuf.http.field_examples) = { values: ["a1b2c3d4-5678-90ab-cdef-1234567890ab"] }];
+
+  // Account ID.
+  string account_id = 3 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Authorized scopes.
+  repeated string scopes = 4;
+
+  // Timestamp when the authorization was created.
+  string created_at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the authorization expires.
+  string expires_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T11:30:00Z"] }];
+}
+
+// CreateOAuthTokenRequest is the request to create/exchange an OAuth token.
+message CreateOAuthTokenRequest {
+  // Grant type (required).
+  string grant_type = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["authorization_code"] }
+  ];
+
+  // Authorization code (required for authorization_code grant).
+  string code = 2 [
+    (sebuf.http.field_examples) = { values: ["abc123def456"] }
+  ];
+
+  // Redirect URI (required for authorization_code grant).
+  string redirect_uri = 3 [
+    (sebuf.http.field_examples) = { values: ["https://myapp.com/callback"] }
+  ];
+
+  // Client ID (required).
+  string client_id = 4 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+
+  // Client secret (required).
+  string client_secret = 5 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["secret123"] }
+  ];
+
+  // Refresh token (required for refresh_token grant).
+  string refresh_token = 6 [
+    (sebuf.http.field_examples) = { values: ["dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4..."] }
+  ];
+
+  // Requested scopes.
+  string scope = 7 [
+    (sebuf.http.field_examples) = { values: ["account:write trading"] }
+  ];
+}
+
+// AuthorizeOAuthRequest is the request to authorize an OAuth client.
+message AuthorizeOAuthRequest {
+  // Response type (required, typically "code").
+  string response_type = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "response_type" },
+    (sebuf.http.field_examples) = { values: ["code"] }
+  ];
+
+  // Client ID (required).
+  string client_id = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "client_id" },
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+
+  // Redirect URI (required).
+  string redirect_uri = 3 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "redirect_uri" },
+    (sebuf.http.field_examples) = { values: ["https://myapp.com/callback"] }
+  ];
+
+  // Requested scopes.
+  string scope = 4 [
+    (sebuf.http.query) = { name: "scope" },
+    (sebuf.http.field_examples) = { values: ["account:write trading"] }
+  ];
+
+  // State parameter for CSRF protection.
+  string state = 5 [
+    (sebuf.http.query) = { name: "state" },
+    (sebuf.http.field_examples) = { values: ["xyz789"] }
+  ];
+}
+
+// AuthorizeOAuthResponse is the response containing the authorization code.
+message AuthorizeOAuthResponse {
+  // Authorization code.
+  string code = 1 [(sebuf.http.field_examples) = { values: ["abc123def456"] }];
+
+  // State parameter.
+  string state = 2 [(sebuf.http.field_examples) = { values: ["xyz789"] }];
+}
+
+// ListOAuthClientsRequest is the request to list OAuth clients.
+message ListOAuthClientsRequest {}
+
+// ListOAuthClientsResponse is the response containing OAuth clients.
+message ListOAuthClientsResponse {
+  // List of OAuth clients.
+  repeated OAuthClient clients = 1 [(sebuf.http.unwrap) = true];
+}
+
+// GetOAuthClientRequest is the request to get a specific OAuth client.
+message GetOAuthClientRequest {
+  // The client ID (required).
+  string client_id = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// CreateOAuthClientRequest is the request to create an OAuth client.
+message CreateOAuthClientRequest {
+  // Client name (required).
+  string name = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["My Trading App"] }
+  ];
+
+  // Client description.
+  string description = 2 [
+    (sebuf.http.field_examples) = { values: ["A trading application"] }
+  ];
+
+  // Redirect URIs (required).
+  repeated string redirect_uris = 3;
+
+  // Allowed scopes.
+  repeated string scopes = 4;
+}
+
+// UpdateOAuthClientRequest is the request to update an OAuth client.
+message UpdateOAuthClientRequest {
+  // The client ID (required).
+  string client_id = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+
+  // Client name.
+  string name = 2 [
+    (sebuf.http.field_examples) = { values: ["Updated Trading App"] }
+  ];
+
+  // Client description.
+  string description = 3 [
+    (sebuf.http.field_examples) = { values: ["Updated description"] }
+  ];
+
+  // Redirect URIs.
+  repeated string redirect_uris = 4;
+
+  // Allowed scopes.
+  repeated string scopes = 5;
+}
+
+// DeleteOAuthClientRequest is the request to delete an OAuth client.
+message DeleteOAuthClientRequest {
+  // The client ID (required).
+  string client_id = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// DeleteOAuthClientResponse is the response for deleting an OAuth client.
+message DeleteOAuthClientResponse {
+  // Whether the deletion was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}
+
+// ListOAuthAuthorizationsRequest is the request to list OAuth authorizations.
+message ListOAuthAuthorizationsRequest {
+  // Filter by account ID.
+  string account_id = 1 [
+    (sebuf.http.query) = { name: "account_id" },
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// ListOAuthAuthorizationsResponse is the response containing authorizations.
+message ListOAuthAuthorizationsResponse {
+  // List of authorizations.
+  repeated OAuthAuthorization authorizations = 1 [(sebuf.http.unwrap) = true];
+}
+
+// RevokeOAuthAuthorizationRequest is the request to revoke an authorization.
+message RevokeOAuthAuthorizationRequest {
+  // The authorization ID (required).
+  string authorization_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// RevokeOAuthAuthorizationResponse is the response for revoking an authorization.
+message RevokeOAuthAuthorizationResponse {
+  // Whether the revocation was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}

@@ -7,12 +7,13 @@
 package marketdatav2
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -21,283 +22,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-// Timeframe represents the bar timeframe.
-type Timeframe int32
-
-const (
-	Timeframe_TIMEFRAME_UNSPECIFIED Timeframe = 0
-	Timeframe_TIMEFRAME_1MIN        Timeframe = 1
-	Timeframe_TIMEFRAME_5MIN        Timeframe = 2
-	Timeframe_TIMEFRAME_15MIN       Timeframe = 3
-	Timeframe_TIMEFRAME_30MIN       Timeframe = 4
-	Timeframe_TIMEFRAME_1HOUR       Timeframe = 5
-	Timeframe_TIMEFRAME_4HOUR       Timeframe = 6
-	Timeframe_TIMEFRAME_1DAY        Timeframe = 7
-	Timeframe_TIMEFRAME_1WEEK       Timeframe = 8
-	Timeframe_TIMEFRAME_1MONTH      Timeframe = 9
-)
-
-// Enum value maps for Timeframe.
-var (
-	Timeframe_name = map[int32]string{
-		0: "TIMEFRAME_UNSPECIFIED",
-		1: "TIMEFRAME_1MIN",
-		2: "TIMEFRAME_5MIN",
-		3: "TIMEFRAME_15MIN",
-		4: "TIMEFRAME_30MIN",
-		5: "TIMEFRAME_1HOUR",
-		6: "TIMEFRAME_4HOUR",
-		7: "TIMEFRAME_1DAY",
-		8: "TIMEFRAME_1WEEK",
-		9: "TIMEFRAME_1MONTH",
-	}
-	Timeframe_value = map[string]int32{
-		"TIMEFRAME_UNSPECIFIED": 0,
-		"TIMEFRAME_1MIN":        1,
-		"TIMEFRAME_5MIN":        2,
-		"TIMEFRAME_15MIN":       3,
-		"TIMEFRAME_30MIN":       4,
-		"TIMEFRAME_1HOUR":       5,
-		"TIMEFRAME_4HOUR":       6,
-		"TIMEFRAME_1DAY":        7,
-		"TIMEFRAME_1WEEK":       8,
-		"TIMEFRAME_1MONTH":      9,
-	}
-)
-
-func (x Timeframe) Enum() *Timeframe {
-	p := new(Timeframe)
-	*p = x
-	return p
-}
-
-func (x Timeframe) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (Timeframe) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_marketdata_v2_common_proto_enumTypes[0].Descriptor()
-}
-
-func (Timeframe) Type() protoreflect.EnumType {
-	return &file_alpaca_marketdata_v2_common_proto_enumTypes[0]
-}
-
-func (x Timeframe) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use Timeframe.Descriptor instead.
-func (Timeframe) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_marketdata_v2_common_proto_rawDescGZIP(), []int{0}
-}
-
-// Sort represents sort order.
-type Sort int32
-
-const (
-	Sort_SORT_UNSPECIFIED Sort = 0
-	Sort_SORT_ASC         Sort = 1
-	Sort_SORT_DESC        Sort = 2
-)
-
-// Enum value maps for Sort.
-var (
-	Sort_name = map[int32]string{
-		0: "SORT_UNSPECIFIED",
-		1: "SORT_ASC",
-		2: "SORT_DESC",
-	}
-	Sort_value = map[string]int32{
-		"SORT_UNSPECIFIED": 0,
-		"SORT_ASC":         1,
-		"SORT_DESC":        2,
-	}
-)
-
-func (x Sort) Enum() *Sort {
-	p := new(Sort)
-	*p = x
-	return p
-}
-
-func (x Sort) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (Sort) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_marketdata_v2_common_proto_enumTypes[1].Descriptor()
-}
-
-func (Sort) Type() protoreflect.EnumType {
-	return &file_alpaca_marketdata_v2_common_proto_enumTypes[1]
-}
-
-func (x Sort) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use Sort.Descriptor instead.
-func (Sort) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_marketdata_v2_common_proto_rawDescGZIP(), []int{1}
-}
-
-// Feed represents the data feed source.
-type Feed int32
-
-const (
-	Feed_FEED_UNSPECIFIED Feed = 0
-	Feed_FEED_IEX         Feed = 1
-	Feed_FEED_SIP         Feed = 2
-	Feed_FEED_OTC         Feed = 3
-)
-
-// Enum value maps for Feed.
-var (
-	Feed_name = map[int32]string{
-		0: "FEED_UNSPECIFIED",
-		1: "FEED_IEX",
-		2: "FEED_SIP",
-		3: "FEED_OTC",
-	}
-	Feed_value = map[string]int32{
-		"FEED_UNSPECIFIED": 0,
-		"FEED_IEX":         1,
-		"FEED_SIP":         2,
-		"FEED_OTC":         3,
-	}
-)
-
-func (x Feed) Enum() *Feed {
-	p := new(Feed)
-	*p = x
-	return p
-}
-
-func (x Feed) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (Feed) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_marketdata_v2_common_proto_enumTypes[2].Descriptor()
-}
-
-func (Feed) Type() protoreflect.EnumType {
-	return &file_alpaca_marketdata_v2_common_proto_enumTypes[2]
-}
-
-func (x Feed) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use Feed.Descriptor instead.
-func (Feed) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_marketdata_v2_common_proto_rawDescGZIP(), []int{2}
-}
-
-// Adjustment represents the data adjustment type.
-type Adjustment int32
-
-const (
-	Adjustment_ADJUSTMENT_UNSPECIFIED Adjustment = 0
-	Adjustment_ADJUSTMENT_RAW         Adjustment = 1
-	Adjustment_ADJUSTMENT_SPLIT       Adjustment = 2
-	Adjustment_ADJUSTMENT_DIVIDEND    Adjustment = 3
-	Adjustment_ADJUSTMENT_ALL         Adjustment = 4
-)
-
-// Enum value maps for Adjustment.
-var (
-	Adjustment_name = map[int32]string{
-		0: "ADJUSTMENT_UNSPECIFIED",
-		1: "ADJUSTMENT_RAW",
-		2: "ADJUSTMENT_SPLIT",
-		3: "ADJUSTMENT_DIVIDEND",
-		4: "ADJUSTMENT_ALL",
-	}
-	Adjustment_value = map[string]int32{
-		"ADJUSTMENT_UNSPECIFIED": 0,
-		"ADJUSTMENT_RAW":         1,
-		"ADJUSTMENT_SPLIT":       2,
-		"ADJUSTMENT_DIVIDEND":    3,
-		"ADJUSTMENT_ALL":         4,
-	}
-)
-
-func (x Adjustment) Enum() *Adjustment {
-	p := new(Adjustment)
-	*p = x
-	return p
-}
-
-func (x Adjustment) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (Adjustment) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_marketdata_v2_common_proto_enumTypes[3].Descriptor()
-}
-
-func (Adjustment) Type() protoreflect.EnumType {
-	return &file_alpaca_marketdata_v2_common_proto_enumTypes[3]
-}
-
-func (x Adjustment) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use Adjustment.Descriptor instead.
-func (Adjustment) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_marketdata_v2_common_proto_rawDescGZIP(), []int{3}
-}
-
-// CryptoLoc represents the crypto location.
-type CryptoLoc int32
-
-const (
-	CryptoLoc_CRYPTO_LOC_UNSPECIFIED CryptoLoc = 0
-	CryptoLoc_CRYPTO_LOC_US          CryptoLoc = 1
-)
-
-// Enum value maps for CryptoLoc.
-var (
-	CryptoLoc_name = map[int32]string{
-		0: "CRYPTO_LOC_UNSPECIFIED",
-		1: "CRYPTO_LOC_US",
-	}
-	CryptoLoc_value = map[string]int32{
-		"CRYPTO_LOC_UNSPECIFIED": 0,
-		"CRYPTO_LOC_US":          1,
-	}
-)
-
-func (x CryptoLoc) Enum() *CryptoLoc {
-	p := new(CryptoLoc)
-	*p = x
-	return p
-}
-
-func (x CryptoLoc) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (CryptoLoc) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_marketdata_v2_common_proto_enumTypes[4].Descriptor()
-}
-
-func (CryptoLoc) Type() protoreflect.EnumType {
-	return &file_alpaca_marketdata_v2_common_proto_enumTypes[4]
-}
-
-func (x CryptoLoc) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use CryptoLoc.Descriptor instead.
-func (CryptoLoc) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_marketdata_v2_common_proto_rawDescGZIP(), []int{4}
-}
 
 // Bar represents an OHLCV candlestick bar.
 type Bar struct {
@@ -638,7 +362,9 @@ type Snapshot struct {
 	// Daily bar.
 	DailyBar *Bar `protobuf:"bytes,4,opt,name=daily_bar,json=dailyBar,proto3" json:"daily_bar,omitempty"`
 	// Previous daily bar.
-	PrevDailyBar  *Bar `protobuf:"bytes,5,opt,name=prev_daily_bar,json=prevDailyBar,proto3" json:"prev_daily_bar,omitempty"`
+	PrevDailyBar *Bar `protobuf:"bytes,5,opt,name=prev_daily_bar,json=prevDailyBar,proto3" json:"prev_daily_bar,omitempty"`
+	// Symbol (returned in single snapshot responses).
+	Symbol        string `protobuf:"bytes,6,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -708,6 +434,13 @@ func (x *Snapshot) GetPrevDailyBar() *Bar {
 	return nil
 }
 
+func (x *Snapshot) GetSymbol() string {
+	if x != nil {
+		return x.Symbol
+	}
+	return ""
+}
+
 var File_alpaca_marketdata_v2_common_proto protoreflect.FileDescriptor
 
 const file_alpaca_marketdata_v2_common_proto_rawDesc = "" +
@@ -764,44 +497,17 @@ const file_alpaca_marketdata_v2_common_proto_rawDesc = "" +
 	"\x01c\x18\b \x03(\tB\a\xba\xb5\x18\x03\n" +
 	"\x01RR\x01c\x12\x15\n" +
 	"\x01z\x18\t \x01(\tB\a\xba\xb5\x18\x03\n" +
-	"\x01CR\x01z\"\xbd\x02\n" +
+	"\x01CR\x01z\"\xe1\x02\n" +
 	"\bSnapshot\x12>\n" +
 	"\flatest_trade\x18\x01 \x01(\v2\x1b.alpaca.marketdata.v2.TradeR\vlatestTrade\x12>\n" +
 	"\flatest_quote\x18\x02 \x01(\v2\x1b.alpaca.marketdata.v2.QuoteR\vlatestQuote\x128\n" +
 	"\n" +
 	"minute_bar\x18\x03 \x01(\v2\x19.alpaca.marketdata.v2.BarR\tminuteBar\x126\n" +
 	"\tdaily_bar\x18\x04 \x01(\v2\x19.alpaca.marketdata.v2.BarR\bdailyBar\x12?\n" +
-	"\x0eprev_daily_bar\x18\x05 \x01(\v2\x19.alpaca.marketdata.v2.BarR\fprevDailyBar*\xe1\x01\n" +
-	"\tTimeframe\x12\x19\n" +
-	"\x15TIMEFRAME_UNSPECIFIED\x10\x00\x12\x12\n" +
-	"\x0eTIMEFRAME_1MIN\x10\x01\x12\x12\n" +
-	"\x0eTIMEFRAME_5MIN\x10\x02\x12\x13\n" +
-	"\x0fTIMEFRAME_15MIN\x10\x03\x12\x13\n" +
-	"\x0fTIMEFRAME_30MIN\x10\x04\x12\x13\n" +
-	"\x0fTIMEFRAME_1HOUR\x10\x05\x12\x13\n" +
-	"\x0fTIMEFRAME_4HOUR\x10\x06\x12\x12\n" +
-	"\x0eTIMEFRAME_1DAY\x10\a\x12\x13\n" +
-	"\x0fTIMEFRAME_1WEEK\x10\b\x12\x14\n" +
-	"\x10TIMEFRAME_1MONTH\x10\t*9\n" +
-	"\x04Sort\x12\x14\n" +
-	"\x10SORT_UNSPECIFIED\x10\x00\x12\f\n" +
-	"\bSORT_ASC\x10\x01\x12\r\n" +
-	"\tSORT_DESC\x10\x02*F\n" +
-	"\x04Feed\x12\x14\n" +
-	"\x10FEED_UNSPECIFIED\x10\x00\x12\f\n" +
-	"\bFEED_IEX\x10\x01\x12\f\n" +
-	"\bFEED_SIP\x10\x02\x12\f\n" +
-	"\bFEED_OTC\x10\x03*\x7f\n" +
-	"\n" +
-	"Adjustment\x12\x1a\n" +
-	"\x16ADJUSTMENT_UNSPECIFIED\x10\x00\x12\x12\n" +
-	"\x0eADJUSTMENT_RAW\x10\x01\x12\x14\n" +
-	"\x10ADJUSTMENT_SPLIT\x10\x02\x12\x17\n" +
-	"\x13ADJUSTMENT_DIVIDEND\x10\x03\x12\x12\n" +
-	"\x0eADJUSTMENT_ALL\x10\x04*:\n" +
-	"\tCryptoLoc\x12\x1a\n" +
-	"\x16CRYPTO_LOC_UNSPECIFIED\x10\x00\x12\x11\n" +
-	"\rCRYPTO_LOC_US\x10\x01B\xed\x01\n" +
+	"\x0eprev_daily_bar\x18\x05 \x01(\v2\x19.alpaca.marketdata.v2.BarR\fprevDailyBar\x12\"\n" +
+	"\x06symbol\x18\x06 \x01(\tB\n" +
+	"\xba\xb5\x18\x06\n" +
+	"\x04AAPLR\x06symbolB\xed\x01\n" +
 	"\x18com.alpaca.marketdata.v2B\vCommonProtoP\x01ZRgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/marketdata/v2;marketdatav2\xa2\x02\x03AMX\xaa\x02\x14Alpaca.Marketdata.V2\xca\x02\x14Alpaca\\Marketdata\\V2\xe2\x02 Alpaca\\Marketdata\\V2\\GPBMetadata\xea\x02\x16Alpaca::Marketdata::V2b\x06proto3"
 
 var (
@@ -816,25 +522,19 @@ func file_alpaca_marketdata_v2_common_proto_rawDescGZIP() []byte {
 	return file_alpaca_marketdata_v2_common_proto_rawDescData
 }
 
-var file_alpaca_marketdata_v2_common_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
 var file_alpaca_marketdata_v2_common_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_alpaca_marketdata_v2_common_proto_goTypes = []any{
-	(Timeframe)(0),   // 0: alpaca.marketdata.v2.Timeframe
-	(Sort)(0),        // 1: alpaca.marketdata.v2.Sort
-	(Feed)(0),        // 2: alpaca.marketdata.v2.Feed
-	(Adjustment)(0),  // 3: alpaca.marketdata.v2.Adjustment
-	(CryptoLoc)(0),   // 4: alpaca.marketdata.v2.CryptoLoc
-	(*Bar)(nil),      // 5: alpaca.marketdata.v2.Bar
-	(*Trade)(nil),    // 6: alpaca.marketdata.v2.Trade
-	(*Quote)(nil),    // 7: alpaca.marketdata.v2.Quote
-	(*Snapshot)(nil), // 8: alpaca.marketdata.v2.Snapshot
+	(*Bar)(nil),      // 0: alpaca.marketdata.v2.Bar
+	(*Trade)(nil),    // 1: alpaca.marketdata.v2.Trade
+	(*Quote)(nil),    // 2: alpaca.marketdata.v2.Quote
+	(*Snapshot)(nil), // 3: alpaca.marketdata.v2.Snapshot
 }
 var file_alpaca_marketdata_v2_common_proto_depIdxs = []int32{
-	6, // 0: alpaca.marketdata.v2.Snapshot.latest_trade:type_name -> alpaca.marketdata.v2.Trade
-	7, // 1: alpaca.marketdata.v2.Snapshot.latest_quote:type_name -> alpaca.marketdata.v2.Quote
-	5, // 2: alpaca.marketdata.v2.Snapshot.minute_bar:type_name -> alpaca.marketdata.v2.Bar
-	5, // 3: alpaca.marketdata.v2.Snapshot.daily_bar:type_name -> alpaca.marketdata.v2.Bar
-	5, // 4: alpaca.marketdata.v2.Snapshot.prev_daily_bar:type_name -> alpaca.marketdata.v2.Bar
+	1, // 0: alpaca.marketdata.v2.Snapshot.latest_trade:type_name -> alpaca.marketdata.v2.Trade
+	2, // 1: alpaca.marketdata.v2.Snapshot.latest_quote:type_name -> alpaca.marketdata.v2.Quote
+	0, // 2: alpaca.marketdata.v2.Snapshot.minute_bar:type_name -> alpaca.marketdata.v2.Bar
+	0, // 3: alpaca.marketdata.v2.Snapshot.daily_bar:type_name -> alpaca.marketdata.v2.Bar
+	0, // 4: alpaca.marketdata.v2.Snapshot.prev_daily_bar:type_name -> alpaca.marketdata.v2.Bar
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name
@@ -852,14 +552,13 @@ func file_alpaca_marketdata_v2_common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_marketdata_v2_common_proto_rawDesc), len(file_alpaca_marketdata_v2_common_proto_rawDesc)),
-			NumEnums:      5,
+			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_alpaca_marketdata_v2_common_proto_goTypes,
 		DependencyIndexes: file_alpaca_marketdata_v2_common_proto_depIdxs,
-		EnumInfos:         file_alpaca_marketdata_v2_common_proto_enumTypes,
 		MessageInfos:      file_alpaca_marketdata_v2_common_proto_msgTypes,
 	}.Build()
 	File_alpaca_marketdata_v2_common_proto = out.File

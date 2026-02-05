@@ -1,0 +1,378 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/struct.proto";
+import "sebuf/http/annotations.proto";
+
+// CIPInfo represents Customer Identification Program information.
+message CIPInfo {
+  // CIP ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Account ID.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Owner ID (correspondent ID).
+  string owner_id = 3 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // List of KYC providers this information came from.
+  repeated string provider_name = 4 [(sebuf.http.field_examples) = { values: ["onfido"] }];
+
+  // Timestamp when CIP was created.
+  string created_at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when CIP was last updated.
+  string updated_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // KYC results.
+  CIPKYCResult kyc = 7;
+
+  // Document verification results.
+  CIPDocumentResult document = 8;
+
+  // Photo verification results.
+  CIPPhotoResult photo = 9;
+
+  // Identity verification results.
+  CIPIdentityResult identity = 10;
+
+  // Watchlist screening results.
+  CIPWatchlistResult watchlist = 11;
+}
+
+// CIPKYCResult represents KYC verification results.
+message CIPKYCResult {
+  // Internal ID of check.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["CBDAD1C4-1047-450E-BAE5-B6C406F509B4"] }];
+
+  // CIP ID.
+  string cip_id = 2 [(sebuf.http.field_examples) = { values: ["fc9b4f8d-26b8-4946-b327-3010eb53588e"] }];
+
+  // Reference ID from the provider.
+  string reference_id = 3;
+
+  // Timestamp when the KYC record was created.
+  string created_at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the KYC record was last updated.
+  string updated_at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Risk score (0-100).
+  int32 risk_score = 6 [(sebuf.http.field_examples) = { values: ["15"] }];
+
+  // Risk level.
+  string risk_level = 7 [(sebuf.http.field_examples) = { values: ["LOW"] }];
+
+  // Risk categories.
+  repeated string risk_categories = 8;
+
+  // Applicant name.
+  string applicant_name = 9 [(sebuf.http.field_examples) = { values: ["John Doe"] }];
+
+  // Email address.
+  string email_address = 10 [(sebuf.http.field_examples) = { values: ["johndoe@example.com"] }];
+
+  // Nationality.
+  string nationality = 11 [(sebuf.http.field_examples) = { values: ["ind"] }];
+
+  // Date of birth.
+  string date_of_birth = 12 [(sebuf.http.field_examples) = { values: ["1970-12-01"] }];
+
+  // Address.
+  string address = 13 [(sebuf.http.field_examples) = { values: ["42 Faux St"] }];
+
+  // Postal code.
+  string postal_code = 14 [(sebuf.http.field_examples) = { values: ["94401"] }];
+
+  // Country of residency.
+  string country_of_residency = 15 [(sebuf.http.field_examples) = { values: ["USA"] }];
+
+  // Completed at timestamp.
+  string completed_at = 16 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // IP address.
+  string ip_address = 17 [(sebuf.http.field_examples) = { values: ["127.0.0.1"] }];
+
+  // Check initiated at timestamp.
+  string check_initiated_at = 18 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Check completed at timestamp.
+  string check_completed_at = 19 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Approval status.
+  string approval_status = 20 [(sebuf.http.field_examples) = { values: ["approved"] }];
+
+  // Approved by.
+  string approved_by = 21 [(sebuf.http.field_examples) = { values: ["Jane Doe"] }];
+
+  // Approval reason.
+  string approved_reason = 22;
+
+  // Approved at timestamp.
+  string approved_at = 23 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// CIPDocumentResult represents document verification results.
+message CIPDocumentResult {
+  // Internal ID of check.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["55B9931A-3BE6-4BC0-9BDD-0B954E4A4632"] }];
+
+  // CIP ID.
+  string cip_id = 2 [(sebuf.http.field_examples) = { values: ["fc9b4f8d-26b8-4946-b327-3010eb53588e"] }];
+
+  // Reference ID from the provider.
+  string reference_id = 3;
+
+  // Timestamp when the document record was created.
+  string created_at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the document record was last updated.
+  string updated_at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Result (clear or consider).
+  string result = 6 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Status (complete or withdrawn).
+  string status = 7 [(sebuf.http.field_examples) = { values: ["complete"] }];
+
+  // External created at timestamp from provider.
+  string external_created_at = 8 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Date of birth from document.
+  string date_of_birth = 9;
+
+  // Date of expiry.
+  string date_of_expiry = 10;
+
+  // Document numbers.
+  repeated string document_numbers = 11;
+
+  // Document type.
+  string document_type = 12 [(sebuf.http.field_examples) = { values: ["passport"] }];
+
+  // First name extracted from document.
+  string first_name = 13;
+
+  // Last name extracted from document.
+  string last_name = 14;
+
+  // Gender extracted from document.
+  string gender = 15;
+
+  // Issuing country.
+  string issuing_country = 16 [(sebuf.http.field_examples) = { values: ["USA"] }];
+
+  // Nationality from document.
+  string nationality = 17;
+
+  // Age validation result.
+  string age_validation = 18;
+
+  // Compromised document check.
+  string compromised_document = 19;
+
+  // Police record check.
+  string police_record = 20;
+
+  // Data comparison result.
+  string data_comparison = 21;
+
+  // Data comparison breakdown.
+  google.protobuf.Struct data_comparison_breakdown = 22;
+
+  // Image integrity result.
+  string image_integrity = 23;
+
+  // Image integrity breakdown.
+  google.protobuf.Struct image_integrity_breakdown = 24;
+
+  // Visual authenticity result and breakdown.
+  google.protobuf.Struct visual_authenticity = 25;
+}
+
+// CIPPhotoResult represents photo/selfie verification results.
+message CIPPhotoResult {
+  // CIP ID.
+  string cip_id = 1 [(sebuf.http.field_examples) = { values: ["fc9b4f8d-26b8-4946-b327-3010eb53588e"] }];
+
+  // Reference ID from the provider.
+  string reference_id = 2 [(sebuf.http.field_examples) = { values: ["a7c5d418-567c-44d2-b85b-fa571fdc1e11"] }];
+
+  // Timestamp when the photo record was created.
+  string created_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the photo record was last updated.
+  string updated_at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Result (clear or consider).
+  string result = 5 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Status (complete or withdrawn).
+  string status = 6 [(sebuf.http.field_examples) = { values: ["complete"] }];
+
+  // External created at timestamp from provider.
+  string external_created_at = 7;
+
+  // Face comparison result.
+  string face_comparison = 8 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Face comparison breakdown.
+  google.protobuf.Struct face_comparison_breakdown = 9;
+
+  // Image integrity result.
+  string image_integrity = 10 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Image integrity breakdown.
+  google.protobuf.Struct image_integrity_breakdown = 11;
+
+  // Visual authenticity result.
+  string visual_authenticity = 12;
+
+  // Visual authenticity breakdown.
+  google.protobuf.Struct visual_authenticity_breakdown = 13;
+}
+
+// CIPIdentityResult represents identity verification results.
+message CIPIdentityResult {
+  // CIP ID.
+  string cip_id = 1 [(sebuf.http.field_examples) = { values: ["fc9b4f8d-26b8-4946-b327-3010eb53588e"] }];
+
+  // Reference ID from the provider.
+  string reference_id = 2;
+
+  // Timestamp when the identity record was created.
+  string created_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the identity record was last updated.
+  string updated_at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Result (clear or consider).
+  string result = 5 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Status (complete or withdrawn).
+  string status = 6 [(sebuf.http.field_examples) = { values: ["complete"] }];
+
+  // External created at timestamp from provider.
+  string external_created_at = 7;
+
+  // Matched address result.
+  string matched_address = 8 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Matched addresses.
+  string matched_addresses = 9;
+
+  // Sources result.
+  string sources = 10 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Sources breakdown.
+  google.protobuf.Struct sources_breakdown = 11;
+
+  // Address result.
+  string address = 12 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Address breakdown.
+  google.protobuf.Struct address_breakdown = 13;
+
+  // Date of birth result.
+  string date_of_birth = 14 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Date of birth breakdown.
+  google.protobuf.Struct date_of_birth_breakdown = 15;
+
+  // Tax ID result.
+  string tax_id = 16 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Tax ID breakdown.
+  google.protobuf.Struct tax_id_breakdown = 17;
+}
+
+// CIPWatchlistResult represents watchlist screening results.
+message CIPWatchlistResult {
+  // CIP ID.
+  string cip_id = 1 [(sebuf.http.field_examples) = { values: ["fc9b4f8d-26b8-4946-b327-3010eb53588e"] }];
+
+  // Reference ID from the provider.
+  string reference_id = 2 [(sebuf.http.field_examples) = { values: ["51614de6-4de4-4d2d-85f7-6d15fc64767e"] }];
+
+  // Timestamp when the watchlist record was created.
+  string created_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Timestamp when the watchlist record was last updated.
+  string updated_at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Result (clear or consider).
+  string result = 5 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Status (complete or withdrawn).
+  string status = 6 [(sebuf.http.field_examples) = { values: ["complete"] }];
+
+  // External created at timestamp from provider.
+  string external_created_at = 7 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Records (watchlist match records).
+  repeated google.protobuf.Struct records = 8;
+
+  // Politically exposed person result.
+  string politically_exposed_person = 9 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Sanction result.
+  string sanction = 10 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Adverse media result.
+  string adverse_media = 11 [(sebuf.http.field_examples) = { values: ["clear"] }];
+
+  // Monitored lists result.
+  string monitored_lists = 12 [(sebuf.http.field_examples) = { values: ["clear"] }];
+}
+
+// GetCIPInfoRequest is the request to get CIP info for an account.
+message GetCIPInfoRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// UpdateCIPInfoRequest is the request to update CIP info.
+message UpdateCIPInfoRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Provider name.
+  string provider = 2 [
+    (sebuf.http.field_examples) = { values: ["onfido"] }
+  ];
+
+  // Provider-specific applicant ID.
+  string applicant_id = 3 [
+    (sebuf.http.field_examples) = { values: ["applicant_abc123"] }
+  ];
+
+  // Status to set.
+  string status = 4 [
+    (sebuf.http.field_examples) = { values: ["approved"] }
+  ];
+
+  // KYC results.
+  CIPKYCResult kyc = 5;
+
+  // Document results.
+  CIPDocumentResult document = 6;
+
+  // Photo results.
+  CIPPhotoResult photo = 7;
+
+  // Identity results.
+  CIPIdentityResult identity = 8;
+
+  // Watchlist results.
+  CIPWatchlistResult watchlist = 9;
+}

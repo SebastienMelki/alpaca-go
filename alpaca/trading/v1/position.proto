@@ -2,20 +2,17 @@ syntax = "proto3";
 
 package alpaca.trading.v1;
 
+import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
-import "alpaca/trading/v1/order.proto";
 
-// PositionSide represents the side of a position.
-enum PositionSide {
-  POSITION_SIDE_UNSPECIFIED = 0;
-  POSITION_SIDE_LONG = 1;
-  POSITION_SIDE_SHORT = 2;
-}
 
 // Position represents a current holding in a security.
 message Position {
   // Asset ID (UUID).
-  string asset_id = 1 [(sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }];
+  string asset_id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }
+  ];
 
   // Asset symbol.
   string symbol = 2 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
@@ -24,7 +21,14 @@ message Position {
   string exchange = 3 [(sebuf.http.field_examples) = { values: ["NASDAQ"] }];
 
   // Asset class.
-  AssetClass asset_class = 4 [(sebuf.http.field_examples) = { values: ["1"] }];
+  string asset_class = 4 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "us_equity", "crypto", "us_option"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["us_equity"] }
+  ];
 
   // Whether the asset is marginable.
   bool asset_marginable = 5 [(sebuf.http.field_examples) = { values: ["true"] }];
@@ -36,7 +40,14 @@ message Position {
   string avg_entry_price = 7 [(sebuf.http.field_examples) = { values: ["150.00"] }];
 
   // Position side (long or short).
-  PositionSide side = 8 [(sebuf.http.field_examples) = { values: ["1"] }];
+  string side = 8 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "long", "short"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["long"] }
+  ];
 
   // Current market value.
   string market_value = 9 [(sebuf.http.field_examples) = { values: ["15500.00"] }];

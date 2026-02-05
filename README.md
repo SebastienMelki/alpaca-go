@@ -27,8 +27,9 @@ go get github.com/sebastienmelki/alpaca-go
 ## Features
 
 - **Type-safe API clients** generated from Protocol Buffer definitions
-- **Full Alpaca API coverage**: Trading, Market Data, and Broker APIs
+- **Full Alpaca API coverage**: Trading, Market Data, Broker, and Auth APIs
 - **Paper trading support** with dedicated client constructors
+- **Multi-version support**: v1, v1beta, and v2 APIs where applicable
 - **Automatic JSON serialization** with protojson
 - **OpenAPI 3.1 documentation** generated from proto files
 
@@ -110,8 +111,8 @@ func main() {
     client := marketdata.NewClient("YOUR_API_KEY", "YOUR_API_SECRET")
     ctx := context.Background()
 
-    // Get latest stock bars
-    bars, err := client.GetLatestStockBars(ctx, &marketdata.GetLatestStockBarsRequest{
+    // Get latest stock bars (V2 API - stable)
+    bars, err := client.V2.GetLatestStockBars(ctx, &marketdata.GetLatestStockBarsRequest{
         Symbols: "AAPL,MSFT,GOOGL",
     })
     if err != nil {
@@ -121,14 +122,14 @@ func main() {
         fmt.Printf("%s: Close=%s, Volume=%d\n", symbol, bar.Close, bar.Volume)
     }
 
-    // Get stock quotes
-    quotes, err := client.GetLatestStockQuotes(ctx, &marketdata.GetLatestStockQuotesRequest{
-        Symbols: "AAPL",
+    // Get crypto quotes (V1Beta API - beta features)
+    cryptoQuotes, err := client.V1Beta.GetLatestCryptoQuotes(ctx, &marketdata.GetLatestCryptoQuotesRequest{
+        Symbols: "BTC/USD",
     })
     if err != nil {
         log.Fatal(err)
     }
-    for symbol, quote := range quotes.Quotes {
+    for symbol, quote := range cryptoQuotes.Quotes {
         fmt.Printf("%s: Bid=%s, Ask=%s\n", symbol, quote.BidPrice, quote.AskPrice)
     }
 }
@@ -156,14 +157,20 @@ func main() {
 
     ctx := context.Background()
 
-    // List accounts
-    accounts, err := client.ListAccounts(ctx, &broker.ListAccountsRequest{})
+    // List accounts (V1 API)
+    accounts, err := client.V1.ListAccounts(ctx, &broker.ListAccountsRequest{})
     if err != nil {
         log.Fatal(err)
     }
     for _, acc := range accounts.Accounts {
         fmt.Printf("Account: %s, Status: %s\n", acc.Id, acc.Status)
     }
+
+    // Access V1Beta features (funding wallets)
+    // wallet, err := client.V1Beta.GetFundingWallet(ctx, &broker.GetFundingWalletRequest{...})
+
+    // Access V2 features (SSE events)
+    // events, err := client.V2.SubscribeTradeEventsV2(ctx, &broker.SubscribeTradeEventsV2Request{...})
 }
 ```
 
@@ -177,20 +184,35 @@ func main() {
 | Orders | CreateOrder, ListOrders, GetOrder, GetOrderByClientId, ReplaceOrder, CancelOrder, CancelAllOrders |
 | Positions | ListPositions, GetPosition, ClosePosition, CloseAllPositions, ExerciseOption |
 | Assets | ListAssets, GetAsset |
+| Options | ListOptionContracts, GetOptionContract |
 | Market | GetClock, GetCalendar |
 | Watchlists | ListWatchlists, CreateWatchlist, GetWatchlist, UpdateWatchlist, DeleteWatchlist, AddWatchlistAsset, RemoveWatchlistAsset |
+| Crypto Funding | ListCryptoWallets, GetCryptoWallet, ListCryptoTransfers, CreateCryptoWithdrawal |
 
 ### Market Data API (`pkg/marketdata`)
+
+**V2 (Stable)** - Stock data endpoints:
 
 | Category | Endpoints |
 |----------|-----------|
 | Stocks | GetStockBars, GetLatestStockBars, GetStockTrades, GetLatestStockTrades, GetStockQuotes, GetLatestStockQuotes, GetStockSnapshots, GetStockSnapshot, GetStockAuctions |
-| Crypto | GetCryptoBars, GetLatestCryptoBars, GetCryptoTrades, GetLatestCryptoTrades, GetCryptoQuotes, GetLatestCryptoQuotes, GetCryptoSnapshots |
-| Options | GetOptionBars, GetLatestOptionBars, GetOptionTrades, GetLatestOptionTrades, GetOptionQuotes, GetLatestOptionQuotes, GetOptionSnapshots, GetOptionChain |
+| Metadata | GetStockConditions, GetExchangeCodes |
+
+**V1Beta (Beta)** - Crypto, options, and additional features:
+
+| Category | Endpoints |
+|----------|-----------|
+| Crypto | GetCryptoBars, GetLatestCryptoBars, GetCryptoTrades, GetLatestCryptoTrades, GetCryptoQuotes, GetLatestCryptoQuotes, GetCryptoSnapshots, GetCryptoOrderbooks |
+| Options | GetOptionBars, GetOptionTrades, GetOptionQuotes, GetOptionSnapshots, GetOptionChain, GetOptionMeta |
 | News | GetNews |
 | Screener | GetMostActives, GetMovers |
+| Corporate Actions | GetCorporateActions |
+| Forex | GetForexRates, GetLatestForexRates |
+| Logos | GetLogo |
 
 ### Broker API (`pkg/broker`)
+
+**V1 (Core)** - Main broker operations:
 
 | Category | Endpoints |
 |----------|-----------|
@@ -199,6 +221,38 @@ func main() {
 | Transfers | CreateTransfer, ListTransfers, GetTransfer, CancelTransfer |
 | Trading | CreateTradingOrder, ListTradingOrders, GetTradingOrder, CancelTradingOrder |
 | Positions | ListTradingPositions, GetTradingPosition, CloseTradingPosition, CloseAllTradingPositions |
+| Documents | ListAccountDocuments, DownloadAccountDocument, DownloadW8BenDocument |
+| Watchlists | ListBrokerWatchlists, CreateBrokerWatchlist, GetBrokerWatchlist, UpdateBrokerWatchlist, DeleteBrokerWatchlist |
+| Journals | CreateJournal, ListJournals, GetJournal, DeleteJournal, CreateBatchJournal, ReverseBatchJournal |
+| Rebalancing | ListPortfolios, CreatePortfolio, GetPortfolio, UpdatePortfolio, DeletePortfolio, ListRuns, CreateRun |
+| CIP/KYC | GetCIPInfo, UpdateCIPInfo |
+| Onfido | CreateOnfidoApplicant, CreateOnfidoCheck, GenerateOnfidoSDKToken |
+| OAuth | CreateOAuthToken, AuthorizeOAuth, CreateOAuthClient, UpdateOAuthClient |
+| Options | GetOptionsApproval, RequestOptionsApproval, UpdateOptionsApproval, ListBrokerOptionContracts |
+| Crypto | ListBrokerCryptoWallets, ListBrokerCryptoTransfers, CreateBrokerCryptoTransfer |
+| FPSL | ListFPSLLoans, ListFPSLTiers, ListAPRTiers |
+| JIT | ListJITLedgers, GetJITLedgerBalances, GetJITLimits, CreateJITSettlement |
+| IRA | ListIRAExcessContributions |
+| Calendar | GetMarketCalendar, GetMarketClock |
+
+**V1Beta** - Beta funding features:
+
+| Category | Endpoints |
+|----------|-----------|
+| Funding Wallets | GetFundingWallet, CreateFundingWallet, ListFundingWalletTransfers, CreateFundingWalletWithdrawal |
+| Recipient Banks | GetRecipientBank, CreateRecipientBank, DeleteRecipientBank |
+
+**V2** - SSE event streaming:
+
+| Category | Endpoints |
+|----------|-----------|
+| Events | SubscribeTradeEventsV2, SubscribeJournalEventsV2, SubscribeSystemEventsV2, SubscribeAdminActionsV2, SubscribeFundingStatusV2 |
+
+### Auth API (`pkg/auth`)
+
+| Category | Endpoints |
+|----------|-----------|
+| OAuth2 | IssueToken |
 
 ## Client Options
 
@@ -232,22 +286,53 @@ client := trading.NewClient(
 | Trading | `https://api.alpaca.markets` | `https://paper-api.alpaca.markets` |
 | Market Data | `https://data.alpaca.markets` | - |
 | Broker | `https://broker-api.alpaca.markets` | `https://broker-api.sandbox.alpaca.markets` |
+| Auth | `https://api.alpaca.markets` | - |
 
 ## Project Structure
 
 ```
 alpaca-go/
 ├── alpaca/                  # Protocol Buffer definitions
-│   ├── core/v1/            # Shared types
+│   ├── auth/v1/            # Auth/OAuth API protos
 │   ├── trading/v1/         # Trading API protos
-│   ├── marketdata/v2/      # Market Data API protos
-│   └── broker/v1/          # Broker API protos
+│   ├── marketdata/
+│   │   ├── v2/             # Market Data v2 (stocks - stable)
+│   │   └── v1beta/         # Market Data v1beta (crypto, options, news - beta)
+│   └── broker/
+│       ├── v1/             # Broker v1 (core operations)
+│       ├── v1beta/         # Broker v1beta (funding wallets)
+│       └── v2/             # Broker v2 (SSE events)
 ├── internal/gen/           # Generated code (private)
 ├── pkg/                    # Public client wrappers
+│   ├── auth/              # Auth API client
 │   ├── trading/           # Trading API client
-│   ├── marketdata/        # Market Data API client
-│   └── broker/            # Broker API client
+│   ├── marketdata/        # Market Data API client (V2 + V1Beta)
+│   └── broker/            # Broker API client (V1 + V1Beta + V2)
+├── cmd/apitest/           # API test harness
 └── docs/                   # Generated OpenAPI specs
+```
+
+## API Testing Tool
+
+The `cmd/apitest` directory contains a test harness for validating generated API clients and showcasing SDK usage. This is primarily used to verify that proto files generate proper Go code.
+
+```bash
+# Test Market Data APIs
+make test-marketdata
+
+# Test Broker APIs
+make test-broker
+
+# Test Trading APIs
+make test-trading
+```
+
+Set your credentials in a `.env` file or environment variables:
+
+```bash
+ALPACA_API_KEY=your_api_key
+ALPACA_API_SECRET=your_api_secret
+TEST_ACCOUNT_ID=your_test_account_id  # For broker tests
 ```
 
 ## Development

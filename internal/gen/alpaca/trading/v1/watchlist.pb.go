@@ -7,12 +7,14 @@
 package tradingv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -117,12 +119,12 @@ var File_alpaca_trading_v1_watchlist_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_watchlist_proto_rawDesc = "" +
 	"\n" +
-	"!alpaca/trading/v1/watchlist.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\x1a\x1dalpaca/trading/v1/asset.proto\"\xe1\x02\n" +
-	"\tWatchlist\x12:\n" +
-	"\x02id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
-	"$fb306e55-16d3-4f7c-9b2b-dcefc74e31a1R\x02id\x12I\n" +
+	"!alpaca/trading/v1/watchlist.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a\x1dalpaca/trading/v1/asset.proto\"\xf1\x02\n" +
+	"\tWatchlist\x12B\n" +
+	"\x02id\x18\x01 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
+	"$fb306e55-16d3-4f7c-9b2b-dcefc74e31a1R\x02id\x12Q\n" +
 	"\n" +
-	"account_id\x18\x02 \x01(\tB*\xba\xb5\x18&\n" +
+	"account_id\x18\x02 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\x12%\n" +
 	"\x04name\x18\x03 \x01(\tB\x11\xba\xb5\x18\r\n" +
 	"\vTech StocksR\x04name\x129\n" +

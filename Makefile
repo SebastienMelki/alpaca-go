@@ -1,4 +1,5 @@
-.PHONY: all generate build lint lint-fix buf-lint test clean release install-tools deps check
+.PHONY: all generate build lint lint-fix buf-lint test clean release install-tools deps check \
+       test-marketdata test-broker test-trading
 
 # Default target
 all: generate build
@@ -9,6 +10,7 @@ install-tools:
 	go install github.com/SebastienMelki/sebuf/cmd/protoc-gen-openapiv3@latest
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+	go install golang.org/x/tools/cmd/goimports@latest
 
 # Update buf dependencies
 deps:
@@ -17,6 +19,8 @@ deps:
 # Generate Go code and OpenAPI specs from proto files
 generate:
 	buf generate
+	@echo "Running goimports on generated files..."
+	@goimports -w internal/gen/
 
 # Build the Go code
 build:
@@ -39,6 +43,18 @@ buf-lint:
 # Run tests
 test:
 	go test ./...
+
+# Run API tests for Market Data service
+test-marketdata:
+	go run ./cmd/apitest -service marketdata
+
+# Run API tests for Broker service
+test-broker:
+	go run ./cmd/apitest -service broker
+
+# Run API tests for Trading service
+test-trading:
+	go run ./cmd/apitest -service trading
 
 # Clean generated files
 clean:

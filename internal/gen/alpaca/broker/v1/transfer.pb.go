@@ -7,12 +7,14 @@
 package brokerv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -22,172 +24,77 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// TransferDirection represents the direction of a transfer.
-type TransferDirection int32
+// TransferIRA represents IRA-specific transfer details.
+type TransferIRA struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Tax year for the contribution.
+	TaxYear int32 `protobuf:"varint,1,opt,name=tax_year,json=taxYear,proto3" json:"tax_year,omitempty"`
+	// Federal tax withholding amount.
+	FederalTaxWithholding string `protobuf:"bytes,2,opt,name=federal_tax_withholding,json=federalTaxWithholding,proto3" json:"federal_tax_withholding,omitempty"`
+	// State tax withholding amount.
+	StateTaxWithholding string `protobuf:"bytes,3,opt,name=state_tax_withholding,json=stateTaxWithholding,proto3" json:"state_tax_withholding,omitempty"`
+	// Withholding state.
+	WithholdingState string `protobuf:"bytes,4,opt,name=withholding_state,json=withholdingState,proto3" json:"withholding_state,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
 
-const (
-	TransferDirection_TRANSFER_DIRECTION_UNSPECIFIED TransferDirection = 0
-	TransferDirection_TRANSFER_DIRECTION_INCOMING    TransferDirection = 1
-	TransferDirection_TRANSFER_DIRECTION_OUTGOING    TransferDirection = 2
-)
+func (x *TransferIRA) Reset() {
+	*x = TransferIRA{}
+	mi := &file_alpaca_broker_v1_transfer_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
 
-// Enum value maps for TransferDirection.
-var (
-	TransferDirection_name = map[int32]string{
-		0: "TRANSFER_DIRECTION_UNSPECIFIED",
-		1: "TRANSFER_DIRECTION_INCOMING",
-		2: "TRANSFER_DIRECTION_OUTGOING",
+func (x *TransferIRA) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TransferIRA) ProtoMessage() {}
+
+func (x *TransferIRA) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_transfer_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
 	}
-	TransferDirection_value = map[string]int32{
-		"TRANSFER_DIRECTION_UNSPECIFIED": 0,
-		"TRANSFER_DIRECTION_INCOMING":    1,
-		"TRANSFER_DIRECTION_OUTGOING":    2,
-	}
-)
-
-func (x TransferDirection) Enum() *TransferDirection {
-	p := new(TransferDirection)
-	*p = x
-	return p
+	return mi.MessageOf(x)
 }
 
-func (x TransferDirection) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (TransferDirection) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_transfer_proto_enumTypes[0].Descriptor()
-}
-
-func (TransferDirection) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_transfer_proto_enumTypes[0]
-}
-
-func (x TransferDirection) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use TransferDirection.Descriptor instead.
-func (TransferDirection) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use TransferIRA.ProtoReflect.Descriptor instead.
+func (*TransferIRA) Descriptor() ([]byte, []int) {
 	return file_alpaca_broker_v1_transfer_proto_rawDescGZIP(), []int{0}
 }
 
-// TransferType represents the type of transfer.
-type TransferType int32
-
-const (
-	TransferType_TRANSFER_TYPE_UNSPECIFIED TransferType = 0
-	TransferType_TRANSFER_TYPE_ACH         TransferType = 1
-	TransferType_TRANSFER_TYPE_WIRE        TransferType = 2
-)
-
-// Enum value maps for TransferType.
-var (
-	TransferType_name = map[int32]string{
-		0: "TRANSFER_TYPE_UNSPECIFIED",
-		1: "TRANSFER_TYPE_ACH",
-		2: "TRANSFER_TYPE_WIRE",
+func (x *TransferIRA) GetTaxYear() int32 {
+	if x != nil {
+		return x.TaxYear
 	}
-	TransferType_value = map[string]int32{
-		"TRANSFER_TYPE_UNSPECIFIED": 0,
-		"TRANSFER_TYPE_ACH":         1,
-		"TRANSFER_TYPE_WIRE":        2,
+	return 0
+}
+
+func (x *TransferIRA) GetFederalTaxWithholding() string {
+	if x != nil {
+		return x.FederalTaxWithholding
 	}
-)
-
-func (x TransferType) Enum() *TransferType {
-	p := new(TransferType)
-	*p = x
-	return p
+	return ""
 }
 
-func (x TransferType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (TransferType) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_transfer_proto_enumTypes[1].Descriptor()
-}
-
-func (TransferType) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_transfer_proto_enumTypes[1]
-}
-
-func (x TransferType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use TransferType.Descriptor instead.
-func (TransferType) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_transfer_proto_rawDescGZIP(), []int{1}
-}
-
-// TransferStatus represents the status of a transfer.
-type TransferStatus int32
-
-const (
-	TransferStatus_TRANSFER_STATUS_UNSPECIFIED      TransferStatus = 0
-	TransferStatus_TRANSFER_STATUS_QUEUED           TransferStatus = 1
-	TransferStatus_TRANSFER_STATUS_PENDING          TransferStatus = 2
-	TransferStatus_TRANSFER_STATUS_SENT_TO_CLEARING TransferStatus = 3
-	TransferStatus_TRANSFER_STATUS_APPROVED         TransferStatus = 4
-	TransferStatus_TRANSFER_STATUS_COMPLETE         TransferStatus = 5
-	TransferStatus_TRANSFER_STATUS_CANCELED         TransferStatus = 6
-	TransferStatus_TRANSFER_STATUS_REJECTED         TransferStatus = 7
-	TransferStatus_TRANSFER_STATUS_RETURNED         TransferStatus = 8
-)
-
-// Enum value maps for TransferStatus.
-var (
-	TransferStatus_name = map[int32]string{
-		0: "TRANSFER_STATUS_UNSPECIFIED",
-		1: "TRANSFER_STATUS_QUEUED",
-		2: "TRANSFER_STATUS_PENDING",
-		3: "TRANSFER_STATUS_SENT_TO_CLEARING",
-		4: "TRANSFER_STATUS_APPROVED",
-		5: "TRANSFER_STATUS_COMPLETE",
-		6: "TRANSFER_STATUS_CANCELED",
-		7: "TRANSFER_STATUS_REJECTED",
-		8: "TRANSFER_STATUS_RETURNED",
+func (x *TransferIRA) GetStateTaxWithholding() string {
+	if x != nil {
+		return x.StateTaxWithholding
 	}
-	TransferStatus_value = map[string]int32{
-		"TRANSFER_STATUS_UNSPECIFIED":      0,
-		"TRANSFER_STATUS_QUEUED":           1,
-		"TRANSFER_STATUS_PENDING":          2,
-		"TRANSFER_STATUS_SENT_TO_CLEARING": 3,
-		"TRANSFER_STATUS_APPROVED":         4,
-		"TRANSFER_STATUS_COMPLETE":         5,
-		"TRANSFER_STATUS_CANCELED":         6,
-		"TRANSFER_STATUS_REJECTED":         7,
-		"TRANSFER_STATUS_RETURNED":         8,
+	return ""
+}
+
+func (x *TransferIRA) GetWithholdingState() string {
+	if x != nil {
+		return x.WithholdingState
 	}
-)
-
-func (x TransferStatus) Enum() *TransferStatus {
-	p := new(TransferStatus)
-	*p = x
-	return p
-}
-
-func (x TransferStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (TransferStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_transfer_proto_enumTypes[2].Descriptor()
-}
-
-func (TransferStatus) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_transfer_proto_enumTypes[2]
-}
-
-func (x TransferStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use TransferStatus.Descriptor instead.
-func (TransferStatus) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_transfer_proto_rawDescGZIP(), []int{2}
+	return ""
 }
 
 // Transfer represents a fund transfer.
@@ -197,16 +104,16 @@ type Transfer struct {
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// Account ID (UUID).
 	AccountId string `protobuf:"bytes,2,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
-	// ACH relationship ID (if ACH transfer).
+	// ACH relationship ID (if ACH transfer, optional, UUID format when present).
 	RelationshipId string `protobuf:"bytes,3,opt,name=relationship_id,json=relationshipId,proto3" json:"relationship_id,omitempty"`
 	// Bank ID (if wire transfer).
 	BankId string `protobuf:"bytes,4,opt,name=bank_id,json=bankId,proto3" json:"bank_id,omitempty"`
 	// Transfer type.
-	Type TransferType `protobuf:"varint,5,opt,name=type,proto3,enum=alpaca.broker.v1.TransferType" json:"type,omitempty"`
+	Type string `protobuf:"bytes,5,opt,name=type,proto3" json:"type,omitempty"`
 	// Transfer status.
-	Status TransferStatus `protobuf:"varint,6,opt,name=status,proto3,enum=alpaca.broker.v1.TransferStatus" json:"status,omitempty"`
+	Status string `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`
 	// Transfer direction.
-	Direction TransferDirection `protobuf:"varint,7,opt,name=direction,proto3,enum=alpaca.broker.v1.TransferDirection" json:"direction,omitempty"`
+	Direction string `protobuf:"bytes,7,opt,name=direction,proto3" json:"direction,omitempty"`
 	// Transfer amount.
 	Amount string `protobuf:"bytes,8,opt,name=amount,proto3" json:"amount,omitempty"`
 	// Creation timestamp (RFC 3339).
@@ -223,13 +130,23 @@ type Transfer struct {
 	Fee string `protobuf:"bytes,14,opt,name=fee,proto3" json:"fee,omitempty"`
 	// Requested amount (before fees).
 	RequestedAmount string `protobuf:"bytes,15,opt,name=requested_amount,json=requestedAmount,proto3" json:"requested_amount,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Hold until date.
+	HoldUntil string `protobuf:"bytes,16,opt,name=hold_until,json=holdUntil,proto3" json:"hold_until,omitempty"`
+	// Instant funding amount.
+	InstantAmount string `protobuf:"bytes,17,opt,name=instant_amount,json=instantAmount,proto3" json:"instant_amount,omitempty"`
+	// Fee payment method.
+	FeePaymentMethod string `protobuf:"bytes,18,opt,name=fee_payment_method,json=feePaymentMethod,proto3" json:"fee_payment_method,omitempty"`
+	// IRA-specific details.
+	Ira *TransferIRA `protobuf:"bytes,19,opt,name=ira,proto3" json:"ira,omitempty"`
+	// Currency code.
+	Currency      string `protobuf:"bytes,20,opt,name=currency,proto3" json:"currency,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Transfer) Reset() {
 	*x = Transfer{}
-	mi := &file_alpaca_broker_v1_transfer_proto_msgTypes[0]
+	mi := &file_alpaca_broker_v1_transfer_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -241,7 +158,7 @@ func (x *Transfer) String() string {
 func (*Transfer) ProtoMessage() {}
 
 func (x *Transfer) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v1_transfer_proto_msgTypes[0]
+	mi := &file_alpaca_broker_v1_transfer_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -254,7 +171,7 @@ func (x *Transfer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Transfer.ProtoReflect.Descriptor instead.
 func (*Transfer) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_transfer_proto_rawDescGZIP(), []int{0}
+	return file_alpaca_broker_v1_transfer_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Transfer) GetId() string {
@@ -285,25 +202,25 @@ func (x *Transfer) GetBankId() string {
 	return ""
 }
 
-func (x *Transfer) GetType() TransferType {
+func (x *Transfer) GetType() string {
 	if x != nil {
 		return x.Type
 	}
-	return TransferType_TRANSFER_TYPE_UNSPECIFIED
+	return ""
 }
 
-func (x *Transfer) GetStatus() TransferStatus {
+func (x *Transfer) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
-	return TransferStatus_TRANSFER_STATUS_UNSPECIFIED
+	return ""
 }
 
-func (x *Transfer) GetDirection() TransferDirection {
+func (x *Transfer) GetDirection() string {
 	if x != nil {
 		return x.Direction
 	}
-	return TransferDirection_TRANSFER_DIRECTION_UNSPECIFIED
+	return ""
 }
 
 func (x *Transfer) GetAmount() string {
@@ -362,26 +279,68 @@ func (x *Transfer) GetRequestedAmount() string {
 	return ""
 }
 
+func (x *Transfer) GetHoldUntil() string {
+	if x != nil {
+		return x.HoldUntil
+	}
+	return ""
+}
+
+func (x *Transfer) GetInstantAmount() string {
+	if x != nil {
+		return x.InstantAmount
+	}
+	return ""
+}
+
+func (x *Transfer) GetFeePaymentMethod() string {
+	if x != nil {
+		return x.FeePaymentMethod
+	}
+	return ""
+}
+
+func (x *Transfer) GetIra() *TransferIRA {
+	if x != nil {
+		return x.Ira
+	}
+	return nil
+}
+
+func (x *Transfer) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
 var File_alpaca_broker_v1_transfer_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v1_transfer_proto_rawDesc = "" +
 	"\n" +
-	"\x1falpaca/broker/v1/transfer.proto\x12\x10alpaca.broker.v1\x1a\x1csebuf/http/annotations.proto\"\xca\x06\n" +
-	"\bTransfer\x12:\n" +
-	"\x02id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
-	"$a1b2c3d4-e5f6-7890-abcd-ef1234567890R\x02id\x12I\n" +
+	"\x1falpaca/broker/v1/transfer.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xc1\x01\n" +
+	"\vTransferIRA\x12\x19\n" +
+	"\btax_year\x18\x01 \x01(\x05R\ataxYear\x126\n" +
+	"\x17federal_tax_withholding\x18\x02 \x01(\tR\x15federalTaxWithholding\x122\n" +
+	"\x15state_tax_withholding\x18\x03 \x01(\tR\x13stateTaxWithholding\x12+\n" +
+	"\x11withholding_state\x18\x04 \x01(\tR\x10withholdingState\"\xcf\a\n" +
+	"\bTransfer\x12B\n" +
+	"\x02id\x18\x01 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
+	"$a1b2c3d4-e5f6-7890-abcd-ef1234567890R\x02id\x12Q\n" +
 	"\n" +
-	"account_id\x18\x02 \x01(\tB*\xba\xb5\x18&\n" +
+	"account_id\x18\x02 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\x12S\n" +
 	"\x0frelationship_id\x18\x03 \x01(\tB*\xba\xb5\x18&\n" +
 	"$f5fbd77f-7b7e-4b91-8e8a-aaaa00000001R\x0erelationshipId\x12\x17\n" +
-	"\abank_id\x18\x04 \x01(\tR\x06bankId\x12;\n" +
-	"\x04type\x18\x05 \x01(\x0e2\x1e.alpaca.broker.v1.TransferTypeB\a\xba\xb5\x18\x03\n" +
-	"\x011R\x04type\x12A\n" +
-	"\x06status\x18\x06 \x01(\x0e2 .alpaca.broker.v1.TransferStatusB\a\xba\xb5\x18\x03\n" +
-	"\x015R\x06status\x12J\n" +
-	"\tdirection\x18\a \x01(\x0e2#.alpaca.broker.v1.TransferDirectionB\a\xba\xb5\x18\x03\n" +
-	"\x011R\tdirection\x12%\n" +
+	"\abank_id\x18\x04 \x01(\tR\x06bankId\x12\x1d\n" +
+	"\x04type\x18\x05 \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"\x03achR\x04type\x12&\n" +
+	"\x06status\x18\x06 \x01(\tB\x0e\xba\xb5\x18\n" +
+	"\n" +
+	"\bCOMPLETER\x06status\x12,\n" +
+	"\tdirection\x18\a \x01(\tB\x0e\xba\xb5\x18\n" +
+	"\n" +
+	"\bINCOMINGR\tdirection\x12%\n" +
 	"\x06amount\x18\b \x01(\tB\r\xba\xb5\x18\t\n" +
 	"\a1000.00R\x06amount\x129\n" +
 	"\n" +
@@ -400,25 +359,14 @@ const file_alpaca_broker_v1_transfer_proto_rawDesc = "" +
 	"\xba\xb5\x18\x06\n" +
 	"\x040.00R\x03fee\x128\n" +
 	"\x10requested_amount\x18\x0f \x01(\tB\r\xba\xb5\x18\t\n" +
-	"\a1000.00R\x0frequestedAmount*y\n" +
-	"\x11TransferDirection\x12\"\n" +
-	"\x1eTRANSFER_DIRECTION_UNSPECIFIED\x10\x00\x12\x1f\n" +
-	"\x1bTRANSFER_DIRECTION_INCOMING\x10\x01\x12\x1f\n" +
-	"\x1bTRANSFER_DIRECTION_OUTGOING\x10\x02*\\\n" +
-	"\fTransferType\x12\x1d\n" +
-	"\x19TRANSFER_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
-	"\x11TRANSFER_TYPE_ACH\x10\x01\x12\x16\n" +
-	"\x12TRANSFER_TYPE_WIRE\x10\x02*\xa6\x02\n" +
-	"\x0eTransferStatus\x12\x1f\n" +
-	"\x1bTRANSFER_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
-	"\x16TRANSFER_STATUS_QUEUED\x10\x01\x12\x1b\n" +
-	"\x17TRANSFER_STATUS_PENDING\x10\x02\x12$\n" +
-	" TRANSFER_STATUS_SENT_TO_CLEARING\x10\x03\x12\x1c\n" +
-	"\x18TRANSFER_STATUS_APPROVED\x10\x04\x12\x1c\n" +
-	"\x18TRANSFER_STATUS_COMPLETE\x10\x05\x12\x1c\n" +
-	"\x18TRANSFER_STATUS_CANCELED\x10\x06\x12\x1c\n" +
-	"\x18TRANSFER_STATUS_REJECTED\x10\a\x12\x1c\n" +
-	"\x18TRANSFER_STATUS_RETURNED\x10\bB\xd3\x01\n" +
+	"\a1000.00R\x0frequestedAmount\x12\x1d\n" +
+	"\n" +
+	"hold_until\x18\x10 \x01(\tR\tholdUntil\x12%\n" +
+	"\x0einstant_amount\x18\x11 \x01(\tR\rinstantAmount\x12,\n" +
+	"\x12fee_payment_method\x18\x12 \x01(\tR\x10feePaymentMethod\x12/\n" +
+	"\x03ira\x18\x13 \x01(\v2\x1d.alpaca.broker.v1.TransferIRAR\x03ira\x12%\n" +
+	"\bcurrency\x18\x14 \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"\x03USDR\bcurrencyB\xd3\x01\n" +
 	"\x14com.alpaca.broker.v1B\rTransferProtoP\x01ZJgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1;brokerv1\xa2\x02\x03ABX\xaa\x02\x10Alpaca.Broker.V1\xca\x02\x10Alpaca\\Broker\\V1\xe2\x02\x1cAlpaca\\Broker\\V1\\GPBMetadata\xea\x02\x12Alpaca::Broker::V1b\x06proto3"
 
 var (
@@ -433,23 +381,18 @@ func file_alpaca_broker_v1_transfer_proto_rawDescGZIP() []byte {
 	return file_alpaca_broker_v1_transfer_proto_rawDescData
 }
 
-var file_alpaca_broker_v1_transfer_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_alpaca_broker_v1_transfer_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_alpaca_broker_v1_transfer_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_alpaca_broker_v1_transfer_proto_goTypes = []any{
-	(TransferDirection)(0), // 0: alpaca.broker.v1.TransferDirection
-	(TransferType)(0),      // 1: alpaca.broker.v1.TransferType
-	(TransferStatus)(0),    // 2: alpaca.broker.v1.TransferStatus
-	(*Transfer)(nil),       // 3: alpaca.broker.v1.Transfer
+	(*TransferIRA)(nil), // 0: alpaca.broker.v1.TransferIRA
+	(*Transfer)(nil),    // 1: alpaca.broker.v1.Transfer
 }
 var file_alpaca_broker_v1_transfer_proto_depIdxs = []int32{
-	1, // 0: alpaca.broker.v1.Transfer.type:type_name -> alpaca.broker.v1.TransferType
-	2, // 1: alpaca.broker.v1.Transfer.status:type_name -> alpaca.broker.v1.TransferStatus
-	0, // 2: alpaca.broker.v1.Transfer.direction:type_name -> alpaca.broker.v1.TransferDirection
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0, // 0: alpaca.broker.v1.Transfer.ira:type_name -> alpaca.broker.v1.TransferIRA
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_broker_v1_transfer_proto_init() }
@@ -462,14 +405,13 @@ func file_alpaca_broker_v1_transfer_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_broker_v1_transfer_proto_rawDesc), len(file_alpaca_broker_v1_transfer_proto_rawDesc)),
-			NumEnums:      3,
-			NumMessages:   1,
+			NumEnums:      0,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_alpaca_broker_v1_transfer_proto_goTypes,
 		DependencyIndexes: file_alpaca_broker_v1_transfer_proto_depIdxs,
-		EnumInfos:         file_alpaca_broker_v1_transfer_proto_enumTypes,
 		MessageInfos:      file_alpaca_broker_v1_transfer_proto_msgTypes,
 	}.Build()
 	File_alpaca_broker_v1_transfer_proto = out.File

@@ -7,13 +7,14 @@
 package brokerv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -23,54 +24,68 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// BrokerPositionSide represents the side of a position.
-type BrokerPositionSide int32
+// PositionUSDValues represents USD values for LCT positions.
+type PositionUSDValues struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Market value in USD.
+	MarketValue string `protobuf:"bytes,1,opt,name=market_value,json=marketValue,proto3" json:"market_value,omitempty"`
+	// Cost basis in USD.
+	CostBasis string `protobuf:"bytes,2,opt,name=cost_basis,json=costBasis,proto3" json:"cost_basis,omitempty"`
+	// Unrealized P/L in USD.
+	UnrealizedPl  string `protobuf:"bytes,3,opt,name=unrealized_pl,json=unrealizedPl,proto3" json:"unrealized_pl,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
 
-const (
-	BrokerPositionSide_BROKER_POSITION_SIDE_UNSPECIFIED BrokerPositionSide = 0
-	BrokerPositionSide_BROKER_POSITION_SIDE_LONG        BrokerPositionSide = 1
-	BrokerPositionSide_BROKER_POSITION_SIDE_SHORT       BrokerPositionSide = 2
-)
+func (x *PositionUSDValues) Reset() {
+	*x = PositionUSDValues{}
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
 
-// Enum value maps for BrokerPositionSide.
-var (
-	BrokerPositionSide_name = map[int32]string{
-		0: "BROKER_POSITION_SIDE_UNSPECIFIED",
-		1: "BROKER_POSITION_SIDE_LONG",
-		2: "BROKER_POSITION_SIDE_SHORT",
+func (x *PositionUSDValues) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PositionUSDValues) ProtoMessage() {}
+
+func (x *PositionUSDValues) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
 	}
-	BrokerPositionSide_value = map[string]int32{
-		"BROKER_POSITION_SIDE_UNSPECIFIED": 0,
-		"BROKER_POSITION_SIDE_LONG":        1,
-		"BROKER_POSITION_SIDE_SHORT":       2,
-	}
-)
-
-func (x BrokerPositionSide) Enum() *BrokerPositionSide {
-	p := new(BrokerPositionSide)
-	*p = x
-	return p
+	return mi.MessageOf(x)
 }
 
-func (x BrokerPositionSide) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (BrokerPositionSide) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_trading_position_proto_enumTypes[0].Descriptor()
-}
-
-func (BrokerPositionSide) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_trading_position_proto_enumTypes[0]
-}
-
-func (x BrokerPositionSide) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use BrokerPositionSide.Descriptor instead.
-func (BrokerPositionSide) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use PositionUSDValues.ProtoReflect.Descriptor instead.
+func (*PositionUSDValues) Descriptor() ([]byte, []int) {
 	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *PositionUSDValues) GetMarketValue() string {
+	if x != nil {
+		return x.MarketValue
+	}
+	return ""
+}
+
+func (x *PositionUSDValues) GetCostBasis() string {
+	if x != nil {
+		return x.CostBasis
+	}
+	return ""
+}
+
+func (x *PositionUSDValues) GetUnrealizedPl() string {
+	if x != nil {
+		return x.UnrealizedPl
+	}
+	return ""
 }
 
 // BrokerPosition represents a position in a broker account.
@@ -91,7 +106,7 @@ type BrokerPosition struct {
 	// Average entry price.
 	AvgEntryPrice string `protobuf:"bytes,7,opt,name=avg_entry_price,json=avgEntryPrice,proto3" json:"avg_entry_price,omitempty"`
 	// Position side.
-	Side BrokerPositionSide `protobuf:"varint,8,opt,name=side,proto3,enum=alpaca.broker.v1.BrokerPositionSide" json:"side,omitempty"`
+	Side string `protobuf:"bytes,8,opt,name=side,proto3" json:"side,omitempty"`
 	// Current market value.
 	MarketValue string `protobuf:"bytes,9,opt,name=market_value,json=marketValue,proto3" json:"market_value,omitempty"`
 	// Cost basis.
@@ -111,14 +126,20 @@ type BrokerPosition struct {
 	// Change today.
 	ChangeToday string `protobuf:"bytes,17,opt,name=change_today,json=changeToday,proto3" json:"change_today,omitempty"`
 	// Quantity available.
-	QtyAvailable  string `protobuf:"bytes,18,opt,name=qty_available,json=qtyAvailable,proto3" json:"qty_available,omitempty"`
+	QtyAvailable string `protobuf:"bytes,18,opt,name=qty_available,json=qtyAvailable,proto3" json:"qty_available,omitempty"`
+	// Average entry swap rate.
+	AvgEntrySwapRate string `protobuf:"bytes,19,opt,name=avg_entry_swap_rate,json=avgEntrySwapRate,proto3" json:"avg_entry_swap_rate,omitempty"`
+	// Current swap rate.
+	SwapRate string `protobuf:"bytes,20,opt,name=swap_rate,json=swapRate,proto3" json:"swap_rate,omitempty"`
+	// USD values (for LCT accounts).
+	Usd           *PositionUSDValues `protobuf:"bytes,21,opt,name=usd,proto3" json:"usd,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *BrokerPosition) Reset() {
 	*x = BrokerPosition{}
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[0]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -130,7 +151,7 @@ func (x *BrokerPosition) String() string {
 func (*BrokerPosition) ProtoMessage() {}
 
 func (x *BrokerPosition) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[0]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -143,7 +164,7 @@ func (x *BrokerPosition) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BrokerPosition.ProtoReflect.Descriptor instead.
 func (*BrokerPosition) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{0}
+	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *BrokerPosition) GetAssetId() string {
@@ -195,11 +216,11 @@ func (x *BrokerPosition) GetAvgEntryPrice() string {
 	return ""
 }
 
-func (x *BrokerPosition) GetSide() BrokerPositionSide {
+func (x *BrokerPosition) GetSide() string {
 	if x != nil {
 		return x.Side
 	}
-	return BrokerPositionSide_BROKER_POSITION_SIDE_UNSPECIFIED
+	return ""
 }
 
 func (x *BrokerPosition) GetMarketValue() string {
@@ -272,6 +293,27 @@ func (x *BrokerPosition) GetQtyAvailable() string {
 	return ""
 }
 
+func (x *BrokerPosition) GetAvgEntrySwapRate() string {
+	if x != nil {
+		return x.AvgEntrySwapRate
+	}
+	return ""
+}
+
+func (x *BrokerPosition) GetSwapRate() string {
+	if x != nil {
+		return x.SwapRate
+	}
+	return ""
+}
+
+func (x *BrokerPosition) GetUsd() *PositionUSDValues {
+	if x != nil {
+		return x.Usd
+	}
+	return nil
+}
+
 // ListTradingPositionsRequest is the request to list positions for a broker account.
 type ListTradingPositionsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -283,7 +325,7 @@ type ListTradingPositionsRequest struct {
 
 func (x *ListTradingPositionsRequest) Reset() {
 	*x = ListTradingPositionsRequest{}
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[1]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -295,7 +337,7 @@ func (x *ListTradingPositionsRequest) String() string {
 func (*ListTradingPositionsRequest) ProtoMessage() {}
 
 func (x *ListTradingPositionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[1]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -308,7 +350,7 @@ func (x *ListTradingPositionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTradingPositionsRequest.ProtoReflect.Descriptor instead.
 func (*ListTradingPositionsRequest) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{1}
+	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListTradingPositionsRequest) GetAccountId() string {
@@ -329,7 +371,7 @@ type ListTradingPositionsResponse struct {
 
 func (x *ListTradingPositionsResponse) Reset() {
 	*x = ListTradingPositionsResponse{}
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[2]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -341,7 +383,7 @@ func (x *ListTradingPositionsResponse) String() string {
 func (*ListTradingPositionsResponse) ProtoMessage() {}
 
 func (x *ListTradingPositionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[2]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -354,7 +396,7 @@ func (x *ListTradingPositionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTradingPositionsResponse.ProtoReflect.Descriptor instead.
 func (*ListTradingPositionsResponse) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{2}
+	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListTradingPositionsResponse) GetPositions() []*BrokerPosition {
@@ -377,7 +419,7 @@ type GetTradingPositionRequest struct {
 
 func (x *GetTradingPositionRequest) Reset() {
 	*x = GetTradingPositionRequest{}
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[3]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -389,7 +431,7 @@ func (x *GetTradingPositionRequest) String() string {
 func (*GetTradingPositionRequest) ProtoMessage() {}
 
 func (x *GetTradingPositionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[3]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -402,7 +444,7 @@ func (x *GetTradingPositionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTradingPositionRequest.ProtoReflect.Descriptor instead.
 func (*GetTradingPositionRequest) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{3}
+	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetTradingPositionRequest) GetAccountId() string {
@@ -436,7 +478,7 @@ type CloseTradingPositionRequest struct {
 
 func (x *CloseTradingPositionRequest) Reset() {
 	*x = CloseTradingPositionRequest{}
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[4]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -448,7 +490,7 @@ func (x *CloseTradingPositionRequest) String() string {
 func (*CloseTradingPositionRequest) ProtoMessage() {}
 
 func (x *CloseTradingPositionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[4]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -461,7 +503,7 @@ func (x *CloseTradingPositionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloseTradingPositionRequest.ProtoReflect.Descriptor instead.
 func (*CloseTradingPositionRequest) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{4}
+	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CloseTradingPositionRequest) GetAccountId() string {
@@ -505,7 +547,7 @@ type CloseAllTradingPositionsRequest struct {
 
 func (x *CloseAllTradingPositionsRequest) Reset() {
 	*x = CloseAllTradingPositionsRequest{}
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[5]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -517,7 +559,7 @@ func (x *CloseAllTradingPositionsRequest) String() string {
 func (*CloseAllTradingPositionsRequest) ProtoMessage() {}
 
 func (x *CloseAllTradingPositionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[5]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -530,7 +572,7 @@ func (x *CloseAllTradingPositionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloseAllTradingPositionsRequest.ProtoReflect.Descriptor instead.
 func (*CloseAllTradingPositionsRequest) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{5}
+	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CloseAllTradingPositionsRequest) GetAccountId() string {
@@ -562,7 +604,7 @@ type ClosedTradingPosition struct {
 
 func (x *ClosedTradingPosition) Reset() {
 	*x = ClosedTradingPosition{}
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[6]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -574,7 +616,7 @@ func (x *ClosedTradingPosition) String() string {
 func (*ClosedTradingPosition) ProtoMessage() {}
 
 func (x *ClosedTradingPosition) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[6]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -587,7 +629,7 @@ func (x *ClosedTradingPosition) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClosedTradingPosition.ProtoReflect.Descriptor instead.
 func (*ClosedTradingPosition) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{6}
+	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ClosedTradingPosition) GetSymbol() string {
@@ -622,7 +664,7 @@ type CloseAllTradingPositionsResponse struct {
 
 func (x *CloseAllTradingPositionsResponse) Reset() {
 	*x = CloseAllTradingPositionsResponse{}
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[7]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -634,7 +676,7 @@ func (x *CloseAllTradingPositionsResponse) String() string {
 func (*CloseAllTradingPositionsResponse) ProtoMessage() {}
 
 func (x *CloseAllTradingPositionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[7]
+	mi := &file_alpaca_broker_v1_trading_position_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -647,7 +689,7 @@ func (x *CloseAllTradingPositionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloseAllTradingPositionsResponse.ProtoReflect.Descriptor instead.
 func (*CloseAllTradingPositionsResponse) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{7}
+	return file_alpaca_broker_v1_trading_position_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *CloseAllTradingPositionsResponse) GetPositions() []*ClosedTradingPosition {
@@ -661,7 +703,12 @@ var File_alpaca_broker_v1_trading_position_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v1_trading_position_proto_rawDesc = "" +
 	"\n" +
-	"'alpaca/broker/v1/trading_position.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a$alpaca/broker/v1/trading_order.proto\"\xc3\a\n" +
+	"'alpaca/broker/v1/trading_position.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\x1a$alpaca/broker/v1/trading_order.proto\"z\n" +
+	"\x11PositionUSDValues\x12!\n" +
+	"\fmarket_value\x18\x01 \x01(\tR\vmarketValue\x12\x1d\n" +
+	"\n" +
+	"cost_basis\x18\x02 \x01(\tR\tcostBasis\x12#\n" +
+	"\runrealized_pl\x18\x03 \x01(\tR\funrealizedPl\"\xa3\b\n" +
 	"\x0eBrokerPosition\x12E\n" +
 	"\basset_id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
 	"$b0b6dd9d-8b9b-48a9-ba46-b9d54906e415R\aassetId\x12\"\n" +
@@ -679,9 +726,10 @@ const file_alpaca_broker_v1_trading_position_proto_rawDesc = "" +
 	"\x03qty\x18\x06 \x01(\tB\t\xba\xb5\x18\x05\n" +
 	"\x03100R\x03qty\x124\n" +
 	"\x0favg_entry_price\x18\a \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06150.00R\ravgEntryPrice\x12A\n" +
-	"\x04side\x18\b \x01(\x0e2$.alpaca.broker.v1.BrokerPositionSideB\a\xba\xb5\x18\x03\n" +
-	"\x011R\x04side\x121\n" +
+	"\x06150.00R\ravgEntryPrice\x12\x1e\n" +
+	"\x04side\x18\b \x01(\tB\n" +
+	"\xba\xb5\x18\x06\n" +
+	"\x04longR\x04side\x121\n" +
 	"\fmarket_value\x18\t \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
 	"\b15500.00R\vmarketValue\x12-\n" +
@@ -705,13 +753,16 @@ const file_alpaca_broker_v1_trading_position_proto_rawDesc = "" +
 	"\fchange_today\x18\x11 \x01(\tB\f\xba\xb5\x18\b\n" +
 	"\x060.0065R\vchangeToday\x12.\n" +
 	"\rqty_available\x18\x12 \x01(\tB\t\xba\xb5\x18\x05\n" +
-	"\x03100R\fqtyAvailable\"s\n" +
+	"\x03100R\fqtyAvailable\x12-\n" +
+	"\x13avg_entry_swap_rate\x18\x13 \x01(\tR\x10avgEntrySwapRate\x12\x1b\n" +
+	"\tswap_rate\x18\x14 \x01(\tR\bswapRate\x125\n" +
+	"\x03usd\x18\x15 \x01(\v2#.alpaca.broker.v1.PositionUSDValuesR\x03usd\"s\n" +
 	"\x1bListTradingPositionsRequest\x12T\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
-	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\"^\n" +
-	"\x1cListTradingPositionsResponse\x12>\n" +
-	"\tpositions\x18\x01 \x03(\v2 .alpaca.broker.v1.BrokerPositionR\tpositions\"\x9b\x01\n" +
+	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\"d\n" +
+	"\x1cListTradingPositionsResponse\x12D\n" +
+	"\tpositions\x18\x01 \x03(\v2 .alpaca.broker.v1.BrokerPositionB\x04ȵ\x18\x01R\tpositions\"\x9b\x01\n" +
 	"\x19GetTradingPositionRequest\x12T\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
@@ -748,11 +799,7 @@ const file_alpaca_broker_v1_trading_position_proto_rawDesc = "" +
 	"\x03200R\x06status\x123\n" +
 	"\x05order\x18\x03 \x01(\v2\x1d.alpaca.broker.v1.BrokerOrderR\x05order\"i\n" +
 	" CloseAllTradingPositionsResponse\x12E\n" +
-	"\tpositions\x18\x01 \x03(\v2'.alpaca.broker.v1.ClosedTradingPositionR\tpositions*y\n" +
-	"\x12BrokerPositionSide\x12$\n" +
-	" BROKER_POSITION_SIDE_UNSPECIFIED\x10\x00\x12\x1d\n" +
-	"\x19BROKER_POSITION_SIDE_LONG\x10\x01\x12\x1e\n" +
-	"\x1aBROKER_POSITION_SIDE_SHORT\x10\x02B\xda\x01\n" +
+	"\tpositions\x18\x01 \x03(\v2'.alpaca.broker.v1.ClosedTradingPositionR\tpositionsB\xda\x01\n" +
 	"\x14com.alpaca.broker.v1B\x14TradingPositionProtoP\x01ZJgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1;brokerv1\xa2\x02\x03ABX\xaa\x02\x10Alpaca.Broker.V1\xca\x02\x10Alpaca\\Broker\\V1\xe2\x02\x1cAlpaca\\Broker\\V1\\GPBMetadata\xea\x02\x12Alpaca::Broker::V1b\x06proto3"
 
 var (
@@ -767,10 +814,9 @@ func file_alpaca_broker_v1_trading_position_proto_rawDescGZIP() []byte {
 	return file_alpaca_broker_v1_trading_position_proto_rawDescData
 }
 
-var file_alpaca_broker_v1_trading_position_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_alpaca_broker_v1_trading_position_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_alpaca_broker_v1_trading_position_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_alpaca_broker_v1_trading_position_proto_goTypes = []any{
-	(BrokerPositionSide)(0),                  // 0: alpaca.broker.v1.BrokerPositionSide
+	(*PositionUSDValues)(nil),                // 0: alpaca.broker.v1.PositionUSDValues
 	(*BrokerPosition)(nil),                   // 1: alpaca.broker.v1.BrokerPosition
 	(*ListTradingPositionsRequest)(nil),      // 2: alpaca.broker.v1.ListTradingPositionsRequest
 	(*ListTradingPositionsResponse)(nil),     // 3: alpaca.broker.v1.ListTradingPositionsResponse
@@ -782,7 +828,7 @@ var file_alpaca_broker_v1_trading_position_proto_goTypes = []any{
 	(*BrokerOrder)(nil),                      // 9: alpaca.broker.v1.BrokerOrder
 }
 var file_alpaca_broker_v1_trading_position_proto_depIdxs = []int32{
-	0, // 0: alpaca.broker.v1.BrokerPosition.side:type_name -> alpaca.broker.v1.BrokerPositionSide
+	0, // 0: alpaca.broker.v1.BrokerPosition.usd:type_name -> alpaca.broker.v1.PositionUSDValues
 	1, // 1: alpaca.broker.v1.ListTradingPositionsResponse.positions:type_name -> alpaca.broker.v1.BrokerPosition
 	9, // 2: alpaca.broker.v1.ClosedTradingPosition.order:type_name -> alpaca.broker.v1.BrokerOrder
 	7, // 3: alpaca.broker.v1.CloseAllTradingPositionsResponse.positions:type_name -> alpaca.broker.v1.ClosedTradingPosition
@@ -804,14 +850,13 @@ func file_alpaca_broker_v1_trading_position_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_broker_v1_trading_position_proto_rawDesc), len(file_alpaca_broker_v1_trading_position_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   8,
+			NumEnums:      0,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_alpaca_broker_v1_trading_position_proto_goTypes,
 		DependencyIndexes: file_alpaca_broker_v1_trading_position_proto_depIdxs,
-		EnumInfos:         file_alpaca_broker_v1_trading_position_proto_enumTypes,
 		MessageInfos:      file_alpaca_broker_v1_trading_position_proto_msgTypes,
 	}.Build()
 	File_alpaca_broker_v1_trading_position_proto = out.File

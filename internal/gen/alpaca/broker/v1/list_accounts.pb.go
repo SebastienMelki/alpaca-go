@@ -7,12 +7,13 @@
 package brokerv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -185,9 +186,9 @@ const file_alpaca_broker_v1_list_accounts_proto_rawDesc = "" +
 	"\bentities\x18\x06 \x01(\tB$\xba\xb5\x18\x12\n" +
 	"\x10contact,identityµ\x18\n" +
 	"\n" +
-	"\bentitiesR\bentities\"S\n" +
-	"\x14ListAccountsResponse\x12;\n" +
-	"\baccounts\x18\x01 \x03(\v2\x1f.alpaca.broker.v1.BrokerAccountR\baccountsB\xd7\x01\n" +
+	"\bentitiesR\bentities\"Y\n" +
+	"\x14ListAccountsResponse\x12A\n" +
+	"\baccounts\x18\x01 \x03(\v2\x1f.alpaca.broker.v1.BrokerAccountB\x04ȵ\x18\x01R\baccountsB\xd7\x01\n" +
 	"\x14com.alpaca.broker.v1B\x11ListAccountsProtoP\x01ZJgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1;brokerv1\xa2\x02\x03ABX\xaa\x02\x10Alpaca.Broker.V1\xca\x02\x10Alpaca\\Broker\\V1\xe2\x02\x1cAlpaca\\Broker\\V1\\GPBMetadata\xea\x02\x12Alpaca::Broker::V1b\x06proto3"
 
 var (

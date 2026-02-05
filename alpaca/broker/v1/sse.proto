@@ -1,0 +1,356 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "sebuf/http/annotations.proto";
+
+// SSEEvent represents a Server-Sent Event.
+message SSEEvent {
+  // Event ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Event type.
+  string event = 2 [(sebuf.http.field_examples) = { values: ["account_updated"] }];
+
+  // Event data (JSON string).
+  string data = 3 [(sebuf.http.field_examples) = { values: ["{\"account_id\": \"123\", \"status\": \"ACTIVE\"}"] }];
+
+  // Timestamp of the event.
+  string timestamp = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Retry interval in milliseconds.
+  int64 retry = 5 [(sebuf.http.field_examples) = { values: ["3000"] }];
+}
+
+// AccountUpdatedEvent represents an account update event.
+message AccountUpdatedEvent {
+  // Account ID.
+  string account_id = 1 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Account number.
+  string account_number = 2 [(sebuf.http.field_examples) = { values: ["ABC123456"] }];
+
+  // Updated status.
+  string status = 3 [(sebuf.http.field_examples) = { values: ["ACTIVE"] }];
+
+  // Timestamp of the update.
+  string at = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Status from (previous status).
+  string status_from = 5 [(sebuf.http.field_examples) = { values: ["SUBMITTED"] }];
+
+  // Status to (new status).
+  string status_to = 6 [(sebuf.http.field_examples) = { values: ["ACTIVE"] }];
+
+  // Reason for status change.
+  string reason = 7 [(sebuf.http.field_examples) = { values: ["KYC approved"] }];
+}
+
+// TradeUpdatedEvent represents a trade update event.
+message TradeUpdatedEvent {
+  // Event type (new, fill, partial_fill, canceled, etc.).
+  string event = 1 [(sebuf.http.field_examples) = { values: ["fill"] }];
+
+  // Execution ID.
+  string execution_id = 2 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Account ID.
+  string account_id = 3 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Order details (JSON).
+  string order = 4 [(sebuf.http.field_examples) = { values: ["{\"id\": \"...\", \"symbol\": \"AAPL\"}"] }];
+
+  // Timestamp of the event.
+  string at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Price at execution (for fills).
+  string price = 6 [(sebuf.http.field_examples) = { values: ["150.25"] }];
+
+  // Quantity at execution (for fills).
+  string qty = 7 [(sebuf.http.field_examples) = { values: ["100"] }];
+
+  // Position quantity after fill.
+  string position_qty = 8 [(sebuf.http.field_examples) = { values: ["200"] }];
+}
+
+// TransferUpdatedEvent represents a transfer update event.
+message TransferUpdatedEvent {
+  // Transfer ID.
+  string transfer_id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Account ID.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Transfer status.
+  string status = 3 [(sebuf.http.field_examples) = { values: ["COMPLETE"] }];
+
+  // Status from (previous status).
+  string status_from = 4 [(sebuf.http.field_examples) = { values: ["QUEUED"] }];
+
+  // Timestamp of the update.
+  string at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// JournalUpdatedEvent represents a journal update event.
+message JournalUpdatedEvent {
+  // Journal ID.
+  string journal_id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Entry type (JNLC or JNLS).
+  string entry_type = 2 [(sebuf.http.field_examples) = { values: ["JNLC"] }];
+
+  // Journal status.
+  string status = 3 [(sebuf.http.field_examples) = { values: ["executed"] }];
+
+  // Status from (previous status).
+  string status_from = 4 [(sebuf.http.field_examples) = { values: ["pending"] }];
+
+  // Timestamp of the update.
+  string at = 5 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// NonTradingActivityEvent represents a non-trading activity event.
+message NonTradingActivityEvent {
+  // Activity ID.
+  string activity_id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Account ID.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Activity type.
+  string activity_type = 3 [(sebuf.http.field_examples) = { values: ["DIV"] }];
+
+  // Date of the activity.
+  string date = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
+
+  // Net amount.
+  string net_amount = 5 [(sebuf.http.field_examples) = { values: ["25.00"] }];
+
+  // Symbol (if applicable).
+  string symbol = 6 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Quantity (if applicable).
+  string qty = 7 [(sebuf.http.field_examples) = { values: ["10"] }];
+
+  // Description.
+  string description = 8 [(sebuf.http.field_examples) = { values: ["Dividend payment"] }];
+}
+
+// SubscribeSSEResponse is the response stream for SSE events.
+// Note: This is a streaming response; in practice, the connection remains open
+// and events are sent as they occur.
+message SubscribeSSEResponse {
+  // List of events (in streaming, this would be one event at a time).
+  repeated SSEEvent events = 1;
+}
+
+// SubscribeAccountEventsRequest is the request to subscribe to account events.
+message SubscribeAccountEventsRequest {
+  // Starting timestamp (format: YYYY-MM-DD).
+  string since = 1 [
+    (sebuf.http.query) = { name: "since" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Ending timestamp (format: YYYY-MM-DD).
+  string until = 2 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Starting event ID (integer-based pagination).
+  int64 since_id = 3 [
+    (sebuf.http.query) = { name: "since_id" }
+  ];
+
+  // Ending event ID (integer-based pagination).
+  int64 until_id = 4 [
+    (sebuf.http.query) = { name: "until_id" }
+  ];
+
+  // Starting event ULID (ULID-based pagination).
+  string since_ulid = 5 [
+    (sebuf.http.query) = { name: "since_ulid" },
+    (sebuf.http.field_examples) = { values: ["01F84ZC0H0Q1QN7XPNWX44HF5J"] }
+  ];
+
+  // Ending event ULID (ULID-based pagination).
+  string until_ulid = 6 [
+    (sebuf.http.query) = { name: "until_ulid" },
+    (sebuf.http.field_examples) = { values: ["01F84ZC0H0Q1QN7XPNWX44HF5J"] }
+  ];
+
+  // Filter by specific event ID.
+  string id = 7 [
+    (sebuf.http.query) = { name: "id" }
+  ];
+}
+
+// SubscribeTradeEventsRequest is the request to subscribe to trade events.
+message SubscribeTradeEventsRequest {
+  // Starting timestamp (format: YYYY-MM-DD).
+  string since = 1 [
+    (sebuf.http.query) = { name: "since" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Ending timestamp (format: YYYY-MM-DD).
+  string until = 2 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Starting event ID (integer-based pagination).
+  int64 since_id = 3 [
+    (sebuf.http.query) = { name: "since_id" }
+  ];
+
+  // Ending event ID (integer-based pagination).
+  int64 until_id = 4 [
+    (sebuf.http.query) = { name: "until_id" }
+  ];
+
+  // Starting event ULID (ULID-based pagination).
+  string since_ulid = 5 [
+    (sebuf.http.query) = { name: "since_ulid" },
+    (sebuf.http.field_examples) = { values: ["01F84ZC0H0Q1QN7XPNWX44HF5J"] }
+  ];
+
+  // Ending event ULID (ULID-based pagination).
+  string until_ulid = 6 [
+    (sebuf.http.query) = { name: "until_ulid" },
+    (sebuf.http.field_examples) = { values: ["01F84ZC0H0Q1QN7XPNWX44HF5J"] }
+  ];
+}
+
+// SubscribeTransferEventsRequest is the request to subscribe to transfer events.
+message SubscribeTransferEventsRequest {
+  // Starting timestamp (format: YYYY-MM-DD).
+  string since = 1 [
+    (sebuf.http.query) = { name: "since" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Ending timestamp (format: YYYY-MM-DD).
+  string until = 2 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Starting event ID (integer-based pagination).
+  int64 since_id = 3 [
+    (sebuf.http.query) = { name: "since_id" }
+  ];
+
+  // Ending event ID (integer-based pagination).
+  int64 until_id = 4 [
+    (sebuf.http.query) = { name: "until_id" }
+  ];
+
+  // Starting event ULID (ULID-based pagination).
+  string since_ulid = 5 [
+    (sebuf.http.query) = { name: "since_ulid" },
+    (sebuf.http.field_examples) = { values: ["01F84ZC0H0Q1QN7XPNWX44HF5J"] }
+  ];
+
+  // Ending event ULID (ULID-based pagination).
+  string until_ulid = 6 [
+    (sebuf.http.query) = { name: "until_ulid" },
+    (sebuf.http.field_examples) = { values: ["01F84ZC0H0Q1QN7XPNWX44HF5J"] }
+  ];
+}
+
+// SubscribeJournalEventsRequest is the request to subscribe to journal events.
+message SubscribeJournalEventsRequest {
+  // Starting timestamp (format: YYYY-MM-DD).
+  string since = 1 [
+    (sebuf.http.query) = { name: "since" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Ending timestamp (format: YYYY-MM-DD).
+  string until = 2 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Starting event ID (integer-based pagination).
+  int64 since_id = 3 [
+    (sebuf.http.query) = { name: "since_id" }
+  ];
+
+  // Ending event ID (integer-based pagination).
+  int64 until_id = 4 [
+    (sebuf.http.query) = { name: "until_id" }
+  ];
+
+  // Starting event ULID (ULID-based pagination).
+  string since_ulid = 5 [
+    (sebuf.http.query) = { name: "since_ulid" },
+    (sebuf.http.field_examples) = { values: ["01F84ZC0H0Q1QN7XPNWX44HF5J"] }
+  ];
+
+  // Ending event ULID (ULID-based pagination).
+  string until_ulid = 6 [
+    (sebuf.http.query) = { name: "until_ulid" },
+    (sebuf.http.field_examples) = { values: ["01F84ZC0H0Q1QN7XPNWX44HF5J"] }
+  ];
+
+  // Filter by specific event ID.
+  string id = 7 [
+    (sebuf.http.query) = { name: "id" }
+  ];
+}
+
+// SubscribeNTAEventsRequest is the request to subscribe to non-trading activity events.
+message SubscribeNTAEventsRequest {
+  // Filter by specific event ID.
+  string id = 1 [
+    (sebuf.http.query) = { name: "id" }
+  ];
+
+  // Starting timestamp (format: YYYY-MM-DD).
+  string since = 2 [
+    (sebuf.http.query) = { name: "since" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Ending timestamp (format: YYYY-MM-DD).
+  string until = 3 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Starting event ID (integer-based pagination).
+  int64 since_id = 4 [
+    (sebuf.http.query) = { name: "since_id" }
+  ];
+
+  // Ending event ID (integer-based pagination).
+  int64 until_id = 5 [
+    (sebuf.http.query) = { name: "until_id" }
+  ];
+
+  // Starting event ULID (ULID-based pagination).
+  string since_ulid = 6 [
+    (sebuf.http.query) = { name: "since_ulid" },
+    (sebuf.http.field_examples) = { values: ["01F84ZC0H0Q1QN7XPNWX44HF5J"] }
+  ];
+
+  // Ending event ULID (ULID-based pagination).
+  string until_ulid = 7 [
+    (sebuf.http.query) = { name: "until_ulid" },
+    (sebuf.http.field_examples) = { values: ["01F84ZC0H0Q1QN7XPNWX44HF5J"] }
+  ];
+
+  // Whether to include preprocessing events.
+  bool include_preprocessing = 8 [
+    (sebuf.http.query) = { name: "include_preprocessing" }
+  ];
+
+  // ID used to link activities who share a sibling relationship.
+  string group_id = 9 [
+    (sebuf.http.query) = { name: "group_id" },
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}

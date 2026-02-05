@@ -1,0 +1,251 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+
+// BrokerCryptoWallet represents a crypto funding wallet for a broker account.
+message BrokerCryptoWallet {
+  // Blockchain network (ethereum, solana).
+  string chain = 1 [(sebuf.http.field_examples) = { values: ["ethereum"] }];
+
+  // Wallet address.
+  string address = 2 [(sebuf.http.field_examples) = { values: ["0x1234567890abcdef1234567890abcdef12345678"] }];
+
+  // Timestamp when the wallet was created.
+  string created_at = 3 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// BrokerCryptoTransfer represents a crypto transfer for a broker account.
+message BrokerCryptoTransfer {
+  // Transfer ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // On-chain transaction hash.
+  string tx_hash = 2 [(sebuf.http.field_examples) = { values: ["0xabc123def456..."] }];
+
+  // Transfer direction (INCOMING or OUTGOING).
+  string direction = 3 [(sebuf.http.field_examples) = { values: ["INCOMING"] }];
+
+  // Transfer status (PROCESSING, FAILED, COMPLETE).
+  string status = 4 [(sebuf.http.field_examples) = { values: ["COMPLETE"] }];
+
+  // Amount of the transfer.
+  string amount = 5 [(sebuf.http.field_examples) = { values: ["1.5"] }];
+
+  // USD value at time of transfer.
+  string usd_value = 6 [(sebuf.http.field_examples) = { values: ["75000.00"] }];
+
+  // Network fee.
+  string network_fee = 7 [(sebuf.http.field_examples) = { values: ["0.002"] }];
+
+  // Additional fees.
+  string fees = 8 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+
+  // Blockchain network.
+  string chain = 9 [(sebuf.http.field_examples) = { values: ["ethereum"] }];
+
+  // Crypto asset symbol.
+  string asset = 10 [(sebuf.http.field_examples) = { values: ["ETH"] }];
+
+  // Originating address.
+  string from_address = 11 [(sebuf.http.field_examples) = { values: ["0x1234..."] }];
+
+  // Destination address.
+  string to_address = 12 [(sebuf.http.field_examples) = { values: ["0x5678..."] }];
+
+  // Timestamp when transfer was created.
+  string created_at = 13 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+}
+
+// BrokerWhitelistedAddress represents a whitelisted crypto address for a broker account.
+message BrokerWhitelistedAddress {
+  // Whitelisted address ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }];
+
+  // Blockchain network.
+  string chain = 2 [(sebuf.http.field_examples) = { values: ["ethereum"] }];
+
+  // Crypto asset symbol.
+  string asset = 3 [(sebuf.http.field_examples) = { values: ["ETH"] }];
+
+  // Whitelisted address.
+  string address = 4 [(sebuf.http.field_examples) = { values: ["0x1234567890abcdef1234567890abcdef12345678"] }];
+
+  // Label for the address.
+  string label = 5 [(sebuf.http.field_examples) = { values: ["My External Wallet"] }];
+
+  // Timestamp when the address was created.
+  string created_at = 6 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Status of the whitelisted address.
+  string status = 7 [(sebuf.http.field_examples) = { values: ["active"] }];
+}
+
+// ListBrokerCryptoWalletsRequest is the request to list crypto wallets for an account.
+message ListBrokerCryptoWalletsRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Filter by asset symbol.
+  string asset = 2 [
+    (sebuf.http.query) = { name: "asset" },
+    (sebuf.http.field_examples) = { values: ["ETH"] }
+  ];
+
+  // Filter by network (ethereum, solana).
+  string network = 3 [
+    (sebuf.http.query) = { name: "network" },
+    (sebuf.http.field_examples) = { values: ["ethereum"] }
+  ];
+}
+
+// ListBrokerCryptoWalletsResponse is the response containing crypto wallets.
+message ListBrokerCryptoWalletsResponse {
+  // List of crypto wallets (or single wallet if asset specified).
+  repeated BrokerCryptoWallet wallets = 1 [(sebuf.http.unwrap) = true];
+}
+
+// ListBrokerCryptoTransfersRequest is the request to list crypto transfers for an account.
+message ListBrokerCryptoTransfersRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// ListBrokerCryptoTransfersResponse is the response containing crypto transfers.
+message ListBrokerCryptoTransfersResponse {
+  // List of crypto transfers.
+  repeated BrokerCryptoTransfer transfers = 1 [(sebuf.http.unwrap) = true];
+}
+
+// GetBrokerCryptoTransferRequest is the request to get a specific crypto transfer.
+message GetBrokerCryptoTransferRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The transfer ID (required).
+  string transfer_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// CreateBrokerCryptoTransferRequest is the request to create a crypto transfer.
+message CreateBrokerCryptoTransferRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Amount to transfer.
+  string amount = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["1.5"] }
+  ];
+
+  // Crypto asset symbol.
+  string asset = 3 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["ETH"] }
+  ];
+
+  // Destination address.
+  string address = 4 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["0x1234567890abcdef1234567890abcdef12345678"] }
+  ];
+
+  // Blockchain network.
+  string network = 5 [
+    (sebuf.http.field_examples) = { values: ["ethereum"] }
+  ];
+}
+
+// ListBrokerWhitelistedAddressesRequest is the request to list whitelisted addresses.
+message ListBrokerWhitelistedAddressesRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}
+
+// ListBrokerWhitelistedAddressesResponse is the response containing whitelisted addresses.
+message ListBrokerWhitelistedAddressesResponse {
+  // List of whitelisted addresses.
+  repeated BrokerWhitelistedAddress addresses = 1 [(sebuf.http.unwrap) = true];
+}
+
+// CreateBrokerWhitelistedAddressRequest is the request to create a whitelisted address.
+message CreateBrokerWhitelistedAddressRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Blockchain network.
+  string chain = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["ethereum"] }
+  ];
+
+  // Crypto asset symbol.
+  string asset = 3 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["ETH"] }
+  ];
+
+  // Address to whitelist.
+  string address = 4 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["0x1234567890abcdef1234567890abcdef12345678"] }
+  ];
+
+  // Label for the address.
+  string label = 5 [
+    (sebuf.http.field_examples) = { values: ["My External Wallet"] }
+  ];
+}
+
+// DeleteBrokerWhitelistedAddressRequest is the request to delete a whitelisted address.
+message DeleteBrokerWhitelistedAddressRequest {
+  // The account ID (required).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // The whitelisted address ID (required).
+  string whitelisted_address_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
+  ];
+}
+
+// DeleteBrokerWhitelistedAddressResponse is the response for deleting a whitelisted address.
+message DeleteBrokerWhitelistedAddressResponse {
+  // Whether the deletion was successful.
+  bool success = 1 [(sebuf.http.field_examples) = { values: ["true"] }];
+}

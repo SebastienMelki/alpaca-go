@@ -7,12 +7,14 @@
 package tradingv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -21,56 +23,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-// PositionSide represents the side of a position.
-type PositionSide int32
-
-const (
-	PositionSide_POSITION_SIDE_UNSPECIFIED PositionSide = 0
-	PositionSide_POSITION_SIDE_LONG        PositionSide = 1
-	PositionSide_POSITION_SIDE_SHORT       PositionSide = 2
-)
-
-// Enum value maps for PositionSide.
-var (
-	PositionSide_name = map[int32]string{
-		0: "POSITION_SIDE_UNSPECIFIED",
-		1: "POSITION_SIDE_LONG",
-		2: "POSITION_SIDE_SHORT",
-	}
-	PositionSide_value = map[string]int32{
-		"POSITION_SIDE_UNSPECIFIED": 0,
-		"POSITION_SIDE_LONG":        1,
-		"POSITION_SIDE_SHORT":       2,
-	}
-)
-
-func (x PositionSide) Enum() *PositionSide {
-	p := new(PositionSide)
-	*p = x
-	return p
-}
-
-func (x PositionSide) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (PositionSide) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_trading_v1_position_proto_enumTypes[0].Descriptor()
-}
-
-func (PositionSide) Type() protoreflect.EnumType {
-	return &file_alpaca_trading_v1_position_proto_enumTypes[0]
-}
-
-func (x PositionSide) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use PositionSide.Descriptor instead.
-func (PositionSide) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_trading_v1_position_proto_rawDescGZIP(), []int{0}
-}
 
 // Position represents a current holding in a security.
 type Position struct {
@@ -82,7 +34,7 @@ type Position struct {
 	// Exchange where the asset is traded.
 	Exchange string `protobuf:"bytes,3,opt,name=exchange,proto3" json:"exchange,omitempty"`
 	// Asset class.
-	AssetClass AssetClass `protobuf:"varint,4,opt,name=asset_class,json=assetClass,proto3,enum=alpaca.trading.v1.AssetClass" json:"asset_class,omitempty"`
+	AssetClass string `protobuf:"bytes,4,opt,name=asset_class,json=assetClass,proto3" json:"asset_class,omitempty"`
 	// Whether the asset is marginable.
 	AssetMarginable bool `protobuf:"varint,5,opt,name=asset_marginable,json=assetMarginable,proto3" json:"asset_marginable,omitempty"`
 	// Quantity of shares held.
@@ -90,7 +42,7 @@ type Position struct {
 	// Average entry price.
 	AvgEntryPrice string `protobuf:"bytes,7,opt,name=avg_entry_price,json=avgEntryPrice,proto3" json:"avg_entry_price,omitempty"`
 	// Position side (long or short).
-	Side PositionSide `protobuf:"varint,8,opt,name=side,proto3,enum=alpaca.trading.v1.PositionSide" json:"side,omitempty"`
+	Side string `protobuf:"bytes,8,opt,name=side,proto3" json:"side,omitempty"`
 	// Current market value.
 	MarketValue string `protobuf:"bytes,9,opt,name=market_value,json=marketValue,proto3" json:"market_value,omitempty"`
 	// Total cost basis.
@@ -166,11 +118,11 @@ func (x *Position) GetExchange() string {
 	return ""
 }
 
-func (x *Position) GetAssetClass() AssetClass {
+func (x *Position) GetAssetClass() string {
 	if x != nil {
 		return x.AssetClass
 	}
-	return AssetClass_ASSET_CLASS_UNSPECIFIED
+	return ""
 }
 
 func (x *Position) GetAssetMarginable() bool {
@@ -194,11 +146,11 @@ func (x *Position) GetAvgEntryPrice() string {
 	return ""
 }
 
-func (x *Position) GetSide() PositionSide {
+func (x *Position) GetSide() string {
 	if x != nil {
 		return x.Side
 	}
-	return PositionSide_POSITION_SIDE_UNSPECIFIED
+	return ""
 }
 
 func (x *Position) GetMarketValue() string {
@@ -275,17 +227,17 @@ var File_alpaca_trading_v1_position_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_position_proto_rawDesc = "" +
 	"\n" +
-	" alpaca/trading/v1/position.proto\x12\x11alpaca.trading.v1\x1a\x1csebuf/http/annotations.proto\x1a\x1dalpaca/trading/v1/order.proto\"\xcf\a\n" +
-	"\bPosition\x12E\n" +
-	"\basset_id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
+	" alpaca/trading/v1/position.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xdb\a\n" +
+	"\bPosition\x12M\n" +
+	"\basset_id\x18\x01 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$b0b6dd9d-8b9b-48a9-ba46-b9d54906e415R\aassetId\x12\"\n" +
 	"\x06symbol\x18\x02 \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
 	"\x04AAPLR\x06symbol\x12(\n" +
 	"\bexchange\x18\x03 \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06NASDAQR\bexchange\x12G\n" +
-	"\vasset_class\x18\x04 \x01(\x0e2\x1d.alpaca.trading.v1.AssetClassB\a\xba\xb5\x18\x03\n" +
-	"\x011R\n" +
+	"\x06NASDAQR\bexchange\x12U\n" +
+	"\vasset_class\x18\x04 \x01(\tB4\xbaH\"r R\x00R\tus_equityR\x06cryptoR\tus_option\xba\xb5\x18\v\n" +
+	"\tus_equityR\n" +
 	"assetClass\x125\n" +
 	"\x10asset_marginable\x18\x05 \x01(\bB\n" +
 	"\xba\xb5\x18\x06\n" +
@@ -293,9 +245,9 @@ const file_alpaca_trading_v1_position_proto_rawDesc = "" +
 	"\x03qty\x18\x06 \x01(\tB\t\xba\xb5\x18\x05\n" +
 	"\x03100R\x03qty\x124\n" +
 	"\x0favg_entry_price\x18\a \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06150.00R\ravgEntryPrice\x12<\n" +
-	"\x04side\x18\b \x01(\x0e2\x1f.alpaca.trading.v1.PositionSideB\a\xba\xb5\x18\x03\n" +
-	"\x011R\x04side\x121\n" +
+	"\x06150.00R\ravgEntryPrice\x122\n" +
+	"\x04side\x18\b \x01(\tB\x1e\xbaH\x11r\x0fR\x00R\x04longR\x05short\xba\xb5\x18\x06\n" +
+	"\x04longR\x04side\x121\n" +
 	"\fmarket_value\x18\t \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
 	"\b15500.00R\vmarketValue\x12-\n" +
@@ -319,11 +271,7 @@ const file_alpaca_trading_v1_position_proto_rawDesc = "" +
 	"\fchange_today\x18\x11 \x01(\tB\f\xba\xb5\x18\b\n" +
 	"\x060.0065R\vchangeToday\x12.\n" +
 	"\rqty_available\x18\x12 \x01(\tB\t\xba\xb5\x18\x05\n" +
-	"\x03100R\fqtyAvailable*^\n" +
-	"\fPositionSide\x12\x1d\n" +
-	"\x19POSITION_SIDE_UNSPECIFIED\x10\x00\x12\x16\n" +
-	"\x12POSITION_SIDE_LONG\x10\x01\x12\x17\n" +
-	"\x13POSITION_SIDE_SHORT\x10\x02B\xda\x01\n" +
+	"\x03100R\fqtyAvailableB\xda\x01\n" +
 	"\x15com.alpaca.trading.v1B\rPositionProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (
@@ -338,21 +286,16 @@ func file_alpaca_trading_v1_position_proto_rawDescGZIP() []byte {
 	return file_alpaca_trading_v1_position_proto_rawDescData
 }
 
-var file_alpaca_trading_v1_position_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_alpaca_trading_v1_position_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_alpaca_trading_v1_position_proto_goTypes = []any{
-	(PositionSide)(0), // 0: alpaca.trading.v1.PositionSide
-	(*Position)(nil),  // 1: alpaca.trading.v1.Position
-	(AssetClass)(0),   // 2: alpaca.trading.v1.AssetClass
+	(*Position)(nil), // 0: alpaca.trading.v1.Position
 }
 var file_alpaca_trading_v1_position_proto_depIdxs = []int32{
-	2, // 0: alpaca.trading.v1.Position.asset_class:type_name -> alpaca.trading.v1.AssetClass
-	0, // 1: alpaca.trading.v1.Position.side:type_name -> alpaca.trading.v1.PositionSide
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_trading_v1_position_proto_init() }
@@ -360,20 +303,18 @@ func file_alpaca_trading_v1_position_proto_init() {
 	if File_alpaca_trading_v1_position_proto != nil {
 		return
 	}
-	file_alpaca_trading_v1_order_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_trading_v1_position_proto_rawDesc), len(file_alpaca_trading_v1_position_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_alpaca_trading_v1_position_proto_goTypes,
 		DependencyIndexes: file_alpaca_trading_v1_position_proto_depIdxs,
-		EnumInfos:         file_alpaca_trading_v1_position_proto_enumTypes,
 		MessageInfos:      file_alpaca_trading_v1_position_proto_msgTypes,
 	}.Build()
 	File_alpaca_trading_v1_position_proto = out.File

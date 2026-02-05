@@ -7,13 +7,14 @@
 package tradingv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -23,13 +24,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// GetPositionRequest is the request to get a position by symbol.
+// GetPositionRequest is the request to get a position by symbol or asset ID.
 type GetPositionRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The symbol of the position (bound from path variable).
-	Symbol        string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// The symbol or asset ID of the position (bound from path variable).
+	SymbolOrAssetId string `protobuf:"bytes,1,opt,name=symbol_or_asset_id,json=symbolOrAssetId,proto3" json:"symbol_or_asset_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *GetPositionRequest) Reset() {
@@ -62,9 +63,9 @@ func (*GetPositionRequest) Descriptor() ([]byte, []int) {
 	return file_alpaca_trading_v1_get_position_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetPositionRequest) GetSymbol() string {
+func (x *GetPositionRequest) GetSymbolOrAssetId() string {
 	if x != nil {
-		return x.Symbol
+		return x.SymbolOrAssetId
 	}
 	return ""
 }
@@ -73,10 +74,11 @@ var File_alpaca_trading_v1_get_position_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_get_position_proto_rawDesc = "" +
 	"\n" +
-	"$alpaca/trading/v1/get_position.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"D\n" +
-	"\x12GetPositionRequest\x12.\n" +
-	"\x06symbol\x18\x01 \x01(\tB\x16\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18\f\xba\xb5\x18\x06\n" +
-	"\x04AAPLR\x06symbolB\xdd\x01\n" +
+	"$alpaca/trading/v1/get_position.proto\x12\x11alpaca.trading.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"y\n" +
+	"\x12GetPositionRequest\x12c\n" +
+	"\x12symbol_or_asset_id\x18\x01 \x01(\tB6\xbaH\x03\xc8\x01\x01\xba\xb5\x18,\n" +
+	"\x04AAPL\n" +
+	"$904837e3-3b76-47ec-b432-046db621571bR\x0fsymbolOrAssetIdB\xdd\x01\n" +
 	"\x15com.alpaca.trading.v1B\x10GetPositionProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (

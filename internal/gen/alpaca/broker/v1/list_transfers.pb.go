@@ -7,13 +7,14 @@
 package brokerv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -160,9 +161,9 @@ const file_alpaca_broker_v1_list_transfers_proto_rawDesc = "" +
 	"\x05limitR\x05limit\x12+\n" +
 	"\x06offset\x18\x04 \x01(\x05B\x13\xba\xb5\x18\x03\n" +
 	"\x010µ\x18\b\n" +
-	"\x06offsetR\x06offset\"Q\n" +
-	"\x15ListTransfersResponse\x128\n" +
-	"\ttransfers\x18\x01 \x03(\v2\x1a.alpaca.broker.v1.TransferR\ttransfersB\xd8\x01\n" +
+	"\x06offsetR\x06offset\"W\n" +
+	"\x15ListTransfersResponse\x12>\n" +
+	"\ttransfers\x18\x01 \x03(\v2\x1a.alpaca.broker.v1.TransferB\x04ȵ\x18\x01R\ttransfersB\xd8\x01\n" +
 	"\x14com.alpaca.broker.v1B\x12ListTransfersProtoP\x01ZJgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1;brokerv1\xa2\x02\x03ABX\xaa\x02\x10Alpaca.Broker.V1\xca\x02\x10Alpaca\\Broker\\V1\xe2\x02\x1cAlpaca\\Broker\\V1\\GPBMetadata\xea\x02\x12Alpaca::Broker::V1b\x06proto3"
 
 var (

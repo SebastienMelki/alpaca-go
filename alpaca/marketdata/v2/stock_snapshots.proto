@@ -31,7 +31,7 @@ message GetStockSnapshotsRequest {
 // GetStockSnapshotsResponse is the response containing stock snapshots.
 message GetStockSnapshotsResponse {
   // Map of symbol to snapshot.
-  map<string, Snapshot> snapshots = 1;
+  map<string, Snapshot> snapshots = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetStockSnapshotRequest is the request to get a single stock snapshot.

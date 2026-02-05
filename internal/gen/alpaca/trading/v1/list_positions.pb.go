@@ -7,11 +7,13 @@
 package tradingv1
 
 import (
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -108,10 +110,10 @@ var File_alpaca_trading_v1_list_positions_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_list_positions_proto_rawDesc = "" +
 	"\n" +
-	"&alpaca/trading/v1/list_positions.proto\x12\x11alpaca.trading.v1\x1a alpaca/trading/v1/position.proto\"\x16\n" +
-	"\x14ListPositionsRequest\"R\n" +
-	"\x15ListPositionsResponse\x129\n" +
-	"\tpositions\x18\x01 \x03(\v2\x1b.alpaca.trading.v1.PositionR\tpositionsB\xdf\x01\n" +
+	"&alpaca/trading/v1/list_positions.proto\x12\x11alpaca.trading.v1\x1a alpaca/trading/v1/position.proto\x1a\x1csebuf/http/annotations.proto\"\x16\n" +
+	"\x14ListPositionsRequest\"X\n" +
+	"\x15ListPositionsResponse\x12?\n" +
+	"\tpositions\x18\x01 \x03(\v2\x1b.alpaca.trading.v1.PositionB\x04ȵ\x18\x01R\tpositionsB\xdf\x01\n" +
 	"\x15com.alpaca.trading.v1B\x12ListPositionsProtoP\x01ZLgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/trading/v1;tradingv1\xa2\x02\x03ATX\xaa\x02\x11Alpaca.Trading.V1\xca\x02\x11Alpaca\\Trading\\V1\xe2\x02\x1dAlpaca\\Trading\\V1\\GPBMetadata\xea\x02\x13Alpaca::Trading::V1b\x06proto3"
 
 var (

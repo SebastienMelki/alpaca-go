@@ -7,13 +7,14 @@
 package tradingv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -87,6 +88,70 @@ func (x *UpdateWatchlistRequest) GetSymbols() []string {
 	return nil
 }
 
+// UpdateWatchlistByNameRequest is the request to update a watchlist by name.
+type UpdateWatchlistByNameRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The current watchlist name (bound from path variable).
+	CurrentName string `protobuf:"bytes,1,opt,name=current_name,json=currentName,proto3" json:"current_name,omitempty"`
+	// New watchlist name.
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	// New symbols (replaces existing symbols).
+	Symbols       []string `protobuf:"bytes,3,rep,name=symbols,proto3" json:"symbols,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateWatchlistByNameRequest) Reset() {
+	*x = UpdateWatchlistByNameRequest{}
+	mi := &file_alpaca_trading_v1_update_watchlist_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateWatchlistByNameRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateWatchlistByNameRequest) ProtoMessage() {}
+
+func (x *UpdateWatchlistByNameRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_trading_v1_update_watchlist_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateWatchlistByNameRequest.ProtoReflect.Descriptor instead.
+func (*UpdateWatchlistByNameRequest) Descriptor() ([]byte, []int) {
+	return file_alpaca_trading_v1_update_watchlist_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *UpdateWatchlistByNameRequest) GetCurrentName() string {
+	if x != nil {
+		return x.CurrentName
+	}
+	return ""
+}
+
+func (x *UpdateWatchlistByNameRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *UpdateWatchlistByNameRequest) GetSymbols() []string {
+	if x != nil {
+		return x.Symbols
+	}
+	return nil
+}
+
 var File_alpaca_trading_v1_update_watchlist_proto protoreflect.FileDescriptor
 
 const file_alpaca_trading_v1_update_watchlist_proto_rawDesc = "" +
@@ -95,6 +160,15 @@ const file_alpaca_trading_v1_update_watchlist_proto_rawDesc = "" +
 	"\x16UpdateWatchlistRequest\x12X\n" +
 	"\fwatchlist_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$fb306e55-16d3-4f7c-9b2b-dcefc74e31a1R\vwatchlistId\x124\n" +
+	"\x04name\x18\x02 \x01(\tB \xbaH\x04r\x02\x18@\xba\xb5\x18\x15\n" +
+	"\x13Updated Tech StocksR\x04name\x121\n" +
+	"\asymbols\x18\x03 \x03(\tB\x17\xba\xb5\x18\x13\n" +
+	"\x04AAPL\n" +
+	"\x05GOOGL\n" +
+	"\x04MSFTR\asymbols\"\xc6\x01\n" +
+	"\x1cUpdateWatchlistByNameRequest\x12=\n" +
+	"\fcurrent_name\x18\x01 \x01(\tB\x1a\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x10\n" +
+	"\x0eMy Tech StocksR\vcurrentName\x124\n" +
 	"\x04name\x18\x02 \x01(\tB \xbaH\x04r\x02\x18@\xba\xb5\x18\x15\n" +
 	"\x13Updated Tech StocksR\x04name\x121\n" +
 	"\asymbols\x18\x03 \x03(\tB\x17\xba\xb5\x18\x13\n" +
@@ -115,9 +189,10 @@ func file_alpaca_trading_v1_update_watchlist_proto_rawDescGZIP() []byte {
 	return file_alpaca_trading_v1_update_watchlist_proto_rawDescData
 }
 
-var file_alpaca_trading_v1_update_watchlist_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_alpaca_trading_v1_update_watchlist_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_alpaca_trading_v1_update_watchlist_proto_goTypes = []any{
-	(*UpdateWatchlistRequest)(nil), // 0: alpaca.trading.v1.UpdateWatchlistRequest
+	(*UpdateWatchlistRequest)(nil),       // 0: alpaca.trading.v1.UpdateWatchlistRequest
+	(*UpdateWatchlistByNameRequest)(nil), // 1: alpaca.trading.v1.UpdateWatchlistByNameRequest
 }
 var file_alpaca_trading_v1_update_watchlist_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -138,7 +213,7 @@ func file_alpaca_trading_v1_update_watchlist_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_trading_v1_update_watchlist_proto_rawDesc), len(file_alpaca_trading_v1_update_watchlist_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

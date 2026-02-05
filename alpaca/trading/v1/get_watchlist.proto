@@ -14,3 +14,13 @@ message GetWatchlistRequest {
     (sebuf.http.field_examples) = { values: ["fb306e55-16d3-4f7c-9b2b-dcefc74e31a1"] }
   ];
 }
+
+// GetWatchlistByNameRequest is the request to get a watchlist by name.
+message GetWatchlistByNameRequest {
+  // The watchlist name (required).
+  string name = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "name" },
+    (sebuf.http.field_examples) = { values: ["My Tech Stocks"] }
+  ];
+}

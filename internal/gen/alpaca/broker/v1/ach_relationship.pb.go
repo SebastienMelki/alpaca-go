@@ -7,12 +7,14 @@
 package brokerv1
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -21,62 +23,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-// ACHRelationshipStatus represents the status of an ACH relationship.
-type ACHRelationshipStatus int32
-
-const (
-	ACHRelationshipStatus_ACH_RELATIONSHIP_STATUS_UNSPECIFIED      ACHRelationshipStatus = 0
-	ACHRelationshipStatus_ACH_RELATIONSHIP_STATUS_QUEUED           ACHRelationshipStatus = 1
-	ACHRelationshipStatus_ACH_RELATIONSHIP_STATUS_SENT_TO_CLEARING ACHRelationshipStatus = 2
-	ACHRelationshipStatus_ACH_RELATIONSHIP_STATUS_APPROVED         ACHRelationshipStatus = 3
-	ACHRelationshipStatus_ACH_RELATIONSHIP_STATUS_CANCELED         ACHRelationshipStatus = 4
-)
-
-// Enum value maps for ACHRelationshipStatus.
-var (
-	ACHRelationshipStatus_name = map[int32]string{
-		0: "ACH_RELATIONSHIP_STATUS_UNSPECIFIED",
-		1: "ACH_RELATIONSHIP_STATUS_QUEUED",
-		2: "ACH_RELATIONSHIP_STATUS_SENT_TO_CLEARING",
-		3: "ACH_RELATIONSHIP_STATUS_APPROVED",
-		4: "ACH_RELATIONSHIP_STATUS_CANCELED",
-	}
-	ACHRelationshipStatus_value = map[string]int32{
-		"ACH_RELATIONSHIP_STATUS_UNSPECIFIED":      0,
-		"ACH_RELATIONSHIP_STATUS_QUEUED":           1,
-		"ACH_RELATIONSHIP_STATUS_SENT_TO_CLEARING": 2,
-		"ACH_RELATIONSHIP_STATUS_APPROVED":         3,
-		"ACH_RELATIONSHIP_STATUS_CANCELED":         4,
-	}
-)
-
-func (x ACHRelationshipStatus) Enum() *ACHRelationshipStatus {
-	p := new(ACHRelationshipStatus)
-	*p = x
-	return p
-}
-
-func (x ACHRelationshipStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (ACHRelationshipStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_alpaca_broker_v1_ach_relationship_proto_enumTypes[0].Descriptor()
-}
-
-func (ACHRelationshipStatus) Type() protoreflect.EnumType {
-	return &file_alpaca_broker_v1_ach_relationship_proto_enumTypes[0]
-}
-
-func (x ACHRelationshipStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use ACHRelationshipStatus.Descriptor instead.
-func (ACHRelationshipStatus) EnumDescriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_ach_relationship_proto_rawDescGZIP(), []int{0}
-}
 
 // ACHRelationship represents a bank account connection for ACH transfers.
 type ACHRelationship struct {
@@ -90,7 +36,7 @@ type ACHRelationship struct {
 	// Last update timestamp (RFC 3339).
 	UpdatedAt string `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	// Relationship status.
-	Status ACHRelationshipStatus `protobuf:"varint,5,opt,name=status,proto3,enum=alpaca.broker.v1.ACHRelationshipStatus" json:"status,omitempty"`
+	Status string `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	// Account owner name.
 	AccountOwnerName string `protobuf:"bytes,6,opt,name=account_owner_name,json=accountOwnerName,proto3" json:"account_owner_name,omitempty"`
 	// Bank account type (CHECKING, SAVINGS).
@@ -165,11 +111,11 @@ func (x *ACHRelationship) GetUpdatedAt() string {
 	return ""
 }
 
-func (x *ACHRelationship) GetStatus() ACHRelationshipStatus {
+func (x *ACHRelationship) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
-	return ACHRelationshipStatus_ACH_RELATIONSHIP_STATUS_UNSPECIFIED
+	return ""
 }
 
 func (x *ACHRelationship) GetAccountOwnerName() string {
@@ -218,21 +164,22 @@ var File_alpaca_broker_v1_ach_relationship_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v1_ach_relationship_proto_rawDesc = "" +
 	"\n" +
-	"'alpaca/broker/v1/ach_relationship.proto\x12\x10alpaca.broker.v1\x1a\x1csebuf/http/annotations.proto\"\xac\x05\n" +
-	"\x0fACHRelationship\x12:\n" +
-	"\x02id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
-	"$f5fbd77f-7b7e-4b91-8e8a-aaaa00000001R\x02id\x12I\n" +
+	"'alpaca/broker/v1/ach_relationship.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\x9a\x05\n" +
+	"\x0fACHRelationship\x12B\n" +
+	"\x02id\x18\x01 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
+	"$f5fbd77f-7b7e-4b91-8e8a-aaaa00000001R\x02id\x12Q\n" +
 	"\n" +
-	"account_id\x18\x02 \x01(\tB*\xba\xb5\x18&\n" +
+	"account_id\x18\x02 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
 	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\x129\n" +
 	"\n" +
 	"created_at\x18\x03 \x01(\tB\x1a\xba\xb5\x18\x16\n" +
 	"\x142024-01-15T10:30:00ZR\tcreatedAt\x129\n" +
 	"\n" +
 	"updated_at\x18\x04 \x01(\tB\x1a\xba\xb5\x18\x16\n" +
-	"\x142024-01-15T10:30:00ZR\tupdatedAt\x12H\n" +
-	"\x06status\x18\x05 \x01(\x0e2'.alpaca.broker.v1.ACHRelationshipStatusB\a\xba\xb5\x18\x03\n" +
-	"\x013R\x06status\x12<\n" +
+	"\x142024-01-15T10:30:00ZR\tupdatedAt\x12&\n" +
+	"\x06status\x18\x05 \x01(\tB\x0e\xba\xb5\x18\n" +
+	"\n" +
+	"\bAPPROVEDR\x06status\x12<\n" +
 	"\x12account_owner_name\x18\x06 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
 	"\bJohn DoeR\x10accountOwnerName\x12:\n" +
@@ -246,13 +193,7 @@ const file_alpaca_broker_v1_ach_relationship_proto_rawDesc = "" +
 	"\bnickname\x18\n" +
 	" \x01(\tB\x11\xba\xb5\x18\r\n" +
 	"\vMy CheckingR\bnickname\x12'\n" +
-	"\x0fprocessor_token\x18\v \x01(\tR\x0eprocessorToken*\xde\x01\n" +
-	"\x15ACHRelationshipStatus\x12'\n" +
-	"#ACH_RELATIONSHIP_STATUS_UNSPECIFIED\x10\x00\x12\"\n" +
-	"\x1eACH_RELATIONSHIP_STATUS_QUEUED\x10\x01\x12,\n" +
-	"(ACH_RELATIONSHIP_STATUS_SENT_TO_CLEARING\x10\x02\x12$\n" +
-	" ACH_RELATIONSHIP_STATUS_APPROVED\x10\x03\x12$\n" +
-	" ACH_RELATIONSHIP_STATUS_CANCELED\x10\x04B\xda\x01\n" +
+	"\x0fprocessor_token\x18\v \x01(\tR\x0eprocessorTokenB\xda\x01\n" +
 	"\x14com.alpaca.broker.v1B\x14AchRelationshipProtoP\x01ZJgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1;brokerv1\xa2\x02\x03ABX\xaa\x02\x10Alpaca.Broker.V1\xca\x02\x10Alpaca\\Broker\\V1\xe2\x02\x1cAlpaca\\Broker\\V1\\GPBMetadata\xea\x02\x12Alpaca::Broker::V1b\x06proto3"
 
 var (
@@ -267,19 +208,16 @@ func file_alpaca_broker_v1_ach_relationship_proto_rawDescGZIP() []byte {
 	return file_alpaca_broker_v1_ach_relationship_proto_rawDescData
 }
 
-var file_alpaca_broker_v1_ach_relationship_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_alpaca_broker_v1_ach_relationship_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_alpaca_broker_v1_ach_relationship_proto_goTypes = []any{
-	(ACHRelationshipStatus)(0), // 0: alpaca.broker.v1.ACHRelationshipStatus
-	(*ACHRelationship)(nil),    // 1: alpaca.broker.v1.ACHRelationship
+	(*ACHRelationship)(nil), // 0: alpaca.broker.v1.ACHRelationship
 }
 var file_alpaca_broker_v1_ach_relationship_proto_depIdxs = []int32{
-	0, // 0: alpaca.broker.v1.ACHRelationship.status:type_name -> alpaca.broker.v1.ACHRelationshipStatus
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_broker_v1_ach_relationship_proto_init() }
@@ -292,14 +230,13 @@ func file_alpaca_broker_v1_ach_relationship_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_broker_v1_ach_relationship_proto_rawDesc), len(file_alpaca_broker_v1_ach_relationship_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_alpaca_broker_v1_ach_relationship_proto_goTypes,
 		DependencyIndexes: file_alpaca_broker_v1_ach_relationship_proto_depIdxs,
-		EnumInfos:         file_alpaca_broker_v1_ach_relationship_proto_enumTypes,
 		MessageInfos:      file_alpaca_broker_v1_ach_relationship_proto_msgTypes,
 	}.Build()
 	File_alpaca_broker_v1_ach_relationship_proto = out.File

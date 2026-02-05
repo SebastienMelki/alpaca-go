@@ -2,16 +2,23 @@ syntax = "proto3";
 
 package alpaca.trading.v1;
 
+import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 import "alpaca/trading/v1/asset.proto";
 
 // Watchlist represents a list of watched assets.
 message Watchlist {
   // Watchlist ID (UUID).
-  string id = 1 [(sebuf.http.field_examples) = { values: ["fb306e55-16d3-4f7c-9b2b-dcefc74e31a1"] }];
+  string id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["fb306e55-16d3-4f7c-9b2b-dcefc74e31a1"] }
+  ];
 
   // Account ID (UUID).
-  string account_id = 2 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+  string account_id = 2 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
 
   // Watchlist name.
   string name = 3 [(sebuf.http.field_examples) = { values: ["Tech Stocks"] }];

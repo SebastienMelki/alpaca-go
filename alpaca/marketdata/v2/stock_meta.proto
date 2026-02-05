@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package alpaca.marketdata.v2;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// GetStockMetaConditionsRequest is the request to get stock condition code mappings.
+message GetStockMetaConditionsRequest {
+  // The type of ticks (required). Supported values: trade, quote.
+  string ticktype = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["trade"] }
+  ];
+
+  // The one character name of the tape (required). Supported values: A, B, C.
+  string tape = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "tape" },
+    (sebuf.http.field_examples) = { values: ["A"] }
+  ];
+}
+
+// GetStockMetaConditionsResponse is the response containing stock condition code mappings.
+message GetStockMetaConditionsResponse {
+  // Map of condition code to human-readable description.
+  map<string, string> conditions = 1 [(sebuf.http.unwrap) = true];
+}
+
+// GetStockMetaExchangesRequest is the request to get stock exchange code mappings.
+message GetStockMetaExchangesRequest {}
+
+// GetStockMetaExchangesResponse is the response containing stock exchange code mappings.
+message GetStockMetaExchangesResponse {
+  // Map of exchange code to exchange name.
+  map<string, string> exchanges = 1 [(sebuf.http.unwrap) = true];
+}

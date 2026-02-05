@@ -51,11 +51,23 @@ message GetStockTradesRequest {
     (sebuf.http.query) = { name: "sort" },
     (sebuf.http.field_examples) = { values: ["asc"] }
   ];
+
+  // As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
+  string asof = 8 [
+    (sebuf.http.query) = { name: "asof" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Currency for response prices (ISO 4217).
+  string currency = 9 [
+    (sebuf.http.query) = { name: "currency" },
+    (sebuf.http.field_examples) = { values: ["USD"] }
+  ];
 }
 
 // StockTradesList is a list of trades for a single symbol.
 message StockTradesList {
-  repeated Trade trades = 1;
+  repeated Trade trades = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetStockTradesResponse is the response containing stock trades.
@@ -93,4 +105,104 @@ message GetLatestStockTradesRequest {
 message GetLatestStockTradesResponse {
   // Map of symbol to latest trade.
   map<string, Trade> trades = 1;
+}
+
+// GetStockTradesSingleRequest is the request to get historical trades for a single symbol.
+message GetStockTradesSingleRequest {
+  // The stock symbol (required).
+  string symbol = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Start timestamp (RFC 3339 or YYYY-MM-DD).
+  string start = 2 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15T09:30:00Z"] }
+  ];
+
+  // End timestamp (RFC 3339 or YYYY-MM-DD).
+  string end = 3 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15T16:00:00Z"] }
+  ];
+
+  // Maximum number of trades to return (1-10000, default 1000).
+  int32 limit = 4 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 10000 },
+    (sebuf.http.field_examples) = { values: ["1000"] }
+  ];
+
+  // Data feed (iex, sip).
+  string feed = 5 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["sip"] }
+  ];
+
+  // Page token for pagination.
+  string page_token = 6 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Sort order (asc, desc).
+  string sort = 7 [
+    (sebuf.http.query) = { name: "sort" },
+    (sebuf.http.field_examples) = { values: ["asc"] }
+  ];
+
+  // As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
+  string asof = 8 [
+    (sebuf.http.query) = { name: "asof" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Currency for response prices (ISO 4217).
+  string currency = 9 [
+    (sebuf.http.query) = { name: "currency" },
+    (sebuf.http.field_examples) = { values: ["USD"] }
+  ];
+}
+
+// GetStockTradesSingleResponse is the response containing trades for a single symbol.
+message GetStockTradesSingleResponse {
+  // List of trades.
+  repeated Trade trades = 1 [(sebuf.http.unwrap) = true];
+
+  // The symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Next page token.
+  string next_page_token = 3 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+}
+
+// GetLatestStockTradeSingleRequest is the request to get the latest trade for a single symbol.
+message GetLatestStockTradeSingleRequest {
+  // The stock symbol (required).
+  string symbol = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Data feed (iex, sip).
+  string feed = 2 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["sip"] }
+  ];
+
+  // Currency for the response prices.
+  string currency = 3 [
+    (sebuf.http.query) = { name: "currency" },
+    (sebuf.http.field_examples) = { values: ["USD"] }
+  ];
+}
+
+// GetLatestStockTradeSingleResponse is the response containing the latest trade for a single symbol.
+message GetLatestStockTradeSingleResponse {
+  // The latest trade.
+  Trade trade = 1;
+
+  // The symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
 }

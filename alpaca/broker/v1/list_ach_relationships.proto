@@ -25,5 +25,5 @@ message ListACHRelationshipsRequest {
 // ListACHRelationshipsResponse is the response containing ACH relationships.
 message ListACHRelationshipsResponse {
   // List of ACH relationships.
-  repeated ACHRelationship ach_relationships = 1;
+  repeated ACHRelationship ach_relationships = 1 [(sebuf.http.unwrap) = true];
 }
