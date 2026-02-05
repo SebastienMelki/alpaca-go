@@ -64,6 +64,18 @@ message GetStockBarsRequest {
     (sebuf.http.query) = { name: "sort" },
     (sebuf.http.field_examples) = { values: ["asc"] }
   ];
+
+  // As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
+  string asof = 10 [
+    (sebuf.http.query) = { name: "asof" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Currency for response prices (ISO 4217).
+  string currency = 11 [
+    (sebuf.http.query) = { name: "currency" },
+    (sebuf.http.field_examples) = { values: ["USD"] }
+  ];
 }
 
 // StockBarsMap is a map of symbol to bars.
@@ -112,4 +124,117 @@ message GetLatestStockBarsRequest {
 message GetLatestStockBarsResponse {
   // Map of symbol to latest bar.
   map<string, Bar> bars = 1;
+}
+
+// GetStockBarsSingleRequest is the request to get historical bars for a single symbol.
+message GetStockBarsSingleRequest {
+  // The stock symbol (required).
+  string symbol = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Bar timeframe (1Min, 5Min, 15Min, 30Min, 1Hour, 4Hour, 1Day, 1Week, 1Month).
+  string timeframe = 2 [
+    (buf.validate.field).required = true,
+    (sebuf.http.query) = { name: "timeframe" },
+    (sebuf.http.field_examples) = { values: ["1Day"] }
+  ];
+
+  // Start timestamp (RFC 3339 or YYYY-MM-DD).
+  string start = 3 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01"] }
+  ];
+
+  // End timestamp (RFC 3339 or YYYY-MM-DD).
+  string end = 4 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31"] }
+  ];
+
+  // Maximum number of bars to return (1-10000, default 1000).
+  int32 limit = 5 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 10000 },
+    (sebuf.http.field_examples) = { values: ["1000"] }
+  ];
+
+  // Adjustment type (raw, split, dividend, all).
+  string adjustment = 6 [
+    (sebuf.http.query) = { name: "adjustment" },
+    (sebuf.http.field_examples) = { values: ["raw"] }
+  ];
+
+  // Data feed (iex, sip).
+  string feed = 7 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["sip"] }
+  ];
+
+  // Page token for pagination.
+  string page_token = 8 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["token123"] }
+  ];
+
+  // Sort order (asc, desc).
+  string sort = 9 [
+    (sebuf.http.query) = { name: "sort" },
+    (sebuf.http.field_examples) = { values: ["asc"] }
+  ];
+
+  // As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
+  string asof = 10 [
+    (sebuf.http.query) = { name: "asof" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Currency for response prices (ISO 4217).
+  string currency = 11 [
+    (sebuf.http.query) = { name: "currency" },
+    (sebuf.http.field_examples) = { values: ["USD"] }
+  ];
+}
+
+// GetStockBarsSingleResponse is the response containing bars for a single symbol.
+message GetStockBarsSingleResponse {
+  // List of bars.
+  repeated Bar bars = 1 [(sebuf.http.unwrap) = true];
+
+  // The symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Next page token.
+  string next_page_token = 3 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+}
+
+// GetLatestStockBarSingleRequest is the request to get the latest bar for a single symbol.
+message GetLatestStockBarSingleRequest {
+  // The stock symbol (required).
+  string symbol = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+
+  // Data feed (iex, sip).
+  string feed = 2 [
+    (sebuf.http.query) = { name: "feed" },
+    (sebuf.http.field_examples) = { values: ["sip"] }
+  ];
+
+  // Currency for the response prices.
+  string currency = 3 [
+    (sebuf.http.query) = { name: "currency" },
+    (sebuf.http.field_examples) = { values: ["USD"] }
+  ];
+}
+
+// GetLatestStockBarSingleResponse is the response containing the latest bar for a single symbol.
+message GetLatestStockBarSingleResponse {
+  // The latest bar.
+  Bar bar = 1;
+
+  // The symbol.
+  string symbol = 2 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
 }

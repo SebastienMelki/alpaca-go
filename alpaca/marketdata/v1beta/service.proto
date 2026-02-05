@@ -21,7 +21,8 @@ import "alpaca/marketdata/v1beta/screener.proto";
 import "alpaca/marketdata/v1beta/corporate_actions.proto";
 import "alpaca/marketdata/v1beta/forex.proto";
 import "alpaca/marketdata/v1beta/fixed_income.proto";
-import "alpaca/marketdata/v1beta/logos.proto";
+// Note: logos.proto types are generated but GetLogo RPC is implemented as
+// a custom method in pkg/marketdata/get_logo.go (binary PNG handling).
 
 // MarketDataBetaService provides the Alpaca Market Data Beta APIs.
 // This includes crypto, options, news, screener, forex, fixed income, and logos.
@@ -322,13 +323,6 @@ service MarketDataBetaService {
   // ============================================
   // Logos (v1beta1)
   // ============================================
-
-  // GetLogo retrieves the company logo image for a symbol.
-  // GET /v1beta1/logos/{symbol}
-  rpc GetLogo(GetLogoRequest) returns (GetLogoResponse) {
-    option (sebuf.http.config) = {
-      path: "/v1beta1/logos/{symbol}"
-      method: HTTP_METHOD_GET
-    };
-  }
+  // Note: GetLogo is implemented as a custom method in pkg/marketdata/get_logo.go
+  // because it returns binary PNG data instead of JSON.
 }

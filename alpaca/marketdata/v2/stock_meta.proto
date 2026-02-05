@@ -24,7 +24,7 @@ message GetStockMetaConditionsRequest {
 // GetStockMetaConditionsResponse is the response containing stock condition code mappings.
 message GetStockMetaConditionsResponse {
   // Map of condition code to human-readable description.
-  map<string, string> conditions = 1;
+  map<string, string> conditions = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetStockMetaExchangesRequest is the request to get stock exchange code mappings.
@@ -33,5 +33,5 @@ message GetStockMetaExchangesRequest {}
 // GetStockMetaExchangesResponse is the response containing stock exchange code mappings.
 message GetStockMetaExchangesResponse {
   // Map of exchange code to exchange name.
-  map<string, string> exchanges = 1;
+  map<string, string> exchanges = 1 [(sebuf.http.unwrap) = true];
 }
