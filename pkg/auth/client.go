@@ -61,19 +61,3 @@ type (
 	IssueTokenResponse = authv1.IssueTokenResponse
 )
 
-// =============================================================================
-// Enums
-// =============================================================================
-
-type (
-	GrantType = authv1.GrantType
-)
-
-// =============================================================================
-// Enum Value Constants - GrantType
-// =============================================================================
-
-const (
-	GrantType_GRANT_TYPE_UNSPECIFIED        = authv1.GrantType_GRANT_TYPE_UNSPECIFIED
-	GrantType_GRANT_TYPE_CLIENT_CREDENTIALS = authv1.GrantType_GRANT_TYPE_CLIENT_CREDENTIALS
-)
