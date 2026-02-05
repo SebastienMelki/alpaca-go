@@ -331,9 +331,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/FundingDetails'
+                                $ref: '#/components/schemas/ListFundingDetailsResponse'
                 "400":
                     description: Validation error
                     content:
@@ -830,12 +828,9 @@ components:
                 - accountId
             description: ListFundingDetailsRequest is the request to list funding details.
         ListFundingDetailsResponse:
-            type: object
-            properties:
-                fundingDetails:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/FundingDetails'
+            type: array
+            items:
+                $ref: '#/components/schemas/FundingDetails'
             description: ListFundingDetailsResponse is the response containing funding details.
         FundingDetails:
             type: object

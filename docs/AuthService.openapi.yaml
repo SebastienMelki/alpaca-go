@@ -75,6 +75,8 @@ components:
                     type: string
                     examples:
                         - client_credentials
+                    enum:
+                        - client_credentials
                     description: Grant type (required). Currently only "client_credentials" is supported.
                     example: client_credentials
                 clientId:

@@ -1676,66 +1676,6 @@ paths:
                                         type: string
                                     code:
                                         type: integer
-    /v1beta1/logos/{symbol}:
-        get:
-            tags:
-                - MarketDataBetaService
-            summary: GetLogo
-            description: |-
-                GetLogo retrieves the company logo image for a symbol.
-                 GET /v1beta1/logos/{symbol}
-            operationId: GetLogo
-            parameters:
-                - name: APCA-API-KEY-ID
-                  in: header
-                  description: Alpaca API key ID
-                  required: true
-                  schema:
-                    type: string
-                    example: PKXXXXXXXXXXXXXXXXXX
-                - name: APCA-API-SECRET-KEY
-                  in: header
-                  description: Alpaca API secret key
-                  required: true
-                  schema:
-                    type: string
-                    example: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                - name: symbol
-                  in: path
-                  description: A unique series of letters assigned to a security for trading purposes (required).
-                  required: true
-                  schema:
-                    type: string
-                - name: placeholder
-                  in: query
-                  description: Whether to return a placeholder image if the logo is not found.
-                  required: false
-                  schema:
-                    type: boolean
-            responses:
-                "200":
-                    description: Successful response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetLogoResponse'
-                "400":
-                    description: Validation error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ValidationError'
-                default:
-                    description: Error response
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
 components:
     schemas:
         FieldViolation:
@@ -1845,12 +1785,9 @@ components:
                 value:
                     $ref: '#/components/schemas/OptionBarsList'
         CryptoBarsList:
-            type: object
-            properties:
-                bars:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/CryptoBar'
+            type: array
+            items:
+                $ref: '#/components/schemas/CryptoBar'
             description: CryptoBarsList is a list of bars for a single symbol.
         CryptoBar:
             type: object
@@ -2014,12 +1951,9 @@ components:
                 value:
                     $ref: '#/components/schemas/OptionTrade'
         CryptoTradesList:
-            type: object
-            properties:
-                trades:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/CryptoTrade'
+            type: array
+            items:
+                $ref: '#/components/schemas/CryptoTrade'
             description: CryptoTradesList is a list of trades for a single symbol.
         CryptoTrade:
             type: object
@@ -2161,12 +2095,9 @@ components:
                 value:
                     $ref: '#/components/schemas/OptionQuote'
         CryptoQuotesList:
-            type: object
-            properties:
-                quotes:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/CryptoQuote'
+            type: array
+            items:
+                $ref: '#/components/schemas/CryptoQuote'
             description: CryptoQuotesList is a list of quotes for a single symbol.
         CryptoQuote:
             type: object
@@ -2424,12 +2355,9 @@ components:
                     example: YWJjZGVm
             description: GetOptionBarsResponse is the response containing option bars.
         OptionBarsList:
-            type: object
-            properties:
-                bars:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/OptionBar'
+            type: array
+            items:
+                $ref: '#/components/schemas/OptionBar'
             description: OptionBarsList is a list of bars for a single option symbol.
         OptionBar:
             type: object
@@ -2553,12 +2481,9 @@ components:
                     example: YWJjZGVm
             description: GetOptionTradesResponse is the response containing option trades.
         OptionTradesList:
-            type: object
-            properties:
-                trades:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/OptionTrade'
+            type: array
+            items:
+                $ref: '#/components/schemas/OptionTrade'
             description: OptionTradesList is a list of trades for a single option symbol.
         OptionTrade:
             type: object
@@ -2893,12 +2818,8 @@ components:
             description: GetOptionMetaConditionsRequest is the request to get option condition code mappings.
         GetOptionMetaConditionsResponse:
             type: object
-            properties:
-                conditions:
-                    type: object
-                    additionalProperties:
-                        type: string
-                    description: Map of condition code to human-readable description.
+            additionalProperties:
+                type: string
             description: GetOptionMetaConditionsResponse is the response containing option condition code mappings.
         ConditionsEntry:
             type: object
@@ -2912,12 +2833,8 @@ components:
             description: GetOptionMetaExchangesRequest is the request to get option exchange code mappings.
         GetOptionMetaExchangesResponse:
             type: object
-            properties:
-                exchanges:
-                    type: object
-                    additionalProperties:
-                        type: string
-                    description: Map of exchange code to exchange name.
+            additionalProperties:
+                type: string
             description: GetOptionMetaExchangesResponse is the response containing option exchange code mappings.
         ExchangesEntry:
             type: object
@@ -4210,12 +4127,9 @@ components:
                 value:
                     $ref: '#/components/schemas/ForexRate'
         ForexRateList:
-            type: object
-            properties:
-                rates:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ForexRate'
+            type: array
+            items:
+                $ref: '#/components/schemas/ForexRate'
             description: ForexRateList is a list of forex rates for a single currency pair.
         ForexRate:
             type: object
@@ -4328,35 +4242,3 @@ components:
                     description: Yield to worst.
                     example: 4.249
             description: FixedIncomePrice represents the price of a fixed income instrument as a percentage of its par value.
-        GetLogoRequest:
-            type: object
-            properties:
-                symbol:
-                    type: string
-                    examples:
-                        - AAPL
-                    description: A unique series of letters assigned to a security for trading purposes (required).
-                    example: AAPL
-                placeholder:
-                    type: boolean
-                    examples:
-                        - true
-                    description: Whether to return a placeholder image if the logo is not found.
-                    example: true
-            required:
-                - symbol
-            description: GetLogoRequest is the request to get a company logo image.
-        GetLogoResponse:
-            type: object
-            properties:
-                image:
-                    type: string
-                    format: byte
-                    description: The logo image data in PNG format.
-                contentType:
-                    type: string
-                    examples:
-                        - image/png
-                    description: The content type of the image (e.g., "image/png").
-                    example: image/png
-            description: GetLogoResponse is the response containing the company logo image.
