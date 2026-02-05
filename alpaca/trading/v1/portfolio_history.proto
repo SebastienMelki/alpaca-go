@@ -57,15 +57,21 @@ message GetPortfolioHistoryRequest {
     (sebuf.http.field_examples) = { values: ["2024-01-31"] }
   ];
 
-  // Whether to use PnL calculation instead of market value.
-  bool pnl_reset = 6 [
+  // PnL reset mode for intraday queries (no_reset or per_day).
+  string pnl_reset = 6 [
     (sebuf.http.query) = { name: "pnl_reset" },
-    (sebuf.http.field_examples) = { values: ["false"] }
+    (sebuf.http.field_examples) = { values: ["per_day", "no_reset"] }
   ];
 
-  // Whether to include extended hours data.
-  bool extended_hours = 7 [
+  // Whether to include extended hours data (deprecated, use intraday_reporting).
+  string extended_hours = 7 [
     (sebuf.http.query) = { name: "extended_hours" },
-    (sebuf.http.field_examples) = { values: ["false"] }
+    (sebuf.http.field_examples) = { values: ["true"] }
+  ];
+
+  // Cashflow activities to include (ALL, NONE, or comma-separated list of activity types).
+  string cashflow_types = 8 [
+    (sebuf.http.query) = { name: "cashflow_types" },
+    (sebuf.http.field_examples) = { values: ["ALL", "NONE", "DIV,INT"] }
   ];
 }

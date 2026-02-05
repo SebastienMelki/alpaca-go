@@ -5,23 +5,6 @@ package alpaca.trading.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-// CryptoTransferDirection represents the direction of a crypto transfer.
-enum CryptoTransferDirection {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  CRYPTO_TRANSFER_DIRECTION_UNSPECIFIED = 0;
-  CRYPTO_TRANSFER_DIRECTION_INCOMING = 1; // [(sebuf.http.enum_value) = "INCOMING"];
-  CRYPTO_TRANSFER_DIRECTION_OUTGOING = 2; // [(sebuf.http.enum_value) = "OUTGOING"];
-}
-
-// CryptoTransferStatus represents the status of a crypto transfer.
-enum CryptoTransferStatus {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  CRYPTO_TRANSFER_STATUS_UNSPECIFIED = 0;
-  CRYPTO_TRANSFER_STATUS_PROCESSING = 1; // [(sebuf.http.enum_value) = "PROCESSING"];
-  CRYPTO_TRANSFER_STATUS_FAILED = 2; // [(sebuf.http.enum_value) = "FAILED"];
-  CRYPTO_TRANSFER_STATUS_COMPLETE = 3; // [(sebuf.http.enum_value) = "COMPLETE"];
-}
-
 // CryptoWallet represents a crypto funding wallet.
 message CryptoWallet {
   // The blockchain network (e.g., ethereum, solana).
@@ -43,10 +26,24 @@ message CryptoTransfer {
   string tx_hash = 2 [(sebuf.http.field_examples) = { values: ["0xabc123..."] }];
 
   // Transfer direction (INCOMING or OUTGOING).
-  string direction = 3 [(sebuf.http.field_examples) = { values: ["INCOMING"] }];
+  string direction = 3 [
+    (buf.validate.field) = {
+      string: {
+        in: ["INCOMING", "OUTGOING"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["INCOMING"] }
+  ];
 
   // Transfer status (PROCESSING, FAILED, COMPLETE).
-  string status = 4 [(sebuf.http.field_examples) = { values: ["COMPLETE"] }];
+  string status = 4 [
+    (buf.validate.field) = {
+      string: {
+        in: ["PROCESSING", "FAILED", "COMPLETE"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["COMPLETE"] }
+  ];
 
   // Amount of transfer denominated in the underlying crypto asset.
   string amount = 5 [(sebuf.http.field_examples) = { values: ["0.5"] }];
@@ -121,7 +118,7 @@ message ListCryptoWalletsRequest {
 // ListCryptoWalletsResponse is the response containing crypto wallets.
 message ListCryptoWalletsResponse {
   // List of crypto wallets.
-  repeated CryptoWallet wallets = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated CryptoWallet wallets = 1 [(sebuf.http.unwrap) = true];
 }
 
 // ListCryptoTransfersRequest is the request to list crypto funding transfers.
@@ -130,7 +127,7 @@ message ListCryptoTransfersRequest {}
 // ListCryptoTransfersResponse is the response containing crypto transfers.
 message ListCryptoTransfersResponse {
   // List of crypto transfers.
-  repeated CryptoTransfer transfers = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated CryptoTransfer transfers = 1 [(sebuf.http.unwrap) = true];
 }
 
 // GetCryptoTransferRequest is the request to get a specific crypto transfer.
@@ -174,7 +171,7 @@ message ListWhitelistedAddressesRequest {}
 // ListWhitelistedAddressesResponse is the response containing whitelisted addresses.
 message ListWhitelistedAddressesResponse {
   // List of whitelisted addresses.
-  repeated WhitelistedAddress addresses = 1; // [(sebuf.http.unwrap_root) = true];
+  repeated WhitelistedAddress addresses = 1 [(sebuf.http.unwrap) = true];
 }
 
 // CreateWhitelistedAddressRequest is the request to create a whitelisted address.

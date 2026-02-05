@@ -4,7 +4,6 @@ package alpaca.trading.v1;
 
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
-import "alpaca/trading/v1/order.proto";
 
 // ReplaceOrderRequest is the request to replace (modify) an existing order.
 message ReplaceOrderRequest {
@@ -19,7 +18,14 @@ message ReplaceOrderRequest {
   string qty = 2 [(sebuf.http.field_examples) = { values: ["15"] }];
 
   // New time in force (optional).
-  TimeInForce time_in_force = 3 [(sebuf.http.field_examples) = { values: ["1"] }];
+  string time_in_force = 3 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "day", "gtc", "opg", "cls", "ioc", "fok"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["day"] }
+  ];
 
   // New limit price (optional, for limit orders).
   string limit_price = 4 [(sebuf.http.field_examples) = { values: ["152.00"] }];

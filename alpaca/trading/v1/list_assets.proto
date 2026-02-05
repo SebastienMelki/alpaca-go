@@ -29,5 +29,5 @@ message ListAssetsRequest {
 // ListAssetsResponse is the response containing a list of assets.
 message ListAssetsResponse {
   // List of assets.
-  repeated Asset assets = 1;
+  repeated Asset assets = 1 [(sebuf.http.unwrap) = true];
 }

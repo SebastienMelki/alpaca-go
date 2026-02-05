@@ -4,7 +4,6 @@ package alpaca.trading.v1;
 
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
-import "alpaca/trading/v1/order.proto";
 
 // TakeProfitSpec specifies take profit parameters for bracket orders.
 message TakeProfitSpec {
@@ -27,6 +26,62 @@ message StopLossSpec {
   string limit_price = 2 [(sebuf.http.field_examples) = { values: ["139.00"] }];
 }
 
+// MLegOrderLeg represents an individual leg of a multi-leg options order.
+message MLegOrderLeg {
+  // Order side (buy or sell).
+  string side = 1 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "buy", "sell"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["buy"] }
+  ];
+
+  // Position intent for options.
+  string position_intent = 2 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "buy_to_open", "buy_to_close", "sell_to_open", "sell_to_close"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["buy_to_open"] }
+  ];
+
+  // Symbol or asset ID to identify the asset to trade.
+  string symbol = 3 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL241213C00250000"] }
+  ];
+
+  // Proportional quantity of this leg in relation to the overall multi-leg order qty.
+  string ratio_qty = 4 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["1"] }
+  ];
+}
+
+// AdvancedInstructions provides advanced instructions for Elite Smart Router.
+message AdvancedInstructions {
+  // The advanced routing algorithm to use (DMA, TWAP, VWAP).
+  string algorithm = 1 [(sebuf.http.field_examples) = { values: ["DMA"] }];
+
+  // Target exchange for order execution (NYSE, NASDAQ, ARCA).
+  string destination = 2 [(sebuf.http.field_examples) = { values: ["NYSE"] }];
+
+  // Maximum shares/contracts displayed on the exchange at any time.
+  string display_qty = 3 [(sebuf.http.field_examples) = { values: ["100"] }];
+
+  // When the algorithm is to start executing (RFC 3339).
+  string start_time = 4 [(sebuf.http.field_examples) = { values: ["2025-07-21T09:30:00-04:00"] }];
+
+  // When the algorithm is to be done executing (RFC 3339).
+  string end_time = 5 [(sebuf.http.field_examples) = { values: ["2025-07-21T15:30:00-04:00"] }];
+
+  // Maximum percentage of the ticker's period volume (0 < max_percentage < 1).
+  string max_percentage = 6 [(sebuf.http.field_examples) = { values: ["0.314"] }];
+}
+
 // CreateOrderRequest is the request to create a new order.
 message CreateOrderRequest {
   // Symbol or asset ID to trade.
@@ -43,21 +98,33 @@ message CreateOrderRequest {
   string notional = 3 [(sebuf.http.field_examples) = { values: ["1000.00"] }];
 
   // Order side (buy or sell).
-  OrderSide side = 4 [
-    (buf.validate.field).enum = { not_in: [0] },
-    (sebuf.http.field_examples) = { values: ["1"] }
+  string side = 4 [
+    (buf.validate.field) = {
+      string: {
+        in: ["buy", "sell"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["buy"] }
   ];
 
   // Order type.
-  OrderType type = 5 [
-    (buf.validate.field).enum = { not_in: [0] },
-    (sebuf.http.field_examples) = { values: ["2"] }
+  string type = 5 [
+    (buf.validate.field) = {
+      string: {
+        in: ["market", "limit", "stop", "stop_limit", "trailing_stop"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["limit"] }
   ];
 
   // Time in force.
-  TimeInForce time_in_force = 6 [
-    (buf.validate.field).enum = { not_in: [0] },
-    (sebuf.http.field_examples) = { values: ["1"] }
+  string time_in_force = 6 [
+    (buf.validate.field) = {
+      string: {
+        in: ["day", "gtc", "opg", "cls", "ioc", "fok"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["day"] }
   ];
 
   // Limit price (required for limit orders).
@@ -75,18 +142,41 @@ message CreateOrderRequest {
   // Whether the order is for extended hours.
   bool extended_hours = 11 [(sebuf.http.field_examples) = { values: ["false"] }];
 
-  // Client order ID (user-provided, max 48 characters).
+  // Client order ID (user-provided, max 128 characters).
   string client_order_id = 12 [
-    (buf.validate.field).string = { max_len: 48 },
+    (buf.validate.field).string = { max_len: 128 },
     (sebuf.http.field_examples) = { values: ["my_order_123"] }
   ];
 
   // Order class.
-  OrderClass order_class = 13 [(sebuf.http.field_examples) = { values: ["1"] }];
+  string order_class = 13 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "simple", "bracket", "oco", "oto", "mleg"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["simple"] }
+  ];
 
   // Take profit spec (for bracket orders).
   TakeProfitSpec take_profit = 14;
 
   // Stop loss spec (for bracket orders).
   StopLossSpec stop_loss = 15;
+
+  // Position intent for options orders.
+  string position_intent = 16 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "buy_to_open", "buy_to_close", "sell_to_open", "sell_to_close"]
+      }
+    },
+    (sebuf.http.field_examples) = { values: ["buy_to_open"] }
+  ];
+
+  // Legs for multi-leg options orders (max 4).
+  repeated MLegOrderLeg legs = 17 [(buf.validate.field).repeated = { max_items: 4 }];
+
+  // Advanced instructions for Elite Smart Router.
+  AdvancedInstructions advanced_instructions = 18;
 }

@@ -5,18 +5,16 @@ package alpaca.auth.v1;
 import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
-// GrantType represents the OAuth2 grant type.
-enum GrantType {
-  // option (sebuf.http.enum_encoding) = ENUM_ENCODING_STRING;
-  GRANT_TYPE_UNSPECIFIED = 0;
-  GRANT_TYPE_CLIENT_CREDENTIALS = 1; // [(sebuf.http.enum_value) = "client_credentials"];
-}
-
 // IssueTokenRequest is the request to issue OAuth2 tokens.
 message IssueTokenRequest {
   // Grant type (required). Currently only "client_credentials" is supported.
   string grant_type = 1 [
-    (buf.validate.field).required = true,
+    (buf.validate.field) = {
+      required: true,
+      string: {
+        in: ["client_credentials"]
+      }
+    },
     (sebuf.http.field_examples) = { values: ["client_credentials"] }
   ];
 

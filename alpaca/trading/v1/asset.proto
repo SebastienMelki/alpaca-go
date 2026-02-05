@@ -2,32 +2,16 @@ syntax = "proto3";
 
 package alpaca.trading.v1;
 
+import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
-
-// AssetStatus represents the status of an asset.
-enum AssetStatus {
-  ASSET_STATUS_UNSPECIFIED = 0;
-  ASSET_STATUS_ACTIVE = 1;
-  ASSET_STATUS_INACTIVE = 2;
-}
-
-// AssetExchange represents the exchange where an asset is traded.
-enum AssetExchange {
-  ASSET_EXCHANGE_UNSPECIFIED = 0;
-  ASSET_EXCHANGE_AMEX = 1;
-  ASSET_EXCHANGE_ARCA = 2;
-  ASSET_EXCHANGE_BATS = 3;
-  ASSET_EXCHANGE_NYSE = 4;
-  ASSET_EXCHANGE_NASDAQ = 5;
-  ASSET_EXCHANGE_NYSEARCA = 6;
-  ASSET_EXCHANGE_OTC = 7;
-  ASSET_EXCHANGE_CRYPTO = 8;
-}
 
 // Asset represents a tradeable asset.
 message Asset {
   // Asset ID (UUID).
-  string id = 1 [(sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }];
+  string id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }
+  ];
 
   // Asset class (us_equity, crypto, us_option).
   string class = 2 [(sebuf.http.field_examples) = { values: ["us_equity"] }];

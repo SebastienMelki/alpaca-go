@@ -36,6 +36,8 @@ import "alpaca/trading/v1/remove_watchlist_asset.proto";
 import "alpaca/trading/v1/account_configurations.proto";
 import "alpaca/trading/v1/portfolio_history.proto";
 import "alpaca/trading/v1/account_activity.proto";
+import "alpaca/trading/v1/option_contract.proto";
+import "alpaca/trading/v1/crypto_funding.proto";
 
 // TradingService provides the Alpaca Trading API.
 // Base URL: https://api.alpaca.markets (live) or https://paper-api.alpaca.markets (paper)
@@ -203,20 +205,20 @@ service TradingService {
     };
   }
 
-  // GetPosition retrieves a specific position by symbol.
-  // GET /v2/positions/{symbol}
+  // GetPosition retrieves a specific position by symbol or asset ID.
+  // GET /v2/positions/{symbol_or_asset_id}
   rpc GetPosition(GetPositionRequest) returns (Position) {
     option (sebuf.http.config) = {
-      path: "/positions/{symbol}"
+      path: "/positions/{symbol_or_asset_id}"
       method: HTTP_METHOD_GET
     };
   }
 
   // ClosePosition closes a specific position (liquidates).
-  // DELETE /v2/positions/{symbol}
+  // DELETE /v2/positions/{symbol_or_asset_id}
   rpc ClosePosition(ClosePositionRequest) returns (Order) {
     option (sebuf.http.config) = {
-      path: "/positions/{symbol}"
+      path: "/positions/{symbol_or_asset_id}"
       method: HTTP_METHOD_DELETE
     };
   }
@@ -239,6 +241,15 @@ service TradingService {
     };
   }
 
+  // DoNotExerciseOption marks an option position as do-not-exercise.
+  // POST /v2/positions/{symbol_or_contract_id}/do-not-exercise
+  rpc DoNotExerciseOption(DoNotExerciseOptionRequest) returns (DoNotExerciseOptionResponse) {
+    option (sebuf.http.config) = {
+      path: "/positions/{symbol_or_contract_id}/do-not-exercise"
+      method: HTTP_METHOD_POST
+    };
+  }
+
   // ============================================
   // Asset Operations
   // ============================================
@@ -257,6 +268,28 @@ service TradingService {
   rpc GetAsset(GetAssetRequest) returns (Asset) {
     option (sebuf.http.config) = {
       path: "/assets/{symbol_or_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Option Contract Operations
+  // ============================================
+
+  // ListOptionContracts retrieves a list of option contracts.
+  // GET /v2/options/contracts
+  rpc ListOptionContracts(ListOptionContractsRequest) returns (ListOptionContractsResponse) {
+    option (sebuf.http.config) = {
+      path: "/options/contracts"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetOptionContract retrieves a specific option contract by symbol or ID.
+  // GET /v2/options/contracts/{symbol_or_id}
+  rpc GetOptionContract(GetOptionContractRequest) returns (OptionContract) {
+    option (sebuf.http.config) = {
+      path: "/options/contracts/{symbol_or_id}"
       method: HTTP_METHOD_GET
     };
   }
@@ -346,6 +379,118 @@ service TradingService {
   rpc RemoveWatchlistAsset(RemoveWatchlistAssetRequest) returns (RemoveWatchlistAssetResponse) {
     option (sebuf.http.config) = {
       path: "/watchlists/{watchlist_id}/{symbol}"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // GetWatchlistByName retrieves a watchlist by name.
+  // GET /v2/watchlists:by_name
+  rpc GetWatchlistByName(GetWatchlistByNameRequest) returns (Watchlist) {
+    option (sebuf.http.config) = {
+      path: "/watchlists:by_name"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // UpdateWatchlistByName updates a watchlist by name.
+  // PUT /v2/watchlists:by_name
+  rpc UpdateWatchlistByName(UpdateWatchlistByNameRequest) returns (Watchlist) {
+    option (sebuf.http.config) = {
+      path: "/watchlists:by_name"
+      method: HTTP_METHOD_PUT
+    };
+  }
+
+  // DeleteWatchlistByName deletes a watchlist by name.
+  // DELETE /v2/watchlists:by_name
+  rpc DeleteWatchlistByName(DeleteWatchlistByNameRequest) returns (DeleteWatchlistResponse) {
+    option (sebuf.http.config) = {
+      path: "/watchlists:by_name"
+      method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // AddWatchlistAssetByName adds an asset to a watchlist by name.
+  // POST /v2/watchlists:by_name/{watchlist_name}
+  rpc AddWatchlistAssetByName(AddWatchlistAssetByNameRequest) returns (Watchlist) {
+    option (sebuf.http.config) = {
+      path: "/watchlists:by_name/{watchlist_name}"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // ============================================
+  // Crypto Funding Operations
+  // ============================================
+
+  // ListCryptoWallets retrieves crypto funding wallets.
+  // GET /v2/wallets
+  rpc ListCryptoWallets(ListCryptoWalletsRequest) returns (ListCryptoWalletsResponse) {
+    option (sebuf.http.config) = {
+      path: "/wallets"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ListCryptoTransfers retrieves crypto funding transfers.
+  // GET /v2/wallets/transfers
+  rpc ListCryptoTransfers(ListCryptoTransfersRequest) returns (ListCryptoTransfersResponse) {
+    option (sebuf.http.config) = {
+      path: "/wallets/transfers"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetCryptoTransfer retrieves a specific crypto transfer.
+  // GET /v2/wallets/transfers/{transfer_id}
+  rpc GetCryptoTransfer(GetCryptoTransferRequest) returns (CryptoTransfer) {
+    option (sebuf.http.config) = {
+      path: "/wallets/transfers/{transfer_id}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateCryptoTransfer creates a new crypto transfer.
+  // POST /v2/wallets/transfers
+  rpc CreateCryptoTransfer(CreateCryptoTransferRequest) returns (CryptoTransfer) {
+    option (sebuf.http.config) = {
+      path: "/wallets/transfers"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // GetCryptoTransferEstimate retrieves a crypto transfer estimate.
+  // GET /v2/wallets/fees/estimate
+  rpc GetCryptoTransferEstimate(GetCryptoTransferEstimateRequest) returns (CryptoTransferEstimate) {
+    option (sebuf.http.config) = {
+      path: "/wallets/fees/estimate"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ListWhitelistedAddresses retrieves whitelisted crypto addresses.
+  // GET /v2/wallets/whitelists
+  rpc ListWhitelistedAddresses(ListWhitelistedAddressesRequest) returns (ListWhitelistedAddressesResponse) {
+    option (sebuf.http.config) = {
+      path: "/wallets/whitelists"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // CreateWhitelistedAddress creates a new whitelisted address.
+  // POST /v2/wallets/whitelists
+  rpc CreateWhitelistedAddress(CreateWhitelistedAddressRequest) returns (WhitelistedAddress) {
+    option (sebuf.http.config) = {
+      path: "/wallets/whitelists"
+      method: HTTP_METHOD_POST
+    };
+  }
+
+  // DeleteWhitelistedAddress deletes a whitelisted address.
+  // DELETE /v2/wallets/whitelists/{whitelisted_address_id}
+  rpc DeleteWhitelistedAddress(DeleteWhitelistedAddressRequest) returns (DeleteWhitelistedAddressResponse) {
+    option (sebuf.http.config) = {
+      path: "/wallets/whitelists/{whitelisted_address_id}"
       method: HTTP_METHOD_DELETE
     };
   }

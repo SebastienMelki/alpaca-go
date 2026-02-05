@@ -21,3 +21,19 @@ message AddWatchlistAssetRequest {
     (sebuf.http.field_examples) = { values: ["AAPL"] }
   ];
 }
+
+// AddWatchlistAssetByNameRequest is the request to add an asset to a watchlist by name.
+message AddWatchlistAssetByNameRequest {
+  // The watchlist name (bound from path variable).
+  string watchlist_name = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["My Tech Stocks"] }
+  ];
+
+  // Symbol to add.
+  string symbol = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = { min_len: 1, max_len: 12 },
+    (sebuf.http.field_examples) = { values: ["AAPL"] }
+  ];
+}
