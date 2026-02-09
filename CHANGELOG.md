@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Crypto funding endpoints: `ListCryptoWallets`, `GetCryptoWallet`, `ListCryptoTransfers`, `CreateCryptoWithdrawal`
 
 #### Market Data API (`pkg/marketdata`)
+- Sandbox environment support via `NewSandboxClient()` (`https://data.sandbox.alpaca.markets`)
 - **Reorganized into V2 (stable) and V1Beta (beta) clients**
 - V2 (stocks): Stock bars, trades, quotes, snapshots, auctions, metadata
 - V1Beta (beta features):
