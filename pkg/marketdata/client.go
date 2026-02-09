@@ -8,7 +8,8 @@ import (
 )
 
 const (
-	BaseURL = "https://data.alpaca.markets"
+	BaseURL        = "https://data.alpaca.markets"
+	SandboxBaseURL = "https://data.sandbox.alpaca.markets"
 )
 
 // Client wraps the generated MarketDataService v2 and MarketDataBetaService clients with Alpaca-specific defaults.
@@ -76,6 +77,11 @@ func NewClient(apiKey, apiSecret string, opts ...Option) *Client {
 		apiKey:     apiKey,
 		apiSecret:  apiSecret,
 	}
+}
+
+// NewSandboxClient creates a client for the broker sandbox market data environment.
+func NewSandboxClient(apiKey, apiSecret string, opts ...Option) *Client {
+	return NewClient(apiKey, apiSecret, append(opts, WithBaseURL(SandboxBaseURL))...)
 }
 
 // =============================================================================
