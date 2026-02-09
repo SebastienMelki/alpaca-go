@@ -109,6 +109,10 @@ import (
 
 func main() {
     client := marketdata.NewClient("YOUR_API_KEY", "YOUR_API_SECRET")
+
+    // Or use the sandbox environment (for broker sandbox)
+    // client := marketdata.NewSandboxClient("YOUR_API_KEY", "YOUR_API_SECRET")
+
     ctx := context.Background()
 
     // Get latest stock bars (V2 API - stable)
@@ -284,7 +288,7 @@ client := trading.NewClient(
 | API | Live | Paper/Sandbox |
 |-----|------|---------------|
 | Trading | `https://api.alpaca.markets` | `https://paper-api.alpaca.markets` |
-| Market Data | `https://data.alpaca.markets` | - |
+| Market Data | `https://data.alpaca.markets` | `https://data.sandbox.alpaca.markets` |
 | Broker | `https://broker-api.alpaca.markets` | `https://broker-api.sandbox.alpaca.markets` |
 | Auth | `https://api.alpaca.markets` | - |
 

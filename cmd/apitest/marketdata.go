@@ -24,11 +24,7 @@ func testMarketData() {
 	apiKey := getEnv("ALPACA_API_KEY", "")
 	apiSecret := getEnv("ALPACA_API_SECRET", "")
 
-	client := marketdata.NewClient(
-		apiKey,
-		apiSecret,
-		marketdata.WithBaseURL("https://data.sandbox.alpaca.markets"),
-	)
+	client := marketdata.NewSandboxClient(apiKey, apiSecret)
 
 	ctx := context.Background()
 	var results []TestResult
