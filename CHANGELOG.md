@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-02-09
+
+### Added
+
+#### Market Data API (`pkg/marketdata`)
+- Sandbox environment support via `NewSandboxClient()` (`https://data.sandbox.alpaca.markets`)
+
+## [1.1.0] - 2026-02-05
+
 ### Added
 
 #### Auth API (`pkg/auth`)
@@ -17,7 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Crypto funding endpoints: `ListCryptoWallets`, `GetCryptoWallet`, `ListCryptoTransfers`, `CreateCryptoWithdrawal`
 
 #### Market Data API (`pkg/marketdata`)
-- Sandbox environment support via `NewSandboxClient()` (`https://data.sandbox.alpaca.markets`)
 - **Reorganized into V2 (stable) and V1Beta (beta) clients**
 - V2 (stocks): Stock bars, trades, quotes, snapshots, auctions, metadata
 - V1Beta (beta features):
@@ -95,5 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Makefile with `generate`, `build`, `lint`, `lint-fix`, `buf-lint`, `check`, and `release` targets
 - golangci-lint configuration for code quality
 
-[unreleased]: https://github.com/sebastienmelki/alpaca-go/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/sebastienmelki/alpaca-go/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/sebastienmelki/alpaca-go/releases/tag/v1.0.0
