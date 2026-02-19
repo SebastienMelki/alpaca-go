@@ -228,7 +228,10 @@ message ListOptionContractsResponse {
   repeated OptionContract option_contracts = 1;
 
   // Pagination token for the next page.
-  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["MTAwMA=="] }];
+  string next_page_token = 2 [
+    json_name = "next_page_token",
+    (sebuf.http.field_examples) = { values: ["MTAwMA=="] }
+  ];
 }
 
 // GetOptionContractRequest is the request to get a specific option contract.

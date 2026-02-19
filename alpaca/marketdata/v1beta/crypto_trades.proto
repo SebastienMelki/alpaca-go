@@ -80,7 +80,10 @@ message GetCryptoTradesResponse {
   map<string, CryptoTradesList> trades = 1;
 
   // Next page token.
-  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+  string next_page_token = 2 [
+    json_name = "next_page_token",
+    (sebuf.http.field_examples) = { values: ["YWJjZGVm"] }
+  ];
 }
 
 // GetLatestCryptoTradesRequest is the request to get the latest crypto trades.

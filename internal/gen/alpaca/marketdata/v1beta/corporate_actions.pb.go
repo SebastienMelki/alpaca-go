@@ -1885,7 +1885,7 @@ type GetCorporateActionsResponse struct {
 	// The corporate actions grouped by type.
 	CorporateActions *CorporateActions `protobuf:"bytes,1,opt,name=corporate_actions,json=corporateActions,proto3" json:"corporate_actions,omitempty"`
 	// Pagination token for the next page.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2316,12 +2316,12 @@ const file_alpaca_marketdata_v1beta_corporate_actions_proto_rawDesc = "" +
 	"page_tokenR\tpageToken\x12'\n" +
 	"\x04sort\x18\t \x01(\tB\x13\xba\xb5\x18\x05\n" +
 	"\x03ascµ\x18\x06\n" +
-	"\x04sortR\x04sort\"\xae\x01\n" +
+	"\x04sortR\x04sort\"\xb0\x01\n" +
 	"\x1bGetCorporateActionsResponse\x12W\n" +
-	"\x11corporate_actions\x18\x01 \x01(\v2*.alpaca.marketdata.v1beta.CorporateActionsR\x10corporateActions\x126\n" +
+	"\x11corporate_actions\x18\x01 \x01(\v2*.alpaca.marketdata.v1beta.CorporateActionsR\x10corporateActions\x128\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bYWJjZGVmR\rnextPageTokenB\x93\x02\n" +
+	"\bYWJjZGVmR\x0fnext_page_tokenB\x93\x02\n" +
 	"\x1ccom.alpaca.marketdata.v1betaB\x15CorporateActionsProtoP\x01ZZgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/marketdata/v1beta;marketdatav1beta\xa2\x02\x03AMX\xaa\x02\x18Alpaca.Marketdata.V1beta\xca\x02\x18Alpaca\\Marketdata\\V1beta\xe2\x02$Alpaca\\Marketdata\\V1beta\\GPBMetadata\xea\x02\x1aAlpaca::Marketdata::V1betab\x06proto3"
 
 var (

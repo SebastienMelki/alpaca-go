@@ -330,7 +330,7 @@ type GetStockAuctionsResponse struct {
 	// Map of symbol to auctions.
 	Auctions map[string]*StockAuctionsList `protobuf:"bytes,1,rep,name=auctions,proto3" json:"auctions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Next page token.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -496,7 +496,7 @@ type GetStockAuctionsSingleResponse struct {
 	// The symbol.
 	Symbol string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	// Next page token.
-	NextPageToken string `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,3,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -607,12 +607,12 @@ const file_alpaca_marketdata_v2_stock_auctions_proto_rawDesc = "" +
 	"\n" +
 	"\bcurrencyR\bcurrency\"Z\n" +
 	"\x11StockAuctionsList\x12E\n" +
-	"\bauctions\x18\x01 \x03(\v2#.alpaca.marketdata.v2.DailyAuctionsB\x04ȵ\x18\x01R\bauctions\"\x92\x02\n" +
+	"\bauctions\x18\x01 \x03(\v2#.alpaca.marketdata.v2.DailyAuctionsB\x04ȵ\x18\x01R\bauctions\"\x94\x02\n" +
 	"\x18GetStockAuctionsResponse\x12X\n" +
-	"\bauctions\x18\x01 \x03(\v2<.alpaca.marketdata.v2.GetStockAuctionsResponse.AuctionsEntryR\bauctions\x126\n" +
+	"\bauctions\x18\x01 \x03(\v2<.alpaca.marketdata.v2.GetStockAuctionsResponse.AuctionsEntryR\bauctions\x128\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bYWJjZGVmR\rnextPageToken\x1ad\n" +
+	"\bYWJjZGVmR\x0fnext_page_token\x1ad\n" +
 	"\rAuctionsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12=\n" +
 	"\x05value\x18\x02 \x01(\v2'.alpaca.marketdata.v2.StockAuctionsListR\x05value:\x028\x01\"\xad\x03\n" +
@@ -646,15 +646,15 @@ const file_alpaca_marketdata_v2_stock_auctions_proto_rawDesc = "" +
 	"\bcurrency\x18\b \x01(\tB\x17\xba\xb5\x18\x05\n" +
 	"\x03USDµ\x18\n" +
 	"\n" +
-	"\bcurrencyR\bcurrency\"\xc3\x01\n" +
+	"\bcurrencyR\bcurrency\"\xc5\x01\n" +
 	"\x1eGetStockAuctionsSingleResponse\x12E\n" +
 	"\bauctions\x18\x01 \x03(\v2#.alpaca.marketdata.v2.DailyAuctionsB\x04ȵ\x18\x01R\bauctions\x12\"\n" +
 	"\x06symbol\x18\x02 \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
-	"\x04AAPLR\x06symbol\x126\n" +
+	"\x04AAPLR\x06symbol\x128\n" +
 	"\x0fnext_page_token\x18\x03 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bYWJjZGVmR\rnextPageTokenB\xf4\x01\n" +
+	"\bYWJjZGVmR\x0fnext_page_tokenB\xf4\x01\n" +
 	"\x18com.alpaca.marketdata.v2B\x12StockAuctionsProtoP\x01ZRgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/marketdata/v2;marketdatav2\xa2\x02\x03AMX\xaa\x02\x14Alpaca.Marketdata.V2\xca\x02\x14Alpaca\\Marketdata\\V2\xe2\x02 Alpaca\\Marketdata\\V2\\GPBMetadata\xea\x02\x16Alpaca::Marketdata::V2b\x06proto3"
 
 var (

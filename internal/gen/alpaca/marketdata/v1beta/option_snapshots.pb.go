@@ -267,7 +267,7 @@ type GetOptionSnapshotsResponse struct {
 	// Map of symbol to snapshot.
 	Snapshots map[string]*OptionSnapshot `protobuf:"bytes,1,rep,name=snapshots,proto3" json:"snapshots,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Next page token.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -440,7 +440,7 @@ type GetOptionChainResponse struct {
 	// Map of option symbol to snapshot.
 	Snapshots map[string]*OptionSnapshot `protobuf:"bytes,1,rep,name=snapshots,proto3" json:"snapshots,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Next page token.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -526,12 +526,12 @@ const file_alpaca_marketdata_v1beta_option_snapshots_proto_rawDesc = "" +
 	"\asymbolsR\asymbols\x12(\n" +
 	"\x04feed\x18\x02 \x01(\tB\x14\xba\xb5\x18\x06\n" +
 	"\x04opraµ\x18\x06\n" +
-	"\x04feedR\x04feed\"\x9f\x02\n" +
+	"\x04feedR\x04feed\"\xa1\x02\n" +
 	"\x1aGetOptionSnapshotsResponse\x12a\n" +
-	"\tsnapshots\x18\x01 \x03(\v2C.alpaca.marketdata.v1beta.GetOptionSnapshotsResponse.SnapshotsEntryR\tsnapshots\x126\n" +
+	"\tsnapshots\x18\x01 \x03(\v2C.alpaca.marketdata.v1beta.GetOptionSnapshotsResponse.SnapshotsEntryR\tsnapshots\x128\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bYWJjZGVmR\rnextPageToken\x1af\n" +
+	"\bYWJjZGVmR\x0fnext_page_token\x1af\n" +
 	"\x0eSnapshotsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12>\n" +
 	"\x05value\x18\x02 \x01(\v2(.alpaca.marketdata.v1beta.OptionSnapshotR\x05value:\x028\x01\"\xe7\x04\n" +
@@ -566,12 +566,12 @@ const file_alpaca_marketdata_v1beta_option_snapshots_proto_rawDesc = "" +
 	"page_tokenR\tpageToken\x12*\n" +
 	"\x05limit\x18\t \x01(\x05B\x14\xba\xb5\x18\x05\n" +
 	"\x03100µ\x18\a\n" +
-	"\x05limitR\x05limit\"\x97\x02\n" +
+	"\x05limitR\x05limit\"\x99\x02\n" +
 	"\x16GetOptionChainResponse\x12]\n" +
-	"\tsnapshots\x18\x01 \x03(\v2?.alpaca.marketdata.v1beta.GetOptionChainResponse.SnapshotsEntryR\tsnapshots\x126\n" +
+	"\tsnapshots\x18\x01 \x03(\v2?.alpaca.marketdata.v1beta.GetOptionChainResponse.SnapshotsEntryR\tsnapshots\x128\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bYWJjZGVmR\rnextPageToken\x1af\n" +
+	"\bYWJjZGVmR\x0fnext_page_token\x1af\n" +
 	"\x0eSnapshotsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12>\n" +
 	"\x05value\x18\x02 \x01(\v2(.alpaca.marketdata.v1beta.OptionSnapshotR\x05value:\x028\x01B\x92\x02\n" +

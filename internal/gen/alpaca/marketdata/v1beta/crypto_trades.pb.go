@@ -257,7 +257,7 @@ type GetCryptoTradesResponse struct {
 	// Map of symbol to trades.
 	Trades map[string]*CryptoTradesList `protobuf:"bytes,1,rep,name=trades,proto3" json:"trades,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Next page token.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -449,12 +449,12 @@ const file_alpaca_marketdata_v1beta_crypto_trades_proto_rawDesc = "" +
 	"\x03ascµ\x18\x06\n" +
 	"\x04sortR\x04sort\"W\n" +
 	"\x10CryptoTradesList\x12C\n" +
-	"\x06trades\x18\x01 \x03(\v2%.alpaca.marketdata.v1beta.CryptoTradeB\x04ȵ\x18\x01R\x06trades\"\x8f\x02\n" +
+	"\x06trades\x18\x01 \x03(\v2%.alpaca.marketdata.v1beta.CryptoTradeB\x04ȵ\x18\x01R\x06trades\"\x91\x02\n" +
 	"\x17GetCryptoTradesResponse\x12U\n" +
-	"\x06trades\x18\x01 \x03(\v2=.alpaca.marketdata.v1beta.GetCryptoTradesResponse.TradesEntryR\x06trades\x126\n" +
+	"\x06trades\x18\x01 \x03(\v2=.alpaca.marketdata.v1beta.GetCryptoTradesResponse.TradesEntryR\x06trades\x128\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bYWJjZGVmR\rnextPageToken\x1ae\n" +
+	"\bYWJjZGVmR\x0fnext_page_token\x1ae\n" +
 	"\vTradesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12@\n" +
 	"\x05value\x18\x02 \x01(\v2*.alpaca.marketdata.v1beta.CryptoTradesListR\x05value:\x028\x01\"~\n" +

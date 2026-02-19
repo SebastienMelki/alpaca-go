@@ -330,7 +330,7 @@ type GetNewsResponse struct {
 	// List of news articles.
 	News []*NewsArticle `protobuf:"bytes,1,rep,name=news,proto3" json:"news,omitempty"`
 	// Next page token.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -444,12 +444,12 @@ const file_alpaca_marketdata_v1beta_news_proto_rawDesc = "" +
 	"page_tokenR\tpageToken\x12T\n" +
 	"\x13exclude_contentless\x18\b \x01(\bB#\xba\xb5\x18\x06\n" +
 	"\x04trueµ\x18\x15\n" +
-	"\x13exclude_contentlessR\x12excludeContentless\"\x84\x01\n" +
+	"\x13exclude_contentlessR\x12excludeContentless\"\x86\x01\n" +
 	"\x0fGetNewsResponse\x129\n" +
-	"\x04news\x18\x01 \x03(\v2%.alpaca.marketdata.v1beta.NewsArticleR\x04news\x126\n" +
+	"\x04news\x18\x01 \x03(\v2%.alpaca.marketdata.v1beta.NewsArticleR\x04news\x128\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bYWJjZGVmR\rnextPageTokenB\x87\x02\n" +
+	"\bYWJjZGVmR\x0fnext_page_tokenB\x87\x02\n" +
 	"\x1ccom.alpaca.marketdata.v1betaB\tNewsProtoP\x01ZZgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/marketdata/v1beta;marketdatav1beta\xa2\x02\x03AMX\xaa\x02\x18Alpaca.Marketdata.V1beta\xca\x02\x18Alpaca\\Marketdata\\V1beta\xe2\x02$Alpaca\\Marketdata\\V1beta\\GPBMetadata\xea\x02\x1aAlpaca::Marketdata::V1betab\x06proto3"
 
 var (

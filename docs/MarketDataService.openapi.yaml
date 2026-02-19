@@ -1587,7 +1587,7 @@ components:
                         items:
                             $ref: '#/components/schemas/Bar'
                     description: Map of symbol to bars.
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -1787,7 +1787,7 @@ components:
                         - AAPL
                     description: The symbol.
                     example: AAPL
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -1903,7 +1903,7 @@ components:
                         items:
                             $ref: '#/components/schemas/Trade'
                     description: Map of symbol to trades.
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -2082,7 +2082,7 @@ components:
                         - AAPL
                     description: The symbol.
                     example: AAPL
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -2198,7 +2198,7 @@ components:
                         items:
                             $ref: '#/components/schemas/Quote'
                     description: Map of symbol to quotes.
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -2390,7 +2390,7 @@ components:
                         - AAPL
                     description: The symbol.
                     example: AAPL
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -2580,7 +2580,7 @@ components:
                         items:
                             $ref: '#/components/schemas/DailyAuctions'
                     description: Map of symbol to auctions.
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -2723,7 +2723,7 @@ components:
                         - AAPL
                     description: The symbol.
                     example: AAPL
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm

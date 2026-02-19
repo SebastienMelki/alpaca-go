@@ -4619,7 +4619,7 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/OptionContract'
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - MTAwMA==
