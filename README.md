@@ -258,6 +258,38 @@ func main() {
 |----------|-----------|
 | OAuth2 | IssueToken |
 
+### Pagination
+
+Paginated endpoints return a `NextPageToken` field. Pass it back as `PageToken` to fetch the next page. An empty `NextPageToken` means you've reached the last page.
+
+```go
+ctx := context.Background()
+client := marketdata.NewClient("YOUR_API_KEY", "YOUR_API_SECRET")
+
+var pageToken string
+for {
+    resp, err := client.V2.GetStockBars(ctx, &marketdata.GetStockBarsRequest{
+        Symbols:   "AAPL",
+        Timeframe: "1Day",
+        Start:     "2024-01-01",
+        End:       "2024-12-31",
+        PageToken: pageToken,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // process resp.Bars ...
+
+    if resp.NextPageToken == "" {
+        break
+    }
+    pageToken = resp.NextPageToken
+}
+```
+
+The same pattern applies to all paginated endpoints across the Market Data, Broker, and Trading APIs.
+
 ## Client Options
 
 All clients support functional options for customization:

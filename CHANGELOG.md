@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-02-19
+
+### Fixed
+- Pagination broken across all paginated endpoints: added `json_name = "next_page_token"` to all 21 `next_page_token` fields in proto definitions so the generated `UnmarshalJSON` methods look up the correct snake_case key (`"next_page_token"`) instead of the camelCase key (`"nextPageToken"`) that Alpaca's API never returns
+
 ## [1.2.0] - 2026-02-09
 
 ### Added
@@ -103,7 +108,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Makefile with `generate`, `build`, `lint`, `lint-fix`, `buf-lint`, `check`, and `release` targets
 - golangci-lint configuration for code quality
 
-[unreleased]: https://github.com/sebastienmelki/alpaca-go/compare/v1.2.0...HEAD
+[unreleased]: https://github.com/sebastienmelki/alpaca-go/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/sebastienmelki/alpaca-go/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/sebastienmelki/alpaca-go/releases/tag/v1.0.0
