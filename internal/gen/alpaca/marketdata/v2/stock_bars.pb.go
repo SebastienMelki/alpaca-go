@@ -257,7 +257,7 @@ type GetStockBarsResponse struct {
 	// Map of symbol to bars.
 	Bars map[string]*StockBarsList `protobuf:"bytes,1,rep,name=bars,proto3" json:"bars,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Next page token.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -560,7 +560,7 @@ type GetStockBarsSingleResponse struct {
 	// The symbol.
 	Symbol string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	// Next page token.
-	NextPageToken string `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,3,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -791,12 +791,12 @@ const file_alpaca_marketdata_v2_stock_bars_proto_rawDesc = "" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x129\n" +
 	"\x05value\x18\x02 \x01(\v2#.alpaca.marketdata.v2.StockBarsListR\x05value:\x028\x01\"D\n" +
 	"\rStockBarsList\x123\n" +
-	"\x04bars\x18\x01 \x03(\v2\x19.alpaca.marketdata.v2.BarB\x04ȵ\x18\x01R\x04bars\"\xf6\x01\n" +
+	"\x04bars\x18\x01 \x03(\v2\x19.alpaca.marketdata.v2.BarB\x04ȵ\x18\x01R\x04bars\"\xf8\x01\n" +
 	"\x14GetStockBarsResponse\x12H\n" +
-	"\x04bars\x18\x01 \x03(\v24.alpaca.marketdata.v2.GetStockBarsResponse.BarsEntryR\x04bars\x126\n" +
+	"\x04bars\x18\x01 \x03(\v24.alpaca.marketdata.v2.GetStockBarsResponse.BarsEntryR\x04bars\x128\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bYWJjZGVmR\rnextPageToken\x1a\\\n" +
+	"\bYWJjZGVmR\x0fnext_page_token\x1a\\\n" +
 	"\tBarsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x129\n" +
 	"\x05value\x18\x02 \x01(\v2#.alpaca.marketdata.v2.StockBarsListR\x05value:\x028\x01\"\xbc\x01\n" +
@@ -859,15 +859,15 @@ const file_alpaca_marketdata_v2_stock_bars_proto_rawDesc = "" +
 	"\bcurrency\x18\v \x01(\tB\x17\xba\xb5\x18\x05\n" +
 	"\x03USDµ\x18\n" +
 	"\n" +
-	"\bcurrencyR\bcurrency\"\xad\x01\n" +
+	"\bcurrencyR\bcurrency\"\xaf\x01\n" +
 	"\x1aGetStockBarsSingleResponse\x123\n" +
 	"\x04bars\x18\x01 \x03(\v2\x19.alpaca.marketdata.v2.BarB\x04ȵ\x18\x01R\x04bars\x12\"\n" +
 	"\x06symbol\x18\x02 \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
-	"\x04AAPLR\x06symbol\x126\n" +
+	"\x04AAPLR\x06symbol\x128\n" +
 	"\x0fnext_page_token\x18\x03 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bYWJjZGVmR\rnextPageToken\"\xa8\x01\n" +
+	"\bYWJjZGVmR\x0fnext_page_token\"\xa8\x01\n" +
 	"\x1eGetLatestStockBarSingleRequest\x12(\n" +
 	"\x06symbol\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x06\n" +
 	"\x04AAPLR\x06symbol\x12'\n" +

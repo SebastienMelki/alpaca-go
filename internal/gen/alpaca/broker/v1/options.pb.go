@@ -630,7 +630,7 @@ type ListBrokerOptionContractsResponse struct {
 	// List of option contracts.
 	OptionContracts []*BrokerOptionContract `protobuf:"bytes,1,rep,name=option_contracts,json=optionContracts,proto3" json:"option_contracts,omitempty"`
 	// Next page token.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -855,11 +855,11 @@ const file_alpaca_broker_v1_options_proto_rawDesc = "" +
 	"page_token\x18\t \x01(\tB\x1c\xba\xb5\x18\b\n" +
 	"\x06abc123µ\x18\f\n" +
 	"\n" +
-	"page_tokenR\tpageToken\"\xac\x01\n" +
+	"page_tokenR\tpageToken\"\xae\x01\n" +
 	"!ListBrokerOptionContractsResponse\x12Q\n" +
-	"\x10option_contracts\x18\x01 \x03(\v2&.alpaca.broker.v1.BrokerOptionContractR\x0foptionContracts\x124\n" +
+	"\x10option_contracts\x18\x01 \x03(\v2&.alpaca.broker.v1.BrokerOptionContractR\x0foptionContracts\x126\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06def456R\rnextPageToken\"c\n" +
+	"\x06def456R\x0fnext_page_token\"c\n" +
 	"\x1eGetBrokerOptionContractRequest\x12A\n" +
 	"\fsymbol_or_id\x18\x01 \x01(\tB\x1f\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x15\n" +
 	"\x13AAPL240119C00150000R\n" +

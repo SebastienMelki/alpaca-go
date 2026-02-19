@@ -1770,7 +1770,7 @@ components:
                         items:
                             $ref: '#/components/schemas/CryptoBar'
                     description: Map of symbol to bars.
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -1936,7 +1936,7 @@ components:
                         items:
                             $ref: '#/components/schemas/CryptoTrade'
                     description: Map of symbol to trades.
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -2080,7 +2080,7 @@ components:
                         items:
                             $ref: '#/components/schemas/CryptoQuote'
                     description: Map of symbol to quotes.
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -2347,7 +2347,7 @@ components:
                         items:
                             $ref: '#/components/schemas/OptionBar'
                     description: Map of symbol to bars.
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -2473,7 +2473,7 @@ components:
                         items:
                             $ref: '#/components/schemas/OptionTrade'
                     description: Map of symbol to trades.
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -2657,7 +2657,7 @@ components:
                     additionalProperties:
                         $ref: '#/components/schemas/OptionSnapshot'
                     description: Map of symbol to snapshot.
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -2797,7 +2797,7 @@ components:
                     additionalProperties:
                         $ref: '#/components/schemas/OptionSnapshot'
                     description: Map of option symbol to snapshot.
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -2905,7 +2905,7 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/NewsArticle'
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -3201,7 +3201,7 @@ components:
             properties:
                 corporateActions:
                     $ref: '#/components/schemas/CorporateActions'
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -4112,7 +4112,7 @@ components:
                         items:
                             $ref: '#/components/schemas/ForexRate'
                     description: Map of currency pair to list of rates.
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - VVNESlBZfDIwMjItMDEtMDNUMDA6MDM6MDBa

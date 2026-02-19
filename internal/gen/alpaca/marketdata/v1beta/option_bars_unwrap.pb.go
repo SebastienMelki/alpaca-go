@@ -89,7 +89,7 @@ func (x *GetOptionBarsResponse) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		out["nextPageToken"] = data
+		out["next_page_token"] = data
 	}
 
 	return json.Marshal(out)
@@ -128,7 +128,7 @@ func (x *GetOptionBarsResponse) UnmarshalJSON(data []byte) error {
 	}
 
 	// Handle field: NextPageToken
-	if rawField, ok := raw["nextPageToken"]; ok {
+	if rawField, ok := raw["next_page_token"]; ok {
 		if err := json.Unmarshal(rawField, &x.NextPageToken); err != nil {
 			return err
 		}

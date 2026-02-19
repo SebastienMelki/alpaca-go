@@ -510,7 +510,7 @@ type ListOptionContractsResponse struct {
 	// List of option contracts.
 	OptionContracts []*OptionContract `protobuf:"bytes,1,rep,name=option_contracts,json=optionContracts,proto3" json:"option_contracts,omitempty"`
 	// Pagination token for the next page.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -729,12 +729,12 @@ const file_alpaca_trading_v1_option_contract_proto_rawDesc = "" +
 	"\x05limitR\x05limit\x12+\n" +
 	"\x05ppind\x18\x0e \x01(\bB\x15\xba\xb5\x18\x06\n" +
 	"\x04trueµ\x18\a\n" +
-	"\x05ppindR\x05ppind\"\xa3\x01\n" +
+	"\x05ppindR\x05ppind\"\xa5\x01\n" +
 	"\x1bListOptionContractsResponse\x12L\n" +
-	"\x10option_contracts\x18\x01 \x03(\v2!.alpaca.trading.v1.OptionContractR\x0foptionContracts\x126\n" +
+	"\x10option_contracts\x18\x01 \x03(\v2!.alpaca.trading.v1.OptionContractR\x0foptionContracts\x128\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bMTAwMA==R\rnextPageToken\"]\n" +
+	"\bMTAwMA==R\x0fnext_page_token\"]\n" +
 	"\x18GetOptionContractRequest\x12A\n" +
 	"\fsymbol_or_id\x18\x01 \x01(\tB\x1f\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x15\n" +
 	"\x13AAPL250620C00100000R\n" +

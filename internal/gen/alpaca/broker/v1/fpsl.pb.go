@@ -549,7 +549,7 @@ type ListFPSLLoansResponse struct {
 	// List of FPSL loans.
 	Loans []*FPSLLoan `protobuf:"bytes,1,rep,name=loans,proto3" json:"loans,omitempty"`
 	// Next page token.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -774,12 +774,12 @@ const file_alpaca_broker_v1_fpsl_proto_rawDesc = "" +
 	"\x06symbolR\x06symbol\x120\n" +
 	"\x06status\x18\x03 \x01(\tB\x18\xba\xb5\x18\b\n" +
 	"\x06activeµ\x18\b\n" +
-	"\x06statusR\x06status\"\x81\x01\n" +
+	"\x06statusR\x06status\"\x83\x01\n" +
 	"\x15ListFPSLLoansResponse\x120\n" +
-	"\x05loans\x18\x01 \x03(\v2\x1a.alpaca.broker.v1.FPSLLoanR\x05loans\x126\n" +
+	"\x05loans\x18\x01 \x03(\v2\x1a.alpaca.broker.v1.FPSLLoanR\x05loans\x128\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bYWJjZGVmR\rnextPageToken\"\x15\n" +
+	"\bYWJjZGVmR\x0fnext_page_token\"\x15\n" +
 	"\x13ListAPRTiersRequest\"M\n" +
 	"\x14ListAPRTiersResponse\x125\n" +
 	"\x05tiers\x18\x01 \x03(\v2\x19.alpaca.broker.v1.APRTierB\x04ȵ\x18\x01R\x05tiersB\xcf\x01\n" +

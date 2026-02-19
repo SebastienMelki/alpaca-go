@@ -193,7 +193,7 @@ type GetStockTradesResponse struct {
 	// Map of symbol to trades.
 	Trades map[string]*StockTradesList `protobuf:"bytes,1,rep,name=trades,proto3" json:"trades,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Next page token.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -478,7 +478,7 @@ type GetStockTradesSingleResponse struct {
 	// The symbol.
 	Symbol string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	// Next page token.
-	NextPageToken string `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,3,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -692,12 +692,12 @@ const file_alpaca_marketdata_v2_stock_trades_proto_rawDesc = "" +
 	"\n" +
 	"\bcurrencyR\bcurrency\"L\n" +
 	"\x0fStockTradesList\x129\n" +
-	"\x06trades\x18\x01 \x03(\v2\x1b.alpaca.marketdata.v2.TradeB\x04ȵ\x18\x01R\x06trades\"\x84\x02\n" +
+	"\x06trades\x18\x01 \x03(\v2\x1b.alpaca.marketdata.v2.TradeB\x04ȵ\x18\x01R\x06trades\"\x86\x02\n" +
 	"\x16GetStockTradesResponse\x12P\n" +
-	"\x06trades\x18\x01 \x03(\v28.alpaca.marketdata.v2.GetStockTradesResponse.TradesEntryR\x06trades\x126\n" +
+	"\x06trades\x18\x01 \x03(\v28.alpaca.marketdata.v2.GetStockTradesResponse.TradesEntryR\x06trades\x128\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bYWJjZGVmR\rnextPageToken\x1a`\n" +
+	"\bYWJjZGVmR\x0fnext_page_token\x1a`\n" +
 	"\vTradesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12;\n" +
 	"\x05value\x18\x02 \x01(\v2%.alpaca.marketdata.v2.StockTradesListR\x05value:\x028\x01\"\xbe\x01\n" +
@@ -748,15 +748,15 @@ const file_alpaca_marketdata_v2_stock_trades_proto_rawDesc = "" +
 	"\bcurrency\x18\t \x01(\tB\x17\xba\xb5\x18\x05\n" +
 	"\x03USDµ\x18\n" +
 	"\n" +
-	"\bcurrencyR\bcurrency\"\xb5\x01\n" +
+	"\bcurrencyR\bcurrency\"\xb7\x01\n" +
 	"\x1cGetStockTradesSingleResponse\x129\n" +
 	"\x06trades\x18\x01 \x03(\v2\x1b.alpaca.marketdata.v2.TradeB\x04ȵ\x18\x01R\x06trades\x12\"\n" +
 	"\x06symbol\x18\x02 \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
-	"\x04AAPLR\x06symbol\x126\n" +
+	"\x04AAPLR\x06symbol\x128\n" +
 	"\x0fnext_page_token\x18\x03 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\bYWJjZGVmR\rnextPageToken\"\xaa\x01\n" +
+	"\bYWJjZGVmR\x0fnext_page_token\"\xaa\x01\n" +
 	" GetLatestStockTradeSingleRequest\x12(\n" +
 	"\x06symbol\x18\x01 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x06\n" +
 	"\x04AAPLR\x06symbol\x12'\n" +

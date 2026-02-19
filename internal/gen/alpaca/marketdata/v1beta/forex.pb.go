@@ -250,7 +250,7 @@ type GetForexRatesResponse struct {
 	// Map of currency pair to list of rates.
 	Rates map[string]*ForexRateList `protobuf:"bytes,1,rep,name=rates,proto3" json:"rates,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Pagination token for the next page.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -431,11 +431,11 @@ const file_alpaca_marketdata_v1beta_forex_proto_rawDesc = "" +
 	"\n" +
 	"\btoken123µ\x18\f\n" +
 	"\n" +
-	"page_tokenR\tpageToken\"\xa0\x02\n" +
+	"page_tokenR\tpageToken\"\xa2\x02\n" +
 	"\x15GetForexRatesResponse\x12P\n" +
-	"\x05rates\x18\x01 \x03(\v2:.alpaca.marketdata.v1beta.GetForexRatesResponse.RatesEntryR\x05rates\x12R\n" +
+	"\x05rates\x18\x01 \x03(\v2:.alpaca.marketdata.v1beta.GetForexRatesResponse.RatesEntryR\x05rates\x12T\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tB*\xba\xb5\x18&\n" +
-	"$VVNESlBZfDIwMjItMDEtMDNUMDA6MDM6MDBaR\rnextPageToken\x1aa\n" +
+	"$VVNESlBZfDIwMjItMDEtMDNUMDA6MDM6MDBaR\x0fnext_page_token\x1aa\n" +
 	"\n" +
 	"RatesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12=\n" +

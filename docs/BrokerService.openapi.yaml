@@ -9960,7 +9960,7 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/FPSLLoan'
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - YWJjZGVm
@@ -11908,7 +11908,7 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/BrokerOptionContract'
-                nextPageToken:
+                next_page_token:
                     type: string
                     examples:
                         - def456
