@@ -93,6 +93,9 @@ message GetOptionBarsResponse {
   map<string, OptionBarsList> bars = 1;
 
   // Next page token.
-  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["YWJjZGVm"] }];
+  string next_page_token = 2 [
+    json_name = "next_page_token",
+    (sebuf.http.field_examples) = { values: ["YWJjZGVm"] }
+  ];
 }
 

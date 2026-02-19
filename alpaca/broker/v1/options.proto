@@ -204,7 +204,10 @@ message ListBrokerOptionContractsResponse {
   repeated BrokerOptionContract option_contracts = 1;
 
   // Next page token.
-  string next_page_token = 2 [(sebuf.http.field_examples) = { values: ["def456"] }];
+  string next_page_token = 2 [
+    json_name = "next_page_token",
+    (sebuf.http.field_examples) = { values: ["def456"] }
+  ];
 }
 
 // GetBrokerOptionContractRequest is the request to get a specific option contract.
