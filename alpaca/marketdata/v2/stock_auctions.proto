@@ -14,7 +14,7 @@ message Auction {
   double p = 2 [(sebuf.http.field_examples) = { values: ["150.25"] }];
 
   // Auction size.
-  int64 s = 3 [(sebuf.http.field_examples) = { values: ["10000"] }];
+  int64 s = 3 [(sebuf.http.field_examples) = { values: ["10000"] }, (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
 
   // Exchange code.
   string x = 4 [(sebuf.http.field_examples) = { values: ["Q"] }];

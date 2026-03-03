@@ -56,7 +56,7 @@ message FPSLLoan {
   string symbol = 5 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
 
   // Number of shares in the loan.
-  int64 quantity = 6 [(sebuf.http.field_examples) = { values: ["100"] }];
+  int64 quantity = 6 [(sebuf.http.field_examples) = { values: ["100"] }, (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
 
   // Total market value of shares on loan.
   double market_value = 7 [(sebuf.http.field_examples) = { values: ["1138.25"] }];

@@ -14,7 +14,7 @@ message OAuthToken {
   string token_type = 2 [(sebuf.http.field_examples) = { values: ["Bearer"] }];
 
   // Token expiration time in seconds.
-  int64 expires_in = 3 [(sebuf.http.field_examples) = { values: ["3600"] }];
+  int64 expires_in = 3 [(sebuf.http.field_examples) = { values: ["3600"] }, (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
 
   // Refresh token (if applicable).
   string refresh_token = 4 [(sebuf.http.field_examples) = { values: ["dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4..."] }];

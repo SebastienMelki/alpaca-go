@@ -19,7 +19,7 @@ message OptionQuote {
   double ap = 3 [(sebuf.http.field_examples) = { values: ["5.30"] }];
 
   // Ask size.
-  int64 as = 4 [(sebuf.http.field_examples) = { values: ["50"] }];
+  uint32 as = 4 [(sebuf.http.field_examples) = { values: ["50"] }];
 
   // Bid exchange code.
   string bx = 5 [(sebuf.http.field_examples) = { values: ["P"] }];
@@ -28,7 +28,7 @@ message OptionQuote {
   double bp = 6 [(sebuf.http.field_examples) = { values: ["5.20"] }];
 
   // Bid size.
-  int64 bs = 7 [(sebuf.http.field_examples) = { values: ["30"] }];
+  uint32 bs = 7 [(sebuf.http.field_examples) = { values: ["30"] }];
 
   // Quote condition.
   string c = 8 [(sebuf.http.field_examples) = { values: ["R"] }];

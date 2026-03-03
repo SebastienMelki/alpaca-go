@@ -23,7 +23,7 @@ message EODReport {
   string url = 5 [(sebuf.http.field_examples) = { values: ["https://reports.alpaca.markets/..."] }];
 
   // File size in bytes.
-  int64 size = 6 [(sebuf.http.field_examples) = { values: ["1048576"] }];
+  int64 size = 6 [(sebuf.http.field_examples) = { values: ["1048576"] }, (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
 
   // Number of records in the report.
   int32 record_count = 7 [(sebuf.http.field_examples) = { values: ["5000"] }];

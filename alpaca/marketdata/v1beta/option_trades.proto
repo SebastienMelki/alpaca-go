@@ -19,7 +19,7 @@ message OptionTrade {
   double p = 3 [(sebuf.http.field_examples) = { values: ["5.25"] }];
 
   // Trade size.
-  int64 s = 4 [(sebuf.http.field_examples) = { values: ["10"] }];
+  uint32 s = 4 [(sebuf.http.field_examples) = { values: ["10"] }];
 
   // Trade condition (single character).
   string c = 5 [(sebuf.http.field_examples) = { values: ["@"] }];

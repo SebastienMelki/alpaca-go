@@ -19,7 +19,7 @@ message NewsImage {
 // NewsArticle represents a news article.
 message NewsArticle {
   // Article ID.
-  int64 id = 1 [(sebuf.http.field_examples) = { values: ["12345678"] }];
+  int64 id = 1 [(sebuf.http.field_examples) = { values: ["12345678"] }, (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
 
   // Headline.
   string headline = 2 [(sebuf.http.field_examples) = { values: ["Apple Reports Record Q4 Earnings"] }];
