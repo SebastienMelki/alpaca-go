@@ -112,12 +112,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/bars/latest:
         get:
             tags:
@@ -178,12 +173,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/{symbol}/bars:
         get:
             tags:
@@ -293,12 +283,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/{symbol}/bars/latest:
         get:
             tags:
@@ -359,12 +344,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/trades:
         get:
             tags:
@@ -462,12 +442,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/trades/latest:
         get:
             tags:
@@ -528,12 +503,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/{symbol}/trades:
         get:
             tags:
@@ -631,12 +601,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/{symbol}/trades/latest:
         get:
             tags:
@@ -697,12 +662,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/quotes:
         get:
             tags:
@@ -800,12 +760,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/quotes/latest:
         get:
             tags:
@@ -866,12 +821,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/{symbol}/quotes:
         get:
             tags:
@@ -969,12 +919,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/{symbol}/quotes/latest:
         get:
             tags:
@@ -1035,12 +980,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/snapshots:
         get:
             tags:
@@ -1101,12 +1041,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/{symbol}/snapshot:
         get:
             tags:
@@ -1167,12 +1102,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/auctions:
         get:
             tags:
@@ -1264,12 +1194,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/{symbol}/auctions:
         get:
             tags:
@@ -1361,12 +1286,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/meta/conditions/{ticktype}:
         get:
             tags:
@@ -1421,12 +1341,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/stocks/meta/exchanges:
         get:
             tags:
@@ -1469,14 +1384,16 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
 components:
     schemas:
+        Error:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: Error message (e.g., 'user not found', 'database connection failed')
+            description: Error is returned when a handler encounters an error. It contains a simple error message that the developer can customize.
         FieldViolation:
             type: object
             properties:
@@ -1644,14 +1561,14 @@ components:
                     description: Close price.
                     example: 151.25
                 v:
-                    type: integer
+                    type: string
                     examples:
                         - 1234567
                     format: int64
                     description: Volume.
                     example: 1234567
                 n:
-                    type: integer
+                    type: string
                     examples:
                         - 5432
                     format: int64
@@ -1945,14 +1862,14 @@ components:
                     description: Trade price.
                     example: 150.25
                 s:
-                    type: integer
+                    type: string
                     examples:
                         - 100
                     format: int64
                     description: Trade size.
                     example: 100
                 i:
-                    type: integer
+                    type: string
                     examples:
                         - 12345678901
                     format: int64
@@ -2240,7 +2157,7 @@ components:
                     description: Ask price.
                     example: 150.30
                 as:
-                    type: integer
+                    type: string
                     examples:
                         - 500
                     format: int64
@@ -2260,7 +2177,7 @@ components:
                     description: Bid price.
                     example: 150.25
                 bs:
-                    type: integer
+                    type: string
                     examples:
                         - 300
                     format: int64
@@ -2634,7 +2551,7 @@ components:
                     description: Auction price.
                     example: 150.25
                 s:
-                    type: integer
+                    type: string
                     examples:
                         - 10000
                     format: int64
