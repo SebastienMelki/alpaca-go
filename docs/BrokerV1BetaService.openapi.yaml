@@ -44,12 +44,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerV1BetaService
@@ -96,12 +91,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta/funding_wallets:
         post:
             tags:
@@ -143,12 +133,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta/accounts/{account_id}/funding_wallet/transfers:
         get:
             tags:
@@ -190,12 +175,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta/accounts/{account_id}/funding_wallet/transfers/{transfer_id}:
         get:
             tags:
@@ -243,12 +223,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta/accounts/{account_id}/funding_wallet/withdrawals:
         post:
             tags:
@@ -296,12 +271,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta/accounts/{account_id}/funding_wallet/funding_details:
         get:
             tags:
@@ -343,12 +313,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta/accounts/{account_id}/funding_wallet/demo_deposit:
         post:
             tags:
@@ -396,12 +361,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta/accounts/{account_id}/funding_wallet/recipient_bank:
         get:
             tags:
@@ -443,12 +403,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerV1BetaService
@@ -495,12 +450,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - BrokerV1BetaService
@@ -541,14 +491,16 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
 components:
     schemas:
+        Error:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: Error message (e.g., 'user not found', 'database connection failed')
+            description: Error is returned when a handler encounters an error. It contains a simple error message that the developer can customize.
         FieldViolation:
             type: object
             properties:

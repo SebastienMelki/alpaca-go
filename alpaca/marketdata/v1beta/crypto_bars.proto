@@ -28,7 +28,7 @@ message CryptoBar {
   double v = 6 [(sebuf.http.field_examples) = { values: ["123.456789"] }];
 
   // Number of trades.
-  int64 n = 7 [(sebuf.http.field_examples) = { values: ["5432"] }];
+  int64 n = 7 [(sebuf.http.field_examples) = { values: ["5432"] }, (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
 
   // Volume weighted average price.
   double vw = 8 [(sebuf.http.field_examples) = { values: ["42150.00"] }];

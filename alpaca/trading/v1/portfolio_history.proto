@@ -7,7 +7,7 @@ import "sebuf/http/annotations.proto";
 // PortfolioHistory represents the historical performance of a portfolio.
 message PortfolioHistory {
   // Timestamps for each data point (Unix epoch in seconds).
-  repeated int64 timestamp = 1;
+  repeated int64 timestamp = 1 [(sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
 
   // Portfolio equity values at each timestamp.
   repeated double equity = 2;

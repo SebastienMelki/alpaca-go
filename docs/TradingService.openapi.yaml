@@ -45,12 +45,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/account/configurations:
         get:
             tags:
@@ -93,12 +88,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         patch:
             tags:
                 - TradingService
@@ -146,12 +136,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/account/portfolio/history:
         get:
             tags:
@@ -242,12 +227,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/account/activities:
         get:
             tags:
@@ -341,12 +321,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/account/activities/{activity_type}:
         get:
             tags:
@@ -432,12 +407,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/orders:
         get:
             tags:
@@ -547,12 +517,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - TradingService
@@ -600,12 +565,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - TradingService
@@ -647,12 +607,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/orders/{order_id}:
         get:
             tags:
@@ -707,12 +662,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - TradingService
@@ -760,12 +710,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         patch:
             tags:
                 - TradingService
@@ -819,12 +764,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/orders:by_client_order_id:
         get:
             tags:
@@ -873,12 +813,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/positions:
         get:
             tags:
@@ -921,12 +856,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - TradingService
@@ -974,12 +904,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/positions/{symbol_or_asset_id}:
         get:
             tags:
@@ -1028,12 +953,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - TradingService
@@ -1093,12 +1013,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/positions/{symbol_or_contract_id}/exercise:
         post:
             tags:
@@ -1153,12 +1068,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/positions/{symbol_or_contract_id}/do-not-exercise:
         post:
             tags:
@@ -1213,12 +1123,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/assets:
         get:
             tags:
@@ -1279,12 +1184,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/assets/{symbol_or_id}:
         get:
             tags:
@@ -1333,12 +1233,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/options/contracts:
         get:
             tags:
@@ -1466,12 +1361,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/options/contracts/{symbol_or_id}:
         get:
             tags:
@@ -1520,12 +1410,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/clock:
         get:
             tags:
@@ -1568,12 +1453,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/calendar:
         get:
             tags:
@@ -1628,12 +1508,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/watchlists:
         get:
             tags:
@@ -1676,12 +1551,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - TradingService
@@ -1729,12 +1599,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/watchlists/{watchlist_id}:
         get:
             tags:
@@ -1783,12 +1648,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         put:
             tags:
                 - TradingService
@@ -1842,12 +1702,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - TradingService
@@ -1901,12 +1756,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - TradingService
@@ -1954,12 +1804,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/watchlists/{watchlist_id}/{symbol}:
         delete:
             tags:
@@ -2014,12 +1859,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/watchlists:by_name:
         get:
             tags:
@@ -2068,12 +1908,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         put:
             tags:
                 - TradingService
@@ -2121,12 +1956,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - TradingService
@@ -2174,12 +2004,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/watchlists:by_name/{watchlist_name}:
         post:
             tags:
@@ -2234,12 +2059,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/wallets:
         get:
             tags:
@@ -2294,12 +2114,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/wallets/transfers:
         get:
             tags:
@@ -2342,12 +2157,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - TradingService
@@ -2395,12 +2205,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/wallets/transfers/{transfer_id}:
         get:
             tags:
@@ -2449,12 +2254,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/wallets/fees/estimate:
         get:
             tags:
@@ -2521,12 +2321,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/wallets/whitelists:
         get:
             tags:
@@ -2569,12 +2364,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - TradingService
@@ -2622,12 +2412,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v2/wallets/whitelists/{whitelisted_address_id}:
         delete:
             tags:
@@ -2676,14 +2461,16 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
 components:
     schemas:
+        Error:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: Error message (e.g., 'user not found', 'database connection failed')
+            description: Error is returned when a handler encounters an error. It contains a simple error message that the developer can customize.
         FieldViolation:
             type: object
             properties:
@@ -3131,7 +2918,7 @@ components:
                     items:
                         type: integer
                         format: int64
-                        description: Timestamps for each data point (Unix epoch in seconds).
+                        description: 'Timestamps for each data point (Unix epoch in seconds).. Warning: Values > 2^53 may lose precision in JavaScript'
                 equity:
                     type: array
                     items:

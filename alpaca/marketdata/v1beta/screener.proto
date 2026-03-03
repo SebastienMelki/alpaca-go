@@ -13,12 +13,13 @@ message MostActive {
   string symbol = 1 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
 
   // Trading volume.
-  int64 volume = 2 [(sebuf.http.field_examples) = { values: ["123456789"] }];
+  int64 volume = 2 [(sebuf.http.field_examples) = { values: ["123456789"] }, (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
 
   // Trade count.
   int64 trade_count = 3 [
     json_name = "trade_count",
-    (sebuf.http.field_examples) = { values: ["54321"] }
+    (sebuf.http.field_examples) = { values: ["54321"] },
+    (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER
   ];
 }
 

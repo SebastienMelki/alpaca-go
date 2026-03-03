@@ -94,12 +94,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta3/crypto/{loc}/latest/bars:
         get:
             tags:
@@ -154,12 +149,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta3/crypto/{loc}/trades:
         get:
             tags:
@@ -245,12 +235,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta3/crypto/{loc}/latest/trades:
         get:
             tags:
@@ -305,12 +290,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta3/crypto/{loc}/quotes:
         get:
             tags:
@@ -396,12 +376,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta3/crypto/{loc}/latest/quotes:
         get:
             tags:
@@ -456,12 +431,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta3/crypto/{loc}/snapshots:
         get:
             tags:
@@ -516,12 +486,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta3/crypto/{loc}/latest/orderbooks:
         get:
             tags:
@@ -578,12 +543,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/options/bars:
         get:
             tags:
@@ -669,12 +629,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/options/trades:
         get:
             tags:
@@ -754,12 +709,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/options/trades/latest:
         get:
             tags:
@@ -814,12 +764,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/options/quotes/latest:
         get:
             tags:
@@ -874,12 +819,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/options/snapshots:
         get:
             tags:
@@ -934,12 +874,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/options/snapshots/{underlying_symbol}:
         get:
             tags:
@@ -1039,12 +974,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/options/meta/conditions/{ticktype}:
         get:
             tags:
@@ -1093,12 +1023,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/options/meta/exchanges:
         get:
             tags:
@@ -1141,12 +1066,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/news:
         get:
             tags:
@@ -1238,12 +1158,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/screener/stocks/most-actives:
         get:
             tags:
@@ -1299,12 +1214,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/screener/{market_type}/movers:
         get:
             tags:
@@ -1360,12 +1270,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/corporate-actions:
         get:
             tags:
@@ -1469,12 +1374,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/forex/rates:
         get:
             tags:
@@ -1562,12 +1462,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/forex/latest/rates:
         get:
             tags:
@@ -1616,12 +1511,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1beta1/fixed_income/latest/prices:
         get:
             tags:
@@ -1670,14 +1560,16 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
 components:
     schemas:
+        Error:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: Error message (e.g., 'user not found', 'database connection failed')
+            description: Error is returned when a handler encounters an error. It contains a simple error message that the developer can customize.
         FieldViolation:
             type: object
             properties:
@@ -1838,7 +1730,7 @@ components:
                     examples:
                         - 5432
                     format: int64
-                    description: Number of trades.
+                    description: 'Number of trades.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 5432
                 vw:
                     type: number
@@ -1983,7 +1875,7 @@ components:
                     examples:
                         - 12345678901
                     format: int64
-                    description: Trade ID.
+                    description: 'Trade ID.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 12345678901
                 tks:
                     type: string
@@ -2401,14 +2293,14 @@ components:
                     examples:
                         - 1234
                     format: int64
-                    description: Volume.
+                    description: 'Volume.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 1234
                 n:
                     type: integer
                     examples:
                         - 56
                     format: int64
-                    description: Number of trades.
+                    description: 'Number of trades.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 56
                 vw:
                     type: number
@@ -2511,7 +2403,8 @@ components:
                     type: integer
                     examples:
                         - 10
-                    format: int64
+                    minimum: 0
+                    format: int32
                     description: Trade size.
                     example: 10
                 c:
@@ -2601,7 +2494,8 @@ components:
                     type: integer
                     examples:
                         - 50
-                    format: int64
+                    minimum: 0
+                    format: int32
                     description: Ask size.
                     example: 50
                 bx:
@@ -2621,7 +2515,8 @@ components:
                     type: integer
                     examples:
                         - 30
-                    format: int64
+                    minimum: 0
+                    format: int32
                     description: Bid size.
                     example: 30
                 c:
@@ -2920,7 +2815,7 @@ components:
                     examples:
                         - 12345678
                     format: int64
-                    description: Article ID.
+                    description: 'Article ID.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 12345678
                 headline:
                     type: string
@@ -3043,14 +2938,14 @@ components:
                     examples:
                         - 123456789
                     format: int64
-                    description: Trading volume.
+                    description: 'Trading volume.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 123456789
                 trade_count:
                     type: integer
                     examples:
                         - 54321
                     format: int64
-                    description: Trade count.
+                    description: 'Trade count.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 54321
             description: MostActive represents a most active stock.
         GetMoversRequest:

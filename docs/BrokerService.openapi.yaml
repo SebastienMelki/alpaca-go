@@ -74,12 +74,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -120,12 +115,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}:
         get:
             tags:
@@ -167,12 +157,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - BrokerService
@@ -213,12 +198,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         patch:
             tags:
                 - BrokerService
@@ -265,12 +245,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/ach_relationships:
         get:
             tags:
@@ -318,12 +293,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -370,12 +340,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/ach_relationships/{ach_relationship_id}:
         delete:
             tags:
@@ -423,12 +388,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/transfers:
         get:
             tags:
@@ -490,12 +450,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -542,12 +497,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/transfers/{transfer_id}:
         get:
             tags:
@@ -595,12 +545,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - BrokerService
@@ -647,12 +592,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/trading/accounts/{account_id}/orders:
         get:
             tags:
@@ -737,12 +677,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -789,12 +724,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/trading/accounts/{account_id}/orders/{order_id}:
         get:
             tags:
@@ -848,12 +778,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - BrokerService
@@ -900,12 +825,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/trading/accounts/{account_id}/positions:
         get:
             tags:
@@ -947,12 +867,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - BrokerService
@@ -999,12 +914,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/trading/accounts/{account_id}/positions/{symbol}:
         get:
             tags:
@@ -1052,12 +962,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - BrokerService
@@ -1116,12 +1021,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/documents:
         get:
             tags:
@@ -1181,12 +1081,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/documents/{document_id}/download:
         get:
             tags:
@@ -1234,12 +1129,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/documents/w8ben/{document_id}/download:
         get:
             tags:
@@ -1287,12 +1177,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/trading/accounts/{account_id}/watchlists:
         get:
             tags:
@@ -1334,12 +1219,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -1386,12 +1266,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/trading/accounts/{account_id}/watchlists/{watchlist_id}:
         get:
             tags:
@@ -1439,12 +1314,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         put:
             tags:
                 - BrokerService
@@ -1497,12 +1367,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -1555,12 +1420,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - BrokerService
@@ -1607,12 +1467,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/trading/accounts/{account_id}/watchlists/{watchlist_id}/{symbol}:
         delete:
             tags:
@@ -1666,12 +1521,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/wallets:
         get:
             tags:
@@ -1725,12 +1575,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/wallets/transfers:
         get:
             tags:
@@ -1772,12 +1617,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -1824,12 +1664,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/wallets/transfers/{transfer_id}:
         get:
             tags:
@@ -1877,12 +1712,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/wallets/whitelisted_addresses:
         get:
             tags:
@@ -1924,12 +1754,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -1976,12 +1801,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/wallets/whitelisted_addresses/{whitelisted_address_id}:
         delete:
             tags:
@@ -2029,12 +1849,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/journals:
         get:
             tags:
@@ -2106,12 +1921,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -2152,12 +1962,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/journals/{journal_id}:
         get:
             tags:
@@ -2199,12 +2004,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - BrokerService
@@ -2245,12 +2045,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/journals/batch:
         post:
             tags:
@@ -2292,12 +2087,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/journals/reverse_batch:
         post:
             tags:
@@ -2339,12 +2129,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/rebalancing/portfolios:
         get:
             tags:
@@ -2410,12 +2195,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -2456,12 +2236,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/rebalancing/portfolios/{portfolio_id}:
         get:
             tags:
@@ -2503,12 +2278,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - BrokerService
@@ -2549,12 +2319,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         patch:
             tags:
                 - BrokerService
@@ -2601,12 +2366,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/rebalancing/subscriptions:
         get:
             tags:
@@ -2654,12 +2414,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -2700,12 +2455,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/rebalancing/subscriptions/{subscription_id}:
         get:
             tags:
@@ -2747,12 +2497,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - BrokerService
@@ -2793,12 +2538,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/rebalancing/runs:
         get:
             tags:
@@ -2846,12 +2586,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -2892,12 +2627,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/rebalancing/runs/{run_id}:
         get:
             tags:
@@ -2939,12 +2669,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - BrokerService
@@ -2985,12 +2710,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/jit/settlements:
         get:
             tags:
@@ -3032,12 +2752,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -3078,12 +2793,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/jit/settlements/{settlement_id}:
         get:
             tags:
@@ -3125,12 +2835,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/transfers/jit/ledgers:
         get:
             tags:
@@ -3166,12 +2871,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/transfers/jit/ledgers/{ledger_id}/balances:
         get:
             tags:
@@ -3213,12 +2913,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/transfers/jit/limits:
         get:
             tags:
@@ -3254,12 +2949,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/instant_funding:
         get:
             tags:
@@ -3345,12 +3035,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/instant_funding/{instant_funding_id}:
         delete:
             tags:
@@ -3392,12 +3077,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/instant_funding/settlements:
         get:
             tags:
@@ -3433,12 +3113,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -3479,12 +3154,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/fpsl/tiers:
         get:
             tags:
@@ -3520,12 +3190,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/fpsl/loans:
         get:
             tags:
@@ -3579,12 +3244,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/apr/tiers:
         get:
             tags:
@@ -3620,12 +3280,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/oauth/token:
         post:
             tags:
@@ -3667,12 +3322,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/oauth/authorize:
         get:
             tags:
@@ -3738,12 +3388,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/oauth/clients/{client_id}:
         get:
             tags:
@@ -3785,12 +3430,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         delete:
             tags:
                 - BrokerService
@@ -3831,12 +3471,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         patch:
             tags:
                 - BrokerService
@@ -3883,12 +3518,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/oauth/clients:
         post:
             tags:
@@ -3930,12 +3560,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/oauth/authorizations/{authorization_id}:
         delete:
             tags:
@@ -3977,12 +3602,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/events/accounts/status:
         get:
             tags:
@@ -4017,14 +3637,14 @@ paths:
                   description: Starting event ID (integer-based pagination).
                   required: false
                   schema:
-                    type: integer
+                    type: string
                     format: int64
                 - name: until_id
                   in: query
                   description: Ending event ID (integer-based pagination).
                   required: false
                   schema:
-                    type: integer
+                    type: string
                     format: int64
                 - name: since_ulid
                   in: query
@@ -4062,12 +3682,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/events/trades:
         get:
             tags:
@@ -4103,14 +3718,14 @@ paths:
                   description: Starting event ID (integer-based pagination).
                   required: false
                   schema:
-                    type: integer
+                    type: string
                     format: int64
                 - name: until_id
                   in: query
                   description: Ending event ID (integer-based pagination).
                   required: false
                   schema:
-                    type: integer
+                    type: string
                     format: int64
                 - name: since_ulid
                   in: query
@@ -4142,12 +3757,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/events/transfers/status:
         get:
             tags:
@@ -4183,14 +3793,14 @@ paths:
                   description: Starting event ID (integer-based pagination).
                   required: false
                   schema:
-                    type: integer
+                    type: string
                     format: int64
                 - name: until_id
                   in: query
                   description: Ending event ID (integer-based pagination).
                   required: false
                   schema:
-                    type: integer
+                    type: string
                     format: int64
                 - name: since_ulid
                   in: query
@@ -4222,12 +3832,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/events/journals/status:
         get:
             tags:
@@ -4262,14 +3867,14 @@ paths:
                   description: Starting event ID (integer-based pagination).
                   required: false
                   schema:
-                    type: integer
+                    type: string
                     format: int64
                 - name: until_id
                   in: query
                   description: Ending event ID (integer-based pagination).
                   required: false
                   schema:
-                    type: integer
+                    type: string
                     format: int64
                 - name: since_ulid
                   in: query
@@ -4307,12 +3912,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/events/nta:
         get:
             tags:
@@ -4353,14 +3953,14 @@ paths:
                   description: Starting event ID (integer-based pagination).
                   required: false
                   schema:
-                    type: integer
+                    type: string
                     format: int64
                 - name: until_id
                   in: query
                   description: Ending event ID (integer-based pagination).
                   required: false
                   schema:
-                    type: integer
+                    type: string
                     format: int64
                 - name: since_ulid
                   in: query
@@ -4404,12 +4004,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/cip:
         get:
             tags:
@@ -4451,12 +4046,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         patch:
             tags:
                 - BrokerService
@@ -4503,12 +4093,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/onfido/applicants:
         get:
             tags:
@@ -4550,12 +4135,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -4602,12 +4182,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/onfido/sdk_tokens:
         post:
             tags:
@@ -4655,12 +4230,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/onfido/checks:
         get:
             tags:
@@ -4702,12 +4272,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -4754,12 +4319,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/onfido/checks/{check_id}:
         get:
             tags:
@@ -4807,12 +4367,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/onfido/documents:
         post:
             tags:
@@ -4860,12 +4415,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/onfido/photos:
         post:
             tags:
@@ -4913,12 +4463,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/calendar:
         get:
             tags:
@@ -4966,12 +4511,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/clock:
         get:
             tags:
@@ -5007,12 +4547,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/options:
         get:
             tags:
@@ -5054,12 +4589,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -5106,12 +4636,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         patch:
             tags:
                 - BrokerService
@@ -5158,12 +4683,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/options/contracts:
         get:
             tags:
@@ -5254,12 +4774,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/options/contracts/{symbol_or_id}:
         get:
             tags:
@@ -5301,12 +4816,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/ira/excess_contributions:
         get:
             tags:
@@ -5361,12 +4871,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - BrokerService
@@ -5407,12 +4912,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/ira/excess_contributions/{excess_contribution_id}:
         get:
             tags:
@@ -5454,12 +4954,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/ira/limits:
         get:
             tags:
@@ -5502,12 +4997,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
     /v1/country-info:
         get:
             tags:
@@ -5543,14 +5033,16 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: object
-                                properties:
-                                    error:
-                                        type: string
-                                    code:
-                                        type: integer
+                                $ref: '#/components/schemas/Error'
 components:
     schemas:
+        Error:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: Error message (e.g., 'user not found', 'database connection failed')
+            description: Error is returned when a handler encounters an error. It contains a simple error message that the developer can customize.
         FieldViolation:
             type: object
             properties:
@@ -10005,7 +9497,7 @@ components:
                     examples:
                         - 100
                     format: int64
-                    description: Number of shares in the loan.
+                    description: 'Number of shares in the loan.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 100
                 marketValue:
                     type: number
@@ -10166,7 +9658,7 @@ components:
                     examples:
                         - 3600
                     format: int64
-                    description: Token expiration time in seconds.
+                    description: 'Token expiration time in seconds.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 3600
                 refreshToken:
                     type: string
@@ -10422,11 +9914,11 @@ components:
                 sinceId:
                     type: integer
                     format: int64
-                    description: Starting event ID (integer-based pagination).
+                    description: 'Starting event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 untilId:
                     type: integer
                     format: int64
-                    description: Ending event ID (integer-based pagination).
+                    description: 'Ending event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 sinceUlid:
                     type: string
                     examples:
@@ -10486,7 +9978,7 @@ components:
                     examples:
                         - 3000
                     format: int64
-                    description: Retry interval in milliseconds.
+                    description: 'Retry interval in milliseconds.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 3000
             description: SSEEvent represents a Server-Sent Event.
         SubscribeTradeEventsRequest:
@@ -10507,11 +9999,11 @@ components:
                 sinceId:
                     type: integer
                     format: int64
-                    description: Starting event ID (integer-based pagination).
+                    description: 'Starting event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 untilId:
                     type: integer
                     format: int64
-                    description: Ending event ID (integer-based pagination).
+                    description: 'Ending event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 sinceUlid:
                     type: string
                     examples:
@@ -10543,11 +10035,11 @@ components:
                 sinceId:
                     type: integer
                     format: int64
-                    description: Starting event ID (integer-based pagination).
+                    description: 'Starting event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 untilId:
                     type: integer
                     format: int64
-                    description: Ending event ID (integer-based pagination).
+                    description: 'Ending event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 sinceUlid:
                     type: string
                     examples:
@@ -10579,11 +10071,11 @@ components:
                 sinceId:
                     type: integer
                     format: int64
-                    description: Starting event ID (integer-based pagination).
+                    description: 'Starting event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 untilId:
                     type: integer
                     format: int64
-                    description: Ending event ID (integer-based pagination).
+                    description: 'Ending event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 sinceUlid:
                     type: string
                     examples:
@@ -10621,11 +10113,11 @@ components:
                 sinceId:
                     type: integer
                     format: int64
-                    description: Starting event ID (integer-based pagination).
+                    description: 'Starting event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 untilId:
                     type: integer
                     format: int64
-                    description: Ending event ID (integer-based pagination).
+                    description: 'Ending event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 sinceUlid:
                     type: string
                     examples:

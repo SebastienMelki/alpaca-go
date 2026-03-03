@@ -5,8 +5,6 @@ package marketdatav1beta
 
 import (
 	"encoding/json"
-
-	"google.golang.org/protobuf/encoding/protojson"
 )
 
 // MarshalJSON implements json.Marshaler for OptionBarsList.
@@ -18,7 +16,7 @@ func (x *OptionBarsList) MarshalJSON() ([]byte, error) {
 
 	items := make([]json.RawMessage, 0, len(x.Bars))
 	for _, item := range x.Bars {
-		data, err := protojson.Marshal(item)
+		data, err := json.Marshal(item)
 		if err != nil {
 			return nil, err
 		}
@@ -38,7 +36,7 @@ func (x *OptionBarsList) UnmarshalJSON(data []byte) error {
 	x.Bars = make([]*OptionBar, 0, len(itemsRaw))
 	for _, itemRaw := range itemsRaw {
 		item := &OptionBar{}
-		if err := protojson.Unmarshal(itemRaw, item); err != nil {
+		if err := json.Unmarshal(itemRaw, item); err != nil {
 			return err
 		}
 		x.Bars = append(x.Bars, item)
@@ -63,7 +61,7 @@ func (x *GetOptionBarsResponse) MarshalJSON() ([]byte, error) {
 				// Marshal the unwrap field directly (the array)
 				items := make([]json.RawMessage, 0, len(wrapper.GetBars()))
 				for _, item := range wrapper.GetBars() {
-					data, err := protojson.Marshal(item)
+					data, err := json.Marshal(item)
 					if err != nil {
 						return nil, err
 					}
@@ -118,7 +116,7 @@ func (x *GetOptionBarsResponse) UnmarshalJSON(data []byte) error {
 			items := make([]*OptionBar, 0, len(itemsRaw))
 			for _, itemRaw := range itemsRaw {
 				item := &OptionBar{}
-				if err := protojson.Unmarshal(itemRaw, item); err != nil {
+				if err := json.Unmarshal(itemRaw, item); err != nil {
 					return err
 				}
 				items = append(items, item)

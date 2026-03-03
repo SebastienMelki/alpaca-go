@@ -25,10 +25,10 @@ message OptionBar {
   double c = 5 [(sebuf.http.field_examples) = { values: ["5.40"] }];
 
   // Volume.
-  int64 v = 6 [(sebuf.http.field_examples) = { values: ["1234"] }];
+  int64 v = 6 [(sebuf.http.field_examples) = { values: ["1234"] }, (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
 
   // Number of trades.
-  int64 n = 7 [(sebuf.http.field_examples) = { values: ["56"] }];
+  int64 n = 7 [(sebuf.http.field_examples) = { values: ["56"] }, (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
 
   // Volume weighted average price.
   double vw = 8 [(sebuf.http.field_examples) = { values: ["5.35"] }];

@@ -19,7 +19,7 @@ message SSEEvent {
   string timestamp = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
 
   // Retry interval in milliseconds.
-  int64 retry = 5 [(sebuf.http.field_examples) = { values: ["3000"] }];
+  int64 retry = 5 [(sebuf.http.field_examples) = { values: ["3000"] }, (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
 }
 
 // AccountUpdatedEvent represents an account update event.
@@ -160,12 +160,14 @@ message SubscribeAccountEventsRequest {
 
   // Starting event ID (integer-based pagination).
   int64 since_id = 3 [
-    (sebuf.http.query) = { name: "since_id" }
+    (sebuf.http.query) = { name: "since_id" },
+    (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER
   ];
 
   // Ending event ID (integer-based pagination).
   int64 until_id = 4 [
-    (sebuf.http.query) = { name: "until_id" }
+    (sebuf.http.query) = { name: "until_id" },
+    (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER
   ];
 
   // Starting event ULID (ULID-based pagination).
@@ -202,12 +204,14 @@ message SubscribeTradeEventsRequest {
 
   // Starting event ID (integer-based pagination).
   int64 since_id = 3 [
-    (sebuf.http.query) = { name: "since_id" }
+    (sebuf.http.query) = { name: "since_id" },
+    (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER
   ];
 
   // Ending event ID (integer-based pagination).
   int64 until_id = 4 [
-    (sebuf.http.query) = { name: "until_id" }
+    (sebuf.http.query) = { name: "until_id" },
+    (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER
   ];
 
   // Starting event ULID (ULID-based pagination).
@@ -239,12 +243,14 @@ message SubscribeTransferEventsRequest {
 
   // Starting event ID (integer-based pagination).
   int64 since_id = 3 [
-    (sebuf.http.query) = { name: "since_id" }
+    (sebuf.http.query) = { name: "since_id" },
+    (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER
   ];
 
   // Ending event ID (integer-based pagination).
   int64 until_id = 4 [
-    (sebuf.http.query) = { name: "until_id" }
+    (sebuf.http.query) = { name: "until_id" },
+    (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER
   ];
 
   // Starting event ULID (ULID-based pagination).
@@ -276,12 +282,14 @@ message SubscribeJournalEventsRequest {
 
   // Starting event ID (integer-based pagination).
   int64 since_id = 3 [
-    (sebuf.http.query) = { name: "since_id" }
+    (sebuf.http.query) = { name: "since_id" },
+    (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER
   ];
 
   // Ending event ID (integer-based pagination).
   int64 until_id = 4 [
-    (sebuf.http.query) = { name: "until_id" }
+    (sebuf.http.query) = { name: "until_id" },
+    (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER
   ];
 
   // Starting event ULID (ULID-based pagination).
@@ -323,12 +331,14 @@ message SubscribeNTAEventsRequest {
 
   // Starting event ID (integer-based pagination).
   int64 since_id = 4 [
-    (sebuf.http.query) = { name: "since_id" }
+    (sebuf.http.query) = { name: "since_id" },
+    (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER
   ];
 
   // Ending event ID (integer-based pagination).
   int64 until_id = 5 [
-    (sebuf.http.query) = { name: "until_id" }
+    (sebuf.http.query) = { name: "until_id" },
+    (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER
   ];
 
   // Starting event ULID (ULID-based pagination).

@@ -19,7 +19,7 @@ message CryptoTrade {
   double s = 3 [(sebuf.http.field_examples) = { values: ["0.5"] }];
 
   // Trade ID.
-  int64 i = 4 [(sebuf.http.field_examples) = { values: ["12345678901"] }];
+  int64 i = 4 [(sebuf.http.field_examples) = { values: ["12345678901"] }, (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
 
   // Taker side (B = buy, S = sell).
   string tks = 5 [(sebuf.http.field_examples) = { values: ["B"] }];
