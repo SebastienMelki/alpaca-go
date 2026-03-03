@@ -1561,18 +1561,18 @@ components:
                     description: Close price.
                     example: 151.25
                 v:
-                    type: string
+                    type: integer
                     examples:
                         - 1234567
                     format: int64
-                    description: Volume.
+                    description: 'Volume.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 1234567
                 n:
-                    type: string
+                    type: integer
                     examples:
                         - 5432
                     format: int64
-                    description: Number of trades.
+                    description: 'Number of trades.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 5432
                 vw:
                     type: number
@@ -1862,18 +1862,20 @@ components:
                     description: Trade price.
                     example: 150.25
                 s:
-                    type: string
+                    type: integer
                     examples:
                         - 100
-                    format: int64
+                    minimum: 0
+                    format: int32
                     description: Trade size.
                     example: 100
                 i:
-                    type: string
+                    type: integer
                     examples:
                         - 12345678901
-                    format: int64
-                    description: Trade ID.
+                    minimum: 0
+                    format: uint64
+                    description: 'Trade ID.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 12345678901
                 c:
                     type: array
@@ -2157,10 +2159,11 @@ components:
                     description: Ask price.
                     example: 150.30
                 as:
-                    type: string
+                    type: integer
                     examples:
                         - 500
-                    format: int64
+                    minimum: 0
+                    format: int32
                     description: Ask size.
                     example: 500
                 bx:
@@ -2177,10 +2180,11 @@ components:
                     description: Bid price.
                     example: 150.25
                 bs:
-                    type: string
+                    type: integer
                     examples:
                         - 300
-                    format: int64
+                    minimum: 0
+                    format: int32
                     description: Bid size.
                     example: 300
                 c:
@@ -2551,11 +2555,11 @@ components:
                     description: Auction price.
                     example: 150.25
                 s:
-                    type: string
+                    type: integer
                     examples:
                         - 10000
                     format: int64
-                    description: Auction size.
+                    description: 'Auction size.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 10000
                 x:
                     type: string

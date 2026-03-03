@@ -9493,11 +9493,11 @@ components:
                     description: Symbol of the loaned security.
                     example: AAPL
                 quantity:
-                    type: string
+                    type: integer
                     examples:
                         - 100
                     format: int64
-                    description: Number of shares in the loan.
+                    description: 'Number of shares in the loan.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 100
                 marketValue:
                     type: number
@@ -9654,11 +9654,11 @@ components:
                     description: Token type (typically "Bearer").
                     example: Bearer
                 expiresIn:
-                    type: string
+                    type: integer
                     examples:
                         - 3600
                     format: int64
-                    description: Token expiration time in seconds.
+                    description: 'Token expiration time in seconds.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 3600
                 refreshToken:
                     type: string
@@ -9912,13 +9912,13 @@ components:
                     description: 'Ending timestamp (format: YYYY-MM-DD).'
                     example: 2024-01-15
                 sinceId:
-                    type: string
+                    type: integer
                     format: int64
-                    description: Starting event ID (integer-based pagination).
+                    description: 'Starting event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 untilId:
-                    type: string
+                    type: integer
                     format: int64
-                    description: Ending event ID (integer-based pagination).
+                    description: 'Ending event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 sinceUlid:
                     type: string
                     examples:
@@ -9974,11 +9974,11 @@ components:
                     description: Timestamp of the event.
                     example: 2024-01-15T10:30:00Z
                 retry:
-                    type: string
+                    type: integer
                     examples:
                         - 3000
                     format: int64
-                    description: Retry interval in milliseconds.
+                    description: 'Retry interval in milliseconds.. Warning: Values > 2^53 may lose precision in JavaScript'
                     example: 3000
             description: SSEEvent represents a Server-Sent Event.
         SubscribeTradeEventsRequest:
@@ -9997,13 +9997,13 @@ components:
                     description: 'Ending timestamp (format: YYYY-MM-DD).'
                     example: 2024-01-15
                 sinceId:
-                    type: string
+                    type: integer
                     format: int64
-                    description: Starting event ID (integer-based pagination).
+                    description: 'Starting event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 untilId:
-                    type: string
+                    type: integer
                     format: int64
-                    description: Ending event ID (integer-based pagination).
+                    description: 'Ending event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 sinceUlid:
                     type: string
                     examples:
@@ -10033,13 +10033,13 @@ components:
                     description: 'Ending timestamp (format: YYYY-MM-DD).'
                     example: 2024-01-15
                 sinceId:
-                    type: string
+                    type: integer
                     format: int64
-                    description: Starting event ID (integer-based pagination).
+                    description: 'Starting event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 untilId:
-                    type: string
+                    type: integer
                     format: int64
-                    description: Ending event ID (integer-based pagination).
+                    description: 'Ending event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 sinceUlid:
                     type: string
                     examples:
@@ -10069,13 +10069,13 @@ components:
                     description: 'Ending timestamp (format: YYYY-MM-DD).'
                     example: 2024-01-15
                 sinceId:
-                    type: string
+                    type: integer
                     format: int64
-                    description: Starting event ID (integer-based pagination).
+                    description: 'Starting event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 untilId:
-                    type: string
+                    type: integer
                     format: int64
-                    description: Ending event ID (integer-based pagination).
+                    description: 'Ending event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 sinceUlid:
                     type: string
                     examples:
@@ -10111,13 +10111,13 @@ components:
                     description: 'Ending timestamp (format: YYYY-MM-DD).'
                     example: 2024-01-15
                 sinceId:
-                    type: string
+                    type: integer
                     format: int64
-                    description: Starting event ID (integer-based pagination).
+                    description: 'Starting event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 untilId:
-                    type: string
+                    type: integer
                     format: int64
-                    description: Ending event ID (integer-based pagination).
+                    description: 'Ending event ID (integer-based pagination).. Warning: Values > 2^53 may lose precision in JavaScript'
                 sinceUlid:
                     type: string
                     examples:

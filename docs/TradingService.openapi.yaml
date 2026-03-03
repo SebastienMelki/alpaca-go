@@ -2916,9 +2916,9 @@ components:
                 timestamp:
                     type: array
                     items:
-                        type: string
+                        type: integer
                         format: int64
-                        description: Timestamps for each data point (Unix epoch in seconds).
+                        description: 'Timestamps for each data point (Unix epoch in seconds).. Warning: Values > 2^53 may lose precision in JavaScript'
                 equity:
                     type: array
                     items:

@@ -5,8 +5,6 @@ package brokerv1
 
 import (
 	"encoding/json"
-
-	"google.golang.org/protobuf/encoding/protojson"
 )
 
 // MarshalJSON implements json.Marshaler for ListEODReportsResponse.
@@ -18,7 +16,7 @@ func (x *ListEODReportsResponse) MarshalJSON() ([]byte, error) {
 
 	items := make([]json.RawMessage, 0, len(x.Reports))
 	for _, item := range x.Reports {
-		data, err := protojson.Marshal(item)
+		data, err := json.Marshal(item)
 		if err != nil {
 			return nil, err
 		}
@@ -38,7 +36,7 @@ func (x *ListEODReportsResponse) UnmarshalJSON(data []byte) error {
 	x.Reports = make([]*EODReport, 0, len(itemsRaw))
 	for _, itemRaw := range itemsRaw {
 		item := &EODReport{}
-		if err := protojson.Unmarshal(itemRaw, item); err != nil {
+		if err := json.Unmarshal(itemRaw, item); err != nil {
 			return err
 		}
 		x.Reports = append(x.Reports, item)
