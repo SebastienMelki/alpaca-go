@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-03-03
+
+### Changed
+- **Breaking**: Field types in `marketdata/v2` `Trade` and `Quote` messages corrected — trade size (`s`) and quote sizes (`as`, `bs`) changed from `int64` to `uint32`; trade ID (`i`) changed from `int64` to `uint64` to match the Alpaca API's actual types
+- Upgraded sebuf from v0.2.1 to v0.7.0
+- Updated buf.build dependencies (`sebuf` and `protovalidate` to latest commits)
+
+### Fixed
+- `int64` fields (volume, trade count, trade/quote sizes, trade ID, portfolio history timestamps, SSE pagination cursors, news article ID, screener fields) now serialize as JSON numbers instead of quoted strings, matching the Alpaca API wire format
+- Added `INT64_ENCODING_NUMBER` annotation to all numeric `int64` fields across broker, market data, and trading proto definitions
+
+### Added
+- 12 new `*_encoding.pb.go` generated files implementing custom `MarshalJSON` for messages with `INT64_ENCODING_NUMBER` fields (broker v1, marketdata v1beta and v2, trading v1)
+
 ## [1.2.1] - 2026-02-19
 
 ### Fixed
