@@ -113,6 +113,7 @@ pkg/                      # Public client wrappers
 └── broker/               # Broker API client (V1 + V1Beta + V2)
 cmd/apitest/              # API test harness for validation
 docs/                     # Generated OpenAPI 3.1 specs per service
+curl-verified.md          # SDK methods verified against raw curl responses
 ```
 
 ## Key Patterns
