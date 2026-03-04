@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-03-04
+
+### Fixed
+- Added `json_name = "latestTrade"` to `OptionSnapshot.latest_trade` field in `marketdata/v1beta` to ensure correct JSON key mapping during deserialization
+
+### Added
+- `curl-verified.md` — reference document listing SDK methods verified against raw curl responses
+
 ## [1.3.0] - 2026-03-03
 
 ### Changed
@@ -122,7 +130,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Makefile with `generate`, `build`, `lint`, `lint-fix`, `buf-lint`, `check`, and `release` targets
 - golangci-lint configuration for code quality
 
-[unreleased]: https://github.com/sebastienmelki/alpaca-go/compare/v1.2.1...HEAD
+[unreleased]: https://github.com/sebastienmelki/alpaca-go/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/sebastienmelki/alpaca-go/compare/v1.3.0...v1.3.1
 [1.2.1]: https://github.com/sebastienmelki/alpaca-go/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.0.0...v1.1.0
