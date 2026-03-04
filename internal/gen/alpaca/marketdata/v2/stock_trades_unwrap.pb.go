@@ -5,8 +5,6 @@ package marketdatav2
 
 import (
 	"encoding/json"
-
-	"google.golang.org/protobuf/encoding/protojson"
 )
 
 // MarshalJSON implements json.Marshaler for StockTradesList.
@@ -18,7 +16,7 @@ func (x *StockTradesList) MarshalJSON() ([]byte, error) {
 
 	items := make([]json.RawMessage, 0, len(x.Trades))
 	for _, item := range x.Trades {
-		data, err := protojson.Marshal(item)
+		data, err := json.Marshal(item)
 		if err != nil {
 			return nil, err
 		}
@@ -38,7 +36,7 @@ func (x *StockTradesList) UnmarshalJSON(data []byte) error {
 	x.Trades = make([]*Trade, 0, len(itemsRaw))
 	for _, itemRaw := range itemsRaw {
 		item := &Trade{}
-		if err := protojson.Unmarshal(itemRaw, item); err != nil {
+		if err := json.Unmarshal(itemRaw, item); err != nil {
 			return err
 		}
 		x.Trades = append(x.Trades, item)
@@ -63,7 +61,7 @@ func (x *GetStockTradesResponse) MarshalJSON() ([]byte, error) {
 				// Marshal the unwrap field directly (the array)
 				items := make([]json.RawMessage, 0, len(wrapper.GetTrades()))
 				for _, item := range wrapper.GetTrades() {
-					data, err := protojson.Marshal(item)
+					data, err := json.Marshal(item)
 					if err != nil {
 						return nil, err
 					}
@@ -118,7 +116,7 @@ func (x *GetStockTradesResponse) UnmarshalJSON(data []byte) error {
 			items := make([]*Trade, 0, len(itemsRaw))
 			for _, itemRaw := range itemsRaw {
 				item := &Trade{}
-				if err := protojson.Unmarshal(itemRaw, item); err != nil {
+				if err := json.Unmarshal(itemRaw, item); err != nil {
 					return err
 				}
 				items = append(items, item)
