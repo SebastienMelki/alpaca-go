@@ -31,7 +31,7 @@ message OptionGreeks {
 // OptionSnapshot represents a point-in-time option market data snapshot.
 message OptionSnapshot {
   // Latest trade.
-  OptionTrade latest_trade = 1;
+  OptionTrade latest_trade = 1 [json_name = "latestTrade"];
 
   // Latest quote.
   OptionQuote latest_quote = 2;
