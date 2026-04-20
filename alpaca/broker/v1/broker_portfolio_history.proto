@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// BrokerPortfolioHistory represents the historical performance of a broker account's portfolio.
+message BrokerPortfolioHistory {
+  // Timestamps for each data point (Unix epoch in seconds).
+  // Note: int64_encoding omitted because the unwrap codegen for cashflow already handles
+  // custom JSON marshaling for this message, which natively encodes int64 as numbers.
+  repeated int64 timestamp = 1;
+
+  // Portfolio equity values at each timestamp.
+  repeated double equity = 2;
+
+  // Profit/loss values at each timestamp.
+  repeated double profit_loss = 3;
+
+  // Profit/loss percentage at each timestamp.
+  repeated double profit_loss_pct = 4;
+
+  // Base value (starting equity for P/L calculation).
+  double base_value = 5 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  // Trading date of the base_value closing equity.
+  string base_value_asof = 6 [(sebuf.http.field_examples) = { values: ["2024-01-14"] }];
+
+  // Time frame (1Min, 5Min, 15Min, 1H, 1D).
+  string timeframe = 7 [(sebuf.http.field_examples) = { values: ["1D"] }];
+
+  // Accumulated cashflow values by activity type (e.g. JNLC, DIV, CSD).
+  // Each key is an activity type string, each value is an array of numbers matching the timestamp array length.
+  map<string, CashflowValues> cashflow = 8;
+}
+
+// CashflowValues holds the array of cashflow amounts for a single activity type.
+message CashflowValues {
+  repeated double values = 1 [(sebuf.http.unwrap) = true];
+}
+
+// GetBrokerPortfolioHistoryRequest is the request to get portfolio history for a broker account.
+message GetBrokerPortfolioHistoryRequest {
+  // Account ID (path parameter).
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Period (1D, 1W, 1M, 3M, 1A, all, intraday). Default: 1M.
+  string period = 2 [
+    (sebuf.http.query) = { name: "period" },
+    (sebuf.http.field_examples) = { values: ["1M"] }
+  ];
+
+  // Timeframe for data points (1Min, 5Min, 15Min, 1H, 1D).
+  string timeframe = 3 [
+    (sebuf.http.query) = { name: "timeframe" },
+    (sebuf.http.field_examples) = { values: ["1D"] }
+  ];
+
+  // Intraday reporting mode (market_hours, extended_hours, continuous).
+  string intraday_reporting = 4 [
+    (sebuf.http.query) = { name: "intraday_reporting" },
+    (sebuf.http.field_examples) = { values: ["market_hours"] }
+  ];
+
+  // Start date/time (RFC-3339 or YYYY-MM-DD).
+  string start = 5 [
+    (sebuf.http.query) = { name: "start" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01"] }
+  ];
+
+  // End date/time (RFC-3339 or YYYY-MM-DD).
+  string end = 6 [
+    (sebuf.http.query) = { name: "end" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31"] }
+  ];
+
+  // PnL reset mode for intraday queries (no_reset or per_day). Default: per_day.
+  string pnl_reset = 7 [
+    (sebuf.http.query) = { name: "pnl_reset" },
+    (sebuf.http.field_examples) = { values: ["per_day"] }
+  ];
+
+  // Whether to include extended hours data (deprecated, use intraday_reporting).
+  string extended_hours = 8 [
+    (sebuf.http.query) = { name: "extended_hours" },
+    (sebuf.http.field_examples) = { values: ["true"] }
+  ];
+
+  // Cashflow activities to include (ALL, NONE, or comma-separated activity types).
+  string cashflow_types = 9 [
+    (sebuf.http.query) = { name: "cashflow_types" },
+    (sebuf.http.field_examples) = { values: ["ALL", "NONE", "DIV,INT"] }
+  ];
+}

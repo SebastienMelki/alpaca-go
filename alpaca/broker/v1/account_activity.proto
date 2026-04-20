@@ -1,0 +1,206 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// AccountActivity represents an account activity event (trade or non-trade).
+message AccountActivity {
+  // Unique activity ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["20220208125959696::88b5f678-5eb5-4c92-8a01-4e6e340ca8fb"] }];
+
+  // Account ID.
+  string account_id = 2 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Activity type (FILL, DIV, JNLC, etc.).
+  string activity_type = 3 [(sebuf.http.field_examples) = { values: ["FILL"] }];
+
+  // === Trade Activity fields (when activity_type is FILL) ===
+
+  // Transaction timestamp.
+  string transaction_time = 4 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Fill type (fill or partial_fill).
+  string type = 5 [(sebuf.http.field_examples) = { values: ["fill"] }];
+
+  // Fill price.
+  string price = 6 [(sebuf.http.field_examples) = { values: ["150.00"] }];
+
+  // Filled quantity.
+  string qty = 7 [(sebuf.http.field_examples) = { values: ["10"] }];
+
+  // Order side (buy, sell, etc.).
+  string side = 8 [(sebuf.http.field_examples) = { values: ["buy"] }];
+
+  // Ticker symbol.
+  string symbol = 9 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Remaining quantity after this fill.
+  string leaves_qty = 10 [(sebuf.http.field_examples) = { values: ["0"] }];
+
+  // Order ID.
+  string order_id = 11 [(sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }];
+
+  // Cumulative filled quantity.
+  string cum_qty = 12 [(sebuf.http.field_examples) = { values: ["10"] }];
+
+  // Order status.
+  string order_status = 13 [(sebuf.http.field_examples) = { values: ["filled"] }];
+
+  // === Non-Trade Activity fields (when activity_type is not FILL) ===
+
+  // Activity sub-type for more specific classification.
+  string activity_sub_type = 14 [(sebuf.http.field_examples) = { values: ["CDIV"] }];
+
+  // Activity date.
+  string date = 15 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
+
+  // Currency.
+  string currency = 16 [(sebuf.http.field_examples) = { values: ["USD"] }];
+
+  // Net amount.
+  string net_amount = 17 [(sebuf.http.field_examples) = { values: ["50.00"] }];
+
+  // Description.
+  string description = 18 [(sebuf.http.field_examples) = { values: ["Dividend payment"] }];
+
+  // Activity status (executed, correct, canceled).
+  string status = 19 [(sebuf.http.field_examples) = { values: ["executed"] }];
+
+  // CUSIP identifier.
+  string cusip = 20 [(sebuf.http.field_examples) = { values: ["037833100"] }];
+
+  // Per-share amount.
+  string per_share_amount = 21 [(sebuf.http.field_examples) = { values: ["0.50"] }];
+
+  // Sibling group ID.
+  string group_id = 22 [(sebuf.http.field_examples) = { values: ["61e69015-8549-4bfd-b9c3-01e75843f47d"] }];
+
+  // Creation timestamp.
+  string created_at = 23 [(sebuf.http.field_examples) = { values: ["2024-01-15T10:30:00Z"] }];
+
+  // Swap rate (for crypto activities).
+  string swap_rate = 24 [(sebuf.http.field_examples) = { values: ["0.01"] }];
+
+  // Commission charged for the trade.
+  string commission = 25 [(sebuf.http.field_examples) = { values: ["1.00"] }];
+}
+
+// ListAccountActivitiesRequest is the request to list account activities across all accounts.
+message ListAccountActivitiesRequest {
+  // Filter by account ID.
+  string account_id = 1 [
+    (sebuf.http.query) = { name: "account_id" },
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Filter by activity types (comma-separated).
+  string activity_types = 2 [
+    (sebuf.http.query) = { name: "activity_types" },
+    (sebuf.http.field_examples) = { values: ["FILL,DIV"] }
+  ];
+
+  // Filter by category (trade_activity or non_trade_activity). Mutually exclusive with activity_types.
+  string category = 3 [
+    (sebuf.http.query) = { name: "category" },
+    (sebuf.http.field_examples) = { values: ["trade_activity", "non_trade_activity"] }
+  ];
+
+  // Filter by creation date (YYYY-MM-DD or RFC-3339).
+  string date = 4 [
+    (sebuf.http.query) = { name: "date" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Activities created before this date.
+  string until = 5 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31T23:59:59Z"] }
+  ];
+
+  // Activities created after this date.
+  string after = 6 [
+    (sebuf.http.query) = { name: "after" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01T00:00:00Z"] }
+  ];
+
+  // Chronological order (asc or desc).
+  string direction = 7 [
+    (sebuf.http.query) = { name: "direction" },
+    (sebuf.http.field_examples) = { values: ["desc"] }
+  ];
+
+  // Max entries per page (1-100, default 100).
+  int32 page_size = 8 [
+    (sebuf.http.query) = { name: "page_size" },
+    (buf.validate.field).int32 = { gte: 1, lte: 100 },
+    (sebuf.http.field_examples) = { values: ["50"] }
+  ];
+
+  // Pagination token (ID of last activity from previous page).
+  string page_token = 9 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["20220208125959696::88b5f678-5eb5-4c92-8a01-4e6e340ca8fb"] }
+  ];
+}
+
+// ListAccountActivitiesResponse wraps the list of account activities.
+message ListAccountActivitiesResponse {
+  repeated AccountActivity activities = 1 [(sebuf.http.unwrap) = true];
+}
+
+// ListAccountActivitiesByTypeRequest is the request to list activities of a specific type.
+message ListAccountActivitiesByTypeRequest {
+  // Activity type to filter by (path parameter).
+  string activity_type = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["FILL"] }
+  ];
+
+  // Filter by account ID.
+  string account_id = 2 [
+    (sebuf.http.query) = { name: "account_id" },
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  // Filter by creation date (YYYY-MM-DD or RFC-3339).
+  string date = 3 [
+    (sebuf.http.query) = { name: "date" },
+    (sebuf.http.field_examples) = { values: ["2024-01-15"] }
+  ];
+
+  // Activities created before this date.
+  string until = 4 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2024-01-31T23:59:59Z"] }
+  ];
+
+  // Activities created after this date.
+  string after = 5 [
+    (sebuf.http.query) = { name: "after" },
+    (sebuf.http.field_examples) = { values: ["2024-01-01T00:00:00Z"] }
+  ];
+
+  // Chronological order (asc or desc).
+  string direction = 6 [
+    (sebuf.http.query) = { name: "direction" },
+    (sebuf.http.field_examples) = { values: ["desc"] }
+  ];
+
+  // Max entries per page (1-100, default 100).
+  int32 page_size = 7 [
+    (sebuf.http.query) = { name: "page_size" },
+    (buf.validate.field).int32 = { gte: 1, lte: 100 },
+    (sebuf.http.field_examples) = { values: ["50"] }
+  ];
+
+  // Pagination token (ID of last activity from previous page).
+  string page_token = 8 [
+    (sebuf.http.query) = { name: "page_token" },
+    (sebuf.http.field_examples) = { values: ["20220208125959696::88b5f678-5eb5-4c92-8a01-4e6e340ca8fb"] }
+  ];
+}

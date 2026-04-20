@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// RestrictToLiquidationReasons describes the reasons an account is restricted to liquidation-only.
+message RestrictToLiquidationReasons {
+  bool pattern_day_trading = 1;
+  bool ach_return = 2;
+  bool position_to_equity_ratio = 3;
+  bool unspecified = 4;
+}
+
+// AdminConfigurations contains admin-set configuration overrides for an account.
+message AdminConfigurations {
+  RestrictToLiquidationReasons restrict_to_liquidation_reasons = 1;
+  bool outgoing_transfers_blocked = 2;
+  bool incoming_transfers_blocked = 3;
+  bool disable_shorting = 4;
+  string pdt_check_mode = 5;
+  bool disable_fractional = 6;
+  bool disable_crypto = 7;
+  bool disable_day_trading = 8;
+  bool allow_instant_ach = 9;
+  bool disable_algodash_access = 10;
+  bool disable_api_key = 11;
+  string max_margin_multiplier = 12;
+  string max_options_trading_level = 13;
+  string acct_daily_transfer_limit = 14;
+}
+
+// AccountConfigurations contains user-configurable trading settings.
+message AccountConfigurations {
+  string dtbp_check = 1 [(sebuf.http.field_examples) = { values: ["both"] }];
+  string trade_confirm_email = 2 [(sebuf.http.field_examples) = { values: ["all"] }];
+  bool suspend_trade = 3;
+  bool no_shorting = 4;
+  bool fractional_trading = 5;
+  string max_margin_multiplier = 6 [(sebuf.http.field_examples) = { values: ["2"] }];
+  int32 max_options_trading_level = 7;
+  string pdt_check = 8;
+  string ptp_no_exception_entry = 9;
+  bool disable_overnight_trading = 10;
+}
+
+// TradeAccount represents the trading details for a broker account.
+message TradeAccount {
+  string id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+
+  AdminConfigurations admin_configurations = 2;
+  AccountConfigurations user_configurations = 3;
+
+  string account_number = 4 [(sebuf.http.field_examples) = { values: ["010203ABCD"] }];
+  string status = 5 [(sebuf.http.field_examples) = { values: ["ACTIVE"] }];
+  string crypto_status = 6 [(sebuf.http.field_examples) = { values: ["ACTIVE"] }];
+  string currency = 7 [(sebuf.http.field_examples) = { values: ["USD"] }];
+
+  string buying_power = 8 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+  string regt_buying_power = 9 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+  string daytrading_buying_power = 10 [(sebuf.http.field_examples) = { values: ["200000.00"] }];
+  string effective_buying_power = 11 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+  string non_marginable_buying_power = 12 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+  string options_buying_power = 13 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+  string bod_dtbp = 14 [(sebuf.http.field_examples) = { values: ["200000.00"] }];
+
+  string accrued_fees = 15 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+  string cash = 16 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+  string cash_withdrawable = 17 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+  string cash_transferable = 18 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+  string pending_transfer_out = 19 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+  string portfolio_value = 20 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  bool pattern_day_trader = 21;
+  bool trading_blocked = 22;
+  bool transfers_blocked = 23;
+  bool account_blocked = 24;
+
+  string created_at = 25 [(sebuf.http.field_examples) = { values: ["2024-01-01T00:00:00Z"] }];
+  bool trade_suspended_by_user = 26;
+  string multiplier = 27 [(sebuf.http.field_examples) = { values: ["2"] }];
+  bool shorting_enabled = 28;
+
+  string equity = 29 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+  string last_equity = 30 [(sebuf.http.field_examples) = { values: ["49500.00"] }];
+  string long_market_value = 31 [(sebuf.http.field_examples) = { values: ["25000.00"] }];
+  string short_market_value = 32 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+  string position_market_value = 33 [(sebuf.http.field_examples) = { values: ["25000.00"] }];
+
+  string initial_margin = 34 [(sebuf.http.field_examples) = { values: ["12500.00"] }];
+  string maintenance_margin = 35 [(sebuf.http.field_examples) = { values: ["7500.00"] }];
+  string last_maintenance_margin = 36 [(sebuf.http.field_examples) = { values: ["7500.00"] }];
+  string sma = 37 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+
+  int32 daytrade_count = 38;
+  string balance_asof = 39 [(sebuf.http.field_examples) = { values: ["2024-01-15"] }];
+  string previous_close = 40 [(sebuf.http.field_examples) = { values: ["2024-01-14T21:00:00Z"] }];
+
+  string last_long_market_value = 41 [(sebuf.http.field_examples) = { values: ["24000.00"] }];
+  string last_short_market_value = 42 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+  string last_cash = 43 [(sebuf.http.field_examples) = { values: ["49500.00"] }];
+  string last_initial_margin = 44 [(sebuf.http.field_examples) = { values: ["12000.00"] }];
+  string last_regt_buying_power = 45 [(sebuf.http.field_examples) = { values: ["49500.00"] }];
+  string last_daytrading_buying_power = 46 [(sebuf.http.field_examples) = { values: ["198000.00"] }];
+  string last_options_buying_power = 47 [(sebuf.http.field_examples) = { values: ["49500.00"] }];
+  string last_buying_power = 48 [(sebuf.http.field_examples) = { values: ["49500.00"] }];
+  int32 last_daytrade_count = 49;
+
+  string clearing_broker = 50 [(sebuf.http.field_examples) = { values: ["VELOX"] }];
+  int32 options_approved_level = 51;
+  int32 options_trading_level = 52;
+
+  string intraday_adjustments = 53 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+  string pending_reg_taf_fees = 54 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+  string memoposts = 55 [(sebuf.http.field_examples) = { values: ["0.00"] }];
+}
+
+// GetTradingAccountRequest is the request to retrieve trading details for an account.
+message GetTradingAccountRequest {
+  string account_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}

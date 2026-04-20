@@ -39,6 +39,10 @@ type BrokerServiceClient interface {
 	GetAccount(ctx context.Context, req *GetBrokerAccountRequest, opts ...BrokerServiceCallOption) (*BrokerAccount, error)
 	UpdateAccount(ctx context.Context, req *UpdateBrokerAccountRequest, opts ...BrokerServiceCallOption) (*BrokerAccount, error)
 	CloseAccount(ctx context.Context, req *CloseBrokerAccountRequest, opts ...BrokerServiceCallOption) (*CloseBrokerAccountResponse, error)
+	GetTradingAccount(ctx context.Context, req *GetTradingAccountRequest, opts ...BrokerServiceCallOption) (*TradeAccount, error)
+	ListAccountActivities(ctx context.Context, req *ListAccountActivitiesRequest, opts ...BrokerServiceCallOption) (*ListAccountActivitiesResponse, error)
+	ListAccountActivitiesByType(ctx context.Context, req *ListAccountActivitiesByTypeRequest, opts ...BrokerServiceCallOption) (*ListAccountActivitiesResponse, error)
+	GetBrokerPortfolioHistory(ctx context.Context, req *GetBrokerPortfolioHistoryRequest, opts ...BrokerServiceCallOption) (*BrokerPortfolioHistory, error)
 	CreateACHRelationship(ctx context.Context, req *CreateACHRelationshipRequest, opts ...BrokerServiceCallOption) (*ACHRelationship, error)
 	ListACHRelationships(ctx context.Context, req *ListACHRelationshipsRequest, opts ...BrokerServiceCallOption) (*ListACHRelationshipsResponse, error)
 	DeleteACHRelationship(ctx context.Context, req *DeleteACHRelationshipRequest, opts ...BrokerServiceCallOption) (*DeleteACHRelationshipResponse, error)
@@ -600,6 +604,355 @@ func (c *brokerServiceClient) CloseAccount(ctx context.Context, req *CloseBroker
 
 	// Unmarshal response
 	result := &CloseBrokerAccountResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetTradingAccount calls the GetTradingAccount RPC.
+func (c *brokerServiceClient) GetTradingAccount(ctx context.Context, req *GetTradingAccountRequest, opts ...BrokerServiceCallOption) (*TradeAccount, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/trading/accounts/{account_id}/account"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
+	// Unmarshal response
+	result := &TradeAccount{}
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListAccountActivities calls the ListAccountActivities RPC.
+func (c *brokerServiceClient) ListAccountActivities(ctx context.Context, req *ListAccountActivitiesRequest, opts ...BrokerServiceCallOption) (*ListAccountActivitiesResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/activities"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.AccountId != "" {
+		queryParams.Set("account_id", fmt.Sprint(req.AccountId))
+	}
+	if req.ActivityTypes != "" {
+		queryParams.Set("activity_types", fmt.Sprint(req.ActivityTypes))
+	}
+	if req.Category != "" {
+		queryParams.Set("category", fmt.Sprint(req.Category))
+	}
+	if req.Date != "" {
+		queryParams.Set("date", fmt.Sprint(req.Date))
+	}
+	if req.Until != "" {
+		queryParams.Set("until", fmt.Sprint(req.Until))
+	}
+	if req.After != "" {
+		queryParams.Set("after", fmt.Sprint(req.After))
+	}
+	if req.Direction != "" {
+		queryParams.Set("direction", fmt.Sprint(req.Direction))
+	}
+	if req.PageSize != 0 {
+		queryParams.Set("page_size", fmt.Sprint(req.PageSize))
+	}
+	if req.PageToken != "" {
+		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
+	// Unmarshal response
+	result := &ListAccountActivitiesResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListAccountActivitiesByType calls the ListAccountActivitiesByType RPC.
+func (c *brokerServiceClient) ListAccountActivitiesByType(ctx context.Context, req *ListAccountActivitiesByTypeRequest, opts ...BrokerServiceCallOption) (*ListAccountActivitiesResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/accounts/activities/{activity_type}"
+	path = strings.Replace(path, "{activity_type}", url.PathEscape(fmt.Sprint(req.ActivityType)), 1)
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.AccountId != "" {
+		queryParams.Set("account_id", fmt.Sprint(req.AccountId))
+	}
+	if req.Date != "" {
+		queryParams.Set("date", fmt.Sprint(req.Date))
+	}
+	if req.Until != "" {
+		queryParams.Set("until", fmt.Sprint(req.Until))
+	}
+	if req.After != "" {
+		queryParams.Set("after", fmt.Sprint(req.After))
+	}
+	if req.Direction != "" {
+		queryParams.Set("direction", fmt.Sprint(req.Direction))
+	}
+	if req.PageSize != 0 {
+		queryParams.Set("page_size", fmt.Sprint(req.PageSize))
+	}
+	if req.PageToken != "" {
+		queryParams.Set("page_token", fmt.Sprint(req.PageToken))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
+	// Unmarshal response
+	result := &ListAccountActivitiesResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetBrokerPortfolioHistory calls the GetBrokerPortfolioHistory RPC.
+func (c *brokerServiceClient) GetBrokerPortfolioHistory(ctx context.Context, req *GetBrokerPortfolioHistoryRequest, opts ...BrokerServiceCallOption) (*BrokerPortfolioHistory, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/trading/accounts/{account_id}/account/portfolio/history"
+	path = strings.Replace(path, "{account_id}", url.PathEscape(fmt.Sprint(req.AccountId)), 1)
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Period != "" {
+		queryParams.Set("period", fmt.Sprint(req.Period))
+	}
+	if req.Timeframe != "" {
+		queryParams.Set("timeframe", fmt.Sprint(req.Timeframe))
+	}
+	if req.IntradayReporting != "" {
+		queryParams.Set("intraday_reporting", fmt.Sprint(req.IntradayReporting))
+	}
+	if req.Start != "" {
+		queryParams.Set("start", fmt.Sprint(req.Start))
+	}
+	if req.End != "" {
+		queryParams.Set("end", fmt.Sprint(req.End))
+	}
+	if req.PnlReset != "" {
+		queryParams.Set("pnl_reset", fmt.Sprint(req.PnlReset))
+	}
+	if req.ExtendedHours != "" {
+		queryParams.Set("extended_hours", fmt.Sprint(req.ExtendedHours))
+	}
+	if req.CashflowTypes != "" {
+		queryParams.Set("cashflow_types", fmt.Sprint(req.CashflowTypes))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
+	// Unmarshal response
+	result := &BrokerPortfolioHistory{}
 	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}

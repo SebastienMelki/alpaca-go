@@ -16,6 +16,10 @@ type BrokerServiceServer interface {
 	GetAccount(context.Context, *GetBrokerAccountRequest) (*BrokerAccount, error)
 	UpdateAccount(context.Context, *UpdateBrokerAccountRequest) (*BrokerAccount, error)
 	CloseAccount(context.Context, *CloseBrokerAccountRequest) (*CloseBrokerAccountResponse, error)
+	GetTradingAccount(context.Context, *GetTradingAccountRequest) (*TradeAccount, error)
+	ListAccountActivities(context.Context, *ListAccountActivitiesRequest) (*ListAccountActivitiesResponse, error)
+	ListAccountActivitiesByType(context.Context, *ListAccountActivitiesByTypeRequest) (*ListAccountActivitiesResponse, error)
+	GetBrokerPortfolioHistory(context.Context, *GetBrokerPortfolioHistoryRequest) (*BrokerPortfolioHistory, error)
 	CreateACHRelationship(context.Context, *CreateACHRelationshipRequest) (*ACHRelationship, error)
 	ListACHRelationships(context.Context, *ListACHRelationshipsRequest) (*ListACHRelationshipsResponse, error)
 	DeleteACHRelationship(context.Context, *DeleteACHRelationshipRequest) (*DeleteACHRelationshipResponse, error)
@@ -167,6 +171,42 @@ func RegisterBrokerServiceServer(server BrokerServiceServer, opts ...ServerOptio
 	)
 
 	config.mux.Handle("DELETE /v1/accounts/{account_id}", closeAccountHandler)
+
+	methodHeaders = getGetTradingAccountHeaders()
+	getTradingAccountHandler := BindingMiddleware[GetTradingAccountRequest](
+		genericHandler(server.GetTradingAccount, config.errorHandler), serviceHeaders, methodHeaders,
+		getTradingAccountPathParams, getTradingAccountQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v1/trading/accounts/{account_id}/account", getTradingAccountHandler)
+
+	methodHeaders = getListAccountActivitiesHeaders()
+	listAccountActivitiesHandler := BindingMiddleware[ListAccountActivitiesRequest](
+		genericHandler(server.ListAccountActivities, config.errorHandler), serviceHeaders, methodHeaders,
+		listAccountActivitiesPathParams, listAccountActivitiesQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v1/accounts/activities", listAccountActivitiesHandler)
+
+	methodHeaders = getListAccountActivitiesByTypeHeaders()
+	listAccountActivitiesByTypeHandler := BindingMiddleware[ListAccountActivitiesByTypeRequest](
+		genericHandler(server.ListAccountActivitiesByType, config.errorHandler), serviceHeaders, methodHeaders,
+		listAccountActivitiesByTypePathParams, listAccountActivitiesByTypeQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v1/accounts/activities/{activity_type}", listAccountActivitiesByTypeHandler)
+
+	methodHeaders = getGetBrokerPortfolioHistoryHeaders()
+	getBrokerPortfolioHistoryHandler := BindingMiddleware[GetBrokerPortfolioHistoryRequest](
+		genericHandler(server.GetBrokerPortfolioHistory, config.errorHandler), serviceHeaders, methodHeaders,
+		getBrokerPortfolioHistoryPathParams, getBrokerPortfolioHistoryQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v1/trading/accounts/{account_id}/account/portfolio/history", getBrokerPortfolioHistoryHandler)
 
 	methodHeaders = getCreateACHRelationshipHeaders()
 	createACHRelationshipHandler := BindingMiddleware[CreateACHRelationshipRequest](
@@ -1102,6 +1142,26 @@ func getCloseAccountHeaders() []*sebufhttp.Header {
 	return nil
 }
 
+// getGetTradingAccountHeaders returns the method-level required headers for GetTradingAccount
+func getGetTradingAccountHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getListAccountActivitiesHeaders returns the method-level required headers for ListAccountActivities
+func getListAccountActivitiesHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getListAccountActivitiesByTypeHeaders returns the method-level required headers for ListAccountActivitiesByType
+func getListAccountActivitiesByTypeHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getGetBrokerPortfolioHistoryHeaders returns the method-level required headers for GetBrokerPortfolioHistory
+func getGetBrokerPortfolioHistoryHeaders() []*sebufhttp.Header {
+	return nil
+}
+
 // getCreateACHRelationshipHeaders returns the method-level required headers for CreateACHRelationship
 func getCreateACHRelationshipHeaders() []*sebufhttp.Header {
 	return nil
@@ -1639,6 +1699,63 @@ var closeAccountPathParams = []PathParamConfig{
 
 // closeAccountQueryParams contains query parameter configuration for CloseAccount
 var closeAccountQueryParams = []QueryParamConfig{}
+
+// getTradingAccountPathParams contains path parameter configuration for GetTradingAccount
+var getTradingAccountPathParams = []PathParamConfig{
+	{URLParam: "account_id", FieldName: "account_id"},
+}
+
+// getTradingAccountQueryParams contains query parameter configuration for GetTradingAccount
+var getTradingAccountQueryParams = []QueryParamConfig{}
+
+// listAccountActivitiesPathParams contains path parameter configuration for ListAccountActivities
+var listAccountActivitiesPathParams = []PathParamConfig{}
+
+// listAccountActivitiesQueryParams contains query parameter configuration for ListAccountActivities
+var listAccountActivitiesQueryParams = []QueryParamConfig{
+	{QueryName: "account_id", FieldName: "account_id", Required: false},
+	{QueryName: "activity_types", FieldName: "activity_types", Required: false},
+	{QueryName: "category", FieldName: "category", Required: false},
+	{QueryName: "date", FieldName: "date", Required: false},
+	{QueryName: "until", FieldName: "until", Required: false},
+	{QueryName: "after", FieldName: "after", Required: false},
+	{QueryName: "direction", FieldName: "direction", Required: false},
+	{QueryName: "page_size", FieldName: "page_size", Required: false},
+	{QueryName: "page_token", FieldName: "page_token", Required: false},
+}
+
+// listAccountActivitiesByTypePathParams contains path parameter configuration for ListAccountActivitiesByType
+var listAccountActivitiesByTypePathParams = []PathParamConfig{
+	{URLParam: "activity_type", FieldName: "activity_type"},
+}
+
+// listAccountActivitiesByTypeQueryParams contains query parameter configuration for ListAccountActivitiesByType
+var listAccountActivitiesByTypeQueryParams = []QueryParamConfig{
+	{QueryName: "account_id", FieldName: "account_id", Required: false},
+	{QueryName: "date", FieldName: "date", Required: false},
+	{QueryName: "until", FieldName: "until", Required: false},
+	{QueryName: "after", FieldName: "after", Required: false},
+	{QueryName: "direction", FieldName: "direction", Required: false},
+	{QueryName: "page_size", FieldName: "page_size", Required: false},
+	{QueryName: "page_token", FieldName: "page_token", Required: false},
+}
+
+// getBrokerPortfolioHistoryPathParams contains path parameter configuration for GetBrokerPortfolioHistory
+var getBrokerPortfolioHistoryPathParams = []PathParamConfig{
+	{URLParam: "account_id", FieldName: "account_id"},
+}
+
+// getBrokerPortfolioHistoryQueryParams contains query parameter configuration for GetBrokerPortfolioHistory
+var getBrokerPortfolioHistoryQueryParams = []QueryParamConfig{
+	{QueryName: "period", FieldName: "period", Required: false},
+	{QueryName: "timeframe", FieldName: "timeframe", Required: false},
+	{QueryName: "intraday_reporting", FieldName: "intraday_reporting", Required: false},
+	{QueryName: "start", FieldName: "start", Required: false},
+	{QueryName: "end", FieldName: "end", Required: false},
+	{QueryName: "pnl_reset", FieldName: "pnl_reset", Required: false},
+	{QueryName: "extended_hours", FieldName: "extended_hours", Required: false},
+	{QueryName: "cashflow_types", FieldName: "cashflow_types", Required: false},
+}
 
 // createACHRelationshipPathParams contains path parameter configuration for CreateACHRelationship
 var createACHRelationshipPathParams = []PathParamConfig{
