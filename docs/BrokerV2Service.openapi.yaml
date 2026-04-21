@@ -48,11 +48,14 @@ paths:
                     type: string
             responses:
                 "200":
-                    description: Successful response
+                    description: Server-Sent Events stream
                     content:
-                        application/json:
+                        text/event-stream:
                             schema:
-                                $ref: '#/components/schemas/SubscribeTradeEventsV2Response'
+                                type: string
+                                description: SSE stream. Each event contains a JSON-encoded TradeUpdateEventV2 in the data field.
+                    x-sse-event-schema:
+                        $ref: '#/components/schemas/TradeUpdateEventV2'
                 "400":
                     description: Validation error
                     content:
@@ -116,11 +119,14 @@ paths:
                     type: string
             responses:
                 "200":
-                    description: Successful response
+                    description: Server-Sent Events stream
                     content:
-                        application/json:
+                        text/event-stream:
                             schema:
-                                $ref: '#/components/schemas/SubscribeJournalEventsV2Response'
+                                type: string
+                                description: SSE stream. Each event contains a JSON-encoded JournalStatusEventV2 in the data field.
+                    x-sse-event-schema:
+                        $ref: '#/components/schemas/JournalStatusEventV2'
                 "400":
                     description: Validation error
                     content:
@@ -177,11 +183,14 @@ paths:
                     type: string
             responses:
                 "200":
-                    description: Successful response
+                    description: Server-Sent Events stream
                     content:
-                        application/json:
+                        text/event-stream:
                             schema:
-                                $ref: '#/components/schemas/SubscribeSystemEventsV2Response'
+                                type: string
+                                description: SSE stream. Each event contains a JSON-encoded SystemEventV2 in the data field.
+                    x-sse-event-schema:
+                        $ref: '#/components/schemas/SystemEventV2'
                 "400":
                     description: Validation error
                     content:
@@ -239,11 +248,14 @@ paths:
                     type: string
             responses:
                 "200":
-                    description: Successful response
+                    description: Server-Sent Events stream
                     content:
-                        application/json:
+                        text/event-stream:
                             schema:
-                                $ref: '#/components/schemas/SubscribeAdminActionsV2Response'
+                                type: string
+                                description: SSE stream. Each event contains a JSON-encoded AdminActionEventV2 in the data field.
+                    x-sse-event-schema:
+                        $ref: '#/components/schemas/AdminActionEventV2'
                 "400":
                     description: Validation error
                     content:
@@ -314,11 +326,14 @@ paths:
                     type: string
             responses:
                 "200":
-                    description: Successful response
+                    description: Server-Sent Events stream
                     content:
-                        application/json:
+                        text/event-stream:
                             schema:
-                                $ref: '#/components/schemas/SubscribeFundingStatusV2Response'
+                                type: string
+                                description: SSE stream. Each event contains a JSON-encoded FundingStatusEventV2 in the data field.
+                    x-sse-event-schema:
+                        $ref: '#/components/schemas/FundingStatusEventV2'
                 "400":
                     description: Validation error
                     content:
@@ -392,14 +407,6 @@ components:
                     description: Ending event ID (ULID).
                     example: 01G112NTT0XAXKDZK3AABK68TI
             description: SubscribeTradeEventsV2Request is the request to subscribe to trade events (v2).
-        SubscribeTradeEventsV2Response:
-            type: object
-            properties:
-                events:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/TradeUpdateEventV2'
-            description: SubscribeTradeEventsV2Response is the response stream for trade events (v2).
         TradeUpdateEventV2:
             type: object
             properties:
@@ -569,14 +576,6 @@ components:
                     description: Filter by journal ID.
                     example: 2f144d2a-91e6-46ff-8e37-959a701cc58d
             description: SubscribeJournalEventsV2Request is the request to subscribe to journal events (v2).
-        SubscribeJournalEventsV2Response:
-            type: object
-            properties:
-                events:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/JournalStatusEventV2'
-            description: SubscribeJournalEventsV2Response is the response stream for journal events (v2).
         JournalStatusEventV2:
             type: object
             properties:
@@ -667,14 +666,6 @@ components:
                     description: Ending event ID (ULID).
                     example: 01F535Y1FVY8WZHE763HCNS8T0
             description: SubscribeSystemEventsV2Request is the request to subscribe to system events (v2).
-        SubscribeSystemEventsV2Response:
-            type: object
-            properties:
-                events:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/SystemEventV2'
-            description: SubscribeSystemEventsV2Response is the response stream for system events (v2).
         SystemEventV2:
             type: object
             properties:
@@ -737,14 +728,6 @@ components:
                     description: Ending event ID (ULID).
                     example: 01GTVS4FVS2KJDTPYH2WM6NAXG
             description: SubscribeAdminActionsV2Request is the request to subscribe to admin action events (v2).
-        SubscribeAdminActionsV2Response:
-            type: object
-            properties:
-                events:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/AdminActionEventV2'
-            description: SubscribeAdminActionsV2Response is the response stream for admin action events (v2).
         AdminActionEventV2:
             type: object
             properties:
@@ -927,14 +910,6 @@ components:
                     description: Ending event ID (ULID).
                     example: 01F7VQQ782DM57SJNWAYMD14K0
             description: SubscribeFundingStatusV2Request is the request to subscribe to funding status events (v2).
-        SubscribeFundingStatusV2Response:
-            type: object
-            properties:
-                events:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/FundingStatusEventV2'
-            description: SubscribeFundingStatusV2Response is the response stream for funding status events (v2).
         FundingStatusEventV2:
             type: object
             properties:

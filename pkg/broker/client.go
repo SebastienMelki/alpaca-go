@@ -4,6 +4,8 @@ import (
 	"encoding/base64"
 	"net/http"
 
+	"google.golang.org/protobuf/proto"
+
 	brokerv1 "github.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1"
 	brokerv1beta "github.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1beta"
 	brokerv2 "github.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v2"
@@ -492,24 +494,23 @@ type (
 // =============================================================================
 
 type (
-	TradeUpdateEventV2               = brokerv2.TradeUpdateEventV2
-	TradeUpdateEventV2Leg            = brokerv2.TradeUpdateEventV2Leg
-	JournalStatusEventV2             = brokerv2.JournalStatusEventV2
-	SystemEventV2                    = brokerv2.SystemEventV2
-	AdminActionEventV2               = brokerv2.AdminActionEventV2
-	AdminActionBelongsTo             = brokerv2.AdminActionBelongsTo
-	AdminActionCreatedBy             = brokerv2.AdminActionCreatedBy
-	LiquidationContext               = brokerv2.LiquidationContext
-	TransactionCancelContext         = brokerv2.TransactionCancelContext
-	FundingStatusEventV2             = brokerv2.FundingStatusEventV2
-	SubscribeTradeEventsV2Request    = brokerv2.SubscribeTradeEventsV2Request
-	SubscribeTradeEventsV2Response   = brokerv2.SubscribeTradeEventsV2Response
-	SubscribeJournalEventsV2Request  = brokerv2.SubscribeJournalEventsV2Request
-	SubscribeJournalEventsV2Response = brokerv2.SubscribeJournalEventsV2Response
-	SubscribeSystemEventsV2Request   = brokerv2.SubscribeSystemEventsV2Request
-	SubscribeSystemEventsV2Response  = brokerv2.SubscribeSystemEventsV2Response
-	SubscribeAdminActionsV2Request   = brokerv2.SubscribeAdminActionsV2Request
-	SubscribeAdminActionsV2Response  = brokerv2.SubscribeAdminActionsV2Response
-	SubscribeFundingStatusV2Request  = brokerv2.SubscribeFundingStatusV2Request
-	SubscribeFundingStatusV2Response = brokerv2.SubscribeFundingStatusV2Response
+	TradeUpdateEventV2              = brokerv2.TradeUpdateEventV2
+	TradeUpdateEventV2Leg           = brokerv2.TradeUpdateEventV2Leg
+	JournalStatusEventV2            = brokerv2.JournalStatusEventV2
+	SystemEventV2                   = brokerv2.SystemEventV2
+	AdminActionEventV2              = brokerv2.AdminActionEventV2
+	AdminActionBelongsTo            = brokerv2.AdminActionBelongsTo
+	AdminActionCreatedBy            = brokerv2.AdminActionCreatedBy
+	LiquidationContext              = brokerv2.LiquidationContext
+	TransactionCancelContext        = brokerv2.TransactionCancelContext
+	FundingStatusEventV2            = brokerv2.FundingStatusEventV2
+	SubscribeTradeEventsV2Request   = brokerv2.SubscribeTradeEventsV2Request
+	SubscribeJournalEventsV2Request = brokerv2.SubscribeJournalEventsV2Request
+	SubscribeSystemEventsV2Request  = brokerv2.SubscribeSystemEventsV2Request
+	SubscribeAdminActionsV2Request  = brokerv2.SubscribeAdminActionsV2Request
+	SubscribeFundingStatusV2Request = brokerv2.SubscribeFundingStatusV2Request
 )
+
+// EventStream is a generic type alias for reading Server-Sent Events from v2 streaming endpoints.
+// Use Next() to read events, Err() to check for errors, and Close() to release the connection.
+type EventStream[T proto.Message] = brokerv2.BrokerV2ServiceEventStream[T]

@@ -4,6 +4,7 @@
 package brokerv2
 
 import (
+	"bufio"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -27,11 +28,11 @@ const (
 
 // BrokerV2ServiceClient is the client API for BrokerV2Service service.
 type BrokerV2ServiceClient interface {
-	SubscribeTradeEventsV2(ctx context.Context, req *SubscribeTradeEventsV2Request, opts ...BrokerV2ServiceCallOption) (*SubscribeTradeEventsV2Response, error)
-	SubscribeJournalEventsV2(ctx context.Context, req *SubscribeJournalEventsV2Request, opts ...BrokerV2ServiceCallOption) (*SubscribeJournalEventsV2Response, error)
-	SubscribeSystemEventsV2(ctx context.Context, req *SubscribeSystemEventsV2Request, opts ...BrokerV2ServiceCallOption) (*SubscribeSystemEventsV2Response, error)
-	SubscribeAdminActionsV2(ctx context.Context, req *SubscribeAdminActionsV2Request, opts ...BrokerV2ServiceCallOption) (*SubscribeAdminActionsV2Response, error)
-	SubscribeFundingStatusV2(ctx context.Context, req *SubscribeFundingStatusV2Request, opts ...BrokerV2ServiceCallOption) (*SubscribeFundingStatusV2Response, error)
+	SubscribeTradeEventsV2(ctx context.Context, req *SubscribeTradeEventsV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*TradeUpdateEventV2], error)
+	SubscribeJournalEventsV2(ctx context.Context, req *SubscribeJournalEventsV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*JournalStatusEventV2], error)
+	SubscribeSystemEventsV2(ctx context.Context, req *SubscribeSystemEventsV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*SystemEventV2], error)
+	SubscribeAdminActionsV2(ctx context.Context, req *SubscribeAdminActionsV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*AdminActionEventV2], error)
+	SubscribeFundingStatusV2(ctx context.Context, req *SubscribeFundingStatusV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*FundingStatusEventV2], error)
 }
 
 // brokerV2ServiceClient is the implementation of BrokerV2ServiceClient.
@@ -124,8 +125,49 @@ func NewBrokerV2ServiceClient(baseURL string, opts ...BrokerV2ServiceClientOptio
 	return c
 }
 
-// SubscribeTradeEventsV2 calls the SubscribeTradeEventsV2 RPC.
-func (c *brokerV2ServiceClient) SubscribeTradeEventsV2(ctx context.Context, req *SubscribeTradeEventsV2Request, opts ...BrokerV2ServiceCallOption) (*SubscribeTradeEventsV2Response, error) {
+// BrokerV2ServiceEventStream reads Server-Sent Events from a streaming endpoint.
+type BrokerV2ServiceEventStream[T proto.Message] struct {
+	resp   *http.Response
+	reader *bufio.Reader
+	err    error
+}
+
+// Next reads the next event from the stream.
+// Returns false when the stream ends or an error occurs.
+func (s *BrokerV2ServiceEventStream[T]) Next(event T) bool {
+	for {
+		line, err := s.reader.ReadString('\n')
+		if err != nil {
+			if err != io.EOF {
+				s.err = err
+			}
+			return false
+		}
+		line = strings.TrimRight(line, "\r\n")
+		if !strings.HasPrefix(line, "data: ") {
+			continue
+		}
+		data := strings.TrimPrefix(line, "data: ")
+		if err := protojson.Unmarshal([]byte(data), event); err != nil {
+			s.err = fmt.Errorf("failed to unmarshal SSE event: %w", err)
+			return false
+		}
+		return true
+	}
+}
+
+// Err returns any error encountered during streaming.
+func (s *BrokerV2ServiceEventStream[T]) Err() error {
+	return s.err
+}
+
+// Close closes the underlying HTTP response body.
+func (s *BrokerV2ServiceEventStream[T]) Close() error {
+	return s.resp.Body.Close()
+}
+
+// SubscribeTradeEventsV2 calls the SubscribeTradeEventsV2 SSE streaming RPC.
+func (c *brokerV2ServiceClient) SubscribeTradeEventsV2(ctx context.Context, req *SubscribeTradeEventsV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*TradeUpdateEventV2], error) {
 	callOpts := &brokerV2ServiceCallOptions{}
 	for _, opt := range opts {
 		opt(callOpts)
@@ -166,6 +208,7 @@ func (c *brokerV2ServiceClient) SubscribeTradeEventsV2(ctx context.Context, req 
 
 	// Set headers
 	httpReq.Header.Set("Content-Type", contentType)
+	httpReq.Header.Set("Accept", "text/event-stream")
 	for k, v := range c.defaultHeaders {
 		httpReq.Header.Set(k, v)
 	}
@@ -178,30 +221,25 @@ func (c *brokerV2ServiceClient) SubscribeTradeEventsV2(ctx context.Context, req 
 	if err != nil {
 		return nil, fmt.Errorf("failed to execute request: %w", err)
 	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
 
 	// Check for error status codes
 	if resp.StatusCode >= 400 {
+		defer resp.Body.Close()
+		respBody, readErr := io.ReadAll(resp.Body)
+		if readErr != nil {
+			return nil, fmt.Errorf("failed to read error response: %w", readErr)
+		}
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
-	// Unmarshal response
-	result := &SubscribeTradeEventsV2Response{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
+	return &BrokerV2ServiceEventStream[*TradeUpdateEventV2]{
+		resp:   resp,
+		reader: bufio.NewReader(resp.Body),
+	}, nil
 }
 
-// SubscribeJournalEventsV2 calls the SubscribeJournalEventsV2 RPC.
-func (c *brokerV2ServiceClient) SubscribeJournalEventsV2(ctx context.Context, req *SubscribeJournalEventsV2Request, opts ...BrokerV2ServiceCallOption) (*SubscribeJournalEventsV2Response, error) {
+// SubscribeJournalEventsV2 calls the SubscribeJournalEventsV2 SSE streaming RPC.
+func (c *brokerV2ServiceClient) SubscribeJournalEventsV2(ctx context.Context, req *SubscribeJournalEventsV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*JournalStatusEventV2], error) {
 	callOpts := &brokerV2ServiceCallOptions{}
 	for _, opt := range opts {
 		opt(callOpts)
@@ -245,6 +283,7 @@ func (c *brokerV2ServiceClient) SubscribeJournalEventsV2(ctx context.Context, re
 
 	// Set headers
 	httpReq.Header.Set("Content-Type", contentType)
+	httpReq.Header.Set("Accept", "text/event-stream")
 	for k, v := range c.defaultHeaders {
 		httpReq.Header.Set(k, v)
 	}
@@ -257,30 +296,25 @@ func (c *brokerV2ServiceClient) SubscribeJournalEventsV2(ctx context.Context, re
 	if err != nil {
 		return nil, fmt.Errorf("failed to execute request: %w", err)
 	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
 
 	// Check for error status codes
 	if resp.StatusCode >= 400 {
+		defer resp.Body.Close()
+		respBody, readErr := io.ReadAll(resp.Body)
+		if readErr != nil {
+			return nil, fmt.Errorf("failed to read error response: %w", readErr)
+		}
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
-	// Unmarshal response
-	result := &SubscribeJournalEventsV2Response{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
+	return &BrokerV2ServiceEventStream[*JournalStatusEventV2]{
+		resp:   resp,
+		reader: bufio.NewReader(resp.Body),
+	}, nil
 }
 
-// SubscribeSystemEventsV2 calls the SubscribeSystemEventsV2 RPC.
-func (c *brokerV2ServiceClient) SubscribeSystemEventsV2(ctx context.Context, req *SubscribeSystemEventsV2Request, opts ...BrokerV2ServiceCallOption) (*SubscribeSystemEventsV2Response, error) {
+// SubscribeSystemEventsV2 calls the SubscribeSystemEventsV2 SSE streaming RPC.
+func (c *brokerV2ServiceClient) SubscribeSystemEventsV2(ctx context.Context, req *SubscribeSystemEventsV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*SystemEventV2], error) {
 	callOpts := &brokerV2ServiceCallOptions{}
 	for _, opt := range opts {
 		opt(callOpts)
@@ -321,6 +355,7 @@ func (c *brokerV2ServiceClient) SubscribeSystemEventsV2(ctx context.Context, req
 
 	// Set headers
 	httpReq.Header.Set("Content-Type", contentType)
+	httpReq.Header.Set("Accept", "text/event-stream")
 	for k, v := range c.defaultHeaders {
 		httpReq.Header.Set(k, v)
 	}
@@ -333,30 +368,25 @@ func (c *brokerV2ServiceClient) SubscribeSystemEventsV2(ctx context.Context, req
 	if err != nil {
 		return nil, fmt.Errorf("failed to execute request: %w", err)
 	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
 
 	// Check for error status codes
 	if resp.StatusCode >= 400 {
+		defer resp.Body.Close()
+		respBody, readErr := io.ReadAll(resp.Body)
+		if readErr != nil {
+			return nil, fmt.Errorf("failed to read error response: %w", readErr)
+		}
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
-	// Unmarshal response
-	result := &SubscribeSystemEventsV2Response{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
+	return &BrokerV2ServiceEventStream[*SystemEventV2]{
+		resp:   resp,
+		reader: bufio.NewReader(resp.Body),
+	}, nil
 }
 
-// SubscribeAdminActionsV2 calls the SubscribeAdminActionsV2 RPC.
-func (c *brokerV2ServiceClient) SubscribeAdminActionsV2(ctx context.Context, req *SubscribeAdminActionsV2Request, opts ...BrokerV2ServiceCallOption) (*SubscribeAdminActionsV2Response, error) {
+// SubscribeAdminActionsV2 calls the SubscribeAdminActionsV2 SSE streaming RPC.
+func (c *brokerV2ServiceClient) SubscribeAdminActionsV2(ctx context.Context, req *SubscribeAdminActionsV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*AdminActionEventV2], error) {
 	callOpts := &brokerV2ServiceCallOptions{}
 	for _, opt := range opts {
 		opt(callOpts)
@@ -397,6 +427,7 @@ func (c *brokerV2ServiceClient) SubscribeAdminActionsV2(ctx context.Context, req
 
 	// Set headers
 	httpReq.Header.Set("Content-Type", contentType)
+	httpReq.Header.Set("Accept", "text/event-stream")
 	for k, v := range c.defaultHeaders {
 		httpReq.Header.Set(k, v)
 	}
@@ -409,30 +440,25 @@ func (c *brokerV2ServiceClient) SubscribeAdminActionsV2(ctx context.Context, req
 	if err != nil {
 		return nil, fmt.Errorf("failed to execute request: %w", err)
 	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
 
 	// Check for error status codes
 	if resp.StatusCode >= 400 {
+		defer resp.Body.Close()
+		respBody, readErr := io.ReadAll(resp.Body)
+		if readErr != nil {
+			return nil, fmt.Errorf("failed to read error response: %w", readErr)
+		}
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
-	// Unmarshal response
-	result := &SubscribeAdminActionsV2Response{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
+	return &BrokerV2ServiceEventStream[*AdminActionEventV2]{
+		resp:   resp,
+		reader: bufio.NewReader(resp.Body),
+	}, nil
 }
 
-// SubscribeFundingStatusV2 calls the SubscribeFundingStatusV2 RPC.
-func (c *brokerV2ServiceClient) SubscribeFundingStatusV2(ctx context.Context, req *SubscribeFundingStatusV2Request, opts ...BrokerV2ServiceCallOption) (*SubscribeFundingStatusV2Response, error) {
+// SubscribeFundingStatusV2 calls the SubscribeFundingStatusV2 SSE streaming RPC.
+func (c *brokerV2ServiceClient) SubscribeFundingStatusV2(ctx context.Context, req *SubscribeFundingStatusV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*FundingStatusEventV2], error) {
 	callOpts := &brokerV2ServiceCallOptions{}
 	for _, opt := range opts {
 		opt(callOpts)
@@ -479,6 +505,7 @@ func (c *brokerV2ServiceClient) SubscribeFundingStatusV2(ctx context.Context, re
 
 	// Set headers
 	httpReq.Header.Set("Content-Type", contentType)
+	httpReq.Header.Set("Accept", "text/event-stream")
 	for k, v := range c.defaultHeaders {
 		httpReq.Header.Set(k, v)
 	}
@@ -491,26 +518,21 @@ func (c *brokerV2ServiceClient) SubscribeFundingStatusV2(ctx context.Context, re
 	if err != nil {
 		return nil, fmt.Errorf("failed to execute request: %w", err)
 	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
 
 	// Check for error status codes
 	if resp.StatusCode >= 400 {
+		defer resp.Body.Close()
+		respBody, readErr := io.ReadAll(resp.Body)
+		if readErr != nil {
+			return nil, fmt.Errorf("failed to read error response: %w", readErr)
+		}
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
-	// Unmarshal response
-	result := &SubscribeFundingStatusV2Response{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
+	return &BrokerV2ServiceEventStream[*FundingStatusEventV2]{
+		resp:   resp,
+		reader: bufio.NewReader(resp.Body),
+	}, nil
 }
 
 func (c *brokerV2ServiceClient) marshalRequest(req proto.Message, contentType string) ([]byte, error) {
