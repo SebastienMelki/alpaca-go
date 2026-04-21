@@ -5034,6 +5034,42 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+    /v1/ipos:
+        get:
+            tags:
+                - BrokerService
+            summary: ListIPOOfferings
+            description: |-
+                ListIPOOfferings retrieves all IPO offerings.
+                 GET /v1/ipos
+            operationId: ListIPOOfferings
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListIPOOfferingsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
 components:
     schemas:
         Error:
@@ -11780,3 +11816,123 @@ components:
                         type: string
                         description: States where Alpaca supports crypto trading.
             description: CountryInfo represents information for a country.
+        ListIPOOfferingsRequest:
+            type: object
+            description: ListIPOOfferingsRequest is the request to list all IPO offerings.
+        ListIPOOfferingsResponse:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/IPOOffering'
+                nextPageToken:
+                    type: string
+                    description: Pagination token for the next page (null if no more pages).
+            description: ListIPOOfferingsResponse contains the list of IPO offerings.
+        IPOOffering:
+            type: object
+            properties:
+                name:
+                    type: string
+                    examples:
+                        - Test IPO TSTA Corp
+                    description: Company name.
+                    example: Test IPO TSTA Corp
+                description:
+                    type: string
+                    examples:
+                        - Automated test offering for Full Allocation simulation
+                    description: Offering description.
+                    example: Automated test offering for Full Allocation simulation
+                tickerSymbol:
+                    type: string
+                    examples:
+                        - TSTA260420
+                    description: Stock ticker symbol.
+                    example: TSTA260420
+                ipoReference:
+                    type: string
+                    examples:
+                        - TSTA260420
+                    description: Alpaca IPO reference identifier.
+                    example: TSTA260420
+                cusipId:
+                    type: string
+                    examples:
+                        - TSTA60420
+                    description: CUSIP identifier.
+                    example: TSTA60420
+                prospectusUrl:
+                    type: string
+                    examples:
+                        - https://www.sec.gov/Archives/edgar/data/2077715/000139834426003615/fp0097718-3_n2a.htm
+                    description: Link to the offering prospectus document.
+                    example: https://www.sec.gov/Archives/edgar/data/2077715/000139834426003615/fp0097718-3_n2a.htm
+                offeringType:
+                    type: string
+                    examples:
+                        - IPO
+                    description: Type of offering (e.g., "IPO").
+                    example: IPO
+                availability:
+                    type: string
+                    examples:
+                        - available
+                    description: 'Availability status: available, closed.'
+                    example: available
+                anticipatedShares:
+                    type: integer
+                    format: int64
+                    description: 'Anticipated number of shares.. Warning: Values > 2^53 may lose precision in JavaScript'
+                maxPrice:
+                    type: string
+                    examples:
+                        - 28
+                    description: Maximum offering price (string representation of decimal).
+                    example: 28
+                minPrice:
+                    type: string
+                    examples:
+                        - 22
+                    description: Minimum offering price (string representation of decimal).
+                    example: 22
+                tradeDate:
+                    type: string
+                    examples:
+                        - 2026-04-20
+                    description: Expected trading date (YYYY-MM-DD).
+                    example: 2026-04-20
+                settlementDate:
+                    type: string
+                    examples:
+                        - 2026-04-22
+                    description: Expected settlement date (YYYY-MM-DD).
+                    example: 2026-04-22
+                noNewOrders:
+                    type: boolean
+                    description: Whether new orders are blocked.
+                underwriters:
+                    type: array
+                    items:
+                        type: string
+                        description: Underwriter names.
+                unitStepSize:
+                    type: string
+                    examples:
+                        - 1
+                    description: Unit step size for orders (string representation of decimal).
+                    example: 1
+                minTicketSize:
+                    type: string
+                    examples:
+                        - 100
+                    description: Minimum order size (string representation of decimal).
+                    example: 100
+                maxTicketSize:
+                    type: string
+                    examples:
+                        - 10000
+                    description: Maximum order size (string representation of decimal).
+                    example: 10000
+            description: IPOOffering represents an IPO offering from Alpaca.

@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "sebuf/http/annotations.proto";
+
+// IPOOffering represents an IPO offering from Alpaca.
+message IPOOffering {
+  // Company name.
+  string name = 1 [(sebuf.http.field_examples) = { values: ["Test IPO TSTA Corp"] }];
+  // Offering description.
+  string description = 2 [(sebuf.http.field_examples) = { values: ["Automated test offering for Full Allocation simulation"] }];
+  // Stock ticker symbol.
+  string ticker_symbol = 3 [(sebuf.http.field_examples) = { values: ["TSTA260420"] }];
+  // Alpaca IPO reference identifier.
+  string ipo_reference = 4 [(sebuf.http.field_examples) = { values: ["TSTA260420"] }];
+  // CUSIP identifier.
+  string cusip_id = 5 [(sebuf.http.field_examples) = { values: ["TSTA60420"] }];
+  // Link to the offering prospectus document.
+  string prospectus_url = 6 [(sebuf.http.field_examples) = { values: ["https://www.sec.gov/Archives/edgar/data/2077715/000139834426003615/fp0097718-3_n2a.htm"] }];
+  // Type of offering (e.g., "IPO").
+  string offering_type = 7 [(sebuf.http.field_examples) = { values: ["IPO"] }];
+  // Availability status: available, closed.
+  string availability = 8 [(sebuf.http.field_examples) = { values: ["available"] }];
+  // Anticipated number of shares.
+  int64 anticipated_shares = 9 [(sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
+  // Maximum offering price (string representation of decimal).
+  string max_price = 10 [(sebuf.http.field_examples) = { values: ["28"] }];
+  // Minimum offering price (string representation of decimal).
+  string min_price = 11 [(sebuf.http.field_examples) = { values: ["22"] }];
+  // Expected trading date (YYYY-MM-DD).
+  string trade_date = 12 [(sebuf.http.field_examples) = { values: ["2026-04-20"] }];
+  // Expected settlement date (YYYY-MM-DD).
+  string settlement_date = 13 [(sebuf.http.field_examples) = { values: ["2026-04-22"] }];
+  // Whether new orders are blocked.
+  bool no_new_orders = 14;
+  // Underwriter names.
+  repeated string underwriters = 15;
+  // Unit step size for orders (string representation of decimal).
+  string unit_step_size = 16 [(sebuf.http.field_examples) = { values: ["1"] }];
+  // Minimum order size (string representation of decimal).
+  string min_ticket_size = 17 [(sebuf.http.field_examples) = { values: ["100"] }];
+  // Maximum order size (string representation of decimal).
+  string max_ticket_size = 18 [(sebuf.http.field_examples) = { values: ["10000"] }];
+}
+
+// ListIPOOfferingsRequest is the request to list all IPO offerings.
+message ListIPOOfferingsRequest {}
+
+// ListIPOOfferingsResponse contains the list of IPO offerings.
+message ListIPOOfferingsResponse {
+  // The list of IPO offerings.
+  repeated IPOOffering data = 1;
+  // Pagination token for the next page (null if no more pages).
+  string next_page_token = 2;
+}

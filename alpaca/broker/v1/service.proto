@@ -41,6 +41,7 @@ import "alpaca/broker/v1/calendar.proto";
 import "alpaca/broker/v1/options.proto";
 import "alpaca/broker/v1/ira.proto";
 import "alpaca/broker/v1/country.proto";
+import "alpaca/broker/v1/ipo.proto";
 
 // BrokerService provides the Alpaca Broker API for B2B operations.
 // Base URL: https://broker-api.alpaca.markets
@@ -1087,6 +1088,19 @@ service BrokerService {
   rpc ListCountries(ListCountriesRequest) returns (ListCountriesResponse) {
     option (sebuf.http.config) = {
       path: "/country-info"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // IPO Operations
+  // ============================================
+
+  // ListIPOOfferings retrieves all IPO offerings.
+  // GET /v1/ipos
+  rpc ListIPOOfferings(ListIPOOfferingsRequest) returns (ListIPOOfferingsResponse) {
+    option (sebuf.http.config) = {
+      path: "/ipos"
       method: HTTP_METHOD_GET
     };
   }

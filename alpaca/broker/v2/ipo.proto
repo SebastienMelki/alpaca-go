@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package alpaca.broker.v2;
+
+import "sebuf/http/annotations.proto";
+
+option go_package = "github.com/alpacahq/alpaca-go/alpaca/broker/v2;brokerv2";
+
+// IPOEventPayload contains the event-specific data within an IPO event.
+// Fields are populated depending on the verb — unused fields will be empty/zero.
+message IPOEventPayload {
+  // --- offering / offeringUpdate fields ---
+
+  // Company name.
+  string name = 1 [(sebuf.http.field_examples) = { values: ["Example Corp"] }];
+  // Stock ticker symbol.
+  string ticker_symbol = 2 [(sebuf.http.field_examples) = { values: ["EXMP"] }];
+  // Offering type name (e.g., "IPO").
+  string offering_type_name = 3 [(sebuf.http.field_examples) = { values: ["IPO"] }];
+  // Whether the offering is available to order. May be a string ("Available") or numeric string ("1").
+  string available_to_order = 4 [(sebuf.http.field_examples) = { values: ["Available"] }];
+  // Minimum offering price.
+  string min_price = 5 [(sebuf.http.field_examples) = { values: ["18.00"] }];
+  // Maximum offering price.
+  string max_price = 6 [(sebuf.http.field_examples) = { values: ["22.00"] }];
+  // Source of the event.
+  string source = 7 [(sebuf.http.field_examples) = { values: ["sync-offerings"] }];
+
+  // --- sixtyMinMail fields ---
+
+  // Email subject line (sixtyMinMail events).
+  string subject = 8 [(sebuf.http.field_examples) = { values: ["60-minute withdrawal window: Example Corp"] }];
+  // Expiration time for the 60-minute withdrawal window (sixtyMinMail events).
+  string sixty_minute_expiration_time = 13 [(sebuf.http.field_examples) = { values: ["2026-03-27 16:36:14 UTC"] }];
+
+  // --- prospectus fields ---
+
+  // Prospectus document URL (prospectus events).
+  string prospectus_url = 14 [(sebuf.http.field_examples) = { values: ["https://example.com/sbfull-final-prospectus.pdf"] }];
+
+  // --- allocation fields ---
+
+  // CUSIP identifier (allocation events).
+  string cusip_id = 9 [(sebuf.http.field_examples) = { values: ["123456789"] }];
+  // Final IPO price (allocation events).
+  string final_price = 10 [(sebuf.http.field_examples) = { values: ["20.00"] }];
+  // Number of shares allocated (allocation events).
+  string allocated_shares = 11 [(sebuf.http.field_examples) = { values: ["100"] }];
+  // Total dollar amount allocated (allocation events).
+  string allocated_amount = 12 [(sebuf.http.field_examples) = { values: ["2000.00"] }];
+}
+
+// IPOEvent represents a real-time IPO event from the SSE stream.
+// All events share this common envelope structure; the payload varies by verb.
+message IPOEvent {
+  // Event type: offering, offeringUpdate, offeringCancellation, prospectus, sixtyMinMail, allocation.
+  string verb = 1 [(sebuf.http.field_examples) = { values: ["offering"] }];
+  // Unique IPO offering identifier.
+  string offering_reference = 2 [(sebuf.http.field_examples) = { values: ["FI111225"] }];
+  // Event-specific data.
+  IPOEventPayload payload = 3;
+  // Timestamp when the event was received (RFC3339).
+  string received_at = 4 [(sebuf.http.field_examples) = { values: ["2026-01-14T10:30:00.000Z"] }];
+  // Timestamp of the event (RFC3339). Present in some events.
+  string at = 5 [(sebuf.http.field_examples) = { values: ["2026-03-25T09:08:10.5207Z"] }];
+  // Event ID (ULID format). Present in some events.
+  string event_id = 6 [(sebuf.http.field_examples) = { values: ["01KMJ40PMRYYCV7JXS2R74JNHH"] }];
+
+  // --- allocation-only envelope fields ---
+
+  // Alpaca account number (allocation events only).
+  string account_number = 7 [(sebuf.http.field_examples) = { values: ["511768662"] }];
+  // Broker correspondent code (allocation events only).
+  string correspondent = 8 [(sebuf.http.field_examples) = { values: ["LPCA"] }];
+}
+
+// SubscribeIPOEventsRequest is the request to subscribe to IPO events via SSE.
+message SubscribeIPOEventsRequest {
+  // Starting date filter (YYYY-MM-DD).
+  string since = 1 [
+    (sebuf.http.query) = { name: "since" },
+    (sebuf.http.field_examples) = { values: ["2026-01-15"] }
+  ];
+  // Ending date filter (YYYY-MM-DD).
+  string until = 2 [
+    (sebuf.http.query) = { name: "until" },
+    (sebuf.http.field_examples) = { values: ["2026-01-31"] }
+  ];
+}

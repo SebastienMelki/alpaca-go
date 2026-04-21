@@ -31,8 +31,9 @@ type Client struct {
 type Option func(*options)
 
 type options struct {
-	httpClient *http.Client
-	baseURL    string
+	httpClient           *http.Client
+	baseURL              string
+	discardUnknownFields bool
 }
 
 // WithHTTPClient sets a custom HTTP client.
@@ -43,6 +44,12 @@ func WithHTTPClient(c *http.Client) Option {
 // WithBaseURL sets a custom base URL (defaults to BaseURL).
 func WithBaseURL(url string) Option {
 	return func(o *options) { o.baseURL = url }
+}
+
+// WithDiscardUnknownFields sets whether to discard unknown fields in JSON responses.
+// When true, unknown fields are silently ignored instead of causing unmarshal errors.
+func WithDiscardUnknownFields(discard bool) Option {
+	return func(o *options) { o.discardUnknownFields = discard }
 }
 
 // NewClient creates a new Market Data API client.
@@ -60,6 +67,7 @@ func NewClient(apiKey, apiSecret string, opts ...Option) *Client {
 		marketdatav2.WithMarketDataServiceHTTPClient(cfg.httpClient),
 		marketdatav2.WithMarketDataServiceAPCAAPIKEYID(apiKey),
 		marketdatav2.WithMarketDataServiceAPCAAPISECRETKEY(apiSecret),
+		marketdatav2.WithMarketDataServiceDiscardUnknownFields(cfg.discardUnknownFields),
 	)
 
 	v1betaClient := marketdatav1beta.NewMarketDataBetaServiceClient(
@@ -67,6 +75,7 @@ func NewClient(apiKey, apiSecret string, opts ...Option) *Client {
 		marketdatav1beta.WithMarketDataBetaServiceHTTPClient(cfg.httpClient),
 		marketdatav1beta.WithMarketDataBetaServiceAPCAAPIKEYID(apiKey),
 		marketdatav1beta.WithMarketDataBetaServiceAPCAAPISECRETKEY(apiSecret),
+		marketdatav1beta.WithMarketDataBetaServiceDiscardUnknownFields(cfg.discardUnknownFields),
 	)
 
 	return &Client{
@@ -83,6 +92,21 @@ func NewClient(apiKey, apiSecret string, opts ...Option) *Client {
 func NewSandboxClient(apiKey, apiSecret string, opts ...Option) *Client {
 	return NewClient(apiKey, apiSecret, append(opts, WithBaseURL(SandboxBaseURL))...)
 }
+
+// =============================================================================
+// Call Option Types
+// =============================================================================
+
+type (
+	V2CallOption     = marketdatav2.MarketDataServiceCallOption
+	V1BetaCallOption = marketdatav1beta.MarketDataBetaServiceCallOption
+)
+
+// Per-call DiscardUnknownFields overrides.
+var (
+	WithV2CallDiscardUnknownFields     = marketdatav2.WithMarketDataServiceCallDiscardUnknownFields
+	WithV1BetaCallDiscardUnknownFields = marketdatav1beta.WithMarketDataBetaServiceCallDiscardUnknownFields
+)
 
 // =============================================================================
 // Common Stock Types (v2)
