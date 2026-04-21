@@ -560,52 +560,6 @@ func (x *SubscribeTradeEventsV2Request) GetUntilId() string {
 	return ""
 }
 
-// SubscribeTradeEventsV2Response is the response stream for trade events (v2).
-type SubscribeTradeEventsV2Response struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Stream of trade update events.
-	Events        []*TradeUpdateEventV2 `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SubscribeTradeEventsV2Response) Reset() {
-	*x = SubscribeTradeEventsV2Response{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SubscribeTradeEventsV2Response) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SubscribeTradeEventsV2Response) ProtoMessage() {}
-
-func (x *SubscribeTradeEventsV2Response) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SubscribeTradeEventsV2Response.ProtoReflect.Descriptor instead.
-func (*SubscribeTradeEventsV2Response) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *SubscribeTradeEventsV2Response) GetEvents() []*TradeUpdateEventV2 {
-	if x != nil {
-		return x.Events
-	}
-	return nil
-}
-
 // SubscribeJournalEventsV2Request is the request to subscribe to journal events (v2).
 type SubscribeJournalEventsV2Request struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -625,7 +579,7 @@ type SubscribeJournalEventsV2Request struct {
 
 func (x *SubscribeJournalEventsV2Request) Reset() {
 	*x = SubscribeJournalEventsV2Request{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[6]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -637,7 +591,7 @@ func (x *SubscribeJournalEventsV2Request) String() string {
 func (*SubscribeJournalEventsV2Request) ProtoMessage() {}
 
 func (x *SubscribeJournalEventsV2Request) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[6]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -650,7 +604,7 @@ func (x *SubscribeJournalEventsV2Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubscribeJournalEventsV2Request.ProtoReflect.Descriptor instead.
 func (*SubscribeJournalEventsV2Request) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{6}
+	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *SubscribeJournalEventsV2Request) GetSince() string {
@@ -688,52 +642,6 @@ func (x *SubscribeJournalEventsV2Request) GetId() string {
 	return ""
 }
 
-// SubscribeJournalEventsV2Response is the response stream for journal events (v2).
-type SubscribeJournalEventsV2Response struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Stream of journal status events.
-	Events        []*JournalStatusEventV2 `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SubscribeJournalEventsV2Response) Reset() {
-	*x = SubscribeJournalEventsV2Response{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SubscribeJournalEventsV2Response) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SubscribeJournalEventsV2Response) ProtoMessage() {}
-
-func (x *SubscribeJournalEventsV2Response) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SubscribeJournalEventsV2Response.ProtoReflect.Descriptor instead.
-func (*SubscribeJournalEventsV2Response) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *SubscribeJournalEventsV2Response) GetEvents() []*JournalStatusEventV2 {
-	if x != nil {
-		return x.Events
-	}
-	return nil
-}
-
 // SubscribeSystemEventsV2Request is the request to subscribe to system events (v2).
 type SubscribeSystemEventsV2Request struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -751,7 +659,7 @@ type SubscribeSystemEventsV2Request struct {
 
 func (x *SubscribeSystemEventsV2Request) Reset() {
 	*x = SubscribeSystemEventsV2Request{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[8]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -763,7 +671,7 @@ func (x *SubscribeSystemEventsV2Request) String() string {
 func (*SubscribeSystemEventsV2Request) ProtoMessage() {}
 
 func (x *SubscribeSystemEventsV2Request) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[8]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -776,7 +684,7 @@ func (x *SubscribeSystemEventsV2Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubscribeSystemEventsV2Request.ProtoReflect.Descriptor instead.
 func (*SubscribeSystemEventsV2Request) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{8}
+	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *SubscribeSystemEventsV2Request) GetSince() string {
@@ -807,52 +715,6 @@ func (x *SubscribeSystemEventsV2Request) GetUntilId() string {
 	return ""
 }
 
-// SubscribeSystemEventsV2Response is the response stream for system events (v2).
-type SubscribeSystemEventsV2Response struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Stream of system events.
-	Events        []*SystemEventV2 `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SubscribeSystemEventsV2Response) Reset() {
-	*x = SubscribeSystemEventsV2Response{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SubscribeSystemEventsV2Response) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SubscribeSystemEventsV2Response) ProtoMessage() {}
-
-func (x *SubscribeSystemEventsV2Response) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SubscribeSystemEventsV2Response.ProtoReflect.Descriptor instead.
-func (*SubscribeSystemEventsV2Response) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *SubscribeSystemEventsV2Response) GetEvents() []*SystemEventV2 {
-	if x != nil {
-		return x.Events
-	}
-	return nil
-}
-
 // AdminActionBelongsTo identifies what entity an admin action belongs to.
 type AdminActionBelongsTo struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -866,7 +728,7 @@ type AdminActionBelongsTo struct {
 
 func (x *AdminActionBelongsTo) Reset() {
 	*x = AdminActionBelongsTo{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[10]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -878,7 +740,7 @@ func (x *AdminActionBelongsTo) String() string {
 func (*AdminActionBelongsTo) ProtoMessage() {}
 
 func (x *AdminActionBelongsTo) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[10]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -891,7 +753,7 @@ func (x *AdminActionBelongsTo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminActionBelongsTo.ProtoReflect.Descriptor instead.
 func (*AdminActionBelongsTo) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{10}
+	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *AdminActionBelongsTo) GetKind() string {
@@ -921,7 +783,7 @@ type AdminActionCreatedBy struct {
 
 func (x *AdminActionCreatedBy) Reset() {
 	*x = AdminActionCreatedBy{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[11]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -933,7 +795,7 @@ func (x *AdminActionCreatedBy) String() string {
 func (*AdminActionCreatedBy) ProtoMessage() {}
 
 func (x *AdminActionCreatedBy) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[11]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -946,7 +808,7 @@ func (x *AdminActionCreatedBy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminActionCreatedBy.ProtoReflect.Descriptor instead.
 func (*AdminActionCreatedBy) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{11}
+	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *AdminActionCreatedBy) GetKind() string {
@@ -982,7 +844,7 @@ type LiquidationContext struct {
 
 func (x *LiquidationContext) Reset() {
 	*x = LiquidationContext{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[12]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -994,7 +856,7 @@ func (x *LiquidationContext) String() string {
 func (*LiquidationContext) ProtoMessage() {}
 
 func (x *LiquidationContext) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[12]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1007,7 +869,7 @@ func (x *LiquidationContext) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LiquidationContext.ProtoReflect.Descriptor instead.
 func (*LiquidationContext) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{12}
+	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *LiquidationContext) GetSymbol() string {
@@ -1060,7 +922,7 @@ type TransactionCancelContext struct {
 
 func (x *TransactionCancelContext) Reset() {
 	*x = TransactionCancelContext{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[13]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1072,7 +934,7 @@ func (x *TransactionCancelContext) String() string {
 func (*TransactionCancelContext) ProtoMessage() {}
 
 func (x *TransactionCancelContext) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[13]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1085,7 +947,7 @@ func (x *TransactionCancelContext) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TransactionCancelContext.ProtoReflect.Descriptor instead.
 func (*TransactionCancelContext) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{13}
+	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *TransactionCancelContext) GetTransactionId() string {
@@ -1145,7 +1007,7 @@ type AdminActionEventV2 struct {
 
 func (x *AdminActionEventV2) Reset() {
 	*x = AdminActionEventV2{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[14]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1157,7 +1019,7 @@ func (x *AdminActionEventV2) String() string {
 func (*AdminActionEventV2) ProtoMessage() {}
 
 func (x *AdminActionEventV2) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[14]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1170,7 +1032,7 @@ func (x *AdminActionEventV2) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminActionEventV2.ProtoReflect.Descriptor instead.
 func (*AdminActionEventV2) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{14}
+	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *AdminActionEventV2) GetEventId() string {
@@ -1311,7 +1173,7 @@ type FundingStatusEventV2 struct {
 
 func (x *FundingStatusEventV2) Reset() {
 	*x = FundingStatusEventV2{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[15]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1323,7 +1185,7 @@ func (x *FundingStatusEventV2) String() string {
 func (*FundingStatusEventV2) ProtoMessage() {}
 
 func (x *FundingStatusEventV2) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[15]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1336,7 +1198,7 @@ func (x *FundingStatusEventV2) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FundingStatusEventV2.ProtoReflect.Descriptor instead.
 func (*FundingStatusEventV2) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{15}
+	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *FundingStatusEventV2) GetEventId() string {
@@ -1419,7 +1281,7 @@ type SubscribeAdminActionsV2Request struct {
 
 func (x *SubscribeAdminActionsV2Request) Reset() {
 	*x = SubscribeAdminActionsV2Request{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[16]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1431,7 +1293,7 @@ func (x *SubscribeAdminActionsV2Request) String() string {
 func (*SubscribeAdminActionsV2Request) ProtoMessage() {}
 
 func (x *SubscribeAdminActionsV2Request) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[16]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1444,7 +1306,7 @@ func (x *SubscribeAdminActionsV2Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubscribeAdminActionsV2Request.ProtoReflect.Descriptor instead.
 func (*SubscribeAdminActionsV2Request) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{16}
+	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *SubscribeAdminActionsV2Request) GetSince() string {
@@ -1475,52 +1337,6 @@ func (x *SubscribeAdminActionsV2Request) GetUntilId() string {
 	return ""
 }
 
-// SubscribeAdminActionsV2Response is the response stream for admin action events (v2).
-type SubscribeAdminActionsV2Response struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Stream of admin action events.
-	Events        []*AdminActionEventV2 `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SubscribeAdminActionsV2Response) Reset() {
-	*x = SubscribeAdminActionsV2Response{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SubscribeAdminActionsV2Response) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SubscribeAdminActionsV2Response) ProtoMessage() {}
-
-func (x *SubscribeAdminActionsV2Response) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SubscribeAdminActionsV2Response.ProtoReflect.Descriptor instead.
-func (*SubscribeAdminActionsV2Response) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{17}
-}
-
-func (x *SubscribeAdminActionsV2Response) GetEvents() []*AdminActionEventV2 {
-	if x != nil {
-		return x.Events
-	}
-	return nil
-}
-
 // SubscribeFundingStatusV2Request is the request to subscribe to funding status events (v2).
 type SubscribeFundingStatusV2Request struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1542,7 +1358,7 @@ type SubscribeFundingStatusV2Request struct {
 
 func (x *SubscribeFundingStatusV2Request) Reset() {
 	*x = SubscribeFundingStatusV2Request{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[18]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1554,7 +1370,7 @@ func (x *SubscribeFundingStatusV2Request) String() string {
 func (*SubscribeFundingStatusV2Request) ProtoMessage() {}
 
 func (x *SubscribeFundingStatusV2Request) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[18]
+	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1567,7 +1383,7 @@ func (x *SubscribeFundingStatusV2Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubscribeFundingStatusV2Request.ProtoReflect.Descriptor instead.
 func (*SubscribeFundingStatusV2Request) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{18}
+	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *SubscribeFundingStatusV2Request) GetSince() string {
@@ -1610,52 +1426,6 @@ func (x *SubscribeFundingStatusV2Request) GetUntilUlid() string {
 		return x.UntilUlid
 	}
 	return ""
-}
-
-// SubscribeFundingStatusV2Response is the response stream for funding status events (v2).
-type SubscribeFundingStatusV2Response struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Stream of funding status events.
-	Events        []*FundingStatusEventV2 `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SubscribeFundingStatusV2Response) Reset() {
-	*x = SubscribeFundingStatusV2Response{}
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SubscribeFundingStatusV2Response) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SubscribeFundingStatusV2Response) ProtoMessage() {}
-
-func (x *SubscribeFundingStatusV2Response) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v2_sse_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SubscribeFundingStatusV2Response.ProtoReflect.Descriptor instead.
-func (*SubscribeFundingStatusV2Response) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v2_sse_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *SubscribeFundingStatusV2Response) GetEvents() []*FundingStatusEventV2 {
-	if x != nil {
-		return x.Events
-	}
-	return nil
 }
 
 var File_alpaca_broker_v2_sse_proto protoreflect.FileDescriptor
@@ -1765,9 +1535,7 @@ const file_alpaca_broker_v2_sse_proto_rawDesc = "" +
 	"\buntil_id\x18\x04 \x01(\tB.\xba\xb5\x18\x1c\n" +
 	"\x1a01G112NTT0XAXKDZK3AABK68TIµ\x18\n" +
 	"\n" +
-	"\buntil_idR\auntilId\"^\n" +
-	"\x1eSubscribeTradeEventsV2Response\x12<\n" +
-	"\x06events\x18\x01 \x03(\v2$.alpaca.broker.v2.TradeUpdateEventV2R\x06events\"\xe1\x02\n" +
+	"\buntil_idR\auntilId\"\xe1\x02\n" +
 	"\x1fSubscribeJournalEventsV2Request\x121\n" +
 	"\x05since\x18\x01 \x01(\tB\x1b\xba\xb5\x18\f\n" +
 	"\n" +
@@ -1787,9 +1555,7 @@ const file_alpaca_broker_v2_sse_proto_rawDesc = "" +
 	"\buntil_idR\auntilId\x12B\n" +
 	"\x02id\x18\x05 \x01(\tB2\xba\xb5\x18&\n" +
 	"$2f144d2a-91e6-46ff-8e37-959a701cc58dµ\x18\x04\n" +
-	"\x02idR\x02id\"b\n" +
-	" SubscribeJournalEventsV2Response\x12>\n" +
-	"\x06events\x18\x01 \x03(\v2&.alpaca.broker.v2.JournalStatusEventV2R\x06events\"\x9c\x02\n" +
+	"\x02idR\x02id\"\x9c\x02\n" +
 	"\x1eSubscribeSystemEventsV2Request\x121\n" +
 	"\x05since\x18\x01 \x01(\tB\x1b\xba\xb5\x18\f\n" +
 	"\n" +
@@ -1806,9 +1572,7 @@ const file_alpaca_broker_v2_sse_proto_rawDesc = "" +
 	"\buntil_id\x18\x04 \x01(\tB.\xba\xb5\x18\x1c\n" +
 	"\x1a01F535Y1FVY8WZHE763HCNS8T0µ\x18\n" +
 	"\n" +
-	"\buntil_idR\auntilId\"Z\n" +
-	"\x1fSubscribeSystemEventsV2Response\x127\n" +
-	"\x06events\x18\x01 \x03(\v2\x1f.alpaca.broker.v2.SystemEventV2R\x06events\"\x88\x01\n" +
+	"\buntil_idR\auntilId\"\x88\x01\n" +
 	"\x14AdminActionBelongsTo\x12!\n" +
 	"\x04kind\x18\x01 \x01(\tB\r\xba\xb5\x18\t\n" +
 	"\aaccountR\x04kind\x12M\n" +
@@ -1909,9 +1673,7 @@ const file_alpaca_broker_v2_sse_proto_rawDesc = "" +
 	"\buntil_id\x18\x04 \x01(\tB.\xba\xb5\x18\x1c\n" +
 	"\x1a01GTVS4FVS2KJDTPYH2WM6NAXGµ\x18\n" +
 	"\n" +
-	"\buntil_idR\auntilId\"_\n" +
-	"\x1fSubscribeAdminActionsV2Response\x12<\n" +
-	"\x06events\x18\x01 \x03(\v2$.alpaca.broker.v2.AdminActionEventV2R\x06events\"\xff\x02\n" +
+	"\buntil_idR\auntilId\"\xff\x02\n" +
 	"\x1fSubscribeFundingStatusV2Request\x121\n" +
 	"\x05since\x18\x01 \x01(\tB\x1b\xba\xb5\x18\f\n" +
 	"\n" +
@@ -1936,9 +1698,7 @@ const file_alpaca_broker_v2_sse_proto_rawDesc = "" +
 	"until_ulid\x18\x06 \x01(\tB0\xba\xb5\x18\x1c\n" +
 	"\x1a01F7VQQ782DM57SJNWAYMD14K0µ\x18\f\n" +
 	"\n" +
-	"until_ulidR\tuntilUlid\"b\n" +
-	" SubscribeFundingStatusV2Response\x12>\n" +
-	"\x06events\x18\x01 \x03(\v2&.alpaca.broker.v2.FundingStatusEventV2R\x06eventsB\xce\x01\n" +
+	"until_ulidR\tuntilUlidB\xce\x01\n" +
 	"\x14com.alpaca.broker.v2B\bSseProtoP\x01ZJgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v2;brokerv2\xa2\x02\x03ABX\xaa\x02\x10Alpaca.Broker.V2\xca\x02\x10Alpaca\\Broker\\V2\xe2\x02\x1cAlpaca\\Broker\\V2\\GPBMetadata\xea\x02\x12Alpaca::Broker::V2b\x06proto3"
 
 var (
@@ -1953,47 +1713,37 @@ func file_alpaca_broker_v2_sse_proto_rawDescGZIP() []byte {
 	return file_alpaca_broker_v2_sse_proto_rawDescData
 }
 
-var file_alpaca_broker_v2_sse_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
+var file_alpaca_broker_v2_sse_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_alpaca_broker_v2_sse_proto_goTypes = []any{
-	(*TradeUpdateEventV2Leg)(nil),            // 0: alpaca.broker.v2.TradeUpdateEventV2Leg
-	(*TradeUpdateEventV2)(nil),               // 1: alpaca.broker.v2.TradeUpdateEventV2
-	(*JournalStatusEventV2)(nil),             // 2: alpaca.broker.v2.JournalStatusEventV2
-	(*SystemEventV2)(nil),                    // 3: alpaca.broker.v2.SystemEventV2
-	(*SubscribeTradeEventsV2Request)(nil),    // 4: alpaca.broker.v2.SubscribeTradeEventsV2Request
-	(*SubscribeTradeEventsV2Response)(nil),   // 5: alpaca.broker.v2.SubscribeTradeEventsV2Response
-	(*SubscribeJournalEventsV2Request)(nil),  // 6: alpaca.broker.v2.SubscribeJournalEventsV2Request
-	(*SubscribeJournalEventsV2Response)(nil), // 7: alpaca.broker.v2.SubscribeJournalEventsV2Response
-	(*SubscribeSystemEventsV2Request)(nil),   // 8: alpaca.broker.v2.SubscribeSystemEventsV2Request
-	(*SubscribeSystemEventsV2Response)(nil),  // 9: alpaca.broker.v2.SubscribeSystemEventsV2Response
-	(*AdminActionBelongsTo)(nil),             // 10: alpaca.broker.v2.AdminActionBelongsTo
-	(*AdminActionCreatedBy)(nil),             // 11: alpaca.broker.v2.AdminActionCreatedBy
-	(*LiquidationContext)(nil),               // 12: alpaca.broker.v2.LiquidationContext
-	(*TransactionCancelContext)(nil),         // 13: alpaca.broker.v2.TransactionCancelContext
-	(*AdminActionEventV2)(nil),               // 14: alpaca.broker.v2.AdminActionEventV2
-	(*FundingStatusEventV2)(nil),             // 15: alpaca.broker.v2.FundingStatusEventV2
-	(*SubscribeAdminActionsV2Request)(nil),   // 16: alpaca.broker.v2.SubscribeAdminActionsV2Request
-	(*SubscribeAdminActionsV2Response)(nil),  // 17: alpaca.broker.v2.SubscribeAdminActionsV2Response
-	(*SubscribeFundingStatusV2Request)(nil),  // 18: alpaca.broker.v2.SubscribeFundingStatusV2Request
-	(*SubscribeFundingStatusV2Response)(nil), // 19: alpaca.broker.v2.SubscribeFundingStatusV2Response
-	nil,                                      // 20: alpaca.broker.v2.TradeUpdateEventV2.PositionQtysEntry
+	(*TradeUpdateEventV2Leg)(nil),           // 0: alpaca.broker.v2.TradeUpdateEventV2Leg
+	(*TradeUpdateEventV2)(nil),              // 1: alpaca.broker.v2.TradeUpdateEventV2
+	(*JournalStatusEventV2)(nil),            // 2: alpaca.broker.v2.JournalStatusEventV2
+	(*SystemEventV2)(nil),                   // 3: alpaca.broker.v2.SystemEventV2
+	(*SubscribeTradeEventsV2Request)(nil),   // 4: alpaca.broker.v2.SubscribeTradeEventsV2Request
+	(*SubscribeJournalEventsV2Request)(nil), // 5: alpaca.broker.v2.SubscribeJournalEventsV2Request
+	(*SubscribeSystemEventsV2Request)(nil),  // 6: alpaca.broker.v2.SubscribeSystemEventsV2Request
+	(*AdminActionBelongsTo)(nil),            // 7: alpaca.broker.v2.AdminActionBelongsTo
+	(*AdminActionCreatedBy)(nil),            // 8: alpaca.broker.v2.AdminActionCreatedBy
+	(*LiquidationContext)(nil),              // 9: alpaca.broker.v2.LiquidationContext
+	(*TransactionCancelContext)(nil),        // 10: alpaca.broker.v2.TransactionCancelContext
+	(*AdminActionEventV2)(nil),              // 11: alpaca.broker.v2.AdminActionEventV2
+	(*FundingStatusEventV2)(nil),            // 12: alpaca.broker.v2.FundingStatusEventV2
+	(*SubscribeAdminActionsV2Request)(nil),  // 13: alpaca.broker.v2.SubscribeAdminActionsV2Request
+	(*SubscribeFundingStatusV2Request)(nil), // 14: alpaca.broker.v2.SubscribeFundingStatusV2Request
+	nil,                                     // 15: alpaca.broker.v2.TradeUpdateEventV2.PositionQtysEntry
 }
 var file_alpaca_broker_v2_sse_proto_depIdxs = []int32{
-	20, // 0: alpaca.broker.v2.TradeUpdateEventV2.position_qtys:type_name -> alpaca.broker.v2.TradeUpdateEventV2.PositionQtysEntry
+	15, // 0: alpaca.broker.v2.TradeUpdateEventV2.position_qtys:type_name -> alpaca.broker.v2.TradeUpdateEventV2.PositionQtysEntry
 	0,  // 1: alpaca.broker.v2.TradeUpdateEventV2.legs:type_name -> alpaca.broker.v2.TradeUpdateEventV2Leg
-	1,  // 2: alpaca.broker.v2.SubscribeTradeEventsV2Response.events:type_name -> alpaca.broker.v2.TradeUpdateEventV2
-	2,  // 3: alpaca.broker.v2.SubscribeJournalEventsV2Response.events:type_name -> alpaca.broker.v2.JournalStatusEventV2
-	3,  // 4: alpaca.broker.v2.SubscribeSystemEventsV2Response.events:type_name -> alpaca.broker.v2.SystemEventV2
-	10, // 5: alpaca.broker.v2.AdminActionEventV2.belongs_to:type_name -> alpaca.broker.v2.AdminActionBelongsTo
-	11, // 6: alpaca.broker.v2.AdminActionEventV2.created_by:type_name -> alpaca.broker.v2.AdminActionCreatedBy
-	12, // 7: alpaca.broker.v2.AdminActionEventV2.liquidation_context:type_name -> alpaca.broker.v2.LiquidationContext
-	13, // 8: alpaca.broker.v2.AdminActionEventV2.transaction_cancel_context:type_name -> alpaca.broker.v2.TransactionCancelContext
-	14, // 9: alpaca.broker.v2.SubscribeAdminActionsV2Response.events:type_name -> alpaca.broker.v2.AdminActionEventV2
-	15, // 10: alpaca.broker.v2.SubscribeFundingStatusV2Response.events:type_name -> alpaca.broker.v2.FundingStatusEventV2
-	11, // [11:11] is the sub-list for method output_type
-	11, // [11:11] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	7,  // 2: alpaca.broker.v2.AdminActionEventV2.belongs_to:type_name -> alpaca.broker.v2.AdminActionBelongsTo
+	8,  // 3: alpaca.broker.v2.AdminActionEventV2.created_by:type_name -> alpaca.broker.v2.AdminActionCreatedBy
+	9,  // 4: alpaca.broker.v2.AdminActionEventV2.liquidation_context:type_name -> alpaca.broker.v2.LiquidationContext
+	10, // 5: alpaca.broker.v2.AdminActionEventV2.transaction_cancel_context:type_name -> alpaca.broker.v2.TransactionCancelContext
+	6,  // [6:6] is the sub-list for method output_type
+	6,  // [6:6] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_broker_v2_sse_proto_init() }
@@ -2001,7 +1751,7 @@ func file_alpaca_broker_v2_sse_proto_init() {
 	if File_alpaca_broker_v2_sse_proto != nil {
 		return
 	}
-	file_alpaca_broker_v2_sse_proto_msgTypes[14].OneofWrappers = []any{
+	file_alpaca_broker_v2_sse_proto_msgTypes[11].OneofWrappers = []any{
 		(*AdminActionEventV2_LiquidationContext)(nil),
 		(*AdminActionEventV2_TransactionCancelContext)(nil),
 	}
@@ -2011,7 +1761,7 @@ func file_alpaca_broker_v2_sse_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_broker_v2_sse_proto_rawDesc), len(file_alpaca_broker_v2_sse_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   21,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

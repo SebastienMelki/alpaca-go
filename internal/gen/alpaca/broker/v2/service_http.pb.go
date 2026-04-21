@@ -11,11 +11,11 @@ import (
 
 // BrokerV2ServiceServer is the server API for BrokerV2Service service.
 type BrokerV2ServiceServer interface {
-	SubscribeTradeEventsV2(context.Context, *SubscribeTradeEventsV2Request) (*SubscribeTradeEventsV2Response, error)
-	SubscribeJournalEventsV2(context.Context, *SubscribeJournalEventsV2Request) (*SubscribeJournalEventsV2Response, error)
-	SubscribeSystemEventsV2(context.Context, *SubscribeSystemEventsV2Request) (*SubscribeSystemEventsV2Response, error)
-	SubscribeAdminActionsV2(context.Context, *SubscribeAdminActionsV2Request) (*SubscribeAdminActionsV2Response, error)
-	SubscribeFundingStatusV2(context.Context, *SubscribeFundingStatusV2Request) (*SubscribeFundingStatusV2Response, error)
+	SubscribeTradeEventsV2(context.Context, *SubscribeTradeEventsV2Request, SSESender) error
+	SubscribeJournalEventsV2(context.Context, *SubscribeJournalEventsV2Request, SSESender) error
+	SubscribeSystemEventsV2(context.Context, *SubscribeSystemEventsV2Request, SSESender) error
+	SubscribeAdminActionsV2(context.Context, *SubscribeAdminActionsV2Request, SSESender) error
+	SubscribeFundingStatusV2(context.Context, *SubscribeFundingStatusV2Request, SSESender) error
 }
 
 // RegisterBrokerV2ServiceServer registers the HTTP handlers for service BrokerV2Service to the given mux.
@@ -25,46 +25,46 @@ func RegisterBrokerV2ServiceServer(server BrokerV2ServiceServer, opts ...ServerO
 	serviceHeaders := getBrokerV2ServiceHeaders()
 
 	methodHeaders := getSubscribeTradeEventsV2Headers()
-	subscribeTradeEventsV2Handler := BindingMiddleware[SubscribeTradeEventsV2Request](
-		genericHandler(server.SubscribeTradeEventsV2, config.errorHandler), serviceHeaders, methodHeaders,
+	subscribeTradeEventsV2Handler := SSEHandler[SubscribeTradeEventsV2Request](
+		server.SubscribeTradeEventsV2, config.errorHandler, serviceHeaders, methodHeaders,
 		subscribeTradeEventsV2PathParams, subscribeTradeEventsV2QueryParams,
-		"GET", config.errorHandler,
+		"GET",
 	)
 
 	config.mux.Handle("GET /v2/events/trades", subscribeTradeEventsV2Handler)
 
 	methodHeaders = getSubscribeJournalEventsV2Headers()
-	subscribeJournalEventsV2Handler := BindingMiddleware[SubscribeJournalEventsV2Request](
-		genericHandler(server.SubscribeJournalEventsV2, config.errorHandler), serviceHeaders, methodHeaders,
+	subscribeJournalEventsV2Handler := SSEHandler[SubscribeJournalEventsV2Request](
+		server.SubscribeJournalEventsV2, config.errorHandler, serviceHeaders, methodHeaders,
 		subscribeJournalEventsV2PathParams, subscribeJournalEventsV2QueryParams,
-		"GET", config.errorHandler,
+		"GET",
 	)
 
 	config.mux.Handle("GET /v2/events/journals/status", subscribeJournalEventsV2Handler)
 
 	methodHeaders = getSubscribeSystemEventsV2Headers()
-	subscribeSystemEventsV2Handler := BindingMiddleware[SubscribeSystemEventsV2Request](
-		genericHandler(server.SubscribeSystemEventsV2, config.errorHandler), serviceHeaders, methodHeaders,
+	subscribeSystemEventsV2Handler := SSEHandler[SubscribeSystemEventsV2Request](
+		server.SubscribeSystemEventsV2, config.errorHandler, serviceHeaders, methodHeaders,
 		subscribeSystemEventsV2PathParams, subscribeSystemEventsV2QueryParams,
-		"GET", config.errorHandler,
+		"GET",
 	)
 
 	config.mux.Handle("GET /v2/events/system", subscribeSystemEventsV2Handler)
 
 	methodHeaders = getSubscribeAdminActionsV2Headers()
-	subscribeAdminActionsV2Handler := BindingMiddleware[SubscribeAdminActionsV2Request](
-		genericHandler(server.SubscribeAdminActionsV2, config.errorHandler), serviceHeaders, methodHeaders,
+	subscribeAdminActionsV2Handler := SSEHandler[SubscribeAdminActionsV2Request](
+		server.SubscribeAdminActionsV2, config.errorHandler, serviceHeaders, methodHeaders,
 		subscribeAdminActionsV2PathParams, subscribeAdminActionsV2QueryParams,
-		"GET", config.errorHandler,
+		"GET",
 	)
 
 	config.mux.Handle("GET /v2/events/admin-actions", subscribeAdminActionsV2Handler)
 
 	methodHeaders = getSubscribeFundingStatusV2Headers()
-	subscribeFundingStatusV2Handler := BindingMiddleware[SubscribeFundingStatusV2Request](
-		genericHandler(server.SubscribeFundingStatusV2, config.errorHandler), serviceHeaders, methodHeaders,
+	subscribeFundingStatusV2Handler := SSEHandler[SubscribeFundingStatusV2Request](
+		server.SubscribeFundingStatusV2, config.errorHandler, serviceHeaders, methodHeaders,
 		subscribeFundingStatusV2PathParams, subscribeFundingStatusV2QueryParams,
-		"GET", config.errorHandler,
+		"GET",
 	)
 
 	config.mux.Handle("GET /v2/events/funding/status", subscribeFundingStatusV2Handler)

@@ -33,10 +33,11 @@ service BrokerV2Service {
   // This endpoint replaces the deprecated /v1/events/trades endpoint.
   // Provides faster event delivery times and supports MLeg (multi-leg) order events.
   // GET /v2/events/trades
-  rpc SubscribeTradeEventsV2(SubscribeTradeEventsV2Request) returns (SubscribeTradeEventsV2Response) {
+  rpc SubscribeTradeEventsV2(SubscribeTradeEventsV2Request) returns (TradeUpdateEventV2) {
     option (sebuf.http.config) = {
       path: "/events/trades"
       method: HTTP_METHOD_GET
+      stream: true
     };
   }
 
@@ -44,20 +45,22 @@ service BrokerV2Service {
   // This endpoint provides ULID-based event IDs instead of integer IDs.
   // Note: There is no compatibility between v1 and v2 event IDs.
   // GET /v2/events/journals/status
-  rpc SubscribeJournalEventsV2(SubscribeJournalEventsV2Request) returns (SubscribeJournalEventsV2Response) {
+  rpc SubscribeJournalEventsV2(SubscribeJournalEventsV2Request) returns (JournalStatusEventV2) {
     option (sebuf.http.config) = {
       path: "/events/journals/status"
       method: HTTP_METHOD_GET
+      stream: true
     };
   }
 
   // SubscribeSystemEventsV2 subscribes to system events via SSE (v2).
   // System events notify when end-of-day balances or positions are ready.
   // GET /v2/events/system
-  rpc SubscribeSystemEventsV2(SubscribeSystemEventsV2Request) returns (SubscribeSystemEventsV2Response) {
+  rpc SubscribeSystemEventsV2(SubscribeSystemEventsV2Request) returns (SystemEventV2) {
     option (sebuf.http.config) = {
       path: "/events/system"
       method: HTTP_METHOD_GET
+      stream: true
     };
   }
 
@@ -65,20 +68,22 @@ service BrokerV2Service {
   // Streams events related to administrative actions performed by Alpaca systems.
   // Event types: LegacyNote, Liquidation, TransactionCancel
   // GET /v2/events/admin-actions
-  rpc SubscribeAdminActionsV2(SubscribeAdminActionsV2Request) returns (SubscribeAdminActionsV2Response) {
+  rpc SubscribeAdminActionsV2(SubscribeAdminActionsV2Request) returns (AdminActionEventV2) {
     option (sebuf.http.config) = {
       path: "/events/admin-actions"
       method: HTTP_METHOD_GET
+      stream: true
     };
   }
 
   // SubscribeFundingStatusV2 subscribes to funding status events via SSE (v2).
   // Streams funding status updates for bank relationships, wire banks, and transfers.
   // GET /v2/events/funding/status
-  rpc SubscribeFundingStatusV2(SubscribeFundingStatusV2Request) returns (SubscribeFundingStatusV2Response) {
+  rpc SubscribeFundingStatusV2(SubscribeFundingStatusV2Request) returns (FundingStatusEventV2) {
     option (sebuf.http.config) = {
       path: "/events/funding/status"
       method: HTTP_METHOD_GET
+      stream: true
     };
   }
 }

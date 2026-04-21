@@ -164,12 +164,6 @@ message SubscribeTradeEventsV2Request {
   ];
 }
 
-// SubscribeTradeEventsV2Response is the response stream for trade events (v2).
-message SubscribeTradeEventsV2Response {
-  // Stream of trade update events.
-  repeated TradeUpdateEventV2 events = 1;
-}
-
 // SubscribeJournalEventsV2Request is the request to subscribe to journal events (v2).
 message SubscribeJournalEventsV2Request {
   // Starting date filter (YYYY-MM-DD).
@@ -203,12 +197,6 @@ message SubscribeJournalEventsV2Request {
   ];
 }
 
-// SubscribeJournalEventsV2Response is the response stream for journal events (v2).
-message SubscribeJournalEventsV2Response {
-  // Stream of journal status events.
-  repeated JournalStatusEventV2 events = 1;
-}
-
 // SubscribeSystemEventsV2Request is the request to subscribe to system events (v2).
 message SubscribeSystemEventsV2Request {
   // Starting date filter (YYYY-MM-DD).
@@ -235,13 +223,6 @@ message SubscribeSystemEventsV2Request {
     (sebuf.http.field_examples) = { values: ["01F535Y1FVY8WZHE763HCNS8T0"] }
   ];
 }
-
-// SubscribeSystemEventsV2Response is the response stream for system events (v2).
-message SubscribeSystemEventsV2Response {
-  // Stream of system events.
-  repeated SystemEventV2 events = 1;
-}
-
 
 // AdminActionBelongsTo identifies what entity an admin action belongs to.
 message AdminActionBelongsTo {
@@ -368,12 +349,6 @@ message SubscribeAdminActionsV2Request {
   ];
 }
 
-// SubscribeAdminActionsV2Response is the response stream for admin action events (v2).
-message SubscribeAdminActionsV2Response {
-  // Stream of admin action events.
-  repeated AdminActionEventV2 events = 1;
-}
-
 // SubscribeFundingStatusV2Request is the request to subscribe to funding status events (v2).
 message SubscribeFundingStatusV2Request {
   // Starting date filter (YYYY-MM-DD).
@@ -406,8 +381,3 @@ message SubscribeFundingStatusV2Request {
   ];
 }
 
-// SubscribeFundingStatusV2Response is the response stream for funding status events (v2).
-message SubscribeFundingStatusV2Response {
-  // Stream of funding status events.
-  repeated FundingStatusEventV2 events = 1;
-}
