@@ -25,6 +25,12 @@ const (
 	ContentTypeProto = "application/x-protobuf"
 )
 
+// sebufUnmarshaler is implemented by generated messages with custom JSON unmarshaling.
+// It allows passing protojson.UnmarshalOptions (e.g. DiscardUnknown) through custom unmarshalers.
+type sebufUnmarshaler interface {
+	UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error
+}
+
 // MarketDataBetaServiceClient is the client API for MarketDataBetaService service.
 type MarketDataBetaServiceClient interface {
 	GetCryptoBars(ctx context.Context, req *GetCryptoBarsRequest, opts ...MarketDataBetaServiceCallOption) (*GetCryptoBarsResponse, error)
@@ -54,10 +60,11 @@ type MarketDataBetaServiceClient interface {
 
 // marketDataBetaServiceClient is the implementation of MarketDataBetaServiceClient.
 type marketDataBetaServiceClient struct {
-	baseURL        string
-	httpClient     *http.Client
-	contentType    string
-	defaultHeaders map[string]string
+	baseURL              string
+	httpClient           *http.Client
+	contentType          string
+	defaultHeaders       map[string]string
+	discardUnknownFields bool
 }
 
 var _ MarketDataBetaServiceClient = (*marketDataBetaServiceClient)(nil)
@@ -90,13 +97,22 @@ func WithMarketDataBetaServiceDefaultHeader(key, value string) MarketDataBetaSer
 	}
 }
 
+// WithMarketDataBetaServiceDiscardUnknownFields sets whether to discard unknown fields in JSON responses.
+// When true, unknown fields are silently ignored instead of causing unmarshal errors.
+func WithMarketDataBetaServiceDiscardUnknownFields(discard bool) MarketDataBetaServiceClientOption {
+	return func(c *marketDataBetaServiceClient) {
+		c.discardUnknownFields = discard
+	}
+}
+
 // MarketDataBetaServiceCallOption configures a single RPC call.
 type MarketDataBetaServiceCallOption func(*marketDataBetaServiceCallOptions)
 
 // marketDataBetaServiceCallOptions holds options for a single RPC call.
 type marketDataBetaServiceCallOptions struct {
-	headers     map[string]string
-	contentType string
+	headers              map[string]string
+	contentType          string
+	discardUnknownFields *bool
 }
 
 // WithMarketDataBetaServiceHeader adds a header to a single request.
@@ -113,6 +129,14 @@ func WithMarketDataBetaServiceHeader(key, value string) MarketDataBetaServiceCal
 func WithMarketDataBetaServiceCallContentType(contentType string) MarketDataBetaServiceCallOption {
 	return func(o *marketDataBetaServiceCallOptions) {
 		o.contentType = contentType
+	}
+}
+
+// WithMarketDataBetaServiceCallDiscardUnknownFields sets whether to discard unknown fields for a single request.
+// Overrides the client-level setting from WithMarketDataBetaServiceDiscardUnknownFields.
+func WithMarketDataBetaServiceCallDiscardUnknownFields(discard bool) MarketDataBetaServiceCallOption {
+	return func(o *marketDataBetaServiceCallOptions) {
+		o.discardUnknownFields = &discard
 	}
 }
 
@@ -229,9 +253,15 @@ func (c *marketDataBetaServiceClient) GetCryptoBars(ctx context.Context, req *Ge
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetCryptoBarsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -297,9 +327,15 @@ func (c *marketDataBetaServiceClient) GetLatestCryptoBars(ctx context.Context, r
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetLatestCryptoBarsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -380,9 +416,15 @@ func (c *marketDataBetaServiceClient) GetCryptoTrades(ctx context.Context, req *
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetCryptoTradesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -448,9 +490,15 @@ func (c *marketDataBetaServiceClient) GetLatestCryptoTrades(ctx context.Context,
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetLatestCryptoTradesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -531,9 +579,15 @@ func (c *marketDataBetaServiceClient) GetCryptoQuotes(ctx context.Context, req *
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetCryptoQuotesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -599,9 +653,15 @@ func (c *marketDataBetaServiceClient) GetLatestCryptoQuotes(ctx context.Context,
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetLatestCryptoQuotesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -667,9 +727,15 @@ func (c *marketDataBetaServiceClient) GetCryptoSnapshots(ctx context.Context, re
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetCryptoSnapshotsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -735,9 +801,15 @@ func (c *marketDataBetaServiceClient) GetCryptoOrderbooks(ctx context.Context, r
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetCryptoOrderbooksResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -820,9 +892,15 @@ func (c *marketDataBetaServiceClient) GetOptionBars(ctx context.Context, req *Ge
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetOptionBarsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -902,9 +980,15 @@ func (c *marketDataBetaServiceClient) GetOptionTrades(ctx context.Context, req *
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetOptionTradesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -972,9 +1056,15 @@ func (c *marketDataBetaServiceClient) GetLatestOptionTrades(ctx context.Context,
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetLatestOptionTradesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1042,9 +1132,15 @@ func (c *marketDataBetaServiceClient) GetLatestOptionQuotes(ctx context.Context,
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetLatestOptionQuotesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1112,9 +1208,15 @@ func (c *marketDataBetaServiceClient) GetOptionSnapshots(ctx context.Context, re
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetOptionSnapshotsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1201,9 +1303,15 @@ func (c *marketDataBetaServiceClient) GetOptionChain(ctx context.Context, req *G
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetOptionChainResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1260,9 +1368,15 @@ func (c *marketDataBetaServiceClient) GetOptionMetaConditions(ctx context.Contex
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetOptionMetaConditionsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1318,9 +1432,15 @@ func (c *marketDataBetaServiceClient) GetOptionMetaExchanges(ctx context.Context
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetOptionMetaExchangesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1406,9 +1526,15 @@ func (c *marketDataBetaServiceClient) GetNews(ctx context.Context, req *GetNewsR
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetNewsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1476,9 +1602,15 @@ func (c *marketDataBetaServiceClient) GetMostActives(ctx context.Context, req *G
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetMostActivesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1544,9 +1676,15 @@ func (c *marketDataBetaServiceClient) GetMovers(ctx context.Context, req *GetMov
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetMoversResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1635,9 +1773,15 @@ func (c *marketDataBetaServiceClient) GetCorporateActions(ctx context.Context, r
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetCorporateActionsResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1720,9 +1864,15 @@ func (c *marketDataBetaServiceClient) GetForexRates(ctx context.Context, req *Ge
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetForexRatesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1787,9 +1937,15 @@ func (c *marketDataBetaServiceClient) GetLatestForexRates(ctx context.Context, r
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetLatestForexRatesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1854,9 +2010,15 @@ func (c *marketDataBetaServiceClient) GetFixedIncomeLatestPrices(ctx context.Con
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &GetFixedIncomeLatestPricesResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -1880,16 +2042,18 @@ func (c *marketDataBetaServiceClient) marshalRequest(req proto.Message, contentT
 
 func (c *marketDataBetaServiceClient) handleErrorResponse(statusCode int, body []byte, contentType string) error {
 	// Try to parse as ValidationError first (for 400 errors)
+	// Always use strict mode (false) for error parsing to avoid loose JSON
+	// falsely matching ValidationError or Error types.
 	if statusCode == http.StatusBadRequest {
 		validationErr := &sebufhttp.ValidationError{}
-		if unmarshalErr := c.unmarshalResponse(body, validationErr, contentType); unmarshalErr == nil {
+		if unmarshalErr := c.unmarshalResponse(body, validationErr, contentType, false); unmarshalErr == nil {
 			return validationErr
 		}
 	}
 
 	// Try to parse as generic Error
 	genericErr := &sebufhttp.Error{}
-	if unmarshalErr := c.unmarshalResponse(body, genericErr, contentType); unmarshalErr == nil {
+	if unmarshalErr := c.unmarshalResponse(body, genericErr, contentType, false); unmarshalErr == nil {
 		return genericErr
 	}
 
@@ -1897,21 +2061,27 @@ func (c *marketDataBetaServiceClient) handleErrorResponse(statusCode int, body [
 	return fmt.Errorf("request failed with status %d: %s", statusCode, string(body))
 }
 
-func (c *marketDataBetaServiceClient) unmarshalResponse(body []byte, msg proto.Message, contentType string) error {
+func (c *marketDataBetaServiceClient) unmarshalResponse(body []byte, msg proto.Message, contentType string, discardUnknown bool) error {
 	if len(body) == 0 {
 		return nil
 	}
 
+	opts := protojson.UnmarshalOptions{DiscardUnknown: discardUnknown}
+
 	switch contentType {
 	case ContentTypeJSON:
-		// Check for custom JSON unmarshaler (unwrap support)
-		if unmarshaler, ok := msg.(json.Unmarshaler); ok {
-			return unmarshaler.UnmarshalJSON(body)
+		// Check for sebuf-generated custom unmarshaler (passes options through)
+		if u, ok := msg.(sebufUnmarshaler); ok {
+			return u.UnmarshalJSONSebuf(body, opts)
 		}
-		return protojson.Unmarshal(body, msg)
+		// Check for third-party json.Unmarshaler (best effort, cannot pass options)
+		if u, ok := msg.(json.Unmarshaler); ok {
+			return u.UnmarshalJSON(body)
+		}
+		return opts.Unmarshal(body, msg)
 	case ContentTypeProto:
 		return proto.Unmarshal(body, msg)
 	default:
-		return protojson.Unmarshal(body, msg)
+		return opts.Unmarshal(body, msg)
 	}
 }

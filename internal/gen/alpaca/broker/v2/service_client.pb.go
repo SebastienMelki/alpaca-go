@@ -26,6 +26,12 @@ const (
 	ContentTypeProto = "application/x-protobuf"
 )
 
+// sebufUnmarshaler is implemented by generated messages with custom JSON unmarshaling.
+// It allows passing protojson.UnmarshalOptions (e.g. DiscardUnknown) through custom unmarshalers.
+type sebufUnmarshaler interface {
+	UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error
+}
+
 // BrokerV2ServiceClient is the client API for BrokerV2Service service.
 type BrokerV2ServiceClient interface {
 	SubscribeTradeEventsV2(ctx context.Context, req *SubscribeTradeEventsV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*TradeUpdateEventV2], error)
@@ -37,10 +43,11 @@ type BrokerV2ServiceClient interface {
 
 // brokerV2ServiceClient is the implementation of BrokerV2ServiceClient.
 type brokerV2ServiceClient struct {
-	baseURL        string
-	httpClient     *http.Client
-	contentType    string
-	defaultHeaders map[string]string
+	baseURL              string
+	httpClient           *http.Client
+	contentType          string
+	defaultHeaders       map[string]string
+	discardUnknownFields bool
 }
 
 var _ BrokerV2ServiceClient = (*brokerV2ServiceClient)(nil)
@@ -73,13 +80,22 @@ func WithBrokerV2ServiceDefaultHeader(key, value string) BrokerV2ServiceClientOp
 	}
 }
 
+// WithBrokerV2ServiceDiscardUnknownFields sets whether to discard unknown fields in JSON responses.
+// When true, unknown fields are silently ignored instead of causing unmarshal errors.
+func WithBrokerV2ServiceDiscardUnknownFields(discard bool) BrokerV2ServiceClientOption {
+	return func(c *brokerV2ServiceClient) {
+		c.discardUnknownFields = discard
+	}
+}
+
 // BrokerV2ServiceCallOption configures a single RPC call.
 type BrokerV2ServiceCallOption func(*brokerV2ServiceCallOptions)
 
 // brokerV2ServiceCallOptions holds options for a single RPC call.
 type brokerV2ServiceCallOptions struct {
-	headers     map[string]string
-	contentType string
+	headers              map[string]string
+	contentType          string
+	discardUnknownFields *bool
 }
 
 // WithBrokerV2ServiceHeader adds a header to a single request.
@@ -96,6 +112,14 @@ func WithBrokerV2ServiceHeader(key, value string) BrokerV2ServiceCallOption {
 func WithBrokerV2ServiceCallContentType(contentType string) BrokerV2ServiceCallOption {
 	return func(o *brokerV2ServiceCallOptions) {
 		o.contentType = contentType
+	}
+}
+
+// WithBrokerV2ServiceCallDiscardUnknownFields sets whether to discard unknown fields for a single request.
+// Overrides the client-level setting from WithBrokerV2ServiceDiscardUnknownFields.
+func WithBrokerV2ServiceCallDiscardUnknownFields(discard bool) BrokerV2ServiceCallOption {
+	return func(o *brokerV2ServiceCallOptions) {
+		o.discardUnknownFields = &discard
 	}
 }
 
@@ -127,9 +151,10 @@ func NewBrokerV2ServiceClient(baseURL string, opts ...BrokerV2ServiceClientOptio
 
 // BrokerV2ServiceEventStream reads Server-Sent Events from a streaming endpoint.
 type BrokerV2ServiceEventStream[T proto.Message] struct {
-	resp   *http.Response
-	reader *bufio.Reader
-	err    error
+	resp                 *http.Response
+	reader               *bufio.Reader
+	err                  error
+	discardUnknownFields bool
 }
 
 // Next reads the next event from the stream.
@@ -148,8 +173,17 @@ func (s *BrokerV2ServiceEventStream[T]) Next(event T) bool {
 			continue
 		}
 		data := strings.TrimPrefix(line, "data: ")
-		if err := protojson.Unmarshal([]byte(data), event); err != nil {
-			s.err = fmt.Errorf("failed to unmarshal SSE event: %w", err)
+		opts := protojson.UnmarshalOptions{DiscardUnknown: s.discardUnknownFields}
+		var unmarshalErr error
+		if u, ok := any(event).(sebufUnmarshaler); ok {
+			unmarshalErr = u.UnmarshalJSONSebuf([]byte(data), opts)
+		} else if u, ok := any(event).(json.Unmarshaler); ok {
+			unmarshalErr = u.UnmarshalJSON([]byte(data))
+		} else {
+			unmarshalErr = opts.Unmarshal([]byte(data), event)
+		}
+		if unmarshalErr != nil {
+			s.err = fmt.Errorf("failed to unmarshal SSE event: %w", unmarshalErr)
 			return false
 		}
 		return true
@@ -232,9 +266,15 @@ func (c *brokerV2ServiceClient) SubscribeTradeEventsV2(ctx context.Context, req 
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	return &BrokerV2ServiceEventStream[*TradeUpdateEventV2]{
-		resp:   resp,
-		reader: bufio.NewReader(resp.Body),
+		resp:                 resp,
+		reader:               bufio.NewReader(resp.Body),
+		discardUnknownFields: discardUnknown,
 	}, nil
 }
 
@@ -307,9 +347,15 @@ func (c *brokerV2ServiceClient) SubscribeJournalEventsV2(ctx context.Context, re
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	return &BrokerV2ServiceEventStream[*JournalStatusEventV2]{
-		resp:   resp,
-		reader: bufio.NewReader(resp.Body),
+		resp:                 resp,
+		reader:               bufio.NewReader(resp.Body),
+		discardUnknownFields: discardUnknown,
 	}, nil
 }
 
@@ -379,9 +425,15 @@ func (c *brokerV2ServiceClient) SubscribeSystemEventsV2(ctx context.Context, req
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	return &BrokerV2ServiceEventStream[*SystemEventV2]{
-		resp:   resp,
-		reader: bufio.NewReader(resp.Body),
+		resp:                 resp,
+		reader:               bufio.NewReader(resp.Body),
+		discardUnknownFields: discardUnknown,
 	}, nil
 }
 
@@ -451,9 +503,15 @@ func (c *brokerV2ServiceClient) SubscribeAdminActionsV2(ctx context.Context, req
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	return &BrokerV2ServiceEventStream[*AdminActionEventV2]{
-		resp:   resp,
-		reader: bufio.NewReader(resp.Body),
+		resp:                 resp,
+		reader:               bufio.NewReader(resp.Body),
+		discardUnknownFields: discardUnknown,
 	}, nil
 }
 
@@ -529,9 +587,15 @@ func (c *brokerV2ServiceClient) SubscribeFundingStatusV2(ctx context.Context, re
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	return &BrokerV2ServiceEventStream[*FundingStatusEventV2]{
-		resp:   resp,
-		reader: bufio.NewReader(resp.Body),
+		resp:                 resp,
+		reader:               bufio.NewReader(resp.Body),
+		discardUnknownFields: discardUnknown,
 	}, nil
 }
 
@@ -552,16 +616,18 @@ func (c *brokerV2ServiceClient) marshalRequest(req proto.Message, contentType st
 
 func (c *brokerV2ServiceClient) handleErrorResponse(statusCode int, body []byte, contentType string) error {
 	// Try to parse as ValidationError first (for 400 errors)
+	// Always use strict mode (false) for error parsing to avoid loose JSON
+	// falsely matching ValidationError or Error types.
 	if statusCode == http.StatusBadRequest {
 		validationErr := &sebufhttp.ValidationError{}
-		if unmarshalErr := c.unmarshalResponse(body, validationErr, contentType); unmarshalErr == nil {
+		if unmarshalErr := c.unmarshalResponse(body, validationErr, contentType, false); unmarshalErr == nil {
 			return validationErr
 		}
 	}
 
 	// Try to parse as generic Error
 	genericErr := &sebufhttp.Error{}
-	if unmarshalErr := c.unmarshalResponse(body, genericErr, contentType); unmarshalErr == nil {
+	if unmarshalErr := c.unmarshalResponse(body, genericErr, contentType, false); unmarshalErr == nil {
 		return genericErr
 	}
 
@@ -569,21 +635,27 @@ func (c *brokerV2ServiceClient) handleErrorResponse(statusCode int, body []byte,
 	return fmt.Errorf("request failed with status %d: %s", statusCode, string(body))
 }
 
-func (c *brokerV2ServiceClient) unmarshalResponse(body []byte, msg proto.Message, contentType string) error {
+func (c *brokerV2ServiceClient) unmarshalResponse(body []byte, msg proto.Message, contentType string, discardUnknown bool) error {
 	if len(body) == 0 {
 		return nil
 	}
 
+	opts := protojson.UnmarshalOptions{DiscardUnknown: discardUnknown}
+
 	switch contentType {
 	case ContentTypeJSON:
-		// Check for custom JSON unmarshaler (unwrap support)
-		if unmarshaler, ok := msg.(json.Unmarshaler); ok {
-			return unmarshaler.UnmarshalJSON(body)
+		// Check for sebuf-generated custom unmarshaler (passes options through)
+		if u, ok := msg.(sebufUnmarshaler); ok {
+			return u.UnmarshalJSONSebuf(body, opts)
 		}
-		return protojson.Unmarshal(body, msg)
+		// Check for third-party json.Unmarshaler (best effort, cannot pass options)
+		if u, ok := msg.(json.Unmarshaler); ok {
+			return u.UnmarshalJSON(body)
+		}
+		return opts.Unmarshal(body, msg)
 	case ContentTypeProto:
 		return proto.Unmarshal(body, msg)
 	default:
-		return protojson.Unmarshal(body, msg)
+		return opts.Unmarshal(body, msg)
 	}
 }
