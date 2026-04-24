@@ -145,7 +145,9 @@ type TradeUpdateEventV2 struct {
 	// Quantity filled for this event.
 	Qty string `protobuf:"bytes,13,opt,name=qty,proto3" json:"qty,omitempty"`
 	// Legs for MultilegOptions fill events.
-	Legs          []*TradeUpdateEventV2Leg `protobuf:"bytes,14,rep,name=legs,proto3" json:"legs,omitempty"`
+	Legs []*TradeUpdateEventV2Leg `protobuf:"bytes,14,rep,name=legs,proto3" json:"legs,omitempty"`
+	// Group ID linking related activities (optional).
+	GroupId       string `protobuf:"bytes,15,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -276,6 +278,13 @@ func (x *TradeUpdateEventV2) GetLegs() []*TradeUpdateEventV2Leg {
 		return x.Legs
 	}
 	return nil
+}
+
+func (x *TradeUpdateEventV2) GetGroupId() string {
+	if x != nil {
+		return x.GroupId
+	}
+	return ""
 }
 
 // JournalStatusEventV2 represents a journal status change event (v2).
@@ -1446,7 +1455,7 @@ const file_alpaca_broker_v2_sse_proto_rawDesc = "" +
 	"\ttimestamp\x18\x05 \x01(\tB$\xba\xb5\x18 \n" +
 	"\x1e2025-01-14T16:05:51.867802561ZR\ttimestamp\x12U\n" +
 	"\fexecution_id\x18\x06 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
-	"$ccf7d1dc-78e1-4eb5-92c6-5c86b2bcca8fR\vexecutionId\"\x9b\a\n" +
+	"$ccf7d1dc-78e1-4eb5-92c6-5c86b2bcca8fR\vexecutionId\"\xe2\a\n" +
 	"\x12TradeUpdateEventV2\x12Q\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
@@ -1476,7 +1485,9 @@ const file_alpaca_broker_v2_sse_proto_rawDesc = "" +
 	"\rposition_qtys\x18\f \x03(\v26.alpaca.broker.v2.TradeUpdateEventV2.PositionQtysEntryR\fpositionQtys\x12\x1b\n" +
 	"\x03qty\x18\r \x01(\tB\t\xba\xb5\x18\x05\n" +
 	"\x03100R\x03qty\x12;\n" +
-	"\x04legs\x18\x0e \x03(\v2'.alpaca.broker.v2.TradeUpdateEventV2LegR\x04legs\x1a?\n" +
+	"\x04legs\x18\x0e \x03(\v2'.alpaca.broker.v2.TradeUpdateEventV2LegR\x04legs\x12E\n" +
+	"\bgroup_id\x18\x0f \x01(\tB*\xba\xb5\x18&\n" +
+	"$5765f185-4788-4d3e-86c4-c85202dab04eR\agroupId\x1a?\n" +
 	"\x11PositionQtysEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xef\x04\n" +

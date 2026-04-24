@@ -81,6 +81,9 @@ message TradeUpdateEventV2 {
 
   // Legs for MultilegOptions fill events.
   repeated TradeUpdateEventV2Leg legs = 14;
+
+  // Group ID linking related activities (optional).
+  string group_id = 15 [(sebuf.http.field_examples) = { values: ["5765f185-4788-4d3e-86c4-c85202dab04e"] }];
 }
 
 // JournalStatusEventV2 represents a journal status change event (v2).
