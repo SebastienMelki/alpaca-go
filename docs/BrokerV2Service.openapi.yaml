@@ -492,6 +492,12 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/TradeUpdateEventV2Leg'
+                groupId:
+                    type: string
+                    examples:
+                        - 5765f185-4788-4d3e-86c4-c85202dab04e
+                    description: Group ID linking related activities (optional).
+                    example: 5765f185-4788-4d3e-86c4-c85202dab04e
             description: TradeUpdateEventV2 represents a trade update event (v2).
         PositionQtysEntry:
             type: object
