@@ -25,6 +25,12 @@ const (
 	ContentTypeProto = "application/x-protobuf"
 )
 
+// sebufUnmarshaler is implemented by generated messages with custom JSON unmarshaling.
+// It allows passing protojson.UnmarshalOptions (e.g. DiscardUnknown) through custom unmarshalers.
+type sebufUnmarshaler interface {
+	UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error
+}
+
 // AuthServiceClient is the client API for AuthService service.
 type AuthServiceClient interface {
 	IssueToken(ctx context.Context, req *IssueTokenRequest, opts ...AuthServiceCallOption) (*IssueTokenResponse, error)
@@ -32,10 +38,11 @@ type AuthServiceClient interface {
 
 // authServiceClient is the implementation of AuthServiceClient.
 type authServiceClient struct {
-	baseURL        string
-	httpClient     *http.Client
-	contentType    string
-	defaultHeaders map[string]string
+	baseURL              string
+	httpClient           *http.Client
+	contentType          string
+	defaultHeaders       map[string]string
+	discardUnknownFields bool
 }
 
 var _ AuthServiceClient = (*authServiceClient)(nil)
@@ -68,13 +75,22 @@ func WithAuthServiceDefaultHeader(key, value string) AuthServiceClientOption {
 	}
 }
 
+// WithAuthServiceDiscardUnknownFields sets whether to discard unknown fields in JSON responses.
+// When true, unknown fields are silently ignored instead of causing unmarshal errors.
+func WithAuthServiceDiscardUnknownFields(discard bool) AuthServiceClientOption {
+	return func(c *authServiceClient) {
+		c.discardUnknownFields = discard
+	}
+}
+
 // AuthServiceCallOption configures a single RPC call.
 type AuthServiceCallOption func(*authServiceCallOptions)
 
 // authServiceCallOptions holds options for a single RPC call.
 type authServiceCallOptions struct {
-	headers     map[string]string
-	contentType string
+	headers              map[string]string
+	contentType          string
+	discardUnknownFields *bool
 }
 
 // WithAuthServiceHeader adds a header to a single request.
@@ -91,6 +107,14 @@ func WithAuthServiceHeader(key, value string) AuthServiceCallOption {
 func WithAuthServiceCallContentType(contentType string) AuthServiceCallOption {
 	return func(o *authServiceCallOptions) {
 		o.contentType = contentType
+	}
+}
+
+// WithAuthServiceCallDiscardUnknownFields sets whether to discard unknown fields for a single request.
+// Overrides the client-level setting from WithAuthServiceDiscardUnknownFields.
+func WithAuthServiceCallDiscardUnknownFields(discard bool) AuthServiceCallOption {
+	return func(o *authServiceCallOptions) {
+		o.discardUnknownFields = &discard
 	}
 }
 
@@ -165,9 +189,15 @@ func (c *authServiceClient) IssueToken(ctx context.Context, req *IssueTokenReque
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
 	// Unmarshal response
 	result := &IssueTokenResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType); err != nil {
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
 
@@ -191,16 +221,18 @@ func (c *authServiceClient) marshalRequest(req proto.Message, contentType string
 
 func (c *authServiceClient) handleErrorResponse(statusCode int, body []byte, contentType string) error {
 	// Try to parse as ValidationError first (for 400 errors)
+	// Always use strict mode (false) for error parsing to avoid loose JSON
+	// falsely matching ValidationError or Error types.
 	if statusCode == http.StatusBadRequest {
 		validationErr := &sebufhttp.ValidationError{}
-		if unmarshalErr := c.unmarshalResponse(body, validationErr, contentType); unmarshalErr == nil {
+		if unmarshalErr := c.unmarshalResponse(body, validationErr, contentType, false); unmarshalErr == nil {
 			return validationErr
 		}
 	}
 
 	// Try to parse as generic Error
 	genericErr := &sebufhttp.Error{}
-	if unmarshalErr := c.unmarshalResponse(body, genericErr, contentType); unmarshalErr == nil {
+	if unmarshalErr := c.unmarshalResponse(body, genericErr, contentType, false); unmarshalErr == nil {
 		return genericErr
 	}
 
@@ -208,21 +240,27 @@ func (c *authServiceClient) handleErrorResponse(statusCode int, body []byte, con
 	return fmt.Errorf("request failed with status %d: %s", statusCode, string(body))
 }
 
-func (c *authServiceClient) unmarshalResponse(body []byte, msg proto.Message, contentType string) error {
+func (c *authServiceClient) unmarshalResponse(body []byte, msg proto.Message, contentType string, discardUnknown bool) error {
 	if len(body) == 0 {
 		return nil
 	}
 
+	opts := protojson.UnmarshalOptions{DiscardUnknown: discardUnknown}
+
 	switch contentType {
 	case ContentTypeJSON:
-		// Check for custom JSON unmarshaler (unwrap support)
-		if unmarshaler, ok := msg.(json.Unmarshaler); ok {
-			return unmarshaler.UnmarshalJSON(body)
+		// Check for sebuf-generated custom unmarshaler (passes options through)
+		if u, ok := msg.(sebufUnmarshaler); ok {
+			return u.UnmarshalJSONSebuf(body, opts)
 		}
-		return protojson.Unmarshal(body, msg)
+		// Check for third-party json.Unmarshaler (best effort, cannot pass options)
+		if u, ok := msg.(json.Unmarshaler); ok {
+			return u.UnmarshalJSON(body)
+		}
+		return opts.Unmarshal(body, msg)
 	case ContentTypeProto:
 		return proto.Unmarshal(body, msg)
 	default:
-		return protojson.Unmarshal(body, msg)
+		return opts.Unmarshal(body, msg)
 	}
 }
