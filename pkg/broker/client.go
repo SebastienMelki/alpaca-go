@@ -514,3 +514,15 @@ type (
 // EventStream is a generic type alias for reading Server-Sent Events from v2 streaming endpoints.
 // Use Next() to read events, Err() to check for errors, and Close() to release the connection.
 type EventStream[T proto.Message] = brokerv2.BrokerV2ServiceEventStream[T]
+
+// =============================================================================
+// V2 Call Options
+// =============================================================================
+
+// V2CallOption configures a single V2 service call.
+type V2CallOption = brokerv2.BrokerV2ServiceCallOption
+
+// WithV2DiscardUnknownFields sets whether to discard unknown fields in JSON
+// responses for a single V2 call. Use this to prevent errors when Alpaca adds
+// new fields that the proto definition doesn't know about yet.
+var WithV2DiscardUnknownFields = brokerv2.WithBrokerV2ServiceCallDiscardUnknownFields
