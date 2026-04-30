@@ -4,6 +4,7 @@ package alpaca.broker.v2;
 
 import "sebuf/http/annotations.proto";
 import "sebuf/http/headers.proto";
+import "alpaca/broker/v2/ipo.proto";
 import "alpaca/broker/v2/sse.proto";
 
 option go_package = "github.com/alpacahq/alpaca-go/alpaca/broker/v2;brokerv2";
@@ -82,6 +83,21 @@ service BrokerV2Service {
   rpc SubscribeFundingStatusV2(SubscribeFundingStatusV2Request) returns (FundingStatusEventV2) {
     option (sebuf.http.config) = {
       path: "/events/funding/status"
+      method: HTTP_METHOD_GET
+      stream: true
+    };
+  }
+
+  // ============================================
+  // IPO Operations
+  // ============================================
+
+  // SubscribeIPOEvents subscribes to IPO events via SSE (v2).
+  // Streams real-time IPO events: Offering, OfferingUpdate, OfferingCancellation, Prospectus.
+  // GET /v2/events/ipos
+  rpc SubscribeIPOEvents(SubscribeIPOEventsRequest) returns (IPOEvent) {
+    option (sebuf.http.config) = {
+      path: "/events/ipos"
       method: HTTP_METHOD_GET
       stream: true
     };

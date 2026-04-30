@@ -16,6 +16,7 @@ type BrokerV2ServiceServer interface {
 	SubscribeSystemEventsV2(context.Context, *SubscribeSystemEventsV2Request, SSESender) error
 	SubscribeAdminActionsV2(context.Context, *SubscribeAdminActionsV2Request, SSESender) error
 	SubscribeFundingStatusV2(context.Context, *SubscribeFundingStatusV2Request, SSESender) error
+	SubscribeIPOEvents(context.Context, *SubscribeIPOEventsRequest, SSESender) error
 }
 
 // RegisterBrokerV2ServiceServer registers the HTTP handlers for service BrokerV2Service to the given mux.
@@ -69,6 +70,15 @@ func RegisterBrokerV2ServiceServer(server BrokerV2ServiceServer, opts ...ServerO
 
 	config.mux.Handle("GET /v2/events/funding/status", subscribeFundingStatusV2Handler)
 
+	methodHeaders = getSubscribeIPOEventsHeaders()
+	subscribeIPOEventsHandler := SSEHandler[SubscribeIPOEventsRequest](
+		server.SubscribeIPOEvents, config.errorHandler, serviceHeaders, methodHeaders,
+		subscribeIPOEventsPathParams, subscribeIPOEventsQueryParams,
+		"GET",
+	)
+
+	config.mux.Handle("GET /v2/events/ipos", subscribeIPOEventsHandler)
+
 	return nil
 }
 
@@ -109,6 +119,11 @@ func getSubscribeAdminActionsV2Headers() []*sebufhttp.Header {
 
 // getSubscribeFundingStatusV2Headers returns the method-level required headers for SubscribeFundingStatusV2
 func getSubscribeFundingStatusV2Headers() []*sebufhttp.Header {
+	return nil
+}
+
+// getSubscribeIPOEventsHeaders returns the method-level required headers for SubscribeIPOEvents
+func getSubscribeIPOEventsHeaders() []*sebufhttp.Header {
 	return nil
 }
 
@@ -168,4 +183,13 @@ var subscribeFundingStatusV2QueryParams = []QueryParamConfig{
 	{QueryName: "until_id", FieldName: "until_id", Required: false},
 	{QueryName: "since_ulid", FieldName: "since_ulid", Required: false},
 	{QueryName: "until_ulid", FieldName: "until_ulid", Required: false},
+}
+
+// subscribeIPOEventsPathParams contains path parameter configuration for SubscribeIPOEvents
+var subscribeIPOEventsPathParams = []PathParamConfig{}
+
+// subscribeIPOEventsQueryParams contains query parameter configuration for SubscribeIPOEvents
+var subscribeIPOEventsQueryParams = []QueryParamConfig{
+	{QueryName: "since", FieldName: "since", Required: false},
+	{QueryName: "until", FieldName: "until", Required: false},
 }

@@ -39,6 +39,7 @@ type BrokerV2ServiceClient interface {
 	SubscribeSystemEventsV2(ctx context.Context, req *SubscribeSystemEventsV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*SystemEventV2], error)
 	SubscribeAdminActionsV2(ctx context.Context, req *SubscribeAdminActionsV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*AdminActionEventV2], error)
 	SubscribeFundingStatusV2(ctx context.Context, req *SubscribeFundingStatusV2Request, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*FundingStatusEventV2], error)
+	SubscribeIPOEvents(ctx context.Context, req *SubscribeIPOEventsRequest, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*IPOEvent], error)
 }
 
 // brokerV2ServiceClient is the implementation of BrokerV2ServiceClient.
@@ -593,6 +594,78 @@ func (c *brokerV2ServiceClient) SubscribeFundingStatusV2(ctx context.Context, re
 	}
 
 	return &BrokerV2ServiceEventStream[*FundingStatusEventV2]{
+		resp:                 resp,
+		reader:               bufio.NewReader(resp.Body),
+		discardUnknownFields: discardUnknown,
+	}, nil
+}
+
+// SubscribeIPOEvents calls the SubscribeIPOEvents SSE streaming RPC.
+func (c *brokerV2ServiceClient) SubscribeIPOEvents(ctx context.Context, req *SubscribeIPOEventsRequest, opts ...BrokerV2ServiceCallOption) (*BrokerV2ServiceEventStream[*IPOEvent], error) {
+	callOpts := &brokerV2ServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v2/events/ipos"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Since != "" {
+		queryParams.Set("since", fmt.Sprint(req.Since))
+	}
+	if req.Until != "" {
+		queryParams.Set("until", fmt.Sprint(req.Until))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	httpReq.Header.Set("Accept", "text/event-stream")
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		defer resp.Body.Close()
+		respBody, readErr := io.ReadAll(resp.Body)
+		if readErr != nil {
+			return nil, fmt.Errorf("failed to read error response: %w", readErr)
+		}
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
+	return &BrokerV2ServiceEventStream[*IPOEvent]{
 		resp:                 resp,
 		reader:               bufio.NewReader(resp.Body),
 		discardUnknownFields: discardUnknown,

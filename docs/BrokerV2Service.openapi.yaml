@@ -346,6 +346,58 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+    /v2/events/ipos:
+        get:
+            tags:
+                - BrokerV2Service
+            summary: SubscribeIPOEvents
+            description: |-
+                SubscribeIPOEvents subscribes to IPO events via SSE (v2).
+                 Streams real-time IPO events: Offering, OfferingUpdate, OfferingCancellation, Prospectus.
+                 GET /v2/events/ipos
+            operationId: SubscribeIPOEvents
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: since
+                  in: query
+                  description: Starting date filter (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: until
+                  in: query
+                  description: Ending date filter (YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Server-Sent Events stream
+                    content:
+                        text/event-stream:
+                            schema:
+                                type: string
+                                description: SSE stream. Each event contains a JSON-encoded IPOEvent in the data field.
+                    x-sse-event-schema:
+                        $ref: '#/components/schemas/IPOEvent'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
 components:
     schemas:
         Error:
@@ -976,3 +1028,159 @@ components:
                     description: Reason for status change (used when rejected/canceled).
                     example: bank account owner name does not match brokerage account name
             description: FundingStatusEventV2 represents a funding status change event (v2).
+        SubscribeIPOEventsRequest:
+            type: object
+            properties:
+                since:
+                    type: string
+                    examples:
+                        - 2026-01-15
+                    description: Starting date filter (YYYY-MM-DD).
+                    example: 2026-01-15
+                until:
+                    type: string
+                    examples:
+                        - 2026-01-31
+                    description: Ending date filter (YYYY-MM-DD).
+                    example: 2026-01-31
+            description: SubscribeIPOEventsRequest is the request to subscribe to IPO events via SSE.
+        IPOEvent:
+            type: object
+            properties:
+                verb:
+                    type: string
+                    examples:
+                        - offering
+                    description: 'Event type: offering, offeringUpdate, offeringCancellation, prospectus, sixtyMinMail, allocation.'
+                    example: offering
+                offeringReference:
+                    type: string
+                    examples:
+                        - FI111225
+                    description: Unique IPO offering identifier.
+                    example: FI111225
+                payload:
+                    $ref: '#/components/schemas/IPOEventPayload'
+                receivedAt:
+                    type: string
+                    examples:
+                        - 2026-01-14T10:30:00.000Z
+                    description: Timestamp when the event was received (RFC3339).
+                    example: 2026-01-14T10:30:00.000Z
+                at:
+                    type: string
+                    examples:
+                        - 2026-03-25T09:08:10.5207Z
+                    description: Timestamp of the event (RFC3339). Present in some events.
+                    example: 2026-03-25T09:08:10.5207Z
+                eventId:
+                    type: string
+                    examples:
+                        - 01KMJ40PMRYYCV7JXS2R74JNHH
+                    description: Event ID (ULID format). Present in some events.
+                    example: 01KMJ40PMRYYCV7JXS2R74JNHH
+                accountNumber:
+                    type: string
+                    examples:
+                        - 511768662
+                    description: Alpaca account number (allocation events only).
+                    example: 511768662
+                correspondent:
+                    type: string
+                    examples:
+                        - LPCA
+                    description: Broker correspondent code (allocation events only).
+                    example: LPCA
+            description: |-
+                IPOEvent represents a real-time IPO event from the SSE stream.
+                 All events share this common envelope structure; the payload varies by verb.
+        IPOEventPayload:
+            type: object
+            properties:
+                name:
+                    type: string
+                    examples:
+                        - Example Corp
+                    description: Company name.
+                    example: Example Corp
+                tickerSymbol:
+                    type: string
+                    examples:
+                        - EXMP
+                    description: Stock ticker symbol.
+                    example: EXMP
+                offeringTypeName:
+                    type: string
+                    examples:
+                        - IPO
+                    description: Offering type name (e.g., "IPO").
+                    example: IPO
+                availableToOrder:
+                    type: string
+                    examples:
+                        - Available
+                    description: Whether the offering is available to order. May be a string ("Available") or numeric string ("1").
+                    example: Available
+                minPrice:
+                    type: string
+                    examples:
+                        - 18.00
+                    description: Minimum offering price.
+                    example: 18.00
+                maxPrice:
+                    type: string
+                    examples:
+                        - 22.00
+                    description: Maximum offering price.
+                    example: 22.00
+                source:
+                    type: string
+                    examples:
+                        - sync-offerings
+                    description: Source of the event.
+                    example: sync-offerings
+                subject:
+                    type: string
+                    examples:
+                        - '60-minute withdrawal window: Example Corp'
+                    description: Email subject line (sixtyMinMail events).
+                    example: '60-minute withdrawal window: Example Corp'
+                sixtyMinuteExpirationTime:
+                    type: string
+                    examples:
+                        - 2026-03-27 16:36:14 UTC
+                    description: Expiration time for the 60-minute withdrawal window (sixtyMinMail events).
+                    example: 2026-03-27 16:36:14 UTC
+                prospectusUrl:
+                    type: string
+                    examples:
+                        - https://example.com/sbfull-final-prospectus.pdf
+                    description: Prospectus document URL (prospectus events).
+                    example: https://example.com/sbfull-final-prospectus.pdf
+                cusipId:
+                    type: string
+                    examples:
+                        - 123456789
+                    description: CUSIP identifier (allocation events).
+                    example: 123456789
+                finalPrice:
+                    type: string
+                    examples:
+                        - 20.00
+                    description: Final IPO price (allocation events).
+                    example: 20.00
+                allocatedShares:
+                    type: string
+                    examples:
+                        - 100
+                    description: Number of shares allocated (allocation events).
+                    example: 100
+                allocatedAmount:
+                    type: string
+                    examples:
+                        - 2000.00
+                    description: Total dollar amount allocated (allocation events).
+                    example: 2000.00
+            description: |-
+                IPOEventPayload contains the event-specific data within an IPO event.
+                 Fields are populated depending on the verb — unused fields will be empty/zero.

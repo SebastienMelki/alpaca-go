@@ -20,8 +20,9 @@ type Client struct {
 type Option func(*options)
 
 type options struct {
-	httpClient *http.Client
-	baseURL    string
+	httpClient           *http.Client
+	baseURL              string
+	discardUnknownFields bool
 }
 
 // WithHTTPClient sets a custom HTTP client.
@@ -32,6 +33,12 @@ func WithHTTPClient(c *http.Client) Option {
 // WithBaseURL sets a custom base URL (defaults to LiveBaseURL).
 func WithBaseURL(url string) Option {
 	return func(o *options) { o.baseURL = url }
+}
+
+// WithDiscardUnknownFields sets whether to discard unknown fields in JSON responses.
+// When true, unknown fields are silently ignored instead of causing unmarshal errors.
+func WithDiscardUnknownFields(discard bool) Option {
+	return func(o *options) { o.discardUnknownFields = discard }
 }
 
 // NewClient creates a new Trading API client.
@@ -49,6 +56,7 @@ func NewClient(apiKey, apiSecret string, opts ...Option) *Client {
 		tradingv1.WithTradingServiceHTTPClient(cfg.httpClient),
 		tradingv1.WithTradingServiceAPCAAPIKEYID(apiKey),
 		tradingv1.WithTradingServiceAPCAAPISECRETKEY(apiSecret),
+		tradingv1.WithTradingServiceDiscardUnknownFields(cfg.discardUnknownFields),
 	)
 
 	return &Client{client}
@@ -58,6 +66,16 @@ func NewClient(apiKey, apiSecret string, opts ...Option) *Client {
 func NewPaperClient(apiKey, apiSecret string, opts ...Option) *Client {
 	return NewClient(apiKey, apiSecret, append(opts, WithBaseURL(PaperBaseURL))...)
 }
+
+// =============================================================================
+// Call Option Types
+// =============================================================================
+
+// CallOption configures a single RPC call to the Trading API.
+type CallOption = tradingv1.TradingServiceCallOption
+
+// WithCallDiscardUnknownFields sets whether to discard unknown fields for a single request.
+var WithCallDiscardUnknownFields = tradingv1.WithTradingServiceCallDiscardUnknownFields
 
 // =============================================================================
 // Core Model Types

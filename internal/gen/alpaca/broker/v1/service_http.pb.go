@@ -114,6 +114,7 @@ type BrokerServiceServer interface {
 	CreateIRAExcessContribution(context.Context, *CreateIRAExcessContributionRequest) (*IRAExcessContribution, error)
 	GetIRAContributionLimits(context.Context, *GetIRAContributionLimitsRequest) (*IRAContributionLimits, error)
 	ListCountries(context.Context, *ListCountriesRequest) (*ListCountriesResponse, error)
+	ListIPOOfferings(context.Context, *ListIPOOfferingsRequest) (*ListIPOOfferingsResponse, error)
 }
 
 // RegisterBrokerServiceServer registers the HTTP handlers for service BrokerService to the given mux.
@@ -1049,6 +1050,15 @@ func RegisterBrokerServiceServer(server BrokerServiceServer, opts ...ServerOptio
 
 	config.mux.Handle("GET /v1/country-info", listCountriesHandler)
 
+	methodHeaders = getListIPOOfferingsHeaders()
+	listIPOOfferingsHandler := BindingMiddleware[ListIPOOfferingsRequest](
+		genericHandler(server.ListIPOOfferings, config.errorHandler), serviceHeaders, methodHeaders,
+		listIPOOfferingsPathParams, listIPOOfferingsQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v1/ipos", listIPOOfferingsHandler)
+
 	return nil
 }
 
@@ -1579,6 +1589,11 @@ func getGetIRAContributionLimitsHeaders() []*sebufhttp.Header {
 
 // getListCountriesHeaders returns the method-level required headers for ListCountries
 func getListCountriesHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getListIPOOfferingsHeaders returns the method-level required headers for ListIPOOfferings
+func getListIPOOfferingsHeaders() []*sebufhttp.Header {
 	return nil
 }
 
@@ -2483,3 +2498,9 @@ var listCountriesPathParams = []PathParamConfig{}
 
 // listCountriesQueryParams contains query parameter configuration for ListCountries
 var listCountriesQueryParams = []QueryParamConfig{}
+
+// listIPOOfferingsPathParams contains path parameter configuration for ListIPOOfferings
+var listIPOOfferingsPathParams = []PathParamConfig{}
+
+// listIPOOfferingsQueryParams contains query parameter configuration for ListIPOOfferings
+var listIPOOfferingsQueryParams = []QueryParamConfig{}

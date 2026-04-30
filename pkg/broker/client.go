@@ -31,8 +31,9 @@ type Client struct {
 type Option func(*options)
 
 type options struct {
-	httpClient *http.Client
-	baseURL    string
+	httpClient           *http.Client
+	baseURL              string
+	discardUnknownFields bool
 }
 
 // WithHTTPClient sets a custom HTTP client.
@@ -43,6 +44,12 @@ func WithHTTPClient(c *http.Client) Option {
 // WithBaseURL sets a custom base URL (defaults to LiveBaseURL).
 func WithBaseURL(url string) Option {
 	return func(o *options) { o.baseURL = url }
+}
+
+// WithDiscardUnknownFields sets whether to discard unknown fields in JSON responses.
+// When true, unknown fields are silently ignored instead of causing unmarshal errors.
+func WithDiscardUnknownFields(discard bool) Option {
+	return func(o *options) { o.discardUnknownFields = discard }
 }
 
 // NewClient creates a new Broker API client.
@@ -63,18 +70,21 @@ func NewClient(apiKey, apiSecret string, opts ...Option) *Client {
 		cfg.baseURL,
 		brokerv1.WithBrokerServiceHTTPClient(cfg.httpClient),
 		brokerv1.WithBrokerServiceAuthorization("Basic "+auth),
+		brokerv1.WithBrokerServiceDiscardUnknownFields(cfg.discardUnknownFields),
 	)
 
 	v1betaClient := brokerv1beta.NewBrokerV1BetaServiceClient(
 		cfg.baseURL,
 		brokerv1beta.WithBrokerV1BetaServiceHTTPClient(cfg.httpClient),
 		brokerv1beta.WithBrokerV1BetaServiceAuthorization("Basic "+auth),
+		brokerv1beta.WithBrokerV1BetaServiceDiscardUnknownFields(cfg.discardUnknownFields),
 	)
 
 	v2Client := brokerv2.NewBrokerV2ServiceClient(
 		cfg.baseURL,
 		brokerv2.WithBrokerV2ServiceHTTPClient(cfg.httpClient),
 		brokerv2.WithBrokerV2ServiceAuthorization("Basic "+auth),
+		brokerv2.WithBrokerV2ServiceDiscardUnknownFields(cfg.discardUnknownFields),
 	)
 
 	return &Client{
@@ -509,6 +519,36 @@ type (
 	SubscribeSystemEventsV2Request  = brokerv2.SubscribeSystemEventsV2Request
 	SubscribeAdminActionsV2Request  = brokerv2.SubscribeAdminActionsV2Request
 	SubscribeFundingStatusV2Request = brokerv2.SubscribeFundingStatusV2Request
+)
+
+// =============================================================================
+// IPO Types
+// =============================================================================
+
+type (
+	IPOOffering               = brokerv1.IPOOffering
+	ListIPOOfferingsRequest   = brokerv1.ListIPOOfferingsRequest
+	ListIPOOfferingsResponse  = brokerv1.ListIPOOfferingsResponse
+	IPOEvent                  = brokerv2.IPOEvent
+	IPOEventPayload           = brokerv2.IPOEventPayload
+	SubscribeIPOEventsRequest = brokerv2.SubscribeIPOEventsRequest
+)
+
+// =============================================================================
+// Call Option Types
+// =============================================================================
+
+type (
+	V1CallOption     = brokerv1.BrokerServiceCallOption
+	V1BetaCallOption = brokerv1beta.BrokerV1BetaServiceCallOption
+	V2CallOption     = brokerv2.BrokerV2ServiceCallOption
+)
+
+// Per-call DiscardUnknownFields overrides.
+var (
+	WithV1CallDiscardUnknownFields     = brokerv1.WithBrokerServiceCallDiscardUnknownFields
+	WithV1BetaCallDiscardUnknownFields = brokerv1beta.WithBrokerV1BetaServiceCallDiscardUnknownFields
+	WithV2CallDiscardUnknownFields     = brokerv2.WithBrokerV2ServiceCallDiscardUnknownFields
 )
 
 // EventStream is a generic type alias for reading Server-Sent Events from v2 streaming endpoints.

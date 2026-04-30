@@ -26,7 +26,7 @@ var File_alpaca_broker_v2_service_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v2_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1ealpaca/broker/v2/service.proto\x12\x10alpaca.broker.v2\x1a\x1csebuf/http/annotations.proto\x1a\x18sebuf/http/headers.proto\x1a\x1aalpaca/broker/v2/sse.proto2\xf3\x06\n" +
+	"\x1ealpaca/broker/v2/service.proto\x12\x10alpaca.broker.v2\x1a\x1csebuf/http/annotations.proto\x1a\x18sebuf/http/headers.proto\x1a\x1aalpaca/broker/v2/ipo.proto\x1a\x1aalpaca/broker/v2/sse.proto2\xea\a\n" +
 	"\x0fBrokerV2Service\x12\x89\x01\n" +
 	"\x16SubscribeTradeEventsV2\x12/.alpaca.broker.v2.SubscribeTradeEventsV2Request\x1a$.alpaca.broker.v2.TradeUpdateEventV2\"\x18\x9a\xb5\x18\x14\n" +
 	"\x0e/events/trades\x10\x01\x18\x01\x12\x98\x01\n" +
@@ -37,7 +37,9 @@ const file_alpaca_broker_v2_service_proto_rawDesc = "" +
 	"\x17SubscribeAdminActionsV2\x120.alpaca.broker.v2.SubscribeAdminActionsV2Request\x1a$.alpaca.broker.v2.AdminActionEventV2\"\x1f\x9a\xb5\x18\x1b\n" +
 	"\x15/events/admin-actions\x10\x01\x18\x01\x12\x97\x01\n" +
 	"\x18SubscribeFundingStatusV2\x121.alpaca.broker.v2.SubscribeFundingStatusV2Request\x1a&.alpaca.broker.v2.FundingStatusEventV2\" \x9a\xb5\x18\x1c\n" +
-	"\x16/events/funding/status\x10\x01\x18\x01\x1a\x80\x01\xa2\xb5\x18\x05\n" +
+	"\x16/events/funding/status\x10\x01\x18\x01\x12u\n" +
+	"\x12SubscribeIPOEvents\x12+.alpaca.broker.v2.SubscribeIPOEventsRequest\x1a\x1a.alpaca.broker.v2.IPOEvent\"\x16\x9a\xb5\x18\x12\n" +
+	"\f/events/ipos\x10\x01\x18\x01\x1a\x80\x01\xa2\xb5\x18\x05\n" +
 	"\x03/v2\xaa\xb5\x18s\n" +
 	"q\n" +
 	"\rAuthorization\x126HTTP Basic Auth with base64 encoded API_KEY:API_SECRET\x1a\x06string \x012\x1eBasic QVBJLUtFWTpBUEktU0VDUkVUB\xd2\x01\n" +
@@ -49,28 +51,32 @@ var file_alpaca_broker_v2_service_proto_goTypes = []any{
 	(*SubscribeSystemEventsV2Request)(nil),  // 2: alpaca.broker.v2.SubscribeSystemEventsV2Request
 	(*SubscribeAdminActionsV2Request)(nil),  // 3: alpaca.broker.v2.SubscribeAdminActionsV2Request
 	(*SubscribeFundingStatusV2Request)(nil), // 4: alpaca.broker.v2.SubscribeFundingStatusV2Request
-	(*TradeUpdateEventV2)(nil),              // 5: alpaca.broker.v2.TradeUpdateEventV2
-	(*JournalStatusEventV2)(nil),            // 6: alpaca.broker.v2.JournalStatusEventV2
-	(*SystemEventV2)(nil),                   // 7: alpaca.broker.v2.SystemEventV2
-	(*AdminActionEventV2)(nil),              // 8: alpaca.broker.v2.AdminActionEventV2
-	(*FundingStatusEventV2)(nil),            // 9: alpaca.broker.v2.FundingStatusEventV2
+	(*SubscribeIPOEventsRequest)(nil),       // 5: alpaca.broker.v2.SubscribeIPOEventsRequest
+	(*TradeUpdateEventV2)(nil),              // 6: alpaca.broker.v2.TradeUpdateEventV2
+	(*JournalStatusEventV2)(nil),            // 7: alpaca.broker.v2.JournalStatusEventV2
+	(*SystemEventV2)(nil),                   // 8: alpaca.broker.v2.SystemEventV2
+	(*AdminActionEventV2)(nil),              // 9: alpaca.broker.v2.AdminActionEventV2
+	(*FundingStatusEventV2)(nil),            // 10: alpaca.broker.v2.FundingStatusEventV2
+	(*IPOEvent)(nil),                        // 11: alpaca.broker.v2.IPOEvent
 }
 var file_alpaca_broker_v2_service_proto_depIdxs = []int32{
-	0, // 0: alpaca.broker.v2.BrokerV2Service.SubscribeTradeEventsV2:input_type -> alpaca.broker.v2.SubscribeTradeEventsV2Request
-	1, // 1: alpaca.broker.v2.BrokerV2Service.SubscribeJournalEventsV2:input_type -> alpaca.broker.v2.SubscribeJournalEventsV2Request
-	2, // 2: alpaca.broker.v2.BrokerV2Service.SubscribeSystemEventsV2:input_type -> alpaca.broker.v2.SubscribeSystemEventsV2Request
-	3, // 3: alpaca.broker.v2.BrokerV2Service.SubscribeAdminActionsV2:input_type -> alpaca.broker.v2.SubscribeAdminActionsV2Request
-	4, // 4: alpaca.broker.v2.BrokerV2Service.SubscribeFundingStatusV2:input_type -> alpaca.broker.v2.SubscribeFundingStatusV2Request
-	5, // 5: alpaca.broker.v2.BrokerV2Service.SubscribeTradeEventsV2:output_type -> alpaca.broker.v2.TradeUpdateEventV2
-	6, // 6: alpaca.broker.v2.BrokerV2Service.SubscribeJournalEventsV2:output_type -> alpaca.broker.v2.JournalStatusEventV2
-	7, // 7: alpaca.broker.v2.BrokerV2Service.SubscribeSystemEventsV2:output_type -> alpaca.broker.v2.SystemEventV2
-	8, // 8: alpaca.broker.v2.BrokerV2Service.SubscribeAdminActionsV2:output_type -> alpaca.broker.v2.AdminActionEventV2
-	9, // 9: alpaca.broker.v2.BrokerV2Service.SubscribeFundingStatusV2:output_type -> alpaca.broker.v2.FundingStatusEventV2
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: alpaca.broker.v2.BrokerV2Service.SubscribeTradeEventsV2:input_type -> alpaca.broker.v2.SubscribeTradeEventsV2Request
+	1,  // 1: alpaca.broker.v2.BrokerV2Service.SubscribeJournalEventsV2:input_type -> alpaca.broker.v2.SubscribeJournalEventsV2Request
+	2,  // 2: alpaca.broker.v2.BrokerV2Service.SubscribeSystemEventsV2:input_type -> alpaca.broker.v2.SubscribeSystemEventsV2Request
+	3,  // 3: alpaca.broker.v2.BrokerV2Service.SubscribeAdminActionsV2:input_type -> alpaca.broker.v2.SubscribeAdminActionsV2Request
+	4,  // 4: alpaca.broker.v2.BrokerV2Service.SubscribeFundingStatusV2:input_type -> alpaca.broker.v2.SubscribeFundingStatusV2Request
+	5,  // 5: alpaca.broker.v2.BrokerV2Service.SubscribeIPOEvents:input_type -> alpaca.broker.v2.SubscribeIPOEventsRequest
+	6,  // 6: alpaca.broker.v2.BrokerV2Service.SubscribeTradeEventsV2:output_type -> alpaca.broker.v2.TradeUpdateEventV2
+	7,  // 7: alpaca.broker.v2.BrokerV2Service.SubscribeJournalEventsV2:output_type -> alpaca.broker.v2.JournalStatusEventV2
+	8,  // 8: alpaca.broker.v2.BrokerV2Service.SubscribeSystemEventsV2:output_type -> alpaca.broker.v2.SystemEventV2
+	9,  // 9: alpaca.broker.v2.BrokerV2Service.SubscribeAdminActionsV2:output_type -> alpaca.broker.v2.AdminActionEventV2
+	10, // 10: alpaca.broker.v2.BrokerV2Service.SubscribeFundingStatusV2:output_type -> alpaca.broker.v2.FundingStatusEventV2
+	11, // 11: alpaca.broker.v2.BrokerV2Service.SubscribeIPOEvents:output_type -> alpaca.broker.v2.IPOEvent
+	6,  // [6:12] is the sub-list for method output_type
+	0,  // [0:6] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_broker_v2_service_proto_init() }
@@ -78,6 +84,7 @@ func file_alpaca_broker_v2_service_proto_init() {
 	if File_alpaca_broker_v2_service_proto != nil {
 		return
 	}
+	file_alpaca_broker_v2_ipo_proto_init()
 	file_alpaca_broker_v2_sse_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{

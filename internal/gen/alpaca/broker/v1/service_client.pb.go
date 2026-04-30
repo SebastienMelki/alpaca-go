@@ -137,6 +137,7 @@ type BrokerServiceClient interface {
 	CreateIRAExcessContribution(ctx context.Context, req *CreateIRAExcessContributionRequest, opts ...BrokerServiceCallOption) (*IRAExcessContribution, error)
 	GetIRAContributionLimits(ctx context.Context, req *GetIRAContributionLimitsRequest, opts ...BrokerServiceCallOption) (*IRAContributionLimits, error)
 	ListCountries(ctx context.Context, req *ListCountriesRequest, opts ...BrokerServiceCallOption) (*ListCountriesResponse, error)
+	ListIPOOfferings(ctx context.Context, req *ListIPOOfferingsRequest, opts ...BrokerServiceCallOption) (*ListIPOOfferingsResponse, error)
 }
 
 // brokerServiceClient is the implementation of BrokerServiceClient.
@@ -7582,6 +7583,70 @@ func (c *brokerServiceClient) ListCountries(ctx context.Context, req *ListCountr
 
 	// Unmarshal response
 	result := &ListCountriesResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListIPOOfferings calls the ListIPOOfferings RPC.
+func (c *brokerServiceClient) ListIPOOfferings(ctx context.Context, req *ListIPOOfferingsRequest, opts ...BrokerServiceCallOption) (*ListIPOOfferingsResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/ipos"
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
+	// Unmarshal response
+	result := &ListIPOOfferingsResponse{}
 	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
