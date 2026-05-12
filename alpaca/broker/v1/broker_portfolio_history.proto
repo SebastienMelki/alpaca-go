@@ -16,16 +16,23 @@ message BrokerPortfolioHistory {
   repeated double equity = 2;
 
   // Profit/loss values at each timestamp.
-  repeated double profit_loss = 3;
+  // json_name pinned to snake_case to match the Alpaca API and the unwrap codegen's key lookup.
+  repeated double profit_loss = 3 [json_name = "profit_loss"];
 
   // Profit/loss percentage at each timestamp.
-  repeated double profit_loss_pct = 4;
+  repeated double profit_loss_pct = 4 [json_name = "profit_loss_pct"];
 
   // Base value (starting equity for P/L calculation).
-  double base_value = 5 [(sebuf.http.field_examples) = { values: ["50000.00"] }];
+  double base_value = 5 [
+    json_name = "base_value",
+    (sebuf.http.field_examples) = { values: ["50000.00"] }
+  ];
 
   // Trading date of the base_value closing equity.
-  string base_value_asof = 6 [(sebuf.http.field_examples) = { values: ["2024-01-14"] }];
+  string base_value_asof = 6 [
+    json_name = "base_value_asof",
+    (sebuf.http.field_examples) = { values: ["2024-01-14"] }
+  ];
 
   // Time frame (1Min, 5Min, 15Min, 1H, 1D).
   string timeframe = 7 [(sebuf.http.field_examples) = { values: ["1D"] }];

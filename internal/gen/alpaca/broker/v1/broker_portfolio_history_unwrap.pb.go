@@ -56,7 +56,7 @@ func (x *BrokerPortfolioHistory) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		out["profitLoss"] = data
+		out["profit_loss"] = data
 	}
 
 	// Handle repeated field: ProfitLossPct
@@ -65,7 +65,7 @@ func (x *BrokerPortfolioHistory) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		out["profitLossPct"] = data
+		out["profit_loss_pct"] = data
 	}
 
 	// Handle scalar field: BaseValue
@@ -74,7 +74,7 @@ func (x *BrokerPortfolioHistory) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		out["baseValue"] = data
+		out["base_value"] = data
 	}
 
 	// Handle scalar field: BaseValueAsof
@@ -83,7 +83,7 @@ func (x *BrokerPortfolioHistory) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		out["baseValueAsof"] = data
+		out["base_value_asof"] = data
 	}
 
 	// Handle scalar field: Timeframe
@@ -141,28 +141,28 @@ func (x *BrokerPortfolioHistory) UnmarshalJSON(data []byte) error {
 	}
 
 	// Handle repeated field: ProfitLoss
-	if rawField, ok := raw["profitLoss"]; ok {
+	if rawField, ok := raw["profit_loss"]; ok {
 		if err := json.Unmarshal(rawField, &x.ProfitLoss); err != nil {
 			return err
 		}
 	}
 
 	// Handle repeated field: ProfitLossPct
-	if rawField, ok := raw["profitLossPct"]; ok {
+	if rawField, ok := raw["profit_loss_pct"]; ok {
 		if err := json.Unmarshal(rawField, &x.ProfitLossPct); err != nil {
 			return err
 		}
 	}
 
 	// Handle field: BaseValue
-	if rawField, ok := raw["baseValue"]; ok {
+	if rawField, ok := raw["base_value"]; ok {
 		if err := json.Unmarshal(rawField, &x.BaseValue); err != nil {
 			return err
 		}
 	}
 
 	// Handle field: BaseValueAsof
-	if rawField, ok := raw["baseValueAsof"]; ok {
+	if rawField, ok := raw["base_value_asof"]; ok {
 		if err := json.Unmarshal(rawField, &x.BaseValueAsof); err != nil {
 			return err
 		}

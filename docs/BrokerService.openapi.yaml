@@ -7021,26 +7021,28 @@ components:
                         type: number
                         format: double
                         description: Portfolio equity values at each timestamp.
-                profitLoss:
+                profit_loss:
                     type: array
                     items:
                         type: number
                         format: double
-                        description: Profit/loss values at each timestamp.
-                profitLossPct:
+                        description: |-
+                            Profit/loss values at each timestamp.
+                             json_name pinned to snake_case to match the Alpaca API and the unwrap codegen's key lookup.
+                profit_loss_pct:
                     type: array
                     items:
                         type: number
                         format: double
                         description: Profit/loss percentage at each timestamp.
-                baseValue:
+                base_value:
                     type: number
                     examples:
                         - 50000.00
                     format: double
                     description: Base value (starting equity for P/L calculation).
                     example: 50000.00
-                baseValueAsof:
+                base_value_asof:
                     type: string
                     examples:
                         - 2024-01-14

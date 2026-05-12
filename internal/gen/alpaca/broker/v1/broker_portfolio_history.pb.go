@@ -34,13 +34,14 @@ type BrokerPortfolioHistory struct {
 	// Portfolio equity values at each timestamp.
 	Equity []float64 `protobuf:"fixed64,2,rep,packed,name=equity,proto3" json:"equity,omitempty"`
 	// Profit/loss values at each timestamp.
-	ProfitLoss []float64 `protobuf:"fixed64,3,rep,packed,name=profit_loss,json=profitLoss,proto3" json:"profit_loss,omitempty"`
+	// json_name pinned to snake_case to match the Alpaca API and the unwrap codegen's key lookup.
+	ProfitLoss []float64 `protobuf:"fixed64,3,rep,packed,name=profit_loss,proto3" json:"profit_loss,omitempty"`
 	// Profit/loss percentage at each timestamp.
-	ProfitLossPct []float64 `protobuf:"fixed64,4,rep,packed,name=profit_loss_pct,json=profitLossPct,proto3" json:"profit_loss_pct,omitempty"`
+	ProfitLossPct []float64 `protobuf:"fixed64,4,rep,packed,name=profit_loss_pct,proto3" json:"profit_loss_pct,omitempty"`
 	// Base value (starting equity for P/L calculation).
-	BaseValue float64 `protobuf:"fixed64,5,opt,name=base_value,json=baseValue,proto3" json:"base_value,omitempty"`
+	BaseValue float64 `protobuf:"fixed64,5,opt,name=base_value,proto3" json:"base_value,omitempty"`
 	// Trading date of the base_value closing equity.
-	BaseValueAsof string `protobuf:"bytes,6,opt,name=base_value_asof,json=baseValueAsof,proto3" json:"base_value_asof,omitempty"`
+	BaseValueAsof string `protobuf:"bytes,6,opt,name=base_value_asof,proto3" json:"base_value_asof,omitempty"`
 	// Time frame (1Min, 5Min, 15Min, 1H, 1D).
 	Timeframe string `protobuf:"bytes,7,opt,name=timeframe,proto3" json:"timeframe,omitempty"`
 	// Accumulated cashflow values by activity type (e.g. JNLC, DIV, CSD).
@@ -303,20 +304,20 @@ var File_alpaca_broker_v1_broker_portfolio_history_proto protoreflect.FileDescri
 
 const file_alpaca_broker_v1_broker_portfolio_history_proto_rawDesc = "" +
 	"\n" +
-	"/alpaca/broker/v1/broker_portfolio_history.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xdb\x03\n" +
+	"/alpaca/broker/v1/broker_portfolio_history.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xe1\x03\n" +
 	"\x16BrokerPortfolioHistory\x12\x1c\n" +
 	"\ttimestamp\x18\x01 \x03(\x03R\ttimestamp\x12\x16\n" +
-	"\x06equity\x18\x02 \x03(\x01R\x06equity\x12\x1f\n" +
-	"\vprofit_loss\x18\x03 \x03(\x01R\n" +
-	"profitLoss\x12&\n" +
-	"\x0fprofit_loss_pct\x18\x04 \x03(\x01R\rprofitLossPct\x12-\n" +
+	"\x06equity\x18\x02 \x03(\x01R\x06equity\x12 \n" +
+	"\vprofit_loss\x18\x03 \x03(\x01R\vprofit_loss\x12(\n" +
+	"\x0fprofit_loss_pct\x18\x04 \x03(\x01R\x0fprofit_loss_pct\x12.\n" +
 	"\n" +
 	"base_value\x18\x05 \x01(\x01B\x0e\xba\xb5\x18\n" +
 	"\n" +
-	"\b50000.00R\tbaseValue\x128\n" +
+	"\b50000.00R\n" +
+	"base_value\x12:\n" +
 	"\x0fbase_value_asof\x18\x06 \x01(\tB\x10\xba\xb5\x18\f\n" +
 	"\n" +
-	"2024-01-14R\rbaseValueAsof\x12&\n" +
+	"2024-01-14R\x0fbase_value_asof\x12&\n" +
 	"\ttimeframe\x18\a \x01(\tB\b\xba\xb5\x18\x04\n" +
 	"\x021DR\ttimeframe\x12R\n" +
 	"\bcashflow\x18\b \x03(\v26.alpaca.broker.v1.BrokerPortfolioHistory.CashflowEntryR\bcashflow\x1a]\n" +
