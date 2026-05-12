@@ -42,6 +42,9 @@ import "alpaca/broker/v1/options.proto";
 import "alpaca/broker/v1/ira.proto";
 import "alpaca/broker/v1/country.proto";
 import "alpaca/broker/v1/ipo.proto";
+import "alpaca/broker/v1/trading_account.proto";
+import "alpaca/broker/v1/account_activity.proto";
+import "alpaca/broker/v1/broker_portfolio_history.proto";
 
 // BrokerService provides the Alpaca Broker API for B2B operations.
 // Base URL: https://broker-api.alpaca.markets
@@ -111,6 +114,54 @@ service BrokerService {
     option (sebuf.http.config) = {
       path: "/accounts/{account_id}"
       method: HTTP_METHOD_DELETE
+    };
+  }
+
+  // ============================================
+  // Trading Account Details Operations
+  // ============================================
+
+  // GetTradingAccount retrieves the trading details for a broker account.
+  // GET /v1/trading/accounts/{account_id}/account
+  rpc GetTradingAccount(GetTradingAccountRequest) returns (TradeAccount) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/account"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Account Activity Operations
+  // ============================================
+
+  // ListAccountActivities retrieves account activities across all accounts.
+  // GET /v1/accounts/activities
+  rpc ListAccountActivities(ListAccountActivitiesRequest) returns (ListAccountActivitiesResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/activities"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ListAccountActivitiesByType retrieves account activities of a specific type.
+  // GET /v1/accounts/activities/{activity_type}
+  rpc ListAccountActivitiesByType(ListAccountActivitiesByTypeRequest) returns (ListAccountActivitiesResponse) {
+    option (sebuf.http.config) = {
+      path: "/accounts/activities/{activity_type}"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Account Portfolio History Operations
+  // ============================================
+
+  // GetBrokerPortfolioHistory retrieves portfolio history for a broker account.
+  // GET /v1/trading/accounts/{account_id}/account/portfolio/history
+  rpc GetBrokerPortfolioHistory(GetBrokerPortfolioHistoryRequest) returns (BrokerPortfolioHistory) {
+    option (sebuf.http.config) = {
+      path: "/trading/accounts/{account_id}/account/portfolio/history"
+      method: HTTP_METHOD_GET
     };
   }
 

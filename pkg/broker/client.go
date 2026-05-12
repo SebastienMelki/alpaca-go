@@ -135,6 +135,39 @@ type (
 )
 
 // =============================================================================
+// Trading Account Details Types
+// =============================================================================
+
+type (
+	TradeAccount                = brokerv1.TradeAccount
+	AdminConfigurations         = brokerv1.AdminConfigurations
+	AccountConfigurations       = brokerv1.AccountConfigurations
+	RestrictToLiquidationReasons = brokerv1.RestrictToLiquidationReasons
+	GetTradingAccountRequest    = brokerv1.GetTradingAccountRequest
+)
+
+// =============================================================================
+// Account Activity Types
+// =============================================================================
+
+type (
+	AccountActivity                    = brokerv1.AccountActivity
+	ListAccountActivitiesRequest       = brokerv1.ListAccountActivitiesRequest
+	ListAccountActivitiesResponse      = brokerv1.ListAccountActivitiesResponse
+	ListAccountActivitiesByTypeRequest = brokerv1.ListAccountActivitiesByTypeRequest
+)
+
+// =============================================================================
+// Broker Portfolio History Types
+// =============================================================================
+
+type (
+	BrokerPortfolioHistory            = brokerv1.BrokerPortfolioHistory
+	CashflowValues                    = brokerv1.CashflowValues
+	GetBrokerPortfolioHistoryRequest  = brokerv1.GetBrokerPortfolioHistoryRequest
+)
+
+// =============================================================================
 // ACH Relationship Types
 // =============================================================================
 

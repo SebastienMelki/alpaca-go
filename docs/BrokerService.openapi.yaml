@@ -246,6 +246,313 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+    /v1/trading/accounts/{account_id}/account:
+        get:
+            tags:
+                - BrokerService
+            summary: GetTradingAccount
+            description: |-
+                GetTradingAccount retrieves the trading details for a broker account.
+                 GET /v1/trading/accounts/{account_id}/account
+            operationId: GetTradingAccount
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TradeAccount'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /v1/accounts/activities:
+        get:
+            tags:
+                - BrokerService
+            summary: ListAccountActivities
+            description: |-
+                ListAccountActivities retrieves account activities across all accounts.
+                 GET /v1/accounts/activities
+            operationId: ListAccountActivities
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: query
+                  description: Filter by account ID.
+                  required: false
+                  schema:
+                    type: string
+                - name: activity_types
+                  in: query
+                  description: Filter by activity types (comma-separated).
+                  required: false
+                  schema:
+                    type: string
+                - name: category
+                  in: query
+                  description: Filter by category (trade_activity or non_trade_activity). Mutually exclusive with activity_types.
+                  required: false
+                  schema:
+                    type: string
+                - name: date
+                  in: query
+                  description: Filter by creation date (YYYY-MM-DD or RFC-3339).
+                  required: false
+                  schema:
+                    type: string
+                - name: until
+                  in: query
+                  description: Activities created before this date.
+                  required: false
+                  schema:
+                    type: string
+                - name: after
+                  in: query
+                  description: Activities created after this date.
+                  required: false
+                  schema:
+                    type: string
+                - name: direction
+                  in: query
+                  description: Chronological order (asc or desc).
+                  required: false
+                  schema:
+                    type: string
+                - name: page_size
+                  in: query
+                  description: Max entries per page (1-100, default 100).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: Pagination token (ID of last activity from previous page).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListAccountActivitiesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /v1/accounts/activities/{activity_type}:
+        get:
+            tags:
+                - BrokerService
+            summary: ListAccountActivitiesByType
+            description: |-
+                ListAccountActivitiesByType retrieves account activities of a specific type.
+                 GET /v1/accounts/activities/{activity_type}
+            operationId: ListAccountActivitiesByType
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: activity_type
+                  in: path
+                  description: Activity type to filter by (path parameter).
+                  required: true
+                  schema:
+                    type: string
+                - name: account_id
+                  in: query
+                  description: Filter by account ID.
+                  required: false
+                  schema:
+                    type: string
+                - name: date
+                  in: query
+                  description: Filter by creation date (YYYY-MM-DD or RFC-3339).
+                  required: false
+                  schema:
+                    type: string
+                - name: until
+                  in: query
+                  description: Activities created before this date.
+                  required: false
+                  schema:
+                    type: string
+                - name: after
+                  in: query
+                  description: Activities created after this date.
+                  required: false
+                  schema:
+                    type: string
+                - name: direction
+                  in: query
+                  description: Chronological order (asc or desc).
+                  required: false
+                  schema:
+                    type: string
+                - name: page_size
+                  in: query
+                  description: Max entries per page (1-100, default 100).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: Pagination token (ID of last activity from previous page).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListAccountActivitiesResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /v1/trading/accounts/{account_id}/account/portfolio/history:
+        get:
+            tags:
+                - BrokerService
+            summary: GetBrokerPortfolioHistory
+            description: |-
+                GetBrokerPortfolioHistory retrieves portfolio history for a broker account.
+                 GET /v1/trading/accounts/{account_id}/account/portfolio/history
+            operationId: GetBrokerPortfolioHistory
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: account_id
+                  in: path
+                  description: Account ID (path parameter).
+                  required: true
+                  schema:
+                    type: string
+                - name: period
+                  in: query
+                  description: 'Period (1D, 1W, 1M, 3M, 1A, all, intraday). Default: 1M.'
+                  required: false
+                  schema:
+                    type: string
+                - name: timeframe
+                  in: query
+                  description: Timeframe for data points (1Min, 5Min, 15Min, 1H, 1D).
+                  required: false
+                  schema:
+                    type: string
+                - name: intraday_reporting
+                  in: query
+                  description: Intraday reporting mode (market_hours, extended_hours, continuous).
+                  required: false
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  description: Start date/time (RFC-3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: end
+                  in: query
+                  description: End date/time (RFC-3339 or YYYY-MM-DD).
+                  required: false
+                  schema:
+                    type: string
+                - name: pnl_reset
+                  in: query
+                  description: 'PnL reset mode for intraday queries (no_reset or per_day). Default: per_day.'
+                  required: false
+                  schema:
+                    type: string
+                - name: extended_hours
+                  in: query
+                  description: Whether to include extended hours data (deprecated, use intraday_reporting).
+                  required: false
+                  schema:
+                    type: string
+                - name: cashflow_types
+                  in: query
+                  description: Cashflow activities to include (ALL, NONE, or comma-separated activity types).
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BrokerPortfolioHistory'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/ach_relationships:
         get:
             tags:
@@ -6016,6 +6323,761 @@ components:
                     description: The account ID that was closed.
                     example: 904837e3-3b76-47ec-b432-046db621571b
             description: CloseBrokerAccountResponse is the response after closing a broker account.
+        GetTradingAccountRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+            required:
+                - accountId
+            description: GetTradingAccountRequest is the request to retrieve trading details for an account.
+        TradeAccount:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                adminConfigurations:
+                    $ref: '#/components/schemas/AdminConfigurations'
+                userConfigurations:
+                    $ref: '#/components/schemas/AccountConfigurations'
+                accountNumber:
+                    type: string
+                    examples:
+                        - 010203ABCD
+                    example: 010203ABCD
+                status:
+                    type: string
+                    examples:
+                        - ACTIVE
+                    example: ACTIVE
+                cryptoStatus:
+                    type: string
+                    examples:
+                        - ACTIVE
+                    example: ACTIVE
+                currency:
+                    type: string
+                    examples:
+                        - USD
+                    example: USD
+                buyingPower:
+                    type: string
+                    examples:
+                        - 50000.00
+                    example: 50000.00
+                regtBuyingPower:
+                    type: string
+                    examples:
+                        - 50000.00
+                    example: 50000.00
+                daytradingBuyingPower:
+                    type: string
+                    examples:
+                        - 200000.00
+                    example: 200000.00
+                effectiveBuyingPower:
+                    type: string
+                    examples:
+                        - 50000.00
+                    example: 50000.00
+                nonMarginableBuyingPower:
+                    type: string
+                    examples:
+                        - 50000.00
+                    example: 50000.00
+                optionsBuyingPower:
+                    type: string
+                    examples:
+                        - 50000.00
+                    example: 50000.00
+                bodDtbp:
+                    type: string
+                    examples:
+                        - 200000.00
+                    example: 200000.00
+                accruedFees:
+                    type: string
+                    examples:
+                        - 0.00
+                    example: 0.00
+                cash:
+                    type: string
+                    examples:
+                        - 50000.00
+                    example: 50000.00
+                cashWithdrawable:
+                    type: string
+                    examples:
+                        - 50000.00
+                    example: 50000.00
+                cashTransferable:
+                    type: string
+                    examples:
+                        - 50000.00
+                    example: 50000.00
+                pendingTransferOut:
+                    type: string
+                    examples:
+                        - 0.00
+                    example: 0.00
+                portfolioValue:
+                    type: string
+                    examples:
+                        - 50000.00
+                    example: 50000.00
+                patternDayTrader:
+                    type: boolean
+                tradingBlocked:
+                    type: boolean
+                transfersBlocked:
+                    type: boolean
+                accountBlocked:
+                    type: boolean
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-01T00:00:00Z
+                    example: 2024-01-01T00:00:00Z
+                tradeSuspendedByUser:
+                    type: boolean
+                multiplier:
+                    type: string
+                    examples:
+                        - 2
+                    example: 2
+                shortingEnabled:
+                    type: boolean
+                equity:
+                    type: string
+                    examples:
+                        - 50000.00
+                    example: 50000.00
+                lastEquity:
+                    type: string
+                    examples:
+                        - 49500.00
+                    example: 49500.00
+                longMarketValue:
+                    type: string
+                    examples:
+                        - 25000.00
+                    example: 25000.00
+                shortMarketValue:
+                    type: string
+                    examples:
+                        - 0.00
+                    example: 0.00
+                positionMarketValue:
+                    type: string
+                    examples:
+                        - 25000.00
+                    example: 25000.00
+                initialMargin:
+                    type: string
+                    examples:
+                        - 12500.00
+                    example: 12500.00
+                maintenanceMargin:
+                    type: string
+                    examples:
+                        - 7500.00
+                    example: 7500.00
+                lastMaintenanceMargin:
+                    type: string
+                    examples:
+                        - 7500.00
+                    example: 7500.00
+                sma:
+                    type: string
+                    examples:
+                        - 50000.00
+                    example: 50000.00
+                daytradeCount:
+                    type: integer
+                    format: int32
+                balanceAsof:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    example: 2024-01-15
+                previousClose:
+                    type: string
+                    examples:
+                        - 2024-01-14T21:00:00Z
+                    example: 2024-01-14T21:00:00Z
+                lastLongMarketValue:
+                    type: string
+                    examples:
+                        - 24000.00
+                    example: 24000.00
+                lastShortMarketValue:
+                    type: string
+                    examples:
+                        - 0.00
+                    example: 0.00
+                lastCash:
+                    type: string
+                    examples:
+                        - 49500.00
+                    example: 49500.00
+                lastInitialMargin:
+                    type: string
+                    examples:
+                        - 12000.00
+                    example: 12000.00
+                lastRegtBuyingPower:
+                    type: string
+                    examples:
+                        - 49500.00
+                    example: 49500.00
+                lastDaytradingBuyingPower:
+                    type: string
+                    examples:
+                        - 198000.00
+                    example: 198000.00
+                lastOptionsBuyingPower:
+                    type: string
+                    examples:
+                        - 49500.00
+                    example: 49500.00
+                lastBuyingPower:
+                    type: string
+                    examples:
+                        - 49500.00
+                    example: 49500.00
+                lastDaytradeCount:
+                    type: integer
+                    format: int32
+                clearingBroker:
+                    type: string
+                    examples:
+                        - VELOX
+                    example: VELOX
+                optionsApprovedLevel:
+                    type: integer
+                    format: int32
+                optionsTradingLevel:
+                    type: integer
+                    format: int32
+                intradayAdjustments:
+                    type: string
+                    examples:
+                        - 0.00
+                    example: 0.00
+                pendingRegTafFees:
+                    type: string
+                    examples:
+                        - 0.00
+                    example: 0.00
+                memoposts:
+                    type: string
+                    examples:
+                        - 0.00
+                    example: 0.00
+            description: TradeAccount represents the trading details for a broker account.
+        AdminConfigurations:
+            type: object
+            properties:
+                restrictToLiquidationReasons:
+                    $ref: '#/components/schemas/RestrictToLiquidationReasons'
+                outgoingTransfersBlocked:
+                    type: boolean
+                incomingTransfersBlocked:
+                    type: boolean
+                disableShorting:
+                    type: boolean
+                pdtCheckMode:
+                    type: string
+                disableFractional:
+                    type: boolean
+                disableCrypto:
+                    type: boolean
+                disableDayTrading:
+                    type: boolean
+                allowInstantAch:
+                    type: boolean
+                disableAlgodashAccess:
+                    type: boolean
+                disableApiKey:
+                    type: boolean
+                maxMarginMultiplier:
+                    type: string
+                maxOptionsTradingLevel:
+                    type: string
+                acctDailyTransferLimit:
+                    type: string
+            description: AdminConfigurations contains admin-set configuration overrides for an account.
+        RestrictToLiquidationReasons:
+            type: object
+            properties:
+                patternDayTrading:
+                    type: boolean
+                achReturn:
+                    type: boolean
+                positionToEquityRatio:
+                    type: boolean
+                unspecified:
+                    type: boolean
+            description: RestrictToLiquidationReasons describes the reasons an account is restricted to liquidation-only.
+        AccountConfigurations:
+            type: object
+            properties:
+                dtbpCheck:
+                    type: string
+                    examples:
+                        - both
+                    example: both
+                tradeConfirmEmail:
+                    type: string
+                    examples:
+                        - all
+                    example: all
+                suspendTrade:
+                    type: boolean
+                noShorting:
+                    type: boolean
+                fractionalTrading:
+                    type: boolean
+                maxMarginMultiplier:
+                    type: string
+                    examples:
+                        - 2
+                    example: 2
+                maxOptionsTradingLevel:
+                    type: integer
+                    format: int32
+                pdtCheck:
+                    type: string
+                ptpNoExceptionEntry:
+                    type: string
+                disableOvernightTrading:
+                    type: boolean
+            description: AccountConfigurations contains user-configurable trading settings.
+        ListAccountActivitiesRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: Filter by account ID.
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                activityTypes:
+                    type: string
+                    examples:
+                        - FILL,DIV
+                    description: Filter by activity types (comma-separated).
+                    example: FILL,DIV
+                category:
+                    type: string
+                    examples:
+                        - trade_activity
+                        - non_trade_activity
+                    description: Filter by category (trade_activity or non_trade_activity). Mutually exclusive with activity_types.
+                    example: trade_activity
+                date:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Filter by creation date (YYYY-MM-DD or RFC-3339).
+                    example: 2024-01-15
+                until:
+                    type: string
+                    examples:
+                        - 2024-01-31T23:59:59Z
+                    description: Activities created before this date.
+                    example: 2024-01-31T23:59:59Z
+                after:
+                    type: string
+                    examples:
+                        - 2024-01-01T00:00:00Z
+                    description: Activities created after this date.
+                    example: 2024-01-01T00:00:00Z
+                direction:
+                    type: string
+                    examples:
+                        - desc
+                    description: Chronological order (asc or desc).
+                    example: desc
+                pageSize:
+                    type: integer
+                    examples:
+                        - 50
+                    maximum: 100
+                    minimum: 1
+                    format: int32
+                    description: Max entries per page (1-100, default 100).
+                    example: 50
+                pageToken:
+                    type: string
+                    examples:
+                        - 20220208125959696::88b5f678-5eb5-4c92-8a01-4e6e340ca8fb
+                    description: Pagination token (ID of last activity from previous page).
+                    example: 20220208125959696::88b5f678-5eb5-4c92-8a01-4e6e340ca8fb
+            description: ListAccountActivitiesRequest is the request to list account activities across all accounts.
+        ListAccountActivitiesResponse:
+            type: array
+            items:
+                $ref: '#/components/schemas/AccountActivity'
+            description: ListAccountActivitiesResponse wraps the list of account activities.
+        AccountActivity:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - 20220208125959696::88b5f678-5eb5-4c92-8a01-4e6e340ca8fb
+                    description: Unique activity ID.
+                    example: 20220208125959696::88b5f678-5eb5-4c92-8a01-4e6e340ca8fb
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: Account ID.
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                activityType:
+                    type: string
+                    examples:
+                        - FILL
+                    description: Activity type (FILL, DIV, JNLC, etc.).
+                    example: FILL
+                transactionTime:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Transaction timestamp.
+                    example: 2024-01-15T10:30:00Z
+                type:
+                    type: string
+                    examples:
+                        - fill
+                    description: Fill type (fill or partial_fill).
+                    example: fill
+                price:
+                    type: string
+                    examples:
+                        - 150.00
+                    description: Fill price.
+                    example: 150.00
+                qty:
+                    type: string
+                    examples:
+                        - 10
+                    description: Filled quantity.
+                    example: 10
+                side:
+                    type: string
+                    examples:
+                        - buy
+                    description: Order side (buy, sell, etc.).
+                    example: buy
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Ticker symbol.
+                    example: AAPL
+                leavesQty:
+                    type: string
+                    examples:
+                        - 0
+                    description: Remaining quantity after this fill.
+                    example: 0
+                orderId:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: Order ID.
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+                cumQty:
+                    type: string
+                    examples:
+                        - 10
+                    description: Cumulative filled quantity.
+                    example: 10
+                orderStatus:
+                    type: string
+                    examples:
+                        - filled
+                    description: Order status.
+                    example: filled
+                activitySubType:
+                    type: string
+                    examples:
+                        - CDIV
+                    description: Activity sub-type for more specific classification.
+                    example: CDIV
+                date:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Activity date.
+                    example: 2024-01-15
+                currency:
+                    type: string
+                    examples:
+                        - USD
+                    description: Currency.
+                    example: USD
+                netAmount:
+                    type: string
+                    examples:
+                        - 50.00
+                    description: Net amount.
+                    example: 50.00
+                description:
+                    type: string
+                    examples:
+                        - Dividend payment
+                    description: Description.
+                    example: Dividend payment
+                status:
+                    type: string
+                    examples:
+                        - executed
+                    description: Activity status (executed, correct, canceled).
+                    example: executed
+                cusip:
+                    type: string
+                    examples:
+                        - 037833100
+                    description: CUSIP identifier.
+                    example: 037833100
+                perShareAmount:
+                    type: string
+                    examples:
+                        - 0.50
+                    description: Per-share amount.
+                    example: 0.50
+                groupId:
+                    type: string
+                    examples:
+                        - 61e69015-8549-4bfd-b9c3-01e75843f47d
+                    description: Sibling group ID.
+                    example: 61e69015-8549-4bfd-b9c3-01e75843f47d
+                createdAt:
+                    type: string
+                    examples:
+                        - 2024-01-15T10:30:00Z
+                    description: Creation timestamp.
+                    example: 2024-01-15T10:30:00Z
+                swapRate:
+                    type: string
+                    examples:
+                        - 0.01
+                    description: Swap rate (for crypto activities).
+                    example: 0.01
+                commission:
+                    type: string
+                    examples:
+                        - 1.00
+                    description: Commission charged for the trade.
+                    example: 1.00
+            description: AccountActivity represents an account activity event (trade or non-trade).
+        ListAccountActivitiesByTypeRequest:
+            type: object
+            properties:
+                activityType:
+                    type: string
+                    examples:
+                        - FILL
+                    description: Activity type to filter by (path parameter).
+                    example: FILL
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: Filter by account ID.
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                date:
+                    type: string
+                    examples:
+                        - 2024-01-15
+                    description: Filter by creation date (YYYY-MM-DD or RFC-3339).
+                    example: 2024-01-15
+                until:
+                    type: string
+                    examples:
+                        - 2024-01-31T23:59:59Z
+                    description: Activities created before this date.
+                    example: 2024-01-31T23:59:59Z
+                after:
+                    type: string
+                    examples:
+                        - 2024-01-01T00:00:00Z
+                    description: Activities created after this date.
+                    example: 2024-01-01T00:00:00Z
+                direction:
+                    type: string
+                    examples:
+                        - desc
+                    description: Chronological order (asc or desc).
+                    example: desc
+                pageSize:
+                    type: integer
+                    examples:
+                        - 50
+                    maximum: 100
+                    minimum: 1
+                    format: int32
+                    description: Max entries per page (1-100, default 100).
+                    example: 50
+                pageToken:
+                    type: string
+                    examples:
+                        - 20220208125959696::88b5f678-5eb5-4c92-8a01-4e6e340ca8fb
+                    description: Pagination token (ID of last activity from previous page).
+                    example: 20220208125959696::88b5f678-5eb5-4c92-8a01-4e6e340ca8fb
+            required:
+                - activityType
+            description: ListAccountActivitiesByTypeRequest is the request to list activities of a specific type.
+        GetBrokerPortfolioHistoryRequest:
+            type: object
+            properties:
+                accountId:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    format: uuid
+                    description: Account ID (path parameter).
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                period:
+                    type: string
+                    examples:
+                        - 1M
+                    description: 'Period (1D, 1W, 1M, 3M, 1A, all, intraday). Default: 1M.'
+                    example: 1M
+                timeframe:
+                    type: string
+                    examples:
+                        - 1D
+                    description: Timeframe for data points (1Min, 5Min, 15Min, 1H, 1D).
+                    example: 1D
+                intradayReporting:
+                    type: string
+                    examples:
+                        - market_hours
+                    description: Intraday reporting mode (market_hours, extended_hours, continuous).
+                    example: market_hours
+                start:
+                    type: string
+                    examples:
+                        - 2024-01-01
+                    description: Start date/time (RFC-3339 or YYYY-MM-DD).
+                    example: 2024-01-01
+                end:
+                    type: string
+                    examples:
+                        - 2024-01-31
+                    description: End date/time (RFC-3339 or YYYY-MM-DD).
+                    example: 2024-01-31
+                pnlReset:
+                    type: string
+                    examples:
+                        - per_day
+                    description: 'PnL reset mode for intraday queries (no_reset or per_day). Default: per_day.'
+                    example: per_day
+                extendedHours:
+                    type: string
+                    examples:
+                        - true
+                    description: Whether to include extended hours data (deprecated, use intraday_reporting).
+                    example: true
+                cashflowTypes:
+                    type: string
+                    examples:
+                        - ALL
+                        - NONE
+                        - DIV,INT
+                    description: Cashflow activities to include (ALL, NONE, or comma-separated activity types).
+                    example: ALL
+            required:
+                - accountId
+            description: GetBrokerPortfolioHistoryRequest is the request to get portfolio history for a broker account.
+        BrokerPortfolioHistory:
+            type: object
+            properties:
+                timestamp:
+                    type: array
+                    items:
+                        type: string
+                        format: int64
+                        description: |-
+                            Timestamps for each data point (Unix epoch in seconds).
+                             Note: int64_encoding omitted because the unwrap codegen for cashflow already handles
+                             custom JSON marshaling for this message, which natively encodes int64 as numbers.
+                equity:
+                    type: array
+                    items:
+                        type: number
+                        format: double
+                        description: Portfolio equity values at each timestamp.
+                profit_loss:
+                    type: array
+                    items:
+                        type: number
+                        format: double
+                        description: |-
+                            Profit/loss values at each timestamp.
+                             json_name pinned to snake_case to match the Alpaca API and the unwrap codegen's key lookup.
+                profit_loss_pct:
+                    type: array
+                    items:
+                        type: number
+                        format: double
+                        description: Profit/loss percentage at each timestamp.
+                base_value:
+                    type: number
+                    examples:
+                        - 50000.00
+                    format: double
+                    description: Base value (starting equity for P/L calculation).
+                    example: 50000.00
+                base_value_asof:
+                    type: string
+                    examples:
+                        - 2024-01-14
+                    description: Trading date of the base_value closing equity.
+                    example: 2024-01-14
+                timeframe:
+                    type: string
+                    examples:
+                        - 1D
+                    description: Time frame (1Min, 5Min, 15Min, 1H, 1D).
+                    example: 1D
+                cashflow:
+                    type: object
+                    additionalProperties:
+                        type: array
+                        items:
+                            type: number
+                            format: double
+                    description: |-
+                        Accumulated cashflow values by activity type (e.g. JNLC, DIV, CSD).
+                         Each key is an activity type string, each value is an array of numbers matching the timestamp array length.
+            description: BrokerPortfolioHistory represents the historical performance of a broker account's portfolio.
+        CashflowEntry:
+            type: object
+            properties:
+                key:
+                    type: string
+                value:
+                    $ref: '#/components/schemas/CashflowValues'
+        CashflowValues:
+            type: array
+            items:
+                type: number
+                format: double
+            description: CashflowValues holds the array of cashflow amounts for a single activity type.
         CreateACHRelationshipRequest:
             type: object
             properties:

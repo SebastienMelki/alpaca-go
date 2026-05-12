@@ -48,6 +48,34 @@ func testBroker() {
 	fmt.Println()
 
 	// =========================================================================
+	// Trading Account Details Operations (1)
+	// =========================================================================
+	fmt.Println("Trading Account Details Operations:")
+	results = append(results,
+		testGetTradingAccount(ctx, client, testAccountID),
+	)
+	fmt.Println()
+
+	// =========================================================================
+	// Account Activity Operations (2)
+	// =========================================================================
+	fmt.Println("Account Activity Operations:")
+	results = append(results,
+		testListAccountActivities(ctx, client, testAccountID),
+		testListAccountActivitiesByType(ctx, client, testAccountID),
+	)
+	fmt.Println()
+
+	// =========================================================================
+	// Portfolio History Operations (1)
+	// =========================================================================
+	fmt.Println("Portfolio History Operations:")
+	results = append(results,
+		testGetBrokerPortfolioHistory(ctx, client, testAccountID),
+	)
+	fmt.Println()
+
+	// =========================================================================
 	// ACH & Transfer Operations (3)
 	// =========================================================================
 	fmt.Println("ACH & Transfer Operations:")
@@ -530,7 +558,7 @@ func testGetFundingWallet(ctx context.Context, client *broker.Client, accountID 
 		return result
 	}
 	result.Success = true
-	result.Details = fmt.Sprintf("Got funding wallet for account %s", resp.AccountId)
+	result.Details = "Got funding wallet for account " + resp.AccountId
 	printResult(result)
 	return result
 }
@@ -1224,7 +1252,7 @@ func testGetMarketClock(ctx context.Context, client *broker.Client) TestResult {
 		return result
 	}
 	result.Success = true
-	result.Details = fmt.Sprintf("Market is %s", map[bool]string{true: "open", false: "closed"}[resp.IsOpen])
+	result.Details = "Market is " + map[bool]string{true: "open", false: "closed"}[resp.IsOpen]
 	printResult(result)
 	return result
 }
@@ -1470,6 +1498,113 @@ func testSubscribeNTAEvents(ctx context.Context, client *broker.Client) TestResu
 	}
 	result.Success = true
 	result.Details = "Connected to NTA events stream"
+	printResult(result)
+	return result
+}
+
+// =============================================================================
+// Trading Account Details Operations (1 test)
+// =============================================================================
+
+func testGetTradingAccount(ctx context.Context, client *broker.Client, accountID string) TestResult {
+	result := TestResult{Name: "GetTradingAccount"}
+	if accountID == "" {
+		result.Error = errTestAccountIDNotSet
+		printResult(result)
+		return result
+	}
+	resp, err := client.V1.GetTradingAccount(ctx, &broker.GetTradingAccountRequest{
+		AccountId: accountID,
+	})
+	if err != nil {
+		result.Error = err
+		printResult(result)
+		return result
+	}
+	result.Success = true
+	result.Details = fmt.Sprintf("Account %s status=%s equity=%s buying_power=%s cash=%s",
+		resp.Id, resp.Status, resp.Equity, resp.BuyingPower, resp.Cash)
+	printResult(result)
+	return result
+}
+
+// =============================================================================
+// Account Activity Operations (2 tests)
+// =============================================================================
+
+func testListAccountActivities(ctx context.Context, client *broker.Client, accountID string) TestResult {
+	result := TestResult{Name: "ListAccountActivities"}
+	req := &broker.ListAccountActivitiesRequest{
+		PageSize: 10,
+	}
+	if accountID != "" {
+		req.AccountId = accountID
+	}
+	resp, err := client.V1.ListAccountActivities(ctx, req, broker.WithV1CallDiscardUnknownFields(true))
+	if err != nil {
+		result.Error = err
+		printResult(result)
+		return result
+	}
+	result.Success = true
+	result.Details = fmt.Sprintf("Got %d activities", len(resp.Activities))
+	printResult(result)
+	return result
+}
+
+func testListAccountActivitiesByType(ctx context.Context, client *broker.Client, accountID string) TestResult {
+	result := TestResult{Name: "ListAccountActivitiesByType"}
+	req := &broker.ListAccountActivitiesByTypeRequest{
+		ActivityType: "FILL",
+		PageSize:     10,
+	}
+	if accountID != "" {
+		req.AccountId = accountID
+	}
+	resp, err := client.V1.ListAccountActivitiesByType(ctx, req, broker.WithV1CallDiscardUnknownFields(true))
+	if err != nil {
+		result.Error = err
+		printResult(result)
+		return result
+	}
+	result.Success = true
+	result.Details = fmt.Sprintf("Got %d FILL activities", len(resp.Activities))
+	printResult(result)
+	return result
+}
+
+// =============================================================================
+// Portfolio History Operations (1 test)
+// =============================================================================
+
+func testGetBrokerPortfolioHistory(ctx context.Context, client *broker.Client, accountID string) TestResult {
+	result := TestResult{Name: "GetBrokerPortfolioHistory"}
+	if accountID == "" {
+		result.Error = errTestAccountIDNotSet
+		printResult(result)
+		return result
+	}
+	resp, err := client.V1.GetBrokerPortfolioHistory(ctx, &broker.GetBrokerPortfolioHistoryRequest{
+		AccountId: accountID,
+		Period:    "1M",
+		Timeframe: "1D",
+	})
+	if err != nil {
+		result.Error = err
+		printResult(result)
+		return result
+	}
+	result.Success = true
+	details := fmt.Sprintf("Got %d data points, timeframe=%s, base_value=%.2f",
+		len(resp.Timestamp), resp.Timeframe, resp.BaseValue)
+	if len(resp.Cashflow) > 0 {
+		cashflowTypes := make([]string, 0, len(resp.Cashflow))
+		for k := range resp.Cashflow {
+			cashflowTypes = append(cashflowTypes, k)
+		}
+		details += fmt.Sprintf(", cashflow_types=%v", cashflowTypes)
+	}
+	result.Details = details
 	printResult(result)
 	return result
 }
