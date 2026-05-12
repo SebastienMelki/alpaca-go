@@ -1540,7 +1540,7 @@ func testListAccountActivities(ctx context.Context, client *broker.Client, accou
 	if accountID != "" {
 		req.AccountId = accountID
 	}
-	resp, err := client.V1.ListAccountActivities(ctx, req)
+	resp, err := client.V1.ListAccountActivities(ctx, req, broker.WithV1CallDiscardUnknownFields(true))
 	if err != nil {
 		result.Error = err
 		printResult(result)
@@ -1561,7 +1561,7 @@ func testListAccountActivitiesByType(ctx context.Context, client *broker.Client,
 	if accountID != "" {
 		req.AccountId = accountID
 	}
-	resp, err := client.V1.ListAccountActivitiesByType(ctx, req)
+	resp, err := client.V1.ListAccountActivitiesByType(ctx, req, broker.WithV1CallDiscardUnknownFields(true))
 	if err != nil {
 		result.Error = err
 		printResult(result)
