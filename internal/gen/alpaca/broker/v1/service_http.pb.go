@@ -119,6 +119,7 @@ type BrokerServiceServer interface {
 	GetIRAContributionLimits(context.Context, *GetIRAContributionLimitsRequest) (*IRAContributionLimits, error)
 	ListCountries(context.Context, *ListCountriesRequest) (*ListCountriesResponse, error)
 	ListIPOOfferings(context.Context, *ListIPOOfferingsRequest) (*ListIPOOfferingsResponse, error)
+	GetIPOOffering(context.Context, *GetIPOOfferingRequest) (*IPOOffering, error)
 }
 
 // RegisterBrokerServiceServer registers the HTTP handlers for service BrokerService to the given mux.
@@ -1099,6 +1100,15 @@ func RegisterBrokerServiceServer(server BrokerServiceServer, opts ...ServerOptio
 
 	config.mux.Handle("GET /v1/ipos", listIPOOfferingsHandler)
 
+	methodHeaders = getGetIPOOfferingHeaders()
+	getIPOOfferingHandler := BindingMiddleware[GetIPOOfferingRequest](
+		genericHandler(server.GetIPOOffering, config.errorHandler), serviceHeaders, methodHeaders,
+		getIPOOfferingPathParams, getIPOOfferingQueryParams,
+		"GET", config.errorHandler,
+	)
+
+	config.mux.Handle("GET /v1/ipos/{ipo_reference}", getIPOOfferingHandler)
+
 	return nil
 }
 
@@ -1654,6 +1664,11 @@ func getListCountriesHeaders() []*sebufhttp.Header {
 
 // getListIPOOfferingsHeaders returns the method-level required headers for ListIPOOfferings
 func getListIPOOfferingsHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getGetIPOOfferingHeaders returns the method-level required headers for GetIPOOffering
+func getGetIPOOfferingHeaders() []*sebufhttp.Header {
 	return nil
 }
 
@@ -2620,4 +2635,17 @@ var listCountriesQueryParams = []QueryParamConfig{}
 var listIPOOfferingsPathParams = []PathParamConfig{}
 
 // listIPOOfferingsQueryParams contains query parameter configuration for ListIPOOfferings
-var listIPOOfferingsQueryParams = []QueryParamConfig{}
+var listIPOOfferingsQueryParams = []QueryParamConfig{
+	{QueryName: "availability", FieldName: "availability", Required: false},
+	{QueryName: "ticker", FieldName: "ticker", Required: false},
+	{QueryName: "limit", FieldName: "limit", Required: false},
+	{QueryName: "page_token", FieldName: "page_token", Required: false},
+}
+
+// getIPOOfferingPathParams contains path parameter configuration for GetIPOOffering
+var getIPOOfferingPathParams = []PathParamConfig{
+	{URLParam: "ipo_reference", FieldName: "ipo_reference"},
+}
+
+// getIPOOfferingQueryParams contains query parameter configuration for GetIPOOffering
+var getIPOOfferingQueryParams = []QueryParamConfig{}

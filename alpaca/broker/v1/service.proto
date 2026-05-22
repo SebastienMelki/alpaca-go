@@ -1147,11 +1147,20 @@ service BrokerService {
   // IPO Operations
   // ============================================
 
-  // ListIPOOfferings retrieves all IPO offerings.
+  // ListIPOOfferings retrieves IPO offerings, optionally filtered by availability or ticker.
   // GET /v1/ipos
   rpc ListIPOOfferings(ListIPOOfferingsRequest) returns (ListIPOOfferingsResponse) {
     option (sebuf.http.config) = {
       path: "/ipos"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetIPOOffering retrieves a single IPO offering by its reference.
+  // GET /v1/ipos/{ipo_reference}
+  rpc GetIPOOffering(GetIPOOfferingRequest) returns (IPOOffering) {
+    option (sebuf.http.config) = {
+      path: "/ipos/{ipo_reference}"
       method: HTTP_METHOD_GET
     };
   }

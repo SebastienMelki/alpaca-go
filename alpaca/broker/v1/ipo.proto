@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package alpaca.broker.v1;
 
+import "buf/validate/validate.proto";
 import "sebuf/http/annotations.proto";
 
 // IPOOffering represents an IPO offering from Alpaca.
@@ -20,7 +21,7 @@ message IPOOffering {
   string prospectus_url = 6 [(sebuf.http.field_examples) = { values: ["https://www.sec.gov/Archives/edgar/data/2077715/000139834426003615/fp0097718-3_n2a.htm"] }];
   // Type of offering (e.g., "IPO").
   string offering_type = 7 [(sebuf.http.field_examples) = { values: ["IPO"] }];
-  // Availability status: available, closed.
+  // Availability status: available, not_available, closed.
   string availability = 8 [(sebuf.http.field_examples) = { values: ["available"] }];
   // Anticipated number of shares.
   int64 anticipated_shares = 9 [(sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
@@ -42,10 +43,42 @@ message IPOOffering {
   string min_ticket_size = 17 [(sebuf.http.field_examples) = { values: ["100"] }];
   // Maximum order size (string representation of decimal).
   string max_ticket_size = 18 [(sebuf.http.field_examples) = { values: ["10000"] }];
+  // Expiration time for the 60-minute withdrawal window (RFC3339). Populated only while the window is active.
+  string sixty_minute_expiration_time = 19 [(sebuf.http.field_examples) = { values: ["2026-03-27T16:36:14Z"] }];
 }
 
-// ListIPOOfferingsRequest is the request to list all IPO offerings.
-message ListIPOOfferingsRequest {}
+// ListIPOOfferingsRequest is the request to list IPO offerings.
+message ListIPOOfferingsRequest {
+  // Filter by availability status: available, not_available, closed.
+  string availability = 1 [
+    (sebuf.http.query) = { name: "availability" },
+    (sebuf.http.field_examples) = { values: ["available"] }
+  ];
+  // Filter by ticker symbol.
+  string ticker = 2 [
+    (sebuf.http.query) = { name: "ticker" },
+    (sebuf.http.field_examples) = { values: ["EXMP"] }
+  ];
+  // Maximum number of results per page (default 50, max 200).
+  int32 limit = 3 [
+    (sebuf.http.query) = { name: "limit" },
+    (buf.validate.field).int32 = { gte: 1, lte: 200 },
+    (sebuf.http.field_examples) = { values: ["50"] }
+  ];
+  // Pagination token for fetching the next page.
+  string page_token = 4 [
+    (sebuf.http.query) = { name: "page_token" }
+  ];
+}
+
+// GetIPOOfferingRequest is the request to retrieve a single IPO offering by its reference.
+message GetIPOOfferingRequest {
+  // Unique IPO offering reference identifier.
+  string ipo_reference = 1 [
+    (buf.validate.field).string.min_len = 1,
+    (sebuf.http.field_examples) = { values: ["TSTA260420"] }
+  ];
+}
 
 // ListIPOOfferingsResponse contains the list of IPO offerings.
 message ListIPOOfferingsResponse {
