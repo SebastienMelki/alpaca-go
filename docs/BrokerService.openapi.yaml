@@ -5347,7 +5347,7 @@ paths:
                 - BrokerService
             summary: ListIPOOfferings
             description: |-
-                ListIPOOfferings retrieves all IPO offerings.
+                ListIPOOfferings retrieves IPO offerings, optionally filtered by availability or ticker.
                  GET /v1/ipos
             operationId: ListIPOOfferings
             parameters:
@@ -5358,6 +5358,31 @@ paths:
                   schema:
                     type: string
                     example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: availability
+                  in: query
+                  description: 'Filter by availability status: available, not_available, closed.'
+                  required: false
+                  schema:
+                    type: string
+                - name: ticker
+                  in: query
+                  description: Filter by ticker symbol.
+                  required: false
+                  schema:
+                    type: string
+                - name: limit
+                  in: query
+                  description: Maximum number of results per page (default 50, max 200).
+                  required: false
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: Pagination token for fetching the next page.
+                  required: false
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: Successful response
@@ -5365,6 +5390,48 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ListIPOOfferingsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /v1/ipos/{ipo_reference}:
+        get:
+            tags:
+                - BrokerService
+            summary: GetIPOOffering
+            description: |-
+                GetIPOOffering retrieves a single IPO offering by its reference.
+                 GET /v1/ipos/{ipo_reference}
+            operationId: GetIPOOffering
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: ipo_reference
+                  in: path
+                  description: Unique IPO offering reference identifier.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/IPOOffering'
                 "400":
                     description: Validation error
                     content:
@@ -12880,7 +12947,32 @@ components:
             description: CountryInfo represents information for a country.
         ListIPOOfferingsRequest:
             type: object
-            description: ListIPOOfferingsRequest is the request to list all IPO offerings.
+            properties:
+                availability:
+                    type: string
+                    examples:
+                        - available
+                    description: 'Filter by availability status: available, not_available, closed.'
+                    example: available
+                ticker:
+                    type: string
+                    examples:
+                        - EXMP
+                    description: Filter by ticker symbol.
+                    example: EXMP
+                limit:
+                    type: integer
+                    examples:
+                        - 50
+                    maximum: 200
+                    minimum: 1
+                    format: int32
+                    description: Maximum number of results per page (default 50, max 200).
+                    example: 50
+                pageToken:
+                    type: string
+                    description: Pagination token for fetching the next page.
+            description: ListIPOOfferingsRequest is the request to list IPO offerings.
         ListIPOOfferingsResponse:
             type: object
             properties:
@@ -12941,7 +13033,7 @@ components:
                     type: string
                     examples:
                         - available
-                    description: 'Availability status: available, closed.'
+                    description: 'Availability status: available, not_available, closed.'
                     example: available
                 anticipatedShares:
                     type: integer
@@ -12997,4 +13089,21 @@ components:
                         - 10000
                     description: Maximum order size (string representation of decimal).
                     example: 10000
+                sixtyMinuteExpirationTime:
+                    type: string
+                    examples:
+                        - 2026-03-27T16:36:14Z
+                    description: Expiration time for the 60-minute withdrawal window (RFC3339). Populated only while the window is active.
+                    example: 2026-03-27T16:36:14Z
             description: IPOOffering represents an IPO offering from Alpaca.
+        GetIPOOfferingRequest:
+            type: object
+            properties:
+                ipoReference:
+                    type: string
+                    examples:
+                        - TSTA260420
+                    minLength: 1
+                    description: Unique IPO offering reference identifier.
+                    example: TSTA260420
+            description: GetIPOOfferingRequest is the request to retrieve a single IPO offering by its reference.

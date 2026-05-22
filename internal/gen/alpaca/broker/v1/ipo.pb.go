@@ -11,6 +11,7 @@ import (
 	sync "sync"
 	unsafe "unsafe"
 
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -40,7 +41,7 @@ type IPOOffering struct {
 	ProspectusUrl string `protobuf:"bytes,6,opt,name=prospectus_url,json=prospectusUrl,proto3" json:"prospectus_url,omitempty"`
 	// Type of offering (e.g., "IPO").
 	OfferingType string `protobuf:"bytes,7,opt,name=offering_type,json=offeringType,proto3" json:"offering_type,omitempty"`
-	// Availability status: available, closed.
+	// Availability status: available, not_available, closed.
 	Availability string `protobuf:"bytes,8,opt,name=availability,proto3" json:"availability,omitempty"`
 	// Anticipated number of shares.
 	AnticipatedShares int64 `protobuf:"varint,9,opt,name=anticipated_shares,json=anticipatedShares,proto3" json:"anticipated_shares,omitempty"`
@@ -62,8 +63,10 @@ type IPOOffering struct {
 	MinTicketSize string `protobuf:"bytes,17,opt,name=min_ticket_size,json=minTicketSize,proto3" json:"min_ticket_size,omitempty"`
 	// Maximum order size (string representation of decimal).
 	MaxTicketSize string `protobuf:"bytes,18,opt,name=max_ticket_size,json=maxTicketSize,proto3" json:"max_ticket_size,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// Expiration time for the 60-minute withdrawal window (RFC3339). Populated only while the window is active.
+	SixtyMinuteExpirationTime string `protobuf:"bytes,19,opt,name=sixty_minute_expiration_time,json=sixtyMinuteExpirationTime,proto3" json:"sixty_minute_expiration_time,omitempty"`
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
 }
 
 func (x *IPOOffering) Reset() {
@@ -222,9 +225,24 @@ func (x *IPOOffering) GetMaxTicketSize() string {
 	return ""
 }
 
-// ListIPOOfferingsRequest is the request to list all IPO offerings.
+func (x *IPOOffering) GetSixtyMinuteExpirationTime() string {
+	if x != nil {
+		return x.SixtyMinuteExpirationTime
+	}
+	return ""
+}
+
+// ListIPOOfferingsRequest is the request to list IPO offerings.
 type ListIPOOfferingsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Filter by availability status: available, not_available, closed.
+	Availability string `protobuf:"bytes,1,opt,name=availability,proto3" json:"availability,omitempty"`
+	// Filter by ticker symbol.
+	Ticker string `protobuf:"bytes,2,opt,name=ticker,proto3" json:"ticker,omitempty"`
+	// Maximum number of results per page (default 50, max 200).
+	Limit int32 `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	// Pagination token for fetching the next page.
+	PageToken     string `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -259,6 +277,80 @@ func (*ListIPOOfferingsRequest) Descriptor() ([]byte, []int) {
 	return file_alpaca_broker_v1_ipo_proto_rawDescGZIP(), []int{1}
 }
 
+func (x *ListIPOOfferingsRequest) GetAvailability() string {
+	if x != nil {
+		return x.Availability
+	}
+	return ""
+}
+
+func (x *ListIPOOfferingsRequest) GetTicker() string {
+	if x != nil {
+		return x.Ticker
+	}
+	return ""
+}
+
+func (x *ListIPOOfferingsRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListIPOOfferingsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+// GetIPOOfferingRequest is the request to retrieve a single IPO offering by its reference.
+type GetIPOOfferingRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Unique IPO offering reference identifier.
+	IpoReference  string `protobuf:"bytes,1,opt,name=ipo_reference,json=ipoReference,proto3" json:"ipo_reference,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetIPOOfferingRequest) Reset() {
+	*x = GetIPOOfferingRequest{}
+	mi := &file_alpaca_broker_v1_ipo_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetIPOOfferingRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetIPOOfferingRequest) ProtoMessage() {}
+
+func (x *GetIPOOfferingRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_ipo_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetIPOOfferingRequest.ProtoReflect.Descriptor instead.
+func (*GetIPOOfferingRequest) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_ipo_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetIPOOfferingRequest) GetIpoReference() string {
+	if x != nil {
+		return x.IpoReference
+	}
+	return ""
+}
+
 // ListIPOOfferingsResponse contains the list of IPO offerings.
 type ListIPOOfferingsResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -272,7 +364,7 @@ type ListIPOOfferingsResponse struct {
 
 func (x *ListIPOOfferingsResponse) Reset() {
 	*x = ListIPOOfferingsResponse{}
-	mi := &file_alpaca_broker_v1_ipo_proto_msgTypes[2]
+	mi := &file_alpaca_broker_v1_ipo_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -284,7 +376,7 @@ func (x *ListIPOOfferingsResponse) String() string {
 func (*ListIPOOfferingsResponse) ProtoMessage() {}
 
 func (x *ListIPOOfferingsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alpaca_broker_v1_ipo_proto_msgTypes[2]
+	mi := &file_alpaca_broker_v1_ipo_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -297,7 +389,7 @@ func (x *ListIPOOfferingsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListIPOOfferingsResponse.ProtoReflect.Descriptor instead.
 func (*ListIPOOfferingsResponse) Descriptor() ([]byte, []int) {
-	return file_alpaca_broker_v1_ipo_proto_rawDescGZIP(), []int{2}
+	return file_alpaca_broker_v1_ipo_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListIPOOfferingsResponse) GetData() []*IPOOffering {
@@ -318,7 +410,7 @@ var File_alpaca_broker_v1_ipo_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v1_ipo_proto_rawDesc = "" +
 	"\n" +
-	"\x1aalpaca/broker/v1/ipo.proto\x12\x10alpaca.broker.v1\x1a\x1csebuf/http/annotations.proto\"\xee\a\n" +
+	"\x1aalpaca/broker/v1/ipo.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"\xcb\b\n" +
 	"\vIPOOffering\x12,\n" +
 	"\x04name\x18\x01 \x01(\tB\x18\xba\xb5\x18\x14\n" +
 	"\x12Test IPO TSTA CorpR\x04name\x12^\n" +
@@ -358,8 +450,27 @@ const file_alpaca_broker_v1_ipo_proto_rawDesc = "" +
 	"\x0fmin_ticket_size\x18\x11 \x01(\tB\t\xba\xb5\x18\x05\n" +
 	"\x03100R\rminTicketSize\x123\n" +
 	"\x0fmax_ticket_size\x18\x12 \x01(\tB\v\xba\xb5\x18\a\n" +
-	"\x0510000R\rmaxTicketSize\"\x19\n" +
-	"\x17ListIPOOfferingsRequest\"u\n" +
+	"\x0510000R\rmaxTicketSize\x12[\n" +
+	"\x1csixty_minute_expiration_time\x18\x13 \x01(\tB\x1a\xba\xb5\x18\x16\n" +
+	"\x142026-03-27T16:36:14ZR\x19sixtyMinuteExpirationTime\"\xf6\x01\n" +
+	"\x17ListIPOOfferingsRequest\x12E\n" +
+	"\favailability\x18\x01 \x01(\tB!\xba\xb5\x18\v\n" +
+	"\tavailableµ\x18\x0e\n" +
+	"\favailabilityR\favailability\x12.\n" +
+	"\x06ticker\x18\x02 \x01(\tB\x16\xba\xb5\x18\x06\n" +
+	"\x04EXMPµ\x18\b\n" +
+	"\x06tickerR\x06ticker\x123\n" +
+	"\x05limit\x18\x03 \x01(\x05B\x1d\xbaH\a\x1a\x05\x18\xc8\x01(\x01\xba\xb5\x18\x04\n" +
+	"\x0250µ\x18\a\n" +
+	"\x05limitR\x05limit\x12/\n" +
+	"\n" +
+	"page_token\x18\x04 \x01(\tB\x10µ\x18\f\n" +
+	"\n" +
+	"page_tokenR\tpageToken\"U\n" +
+	"\x15GetIPOOfferingRequest\x12<\n" +
+	"\ripo_reference\x18\x01 \x01(\tB\x17\xbaH\x04r\x02\x10\x01\xba\xb5\x18\f\n" +
+	"\n" +
+	"TSTA260420R\fipoReference\"u\n" +
 	"\x18ListIPOOfferingsResponse\x121\n" +
 	"\x04data\x18\x01 \x03(\v2\x1d.alpaca.broker.v1.IPOOfferingR\x04data\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageTokenB\xce\x01\n" +
@@ -377,11 +488,12 @@ func file_alpaca_broker_v1_ipo_proto_rawDescGZIP() []byte {
 	return file_alpaca_broker_v1_ipo_proto_rawDescData
 }
 
-var file_alpaca_broker_v1_ipo_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_alpaca_broker_v1_ipo_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_alpaca_broker_v1_ipo_proto_goTypes = []any{
 	(*IPOOffering)(nil),              // 0: alpaca.broker.v1.IPOOffering
 	(*ListIPOOfferingsRequest)(nil),  // 1: alpaca.broker.v1.ListIPOOfferingsRequest
-	(*ListIPOOfferingsResponse)(nil), // 2: alpaca.broker.v1.ListIPOOfferingsResponse
+	(*GetIPOOfferingRequest)(nil),    // 2: alpaca.broker.v1.GetIPOOfferingRequest
+	(*ListIPOOfferingsResponse)(nil), // 3: alpaca.broker.v1.ListIPOOfferingsResponse
 }
 var file_alpaca_broker_v1_ipo_proto_depIdxs = []int32{
 	0, // 0: alpaca.broker.v1.ListIPOOfferingsResponse.data:type_name -> alpaca.broker.v1.IPOOffering
@@ -403,7 +515,7 @@ func file_alpaca_broker_v1_ipo_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_broker_v1_ipo_proto_rawDesc), len(file_alpaca_broker_v1_ipo_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

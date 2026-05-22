@@ -562,6 +562,7 @@ type (
 	IPOOffering               = brokerv1.IPOOffering
 	ListIPOOfferingsRequest   = brokerv1.ListIPOOfferingsRequest
 	ListIPOOfferingsResponse  = brokerv1.ListIPOOfferingsResponse
+	GetIPOOfferingRequest     = brokerv1.GetIPOOfferingRequest
 	IPOEvent                  = brokerv2.IPOEvent
 	IPOEventPayload           = brokerv2.IPOEventPayload
 	SubscribeIPOEventsRequest = brokerv2.SubscribeIPOEventsRequest
