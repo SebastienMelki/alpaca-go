@@ -87,3 +87,9 @@ message ListIPOOfferingsResponse {
   // Pagination token for the next page (null if no more pages).
   string next_page_token = 2;
 }
+
+// GetIPOOfferingResponse wraps a single IPO offering returned by the get-by-id endpoint.
+message GetIPOOfferingResponse {
+  // The IPO offering.
+  IPOOffering data = 1;
+}
