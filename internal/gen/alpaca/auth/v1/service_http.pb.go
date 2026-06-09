@@ -22,9 +22,9 @@ func RegisterAuthServiceServer(server AuthServiceServer, opts ...ServerOption) e
 
 	methodHeaders := getIssueTokenHeaders()
 	issueTokenHandler := BindingMiddleware[IssueTokenRequest](
-		genericHandler(server.IssueToken, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.IssueToken, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		issueTokenPathParams, issueTokenQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v1/oauth2/token", issueTokenHandler)

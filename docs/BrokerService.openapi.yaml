@@ -5431,7 +5431,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/IPOOffering'
+                                $ref: '#/components/schemas/GetIPOOfferingResponse'
                 "400":
                     description: Validation error
                     content:
@@ -13107,3 +13107,9 @@ components:
                     description: Unique IPO offering reference identifier.
                     example: TSTA260420
             description: GetIPOOfferingRequest is the request to retrieve a single IPO offering by its reference.
+        GetIPOOfferingResponse:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/IPOOffering'
+            description: GetIPOOfferingResponse wraps a single IPO offering returned by the get-by-id endpoint.

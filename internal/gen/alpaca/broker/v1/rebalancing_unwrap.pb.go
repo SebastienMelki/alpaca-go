@@ -9,16 +9,24 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for ListPortfoliosResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListPortfoliosResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *ListPortfoliosResponse) MarshalJSON() ([]byte, error) {
+func (x *ListPortfoliosResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Portfolios))
 	for _, item := range x.Portfolios {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -26,6 +34,11 @@ func (x *ListPortfoliosResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for ListPortfoliosResponse.
+func (x *ListPortfoliosResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListPortfoliosResponse.
@@ -46,16 +59,24 @@ func (x *ListPortfoliosResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for ListSubscriptionsResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListSubscriptionsResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *ListSubscriptionsResponse) MarshalJSON() ([]byte, error) {
+func (x *ListSubscriptionsResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Subscriptions))
 	for _, item := range x.Subscriptions {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -63,6 +84,11 @@ func (x *ListSubscriptionsResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for ListSubscriptionsResponse.
+func (x *ListSubscriptionsResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListSubscriptionsResponse.
@@ -83,16 +109,24 @@ func (x *ListSubscriptionsResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for ListRunsResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListRunsResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *ListRunsResponse) MarshalJSON() ([]byte, error) {
+func (x *ListRunsResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Runs))
 	for _, item := range x.Runs {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -100,6 +134,11 @@ func (x *ListRunsResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for ListRunsResponse.
+func (x *ListRunsResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListRunsResponse.

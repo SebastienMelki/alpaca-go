@@ -5,18 +5,28 @@ package marketdatav1beta
 
 import (
 	"encoding/json"
+
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for CryptoTradesList.
+// MarshalJSONSebuf implements sebufMarshaler for CryptoTradesList.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *CryptoTradesList) MarshalJSON() ([]byte, error) {
+func (x *CryptoTradesList) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Trades))
 	for _, item := range x.Trades {
-		data, err := json.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -24,6 +34,11 @@ func (x *CryptoTradesList) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for CryptoTradesList.
+func (x *CryptoTradesList) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for CryptoTradesList.
@@ -44,9 +59,9 @@ func (x *CryptoTradesList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for GetCryptoTradesResponse.
+// MarshalJSONSebuf implements sebufMarshaler for GetCryptoTradesResponse.
 // This method handles unwrap field serialization for map values.
-func (x *GetCryptoTradesResponse) MarshalJSON() ([]byte, error) {
+func (x *GetCryptoTradesResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
@@ -61,7 +76,15 @@ func (x *GetCryptoTradesResponse) MarshalJSON() ([]byte, error) {
 				// Marshal the unwrap field directly (the array)
 				items := make([]json.RawMessage, 0, len(wrapper.GetTrades()))
 				for _, item := range wrapper.GetTrades() {
-					data, err := json.Marshal(item)
+					var data []byte
+					var err error
+					if m, ok := any(item).(interface {
+						MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+					}); ok {
+						data, err = m.MarshalJSONSebuf(opts)
+					} else {
+						data, err = opts.Marshal(item)
+					}
 					if err != nil {
 						return nil, err
 					}
@@ -91,6 +114,11 @@ func (x *GetCryptoTradesResponse) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(out)
+}
+
+// MarshalJSON implements json.Marshaler for GetCryptoTradesResponse.
+func (x *GetCryptoTradesResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for GetCryptoTradesResponse.

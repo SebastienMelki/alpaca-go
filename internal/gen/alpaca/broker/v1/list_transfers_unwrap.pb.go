@@ -9,16 +9,24 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for ListTransfersResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListTransfersResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *ListTransfersResponse) MarshalJSON() ([]byte, error) {
+func (x *ListTransfersResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Transfers))
 	for _, item := range x.Transfers {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -26,6 +34,11 @@ func (x *ListTransfersResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for ListTransfersResponse.
+func (x *ListTransfersResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListTransfersResponse.

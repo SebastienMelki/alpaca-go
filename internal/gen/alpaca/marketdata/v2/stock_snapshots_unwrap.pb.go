@@ -9,9 +9,9 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for GetStockSnapshotsResponse.
+// MarshalJSONSebuf implements sebufMarshaler for GetStockSnapshotsResponse.
 // This method performs root-level unwrap, serializing the message as just the map value.
-func (x *GetStockSnapshotsResponse) MarshalJSON() ([]byte, error) {
+func (x *GetStockSnapshotsResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
@@ -19,7 +19,15 @@ func (x *GetStockSnapshotsResponse) MarshalJSON() ([]byte, error) {
 	out := make(map[string]json.RawMessage)
 	for k, v := range x.Snapshots {
 		if v != nil {
-			data, err := protojson.Marshal(v)
+			var data []byte
+			var err error
+			if m, ok := any(v).(interface {
+				MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+			}); ok {
+				data, err = m.MarshalJSONSebuf(opts)
+			} else {
+				data, err = opts.Marshal(v)
+			}
 			if err != nil {
 				return nil, err
 			}
@@ -27,6 +35,11 @@ func (x *GetStockSnapshotsResponse) MarshalJSON() ([]byte, error) {
 		}
 	}
 	return json.Marshal(out)
+}
+
+// MarshalJSON implements json.Marshaler for GetStockSnapshotsResponse.
+func (x *GetStockSnapshotsResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for GetStockSnapshotsResponse.

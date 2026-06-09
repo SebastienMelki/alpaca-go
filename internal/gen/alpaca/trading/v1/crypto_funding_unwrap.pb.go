@@ -9,16 +9,24 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for ListCryptoWalletsResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListCryptoWalletsResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *ListCryptoWalletsResponse) MarshalJSON() ([]byte, error) {
+func (x *ListCryptoWalletsResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Wallets))
 	for _, item := range x.Wallets {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -26,6 +34,11 @@ func (x *ListCryptoWalletsResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for ListCryptoWalletsResponse.
+func (x *ListCryptoWalletsResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListCryptoWalletsResponse.
@@ -46,16 +59,24 @@ func (x *ListCryptoWalletsResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for ListCryptoTransfersResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListCryptoTransfersResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *ListCryptoTransfersResponse) MarshalJSON() ([]byte, error) {
+func (x *ListCryptoTransfersResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Transfers))
 	for _, item := range x.Transfers {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -63,6 +84,11 @@ func (x *ListCryptoTransfersResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for ListCryptoTransfersResponse.
+func (x *ListCryptoTransfersResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListCryptoTransfersResponse.
@@ -83,16 +109,24 @@ func (x *ListCryptoTransfersResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for ListWhitelistedAddressesResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListWhitelistedAddressesResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *ListWhitelistedAddressesResponse) MarshalJSON() ([]byte, error) {
+func (x *ListWhitelistedAddressesResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Addresses))
 	for _, item := range x.Addresses {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -100,6 +134,11 @@ func (x *ListWhitelistedAddressesResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for ListWhitelistedAddressesResponse.
+func (x *ListWhitelistedAddressesResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListWhitelistedAddressesResponse.

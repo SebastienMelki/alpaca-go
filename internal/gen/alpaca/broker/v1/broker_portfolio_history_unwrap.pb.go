@@ -5,16 +5,23 @@ package brokerv1
 
 import (
 	"encoding/json"
+
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for CashflowValues.
+// MarshalJSONSebuf implements sebufMarshaler for CashflowValues.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *CashflowValues) MarshalJSON() ([]byte, error) {
+func (x *CashflowValues) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	return json.Marshal(x.Values)
+}
+
+// MarshalJSON implements json.Marshaler for CashflowValues.
+func (x *CashflowValues) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for CashflowValues.
@@ -23,9 +30,9 @@ func (x *CashflowValues) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &x.Values)
 }
 
-// MarshalJSON implements json.Marshaler for BrokerPortfolioHistory.
+// MarshalJSONSebuf implements sebufMarshaler for BrokerPortfolioHistory.
 // This method handles unwrap field serialization for map values.
-func (x *BrokerPortfolioHistory) MarshalJSON() ([]byte, error) {
+func (x *BrokerPortfolioHistory) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
@@ -116,6 +123,11 @@ func (x *BrokerPortfolioHistory) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(out)
+}
+
+// MarshalJSON implements json.Marshaler for BrokerPortfolioHistory.
+func (x *BrokerPortfolioHistory) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for BrokerPortfolioHistory.

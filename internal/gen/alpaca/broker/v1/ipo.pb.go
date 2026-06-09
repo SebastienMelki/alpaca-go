@@ -406,6 +406,52 @@ func (x *ListIPOOfferingsResponse) GetNextPageToken() string {
 	return ""
 }
 
+// GetIPOOfferingResponse wraps a single IPO offering returned by the get-by-id endpoint.
+type GetIPOOfferingResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The IPO offering.
+	Data          *IPOOffering `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetIPOOfferingResponse) Reset() {
+	*x = GetIPOOfferingResponse{}
+	mi := &file_alpaca_broker_v1_ipo_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetIPOOfferingResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetIPOOfferingResponse) ProtoMessage() {}
+
+func (x *GetIPOOfferingResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_ipo_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetIPOOfferingResponse.ProtoReflect.Descriptor instead.
+func (*GetIPOOfferingResponse) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_ipo_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetIPOOfferingResponse) GetData() *IPOOffering {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
 var File_alpaca_broker_v1_ipo_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v1_ipo_proto_rawDesc = "" +
@@ -473,7 +519,9 @@ const file_alpaca_broker_v1_ipo_proto_rawDesc = "" +
 	"TSTA260420R\fipoReference\"u\n" +
 	"\x18ListIPOOfferingsResponse\x121\n" +
 	"\x04data\x18\x01 \x03(\v2\x1d.alpaca.broker.v1.IPOOfferingR\x04data\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageTokenB\xce\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"K\n" +
+	"\x16GetIPOOfferingResponse\x121\n" +
+	"\x04data\x18\x01 \x01(\v2\x1d.alpaca.broker.v1.IPOOfferingR\x04dataB\xce\x01\n" +
 	"\x14com.alpaca.broker.v1B\bIpoProtoP\x01ZJgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1;brokerv1\xa2\x02\x03ABX\xaa\x02\x10Alpaca.Broker.V1\xca\x02\x10Alpaca\\Broker\\V1\xe2\x02\x1cAlpaca\\Broker\\V1\\GPBMetadata\xea\x02\x12Alpaca::Broker::V1b\x06proto3"
 
 var (
@@ -488,20 +536,22 @@ func file_alpaca_broker_v1_ipo_proto_rawDescGZIP() []byte {
 	return file_alpaca_broker_v1_ipo_proto_rawDescData
 }
 
-var file_alpaca_broker_v1_ipo_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_alpaca_broker_v1_ipo_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_alpaca_broker_v1_ipo_proto_goTypes = []any{
 	(*IPOOffering)(nil),              // 0: alpaca.broker.v1.IPOOffering
 	(*ListIPOOfferingsRequest)(nil),  // 1: alpaca.broker.v1.ListIPOOfferingsRequest
 	(*GetIPOOfferingRequest)(nil),    // 2: alpaca.broker.v1.GetIPOOfferingRequest
 	(*ListIPOOfferingsResponse)(nil), // 3: alpaca.broker.v1.ListIPOOfferingsResponse
+	(*GetIPOOfferingResponse)(nil),   // 4: alpaca.broker.v1.GetIPOOfferingResponse
 }
 var file_alpaca_broker_v1_ipo_proto_depIdxs = []int32{
 	0, // 0: alpaca.broker.v1.ListIPOOfferingsResponse.data:type_name -> alpaca.broker.v1.IPOOffering
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // 1: alpaca.broker.v1.GetIPOOfferingResponse.data:type_name -> alpaca.broker.v1.IPOOffering
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_alpaca_broker_v1_ipo_proto_init() }
@@ -515,7 +565,7 @@ func file_alpaca_broker_v1_ipo_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_broker_v1_ipo_proto_rawDesc), len(file_alpaca_broker_v1_ipo_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

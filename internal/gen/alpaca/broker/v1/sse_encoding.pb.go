@@ -10,16 +10,16 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for SSEEvent.
+// MarshalJSONSebuf implements sebufMarshaler for SSEEvent.
 // This method handles int64_encoding=NUMBER fields: retry
 // Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
-func (x *SSEEvent) MarshalJSON() ([]byte, error) {
+func (x *SSEEvent) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -39,6 +39,11 @@ func (x *SSEEvent) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for SSEEvent.
+func (x *SSEEvent) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for SSEEvent.
@@ -68,16 +73,16 @@ func (x *SSEEvent) UnmarshalJSON(data []byte) error {
 	return protojson.Unmarshal(modified, x)
 }
 
-// MarshalJSON implements json.Marshaler for SubscribeAccountEventsRequest.
+// MarshalJSONSebuf implements sebufMarshaler for SubscribeAccountEventsRequest.
 // This method handles int64_encoding=NUMBER fields: since_id, until_id
 // Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
-func (x *SubscribeAccountEventsRequest) MarshalJSON() ([]byte, error) {
+func (x *SubscribeAccountEventsRequest) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -105,6 +110,11 @@ func (x *SubscribeAccountEventsRequest) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for SubscribeAccountEventsRequest.
+func (x *SubscribeAccountEventsRequest) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for SubscribeAccountEventsRequest.
@@ -142,16 +152,16 @@ func (x *SubscribeAccountEventsRequest) UnmarshalJSON(data []byte) error {
 	return protojson.Unmarshal(modified, x)
 }
 
-// MarshalJSON implements json.Marshaler for SubscribeTradeEventsRequest.
+// MarshalJSONSebuf implements sebufMarshaler for SubscribeTradeEventsRequest.
 // This method handles int64_encoding=NUMBER fields: since_id, until_id
 // Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
-func (x *SubscribeTradeEventsRequest) MarshalJSON() ([]byte, error) {
+func (x *SubscribeTradeEventsRequest) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -179,6 +189,11 @@ func (x *SubscribeTradeEventsRequest) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for SubscribeTradeEventsRequest.
+func (x *SubscribeTradeEventsRequest) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for SubscribeTradeEventsRequest.
@@ -216,16 +231,16 @@ func (x *SubscribeTradeEventsRequest) UnmarshalJSON(data []byte) error {
 	return protojson.Unmarshal(modified, x)
 }
 
-// MarshalJSON implements json.Marshaler for SubscribeTransferEventsRequest.
+// MarshalJSONSebuf implements sebufMarshaler for SubscribeTransferEventsRequest.
 // This method handles int64_encoding=NUMBER fields: since_id, until_id
 // Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
-func (x *SubscribeTransferEventsRequest) MarshalJSON() ([]byte, error) {
+func (x *SubscribeTransferEventsRequest) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -253,6 +268,11 @@ func (x *SubscribeTransferEventsRequest) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for SubscribeTransferEventsRequest.
+func (x *SubscribeTransferEventsRequest) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for SubscribeTransferEventsRequest.
@@ -290,16 +310,16 @@ func (x *SubscribeTransferEventsRequest) UnmarshalJSON(data []byte) error {
 	return protojson.Unmarshal(modified, x)
 }
 
-// MarshalJSON implements json.Marshaler for SubscribeJournalEventsRequest.
+// MarshalJSONSebuf implements sebufMarshaler for SubscribeJournalEventsRequest.
 // This method handles int64_encoding=NUMBER fields: since_id, until_id
 // Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
-func (x *SubscribeJournalEventsRequest) MarshalJSON() ([]byte, error) {
+func (x *SubscribeJournalEventsRequest) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -327,6 +347,11 @@ func (x *SubscribeJournalEventsRequest) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for SubscribeJournalEventsRequest.
+func (x *SubscribeJournalEventsRequest) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for SubscribeJournalEventsRequest.
@@ -364,16 +389,16 @@ func (x *SubscribeJournalEventsRequest) UnmarshalJSON(data []byte) error {
 	return protojson.Unmarshal(modified, x)
 }
 
-// MarshalJSON implements json.Marshaler for SubscribeNTAEventsRequest.
+// MarshalJSONSebuf implements sebufMarshaler for SubscribeNTAEventsRequest.
 // This method handles int64_encoding=NUMBER fields: since_id, until_id
 // Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
-func (x *SubscribeNTAEventsRequest) MarshalJSON() ([]byte, error) {
+func (x *SubscribeNTAEventsRequest) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -401,6 +426,11 @@ func (x *SubscribeNTAEventsRequest) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for SubscribeNTAEventsRequest.
+func (x *SubscribeNTAEventsRequest) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for SubscribeNTAEventsRequest.
@@ -438,15 +468,15 @@ func (x *SubscribeNTAEventsRequest) UnmarshalJSON(data []byte) error {
 	return protojson.Unmarshal(modified, x)
 }
 
-// MarshalJSON implements json.Marshaler for SubscribeSSEResponse.
+// MarshalJSONSebuf implements sebufMarshaler for SubscribeSSEResponse.
 // This method re-marshals nested messages that have int64_encoding=NUMBER fields: events
-func (x *SubscribeSSEResponse) MarshalJSON() ([]byte, error) {
+func (x *SubscribeSSEResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -457,15 +487,38 @@ func (x *SubscribeSSEResponse) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	// Re-serialize repeated "events" using its custom MarshalJSON
+	// Re-serialize repeated "events" forwarding opts to each element
 	if len(x.Events) > 0 {
-		raw["events"], err = json.Marshal(x.Events)
+		items := make([]json.RawMessage, 0, len(x.Events))
+		for _, item := range x.Events {
+			if m, ok := any(item).(interface {
+				MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+			}); ok {
+				itemData, itemErr := m.MarshalJSONSebuf(opts)
+				if itemErr != nil {
+					return nil, itemErr
+				}
+				items = append(items, itemData)
+			} else {
+				itemData, itemErr := opts.Marshal(item)
+				if itemErr != nil {
+					return nil, itemErr
+				}
+				items = append(items, itemData)
+			}
+		}
+		raw["events"], err = json.Marshal(items)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for SubscribeSSEResponse.
+func (x *SubscribeSSEResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for SubscribeSSEResponse.

@@ -5,18 +5,28 @@ package marketdatav2
 
 import (
 	"encoding/json"
+
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for StockBarsList.
+// MarshalJSONSebuf implements sebufMarshaler for StockBarsList.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *StockBarsList) MarshalJSON() ([]byte, error) {
+func (x *StockBarsList) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Bars))
 	for _, item := range x.Bars {
-		data, err := json.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -24,6 +34,11 @@ func (x *StockBarsList) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for StockBarsList.
+func (x *StockBarsList) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for StockBarsList.
@@ -44,9 +59,9 @@ func (x *StockBarsList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for StockBarsMap.
+// MarshalJSONSebuf implements sebufMarshaler for StockBarsMap.
 // This method handles unwrap field serialization for map values.
-func (x *StockBarsMap) MarshalJSON() ([]byte, error) {
+func (x *StockBarsMap) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
@@ -61,7 +76,15 @@ func (x *StockBarsMap) MarshalJSON() ([]byte, error) {
 				// Marshal the unwrap field directly (the array)
 				items := make([]json.RawMessage, 0, len(wrapper.GetBars()))
 				for _, item := range wrapper.GetBars() {
-					data, err := json.Marshal(item)
+					var data []byte
+					var err error
+					if m, ok := any(item).(interface {
+						MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+					}); ok {
+						data, err = m.MarshalJSONSebuf(opts)
+					} else {
+						data, err = opts.Marshal(item)
+					}
 					if err != nil {
 						return nil, err
 					}
@@ -82,6 +105,11 @@ func (x *StockBarsMap) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(out)
+}
+
+// MarshalJSON implements json.Marshaler for StockBarsMap.
+func (x *StockBarsMap) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for StockBarsMap.
@@ -119,9 +147,9 @@ func (x *StockBarsMap) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for GetStockBarsResponse.
+// MarshalJSONSebuf implements sebufMarshaler for GetStockBarsResponse.
 // This method handles unwrap field serialization for map values.
-func (x *GetStockBarsResponse) MarshalJSON() ([]byte, error) {
+func (x *GetStockBarsResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
@@ -136,7 +164,15 @@ func (x *GetStockBarsResponse) MarshalJSON() ([]byte, error) {
 				// Marshal the unwrap field directly (the array)
 				items := make([]json.RawMessage, 0, len(wrapper.GetBars()))
 				for _, item := range wrapper.GetBars() {
-					data, err := json.Marshal(item)
+					var data []byte
+					var err error
+					if m, ok := any(item).(interface {
+						MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+					}); ok {
+						data, err = m.MarshalJSONSebuf(opts)
+					} else {
+						data, err = opts.Marshal(item)
+					}
 					if err != nil {
 						return nil, err
 					}
@@ -166,6 +202,11 @@ func (x *GetStockBarsResponse) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(out)
+}
+
+// MarshalJSON implements json.Marshaler for GetStockBarsResponse.
+func (x *GetStockBarsResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for GetStockBarsResponse.

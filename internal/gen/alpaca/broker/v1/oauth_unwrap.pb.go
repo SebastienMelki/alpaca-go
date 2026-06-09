@@ -9,16 +9,24 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for ListOAuthClientsResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListOAuthClientsResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *ListOAuthClientsResponse) MarshalJSON() ([]byte, error) {
+func (x *ListOAuthClientsResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Clients))
 	for _, item := range x.Clients {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -26,6 +34,11 @@ func (x *ListOAuthClientsResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for ListOAuthClientsResponse.
+func (x *ListOAuthClientsResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListOAuthClientsResponse.
@@ -46,16 +59,24 @@ func (x *ListOAuthClientsResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for ListOAuthAuthorizationsResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListOAuthAuthorizationsResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *ListOAuthAuthorizationsResponse) MarshalJSON() ([]byte, error) {
+func (x *ListOAuthAuthorizationsResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Authorizations))
 	for _, item := range x.Authorizations {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -63,6 +84,11 @@ func (x *ListOAuthAuthorizationsResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for ListOAuthAuthorizationsResponse.
+func (x *ListOAuthAuthorizationsResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListOAuthAuthorizationsResponse.

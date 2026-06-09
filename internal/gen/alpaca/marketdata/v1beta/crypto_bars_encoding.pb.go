@@ -10,16 +10,16 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for CryptoBar.
+// MarshalJSONSebuf implements sebufMarshaler for CryptoBar.
 // This method handles int64_encoding=NUMBER fields: n
 // Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
-func (x *CryptoBar) MarshalJSON() ([]byte, error) {
+func (x *CryptoBar) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -39,6 +39,11 @@ func (x *CryptoBar) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for CryptoBar.
+func (x *CryptoBar) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for CryptoBar.

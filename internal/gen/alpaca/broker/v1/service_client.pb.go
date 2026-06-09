@@ -142,7 +142,7 @@ type BrokerServiceClient interface {
 	GetIRAContributionLimits(ctx context.Context, req *GetIRAContributionLimitsRequest, opts ...BrokerServiceCallOption) (*IRAContributionLimits, error)
 	ListCountries(ctx context.Context, req *ListCountriesRequest, opts ...BrokerServiceCallOption) (*ListCountriesResponse, error)
 	ListIPOOfferings(ctx context.Context, req *ListIPOOfferingsRequest, opts ...BrokerServiceCallOption) (*ListIPOOfferingsResponse, error)
-	GetIPOOffering(ctx context.Context, req *GetIPOOfferingRequest, opts ...BrokerServiceCallOption) (*IPOOffering, error)
+	GetIPOOffering(ctx context.Context, req *GetIPOOfferingRequest, opts ...BrokerServiceCallOption) (*GetIPOOfferingResponse, error)
 }
 
 // brokerServiceClient is the implementation of BrokerServiceClient.
@@ -8027,7 +8027,7 @@ func (c *brokerServiceClient) ListIPOOfferings(ctx context.Context, req *ListIPO
 }
 
 // GetIPOOffering calls the GetIPOOffering RPC.
-func (c *brokerServiceClient) GetIPOOffering(ctx context.Context, req *GetIPOOfferingRequest, opts ...BrokerServiceCallOption) (*IPOOffering, error) {
+func (c *brokerServiceClient) GetIPOOffering(ctx context.Context, req *GetIPOOfferingRequest, opts ...BrokerServiceCallOption) (*GetIPOOfferingResponse, error) {
 	callOpts := &brokerServiceCallOptions{}
 	for _, opt := range opts {
 		opt(callOpts)
@@ -8083,7 +8083,7 @@ func (c *brokerServiceClient) GetIPOOffering(ctx context.Context, req *GetIPOOff
 	}
 
 	// Unmarshal response
-	result := &IPOOffering{}
+	result := &GetIPOOfferingResponse{}
 	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}

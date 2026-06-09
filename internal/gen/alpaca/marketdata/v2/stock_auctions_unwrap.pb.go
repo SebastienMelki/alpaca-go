@@ -9,16 +9,24 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for StockAuctionsList.
+// MarshalJSONSebuf implements sebufMarshaler for StockAuctionsList.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *StockAuctionsList) MarshalJSON() ([]byte, error) {
+func (x *StockAuctionsList) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Auctions))
 	for _, item := range x.Auctions {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -26,6 +34,11 @@ func (x *StockAuctionsList) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for StockAuctionsList.
+func (x *StockAuctionsList) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for StockAuctionsList.
@@ -46,9 +59,9 @@ func (x *StockAuctionsList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for GetStockAuctionsResponse.
+// MarshalJSONSebuf implements sebufMarshaler for GetStockAuctionsResponse.
 // This method handles unwrap field serialization for map values.
-func (x *GetStockAuctionsResponse) MarshalJSON() ([]byte, error) {
+func (x *GetStockAuctionsResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
@@ -63,7 +76,15 @@ func (x *GetStockAuctionsResponse) MarshalJSON() ([]byte, error) {
 				// Marshal the unwrap field directly (the array)
 				items := make([]json.RawMessage, 0, len(wrapper.GetAuctions()))
 				for _, item := range wrapper.GetAuctions() {
-					data, err := protojson.Marshal(item)
+					var data []byte
+					var err error
+					if m, ok := any(item).(interface {
+						MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+					}); ok {
+						data, err = m.MarshalJSONSebuf(opts)
+					} else {
+						data, err = opts.Marshal(item)
+					}
 					if err != nil {
 						return nil, err
 					}
@@ -93,6 +114,11 @@ func (x *GetStockAuctionsResponse) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(out)
+}
+
+// MarshalJSON implements json.Marshaler for GetStockAuctionsResponse.
+func (x *GetStockAuctionsResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for GetStockAuctionsResponse.

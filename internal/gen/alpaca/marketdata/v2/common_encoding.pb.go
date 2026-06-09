@@ -10,16 +10,16 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for Bar.
+// MarshalJSONSebuf implements sebufMarshaler for Bar.
 // This method handles int64_encoding=NUMBER fields: v, n
 // Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
-func (x *Bar) MarshalJSON() ([]byte, error) {
+func (x *Bar) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -47,6 +47,11 @@ func (x *Bar) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for Bar.
+func (x *Bar) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for Bar.
@@ -84,16 +89,16 @@ func (x *Bar) UnmarshalJSON(data []byte) error {
 	return protojson.Unmarshal(modified, x)
 }
 
-// MarshalJSON implements json.Marshaler for Trade.
+// MarshalJSONSebuf implements sebufMarshaler for Trade.
 // This method handles int64_encoding=NUMBER fields: i
 // Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
-func (x *Trade) MarshalJSON() ([]byte, error) {
+func (x *Trade) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -113,6 +118,11 @@ func (x *Trade) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for Trade.
+func (x *Trade) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for Trade.
@@ -142,15 +152,15 @@ func (x *Trade) UnmarshalJSON(data []byte) error {
 	return protojson.Unmarshal(modified, x)
 }
 
-// MarshalJSON implements json.Marshaler for Snapshot.
+// MarshalJSONSebuf implements sebufMarshaler for Snapshot.
 // This method re-marshals nested messages that have int64_encoding=NUMBER fields: latest_trade, minute_bar, daily_bar, prev_daily_bar
-func (x *Snapshot) MarshalJSON() ([]byte, error) {
+func (x *Snapshot) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -161,39 +171,68 @@ func (x *Snapshot) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	// Re-serialize "latestTrade" using its custom MarshalJSON
+	// Re-serialize "latestTrade" forwarding opts when child supports MarshalJSONSebuf
 	if x.LatestTrade != nil {
-		raw["latestTrade"], err = json.Marshal(x.LatestTrade)
+		if m, ok := any(x.LatestTrade).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			raw["latestTrade"], err = m.MarshalJSONSebuf(opts)
+		} else {
+			raw["latestTrade"], err = opts.Marshal(x.LatestTrade)
+		}
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	// Re-serialize "minuteBar" using its custom MarshalJSON
+	// Re-serialize "minuteBar" forwarding opts when child supports MarshalJSONSebuf
 	if x.MinuteBar != nil {
-		raw["minuteBar"], err = json.Marshal(x.MinuteBar)
+		if m, ok := any(x.MinuteBar).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			raw["minuteBar"], err = m.MarshalJSONSebuf(opts)
+		} else {
+			raw["minuteBar"], err = opts.Marshal(x.MinuteBar)
+		}
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	// Re-serialize "dailyBar" using its custom MarshalJSON
+	// Re-serialize "dailyBar" forwarding opts when child supports MarshalJSONSebuf
 	if x.DailyBar != nil {
-		raw["dailyBar"], err = json.Marshal(x.DailyBar)
+		if m, ok := any(x.DailyBar).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			raw["dailyBar"], err = m.MarshalJSONSebuf(opts)
+		} else {
+			raw["dailyBar"], err = opts.Marshal(x.DailyBar)
+		}
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	// Re-serialize "prevDailyBar" using its custom MarshalJSON
+	// Re-serialize "prevDailyBar" forwarding opts when child supports MarshalJSONSebuf
 	if x.PrevDailyBar != nil {
-		raw["prevDailyBar"], err = json.Marshal(x.PrevDailyBar)
+		if m, ok := any(x.PrevDailyBar).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			raw["prevDailyBar"], err = m.MarshalJSONSebuf(opts)
+		} else {
+			raw["prevDailyBar"], err = opts.Marshal(x.PrevDailyBar)
+		}
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for Snapshot.
+func (x *Snapshot) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for Snapshot.

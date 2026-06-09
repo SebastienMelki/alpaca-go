@@ -26,7 +26,7 @@ var File_alpaca_broker_v1_service_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1ealpaca/broker/v1/service.proto\x12\x10alpaca.broker.v1\x1a\x1csebuf/http/annotations.proto\x1a\x18sebuf/http/headers.proto\x1a%alpaca/broker/v1/broker_account.proto\x1a%alpaca/broker/v1/create_account.proto\x1a$alpaca/broker/v1/list_accounts.proto\x1a\"alpaca/broker/v1/get_account.proto\x1a%alpaca/broker/v1/update_account.proto\x1a$alpaca/broker/v1/close_account.proto\x1a'alpaca/broker/v1/ach_relationship.proto\x1a.alpaca/broker/v1/create_ach_relationship.proto\x1a-alpaca/broker/v1/list_ach_relationships.proto\x1a.alpaca/broker/v1/delete_ach_relationship.proto\x1a\x1falpaca/broker/v1/transfer.proto\x1a&alpaca/broker/v1/create_transfer.proto\x1a%alpaca/broker/v1/list_transfers.proto\x1a#alpaca/broker/v1/get_transfer.proto\x1a&alpaca/broker/v1/cancel_transfer.proto\x1a$alpaca/broker/v1/trading_order.proto\x1a+alpaca/broker/v1/create_trading_order.proto\x1a*alpaca/broker/v1/list_trading_orders.proto\x1a(alpaca/broker/v1/get_trading_order.proto\x1a+alpaca/broker/v1/cancel_trading_order.proto\x1a'alpaca/broker/v1/trading_position.proto\x1a\x1falpaca/broker/v1/document.proto\x1a alpaca/broker/v1/watchlist.proto\x1a,alpaca/broker/v1/broker_crypto_funding.proto\x1a\x1ealpaca/broker/v1/journal.proto\x1a\"alpaca/broker/v1/rebalancing.proto\x1a\x1aalpaca/broker/v1/jit.proto\x1a&alpaca/broker/v1/instant_funding.proto\x1a\x1balpaca/broker/v1/fpsl.proto\x1a\x1calpaca/broker/v1/oauth.proto\x1a\x1aalpaca/broker/v1/sse.proto\x1a\x1aalpaca/broker/v1/cip.proto\x1a\x1dalpaca/broker/v1/onfido.proto\x1a\x1falpaca/broker/v1/calendar.proto\x1a\x1ealpaca/broker/v1/options.proto\x1a\x1aalpaca/broker/v1/ira.proto\x1a\x1ealpaca/broker/v1/country.proto\x1a\x1aalpaca/broker/v1/ipo.proto\x1a&alpaca/broker/v1/trading_account.proto\x1a'alpaca/broker/v1/account_activity.proto\x1a/alpaca/broker/v1/broker_portfolio_history.proto2\x85\x81\x01\n" +
+	"\x1ealpaca/broker/v1/service.proto\x12\x10alpaca.broker.v1\x1a\x1csebuf/http/annotations.proto\x1a\x18sebuf/http/headers.proto\x1a%alpaca/broker/v1/broker_account.proto\x1a%alpaca/broker/v1/create_account.proto\x1a$alpaca/broker/v1/list_accounts.proto\x1a\"alpaca/broker/v1/get_account.proto\x1a%alpaca/broker/v1/update_account.proto\x1a$alpaca/broker/v1/close_account.proto\x1a'alpaca/broker/v1/ach_relationship.proto\x1a.alpaca/broker/v1/create_ach_relationship.proto\x1a-alpaca/broker/v1/list_ach_relationships.proto\x1a.alpaca/broker/v1/delete_ach_relationship.proto\x1a\x1falpaca/broker/v1/transfer.proto\x1a&alpaca/broker/v1/create_transfer.proto\x1a%alpaca/broker/v1/list_transfers.proto\x1a#alpaca/broker/v1/get_transfer.proto\x1a&alpaca/broker/v1/cancel_transfer.proto\x1a$alpaca/broker/v1/trading_order.proto\x1a+alpaca/broker/v1/create_trading_order.proto\x1a*alpaca/broker/v1/list_trading_orders.proto\x1a(alpaca/broker/v1/get_trading_order.proto\x1a+alpaca/broker/v1/cancel_trading_order.proto\x1a'alpaca/broker/v1/trading_position.proto\x1a\x1falpaca/broker/v1/document.proto\x1a alpaca/broker/v1/watchlist.proto\x1a,alpaca/broker/v1/broker_crypto_funding.proto\x1a\x1ealpaca/broker/v1/journal.proto\x1a\"alpaca/broker/v1/rebalancing.proto\x1a\x1aalpaca/broker/v1/jit.proto\x1a&alpaca/broker/v1/instant_funding.proto\x1a\x1balpaca/broker/v1/fpsl.proto\x1a\x1calpaca/broker/v1/oauth.proto\x1a\x1aalpaca/broker/v1/sse.proto\x1a\x1aalpaca/broker/v1/cip.proto\x1a\x1dalpaca/broker/v1/onfido.proto\x1a\x1falpaca/broker/v1/calendar.proto\x1a\x1ealpaca/broker/v1/options.proto\x1a\x1aalpaca/broker/v1/ira.proto\x1a\x1ealpaca/broker/v1/country.proto\x1a\x1aalpaca/broker/v1/ipo.proto\x1a&alpaca/broker/v1/trading_account.proto\x1a'alpaca/broker/v1/account_activity.proto\x1a/alpaca/broker/v1/broker_portfolio_history.proto2\x91\x81\x01\n" +
 	"\rBrokerService\x12k\n" +
 	"\rCreateAccount\x12&.alpaca.broker.v1.CreateAccountRequest\x1a\x1f.alpaca.broker.v1.BrokerAccount\"\x11\x9a\xb5\x18\r\n" +
 	"\t/accounts\x10\x02\x12p\n" +
@@ -248,8 +248,8 @@ const file_alpaca_broker_v1_service_proto_rawDesc = "" +
 	"\rListCountries\x12&.alpaca.broker.v1.ListCountriesRequest\x1a'.alpaca.broker.v1.ListCountriesResponse\"\x15\x9a\xb5\x18\x11\n" +
 	"\r/country-info\x10\x01\x12x\n" +
 	"\x10ListIPOOfferings\x12).alpaca.broker.v1.ListIPOOfferingsRequest\x1a*.alpaca.broker.v1.ListIPOOfferingsResponse\"\r\x9a\xb5\x18\t\n" +
-	"\x05/ipos\x10\x01\x12w\n" +
-	"\x0eGetIPOOffering\x12'.alpaca.broker.v1.GetIPOOfferingRequest\x1a\x1d.alpaca.broker.v1.IPOOffering\"\x1d\x9a\xb5\x18\x19\n" +
+	"\x05/ipos\x10\x01\x12\x82\x01\n" +
+	"\x0eGetIPOOffering\x12'.alpaca.broker.v1.GetIPOOfferingRequest\x1a(.alpaca.broker.v1.GetIPOOfferingResponse\"\x1d\x9a\xb5\x18\x19\n" +
 	"\x15/ipos/{ipo_reference}\x10\x01\x1a\x80\x01\xa2\xb5\x18\x05\n" +
 	"\x03/v1\xaa\xb5\x18s\n" +
 	"q\n" +
@@ -445,7 +445,7 @@ var file_alpaca_broker_v1_service_proto_goTypes = []any{
 	(*IRAContributionLimits)(nil),                  // 185: alpaca.broker.v1.IRAContributionLimits
 	(*ListCountriesResponse)(nil),                  // 186: alpaca.broker.v1.ListCountriesResponse
 	(*ListIPOOfferingsResponse)(nil),               // 187: alpaca.broker.v1.ListIPOOfferingsResponse
-	(*IPOOffering)(nil),                            // 188: alpaca.broker.v1.IPOOffering
+	(*GetIPOOfferingResponse)(nil),                 // 188: alpaca.broker.v1.GetIPOOfferingResponse
 }
 var file_alpaca_broker_v1_service_proto_depIdxs = []int32{
 	0,   // 0: alpaca.broker.v1.BrokerService.CreateAccount:input_type -> alpaca.broker.v1.CreateAccountRequest
@@ -665,7 +665,7 @@ var file_alpaca_broker_v1_service_proto_depIdxs = []int32{
 	185, // 214: alpaca.broker.v1.BrokerService.GetIRAContributionLimits:output_type -> alpaca.broker.v1.IRAContributionLimits
 	186, // 215: alpaca.broker.v1.BrokerService.ListCountries:output_type -> alpaca.broker.v1.ListCountriesResponse
 	187, // 216: alpaca.broker.v1.BrokerService.ListIPOOfferings:output_type -> alpaca.broker.v1.ListIPOOfferingsResponse
-	188, // 217: alpaca.broker.v1.BrokerService.GetIPOOffering:output_type -> alpaca.broker.v1.IPOOffering
+	188, // 217: alpaca.broker.v1.BrokerService.GetIPOOffering:output_type -> alpaca.broker.v1.GetIPOOfferingResponse
 	109, // [109:218] is the sub-list for method output_type
 	0,   // [0:109] is the sub-list for method input_type
 	0,   // [0:0] is the sub-list for extension type_name

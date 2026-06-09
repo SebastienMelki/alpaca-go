@@ -9,16 +9,24 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for CryptoQuotesList.
+// MarshalJSONSebuf implements sebufMarshaler for CryptoQuotesList.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *CryptoQuotesList) MarshalJSON() ([]byte, error) {
+func (x *CryptoQuotesList) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Quotes))
 	for _, item := range x.Quotes {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -26,6 +34,11 @@ func (x *CryptoQuotesList) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for CryptoQuotesList.
+func (x *CryptoQuotesList) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for CryptoQuotesList.
@@ -46,9 +59,9 @@ func (x *CryptoQuotesList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for GetCryptoQuotesResponse.
+// MarshalJSONSebuf implements sebufMarshaler for GetCryptoQuotesResponse.
 // This method handles unwrap field serialization for map values.
-func (x *GetCryptoQuotesResponse) MarshalJSON() ([]byte, error) {
+func (x *GetCryptoQuotesResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
@@ -63,7 +76,15 @@ func (x *GetCryptoQuotesResponse) MarshalJSON() ([]byte, error) {
 				// Marshal the unwrap field directly (the array)
 				items := make([]json.RawMessage, 0, len(wrapper.GetQuotes()))
 				for _, item := range wrapper.GetQuotes() {
-					data, err := protojson.Marshal(item)
+					var data []byte
+					var err error
+					if m, ok := any(item).(interface {
+						MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+					}); ok {
+						data, err = m.MarshalJSONSebuf(opts)
+					} else {
+						data, err = opts.Marshal(item)
+					}
 					if err != nil {
 						return nil, err
 					}
@@ -93,6 +114,11 @@ func (x *GetCryptoQuotesResponse) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(out)
+}
+
+// MarshalJSON implements json.Marshaler for GetCryptoQuotesResponse.
+func (x *GetCryptoQuotesResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for GetCryptoQuotesResponse.

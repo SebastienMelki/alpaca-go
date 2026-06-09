@@ -5,18 +5,28 @@ package marketdatav2
 
 import (
 	"encoding/json"
+
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for StockTradesList.
+// MarshalJSONSebuf implements sebufMarshaler for StockTradesList.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *StockTradesList) MarshalJSON() ([]byte, error) {
+func (x *StockTradesList) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Trades))
 	for _, item := range x.Trades {
-		data, err := json.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -24,6 +34,11 @@ func (x *StockTradesList) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for StockTradesList.
+func (x *StockTradesList) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for StockTradesList.
@@ -44,9 +59,9 @@ func (x *StockTradesList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for GetStockTradesResponse.
+// MarshalJSONSebuf implements sebufMarshaler for GetStockTradesResponse.
 // This method handles unwrap field serialization for map values.
-func (x *GetStockTradesResponse) MarshalJSON() ([]byte, error) {
+func (x *GetStockTradesResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
@@ -61,7 +76,15 @@ func (x *GetStockTradesResponse) MarshalJSON() ([]byte, error) {
 				// Marshal the unwrap field directly (the array)
 				items := make([]json.RawMessage, 0, len(wrapper.GetTrades()))
 				for _, item := range wrapper.GetTrades() {
-					data, err := json.Marshal(item)
+					var data []byte
+					var err error
+					if m, ok := any(item).(interface {
+						MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+					}); ok {
+						data, err = m.MarshalJSONSebuf(opts)
+					} else {
+						data, err = opts.Marshal(item)
+					}
 					if err != nil {
 						return nil, err
 					}
@@ -91,6 +114,11 @@ func (x *GetStockTradesResponse) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(out)
+}
+
+// MarshalJSON implements json.Marshaler for GetStockTradesResponse.
+func (x *GetStockTradesResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for GetStockTradesResponse.

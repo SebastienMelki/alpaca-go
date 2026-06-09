@@ -9,16 +9,24 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for ListJournalsResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListJournalsResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *ListJournalsResponse) MarshalJSON() ([]byte, error) {
+func (x *ListJournalsResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Journals))
 	for _, item := range x.Journals {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -26,6 +34,11 @@ func (x *ListJournalsResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for ListJournalsResponse.
+func (x *ListJournalsResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListJournalsResponse.
@@ -46,16 +59,24 @@ func (x *ListJournalsResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for CreateBatchJournalResponse.
+// MarshalJSONSebuf implements sebufMarshaler for CreateBatchJournalResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *CreateBatchJournalResponse) MarshalJSON() ([]byte, error) {
+func (x *CreateBatchJournalResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Journals))
 	for _, item := range x.Journals {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -63,6 +84,11 @@ func (x *CreateBatchJournalResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for CreateBatchJournalResponse.
+func (x *CreateBatchJournalResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for CreateBatchJournalResponse.
@@ -83,16 +109,24 @@ func (x *CreateBatchJournalResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for ReverseBatchJournalResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ReverseBatchJournalResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *ReverseBatchJournalResponse) MarshalJSON() ([]byte, error) {
+func (x *ReverseBatchJournalResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Journals))
 	for _, item := range x.Journals {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -100,6 +134,11 @@ func (x *ReverseBatchJournalResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for ReverseBatchJournalResponse.
+func (x *ReverseBatchJournalResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ReverseBatchJournalResponse.

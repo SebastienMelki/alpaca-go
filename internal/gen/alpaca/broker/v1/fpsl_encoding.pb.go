@@ -10,16 +10,16 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for FPSLLoan.
+// MarshalJSONSebuf implements sebufMarshaler for FPSLLoan.
 // This method handles int64_encoding=NUMBER fields: quantity
 // Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
-func (x *FPSLLoan) MarshalJSON() ([]byte, error) {
+func (x *FPSLLoan) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -39,6 +39,11 @@ func (x *FPSLLoan) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for FPSLLoan.
+func (x *FPSLLoan) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for FPSLLoan.
@@ -68,15 +73,15 @@ func (x *FPSLLoan) UnmarshalJSON(data []byte) error {
 	return protojson.Unmarshal(modified, x)
 }
 
-// MarshalJSON implements json.Marshaler for ListFPSLLoansResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListFPSLLoansResponse.
 // This method re-marshals nested messages that have int64_encoding=NUMBER fields: loans
-func (x *ListFPSLLoansResponse) MarshalJSON() ([]byte, error) {
+func (x *ListFPSLLoansResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -87,15 +92,38 @@ func (x *ListFPSLLoansResponse) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	// Re-serialize repeated "loans" using its custom MarshalJSON
+	// Re-serialize repeated "loans" forwarding opts to each element
 	if len(x.Loans) > 0 {
-		raw["loans"], err = json.Marshal(x.Loans)
+		items := make([]json.RawMessage, 0, len(x.Loans))
+		for _, item := range x.Loans {
+			if m, ok := any(item).(interface {
+				MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+			}); ok {
+				itemData, itemErr := m.MarshalJSONSebuf(opts)
+				if itemErr != nil {
+					return nil, itemErr
+				}
+				items = append(items, itemData)
+			} else {
+				itemData, itemErr := opts.Marshal(item)
+				if itemErr != nil {
+					return nil, itemErr
+				}
+				items = append(items, itemData)
+			}
+		}
+		raw["loans"], err = json.Marshal(items)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for ListFPSLLoansResponse.
+func (x *ListFPSLLoansResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListFPSLLoansResponse.

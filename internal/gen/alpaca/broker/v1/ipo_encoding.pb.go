@@ -10,16 +10,16 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for IPOOffering.
+// MarshalJSONSebuf implements sebufMarshaler for IPOOffering.
 // This method handles int64_encoding=NUMBER fields: anticipated_shares
 // Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
-func (x *IPOOffering) MarshalJSON() ([]byte, error) {
+func (x *IPOOffering) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -39,6 +39,11 @@ func (x *IPOOffering) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for IPOOffering.
+func (x *IPOOffering) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for IPOOffering.
@@ -68,15 +73,15 @@ func (x *IPOOffering) UnmarshalJSON(data []byte) error {
 	return protojson.Unmarshal(modified, x)
 }
 
-// MarshalJSON implements json.Marshaler for ListIPOOfferingsResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListIPOOfferingsResponse.
 // This method re-marshals nested messages that have int64_encoding=NUMBER fields: data
-func (x *ListIPOOfferingsResponse) MarshalJSON() ([]byte, error) {
+func (x *ListIPOOfferingsResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -87,15 +92,38 @@ func (x *ListIPOOfferingsResponse) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	// Re-serialize repeated "data" using its custom MarshalJSON
+	// Re-serialize repeated "data" forwarding opts to each element
 	if len(x.Data) > 0 {
-		raw["data"], err = json.Marshal(x.Data)
+		items := make([]json.RawMessage, 0, len(x.Data))
+		for _, item := range x.Data {
+			if m, ok := any(item).(interface {
+				MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+			}); ok {
+				itemData, itemErr := m.MarshalJSONSebuf(opts)
+				if itemErr != nil {
+					return nil, itemErr
+				}
+				items = append(items, itemData)
+			} else {
+				itemData, itemErr := opts.Marshal(item)
+				if itemErr != nil {
+					return nil, itemErr
+				}
+				items = append(items, itemData)
+			}
+		}
+		raw["data"], err = json.Marshal(items)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for ListIPOOfferingsResponse.
+func (x *ListIPOOfferingsResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListIPOOfferingsResponse.
@@ -129,6 +157,76 @@ func (x *ListIPOOfferingsResponse) UnmarshalJSON(data []byte) error {
 			return marshalErr
 		}
 		raw["data"] = protoJSON
+	}
+
+	modified, err := json.Marshal(raw)
+	if err != nil {
+		return err
+	}
+
+	return protojson.Unmarshal(modified, x)
+}
+
+// MarshalJSONSebuf implements sebufMarshaler for GetIPOOfferingResponse.
+// This method re-marshals nested messages that have int64_encoding=NUMBER fields: data
+func (x *GetIPOOfferingResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
+	if x == nil {
+		return []byte("null"), nil
+	}
+
+	// Use protojson for base serialization (handles all other fields correctly)
+	data, err := opts.Marshal(x)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse into a map to re-serialize nested messages with custom MarshalJSON
+	var raw map[string]json.RawMessage
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+
+	// Re-serialize "data" forwarding opts when child supports MarshalJSONSebuf
+	if x.Data != nil {
+		if m, ok := any(x.Data).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			raw["data"], err = m.MarshalJSONSebuf(opts)
+		} else {
+			raw["data"], err = opts.Marshal(x.Data)
+		}
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for GetIPOOfferingResponse.
+func (x *GetIPOOfferingResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
+}
+
+// UnmarshalJSON implements json.Unmarshaler for GetIPOOfferingResponse.
+// This method handles nested messages that have int64_encoding=NUMBER fields: data
+func (x *GetIPOOfferingResponse) UnmarshalJSON(data []byte) error {
+	var raw map[string]json.RawMessage
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	// Handle "data" using its custom UnmarshalJSON
+	if rawVal, ok := raw["data"]; ok {
+		inner := &IPOOffering{}
+		if err := json.Unmarshal(rawVal, inner); err != nil {
+			return err
+		}
+		innerJSON, err := protojson.Marshal(inner)
+		if err != nil {
+			return err
+		}
+		raw["data"] = innerJSON
 	}
 
 	modified, err := json.Marshal(raw)

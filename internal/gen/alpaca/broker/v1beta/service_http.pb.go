@@ -32,99 +32,99 @@ func RegisterBrokerV1BetaServiceServer(server BrokerV1BetaServiceServer, opts ..
 
 	methodHeaders := getCreateFundingWalletHeaders()
 	createFundingWalletHandler := BindingMiddleware[CreateFundingWalletRequest](
-		genericHandler(server.CreateFundingWallet, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.CreateFundingWallet, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		createFundingWalletPathParams, createFundingWalletQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v1beta/accounts/{account_id}/funding_wallet", createFundingWalletHandler)
 
 	methodHeaders = getGetFundingWalletHeaders()
 	getFundingWalletHandler := BindingMiddleware[GetFundingWalletRequest](
-		genericHandler(server.GetFundingWallet, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetFundingWallet, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getFundingWalletPathParams, getFundingWalletQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta/accounts/{account_id}/funding_wallet", getFundingWalletHandler)
 
 	methodHeaders = getBatchCreateFundingWalletsHeaders()
 	batchCreateFundingWalletsHandler := BindingMiddleware[BatchCreateFundingWalletsRequest](
-		genericHandler(server.BatchCreateFundingWallets, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.BatchCreateFundingWallets, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		batchCreateFundingWalletsPathParams, batchCreateFundingWalletsQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v1beta/funding_wallets", batchCreateFundingWalletsHandler)
 
 	methodHeaders = getListFundingWalletTransfersHeaders()
 	listFundingWalletTransfersHandler := BindingMiddleware[ListFundingWalletTransfersRequest](
-		genericHandler(server.ListFundingWalletTransfers, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ListFundingWalletTransfers, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		listFundingWalletTransfersPathParams, listFundingWalletTransfersQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta/accounts/{account_id}/funding_wallet/transfers", listFundingWalletTransfersHandler)
 
 	methodHeaders = getGetFundingWalletTransferHeaders()
 	getFundingWalletTransferHandler := BindingMiddleware[GetFundingWalletTransferRequest](
-		genericHandler(server.GetFundingWalletTransfer, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetFundingWalletTransfer, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getFundingWalletTransferPathParams, getFundingWalletTransferQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta/accounts/{account_id}/funding_wallet/transfers/{transfer_id}", getFundingWalletTransferHandler)
 
 	methodHeaders = getCreateFundingWalletWithdrawalHeaders()
 	createFundingWalletWithdrawalHandler := BindingMiddleware[CreateFundingWalletWithdrawalRequest](
-		genericHandler(server.CreateFundingWalletWithdrawal, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.CreateFundingWalletWithdrawal, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		createFundingWalletWithdrawalPathParams, createFundingWalletWithdrawalQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v1beta/accounts/{account_id}/funding_wallet/withdrawals", createFundingWalletWithdrawalHandler)
 
 	methodHeaders = getListFundingDetailsHeaders()
 	listFundingDetailsHandler := BindingMiddleware[ListFundingDetailsRequest](
-		genericHandler(server.ListFundingDetails, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ListFundingDetails, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		listFundingDetailsPathParams, listFundingDetailsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta/accounts/{account_id}/funding_wallet/funding_details", listFundingDetailsHandler)
 
 	methodHeaders = getDemoDepositHeaders()
 	demoDepositHandler := BindingMiddleware[DemoDepositRequest](
-		genericHandler(server.DemoDeposit, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.DemoDeposit, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		demoDepositPathParams, demoDepositQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v1beta/accounts/{account_id}/funding_wallet/demo_deposit", demoDepositHandler)
 
 	methodHeaders = getGetRecipientBankHeaders()
 	getRecipientBankHandler := BindingMiddleware[GetRecipientBankRequest](
-		genericHandler(server.GetRecipientBank, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetRecipientBank, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getRecipientBankPathParams, getRecipientBankQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta/accounts/{account_id}/funding_wallet/recipient_bank", getRecipientBankHandler)
 
 	methodHeaders = getCreateRecipientBankHeaders()
 	createRecipientBankHandler := BindingMiddleware[CreateRecipientBankRequest](
-		genericHandler(server.CreateRecipientBank, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.CreateRecipientBank, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		createRecipientBankPathParams, createRecipientBankQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v1beta/accounts/{account_id}/funding_wallet/recipient_bank", createRecipientBankHandler)
 
 	methodHeaders = getDeleteRecipientBankHeaders()
 	deleteRecipientBankHandler := BindingMiddleware[DeleteRecipientBankRequest](
-		genericHandler(server.DeleteRecipientBank, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.DeleteRecipientBank, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		deleteRecipientBankPathParams, deleteRecipientBankQueryParams,
-		"DELETE", config.errorHandler,
+		"DELETE", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("DELETE /v1beta/accounts/{account_id}/funding_wallet/recipient_bank", deleteRecipientBankHandler)

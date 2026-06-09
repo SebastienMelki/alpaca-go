@@ -9,9 +9,9 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for ListCountriesResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListCountriesResponse.
 // This method performs root-level unwrap, serializing the message as just the map value.
-func (x *ListCountriesResponse) MarshalJSON() ([]byte, error) {
+func (x *ListCountriesResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
@@ -19,7 +19,15 @@ func (x *ListCountriesResponse) MarshalJSON() ([]byte, error) {
 	out := make(map[string]json.RawMessage)
 	for k, v := range x.Countries {
 		if v != nil {
-			data, err := protojson.Marshal(v)
+			var data []byte
+			var err error
+			if m, ok := any(v).(interface {
+				MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+			}); ok {
+				data, err = m.MarshalJSONSebuf(opts)
+			} else {
+				data, err = opts.Marshal(v)
+			}
 			if err != nil {
 				return nil, err
 			}
@@ -27,6 +35,11 @@ func (x *ListCountriesResponse) MarshalJSON() ([]byte, error) {
 		}
 	}
 	return json.Marshal(out)
+}
+
+// MarshalJSON implements json.Marshaler for ListCountriesResponse.
+func (x *ListCountriesResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListCountriesResponse.
@@ -47,16 +60,24 @@ func (x *ListCountriesResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for ListStatesResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListStatesResponse.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *ListStatesResponse) MarshalJSON() ([]byte, error) {
+func (x *ListStatesResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.States))
 	for _, item := range x.States {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -64,6 +85,11 @@ func (x *ListStatesResponse) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for ListStatesResponse.
+func (x *ListStatesResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListStatesResponse.
