@@ -1158,7 +1158,7 @@ service BrokerService {
 
   // GetIPOOffering retrieves a single IPO offering by its reference.
   // GET /v1/ipos/{ipo_reference}
-  rpc GetIPOOffering(GetIPOOfferingRequest) returns (IPOOffering) {
+  rpc GetIPOOffering(GetIPOOfferingRequest) returns (GetIPOOfferingResponse) {
     option (sebuf.http.config) = {
       path: "/ipos/{ipo_reference}"
       method: HTTP_METHOD_GET
