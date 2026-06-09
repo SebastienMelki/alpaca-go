@@ -65,396 +65,396 @@ func RegisterTradingServiceServer(server TradingServiceServer, opts ...ServerOpt
 
 	methodHeaders := getGetAccountHeaders()
 	getAccountHandler := BindingMiddleware[GetAccountRequest](
-		genericHandler(server.GetAccount, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetAccount, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getAccountPathParams, getAccountQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/account", getAccountHandler)
 
 	methodHeaders = getGetAccountConfigurationsHeaders()
 	getAccountConfigurationsHandler := BindingMiddleware[GetAccountConfigurationsRequest](
-		genericHandler(server.GetAccountConfigurations, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetAccountConfigurations, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getAccountConfigurationsPathParams, getAccountConfigurationsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/account/configurations", getAccountConfigurationsHandler)
 
 	methodHeaders = getUpdateAccountConfigurationsHeaders()
 	updateAccountConfigurationsHandler := BindingMiddleware[UpdateAccountConfigurationsRequest](
-		genericHandler(server.UpdateAccountConfigurations, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.UpdateAccountConfigurations, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		updateAccountConfigurationsPathParams, updateAccountConfigurationsQueryParams,
-		"PATCH", config.errorHandler,
+		"PATCH", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("PATCH /v2/account/configurations", updateAccountConfigurationsHandler)
 
 	methodHeaders = getGetPortfolioHistoryHeaders()
 	getPortfolioHistoryHandler := BindingMiddleware[GetPortfolioHistoryRequest](
-		genericHandler(server.GetPortfolioHistory, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetPortfolioHistory, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getPortfolioHistoryPathParams, getPortfolioHistoryQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/account/portfolio/history", getPortfolioHistoryHandler)
 
 	methodHeaders = getGetAccountActivitiesHeaders()
 	getAccountActivitiesHandler := BindingMiddleware[GetAccountActivitiesRequest](
-		genericHandler(server.GetAccountActivities, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetAccountActivities, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getAccountActivitiesPathParams, getAccountActivitiesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/account/activities", getAccountActivitiesHandler)
 
 	methodHeaders = getGetAccountActivitiesByTypeHeaders()
 	getAccountActivitiesByTypeHandler := BindingMiddleware[GetAccountActivitiesByTypeRequest](
-		genericHandler(server.GetAccountActivitiesByType, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetAccountActivitiesByType, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getAccountActivitiesByTypePathParams, getAccountActivitiesByTypeQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/account/activities/{activity_type}", getAccountActivitiesByTypeHandler)
 
 	methodHeaders = getCreateOrderHeaders()
 	createOrderHandler := BindingMiddleware[CreateOrderRequest](
-		genericHandler(server.CreateOrder, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.CreateOrder, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		createOrderPathParams, createOrderQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v2/orders", createOrderHandler)
 
 	methodHeaders = getListOrdersHeaders()
 	listOrdersHandler := BindingMiddleware[ListOrdersRequest](
-		genericHandler(server.ListOrders, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ListOrders, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		listOrdersPathParams, listOrdersQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/orders", listOrdersHandler)
 
 	methodHeaders = getGetOrderHeaders()
 	getOrderHandler := BindingMiddleware[GetOrderRequest](
-		genericHandler(server.GetOrder, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetOrder, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getOrderPathParams, getOrderQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/orders/{order_id}", getOrderHandler)
 
 	methodHeaders = getGetOrderByClientIdHeaders()
 	getOrderByClientIdHandler := BindingMiddleware[GetOrderByClientIdRequest](
-		genericHandler(server.GetOrderByClientId, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetOrderByClientId, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getOrderByClientIdPathParams, getOrderByClientIdQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/orders:by_client_order_id", getOrderByClientIdHandler)
 
 	methodHeaders = getReplaceOrderHeaders()
 	replaceOrderHandler := BindingMiddleware[ReplaceOrderRequest](
-		genericHandler(server.ReplaceOrder, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ReplaceOrder, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		replaceOrderPathParams, replaceOrderQueryParams,
-		"PATCH", config.errorHandler,
+		"PATCH", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("PATCH /v2/orders/{order_id}", replaceOrderHandler)
 
 	methodHeaders = getCancelOrderHeaders()
 	cancelOrderHandler := BindingMiddleware[CancelOrderRequest](
-		genericHandler(server.CancelOrder, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.CancelOrder, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		cancelOrderPathParams, cancelOrderQueryParams,
-		"DELETE", config.errorHandler,
+		"DELETE", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("DELETE /v2/orders/{order_id}", cancelOrderHandler)
 
 	methodHeaders = getCancelAllOrdersHeaders()
 	cancelAllOrdersHandler := BindingMiddleware[CancelAllOrdersRequest](
-		genericHandler(server.CancelAllOrders, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.CancelAllOrders, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		cancelAllOrdersPathParams, cancelAllOrdersQueryParams,
-		"DELETE", config.errorHandler,
+		"DELETE", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("DELETE /v2/orders", cancelAllOrdersHandler)
 
 	methodHeaders = getListPositionsHeaders()
 	listPositionsHandler := BindingMiddleware[ListPositionsRequest](
-		genericHandler(server.ListPositions, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ListPositions, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		listPositionsPathParams, listPositionsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/positions", listPositionsHandler)
 
 	methodHeaders = getGetPositionHeaders()
 	getPositionHandler := BindingMiddleware[GetPositionRequest](
-		genericHandler(server.GetPosition, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetPosition, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getPositionPathParams, getPositionQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/positions/{symbol_or_asset_id}", getPositionHandler)
 
 	methodHeaders = getClosePositionHeaders()
 	closePositionHandler := BindingMiddleware[ClosePositionRequest](
-		genericHandler(server.ClosePosition, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ClosePosition, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		closePositionPathParams, closePositionQueryParams,
-		"DELETE", config.errorHandler,
+		"DELETE", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("DELETE /v2/positions/{symbol_or_asset_id}", closePositionHandler)
 
 	methodHeaders = getCloseAllPositionsHeaders()
 	closeAllPositionsHandler := BindingMiddleware[CloseAllPositionsRequest](
-		genericHandler(server.CloseAllPositions, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.CloseAllPositions, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		closeAllPositionsPathParams, closeAllPositionsQueryParams,
-		"DELETE", config.errorHandler,
+		"DELETE", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("DELETE /v2/positions", closeAllPositionsHandler)
 
 	methodHeaders = getExerciseOptionHeaders()
 	exerciseOptionHandler := BindingMiddleware[ExerciseOptionRequest](
-		genericHandler(server.ExerciseOption, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ExerciseOption, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		exerciseOptionPathParams, exerciseOptionQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v2/positions/{symbol_or_contract_id}/exercise", exerciseOptionHandler)
 
 	methodHeaders = getDoNotExerciseOptionHeaders()
 	doNotExerciseOptionHandler := BindingMiddleware[DoNotExerciseOptionRequest](
-		genericHandler(server.DoNotExerciseOption, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.DoNotExerciseOption, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		doNotExerciseOptionPathParams, doNotExerciseOptionQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v2/positions/{symbol_or_contract_id}/do-not-exercise", doNotExerciseOptionHandler)
 
 	methodHeaders = getListAssetsHeaders()
 	listAssetsHandler := BindingMiddleware[ListAssetsRequest](
-		genericHandler(server.ListAssets, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ListAssets, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		listAssetsPathParams, listAssetsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/assets", listAssetsHandler)
 
 	methodHeaders = getGetAssetHeaders()
 	getAssetHandler := BindingMiddleware[GetAssetRequest](
-		genericHandler(server.GetAsset, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetAsset, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getAssetPathParams, getAssetQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/assets/{symbol_or_id}", getAssetHandler)
 
 	methodHeaders = getListOptionContractsHeaders()
 	listOptionContractsHandler := BindingMiddleware[ListOptionContractsRequest](
-		genericHandler(server.ListOptionContracts, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ListOptionContracts, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		listOptionContractsPathParams, listOptionContractsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/options/contracts", listOptionContractsHandler)
 
 	methodHeaders = getGetOptionContractHeaders()
 	getOptionContractHandler := BindingMiddleware[GetOptionContractRequest](
-		genericHandler(server.GetOptionContract, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetOptionContract, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getOptionContractPathParams, getOptionContractQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/options/contracts/{symbol_or_id}", getOptionContractHandler)
 
 	methodHeaders = getGetClockHeaders()
 	getClockHandler := BindingMiddleware[GetClockRequest](
-		genericHandler(server.GetClock, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetClock, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getClockPathParams, getClockQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/clock", getClockHandler)
 
 	methodHeaders = getGetCalendarHeaders()
 	getCalendarHandler := BindingMiddleware[GetCalendarRequest](
-		genericHandler(server.GetCalendar, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetCalendar, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getCalendarPathParams, getCalendarQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/calendar", getCalendarHandler)
 
 	methodHeaders = getListWatchlistsHeaders()
 	listWatchlistsHandler := BindingMiddleware[ListWatchlistsRequest](
-		genericHandler(server.ListWatchlists, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ListWatchlists, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		listWatchlistsPathParams, listWatchlistsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/watchlists", listWatchlistsHandler)
 
 	methodHeaders = getCreateWatchlistHeaders()
 	createWatchlistHandler := BindingMiddleware[CreateWatchlistRequest](
-		genericHandler(server.CreateWatchlist, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.CreateWatchlist, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		createWatchlistPathParams, createWatchlistQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v2/watchlists", createWatchlistHandler)
 
 	methodHeaders = getGetWatchlistHeaders()
 	getWatchlistHandler := BindingMiddleware[GetWatchlistRequest](
-		genericHandler(server.GetWatchlist, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetWatchlist, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getWatchlistPathParams, getWatchlistQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/watchlists/{watchlist_id}", getWatchlistHandler)
 
 	methodHeaders = getUpdateWatchlistHeaders()
 	updateWatchlistHandler := BindingMiddleware[UpdateWatchlistRequest](
-		genericHandler(server.UpdateWatchlist, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.UpdateWatchlist, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		updateWatchlistPathParams, updateWatchlistQueryParams,
-		"PUT", config.errorHandler,
+		"PUT", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("PUT /v2/watchlists/{watchlist_id}", updateWatchlistHandler)
 
 	methodHeaders = getDeleteWatchlistHeaders()
 	deleteWatchlistHandler := BindingMiddleware[DeleteWatchlistRequest](
-		genericHandler(server.DeleteWatchlist, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.DeleteWatchlist, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		deleteWatchlistPathParams, deleteWatchlistQueryParams,
-		"DELETE", config.errorHandler,
+		"DELETE", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("DELETE /v2/watchlists/{watchlist_id}", deleteWatchlistHandler)
 
 	methodHeaders = getAddWatchlistAssetHeaders()
 	addWatchlistAssetHandler := BindingMiddleware[AddWatchlistAssetRequest](
-		genericHandler(server.AddWatchlistAsset, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.AddWatchlistAsset, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		addWatchlistAssetPathParams, addWatchlistAssetQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v2/watchlists/{watchlist_id}", addWatchlistAssetHandler)
 
 	methodHeaders = getRemoveWatchlistAssetHeaders()
 	removeWatchlistAssetHandler := BindingMiddleware[RemoveWatchlistAssetRequest](
-		genericHandler(server.RemoveWatchlistAsset, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.RemoveWatchlistAsset, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		removeWatchlistAssetPathParams, removeWatchlistAssetQueryParams,
-		"DELETE", config.errorHandler,
+		"DELETE", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("DELETE /v2/watchlists/{watchlist_id}/{symbol}", removeWatchlistAssetHandler)
 
 	methodHeaders = getGetWatchlistByNameHeaders()
 	getWatchlistByNameHandler := BindingMiddleware[GetWatchlistByNameRequest](
-		genericHandler(server.GetWatchlistByName, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetWatchlistByName, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getWatchlistByNamePathParams, getWatchlistByNameQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/watchlists:by_name", getWatchlistByNameHandler)
 
 	methodHeaders = getUpdateWatchlistByNameHeaders()
 	updateWatchlistByNameHandler := BindingMiddleware[UpdateWatchlistByNameRequest](
-		genericHandler(server.UpdateWatchlistByName, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.UpdateWatchlistByName, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		updateWatchlistByNamePathParams, updateWatchlistByNameQueryParams,
-		"PUT", config.errorHandler,
+		"PUT", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("PUT /v2/watchlists:by_name", updateWatchlistByNameHandler)
 
 	methodHeaders = getDeleteWatchlistByNameHeaders()
 	deleteWatchlistByNameHandler := BindingMiddleware[DeleteWatchlistByNameRequest](
-		genericHandler(server.DeleteWatchlistByName, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.DeleteWatchlistByName, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		deleteWatchlistByNamePathParams, deleteWatchlistByNameQueryParams,
-		"DELETE", config.errorHandler,
+		"DELETE", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("DELETE /v2/watchlists:by_name", deleteWatchlistByNameHandler)
 
 	methodHeaders = getAddWatchlistAssetByNameHeaders()
 	addWatchlistAssetByNameHandler := BindingMiddleware[AddWatchlistAssetByNameRequest](
-		genericHandler(server.AddWatchlistAssetByName, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.AddWatchlistAssetByName, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		addWatchlistAssetByNamePathParams, addWatchlistAssetByNameQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v2/watchlists:by_name/{watchlist_name}", addWatchlistAssetByNameHandler)
 
 	methodHeaders = getListCryptoWalletsHeaders()
 	listCryptoWalletsHandler := BindingMiddleware[ListCryptoWalletsRequest](
-		genericHandler(server.ListCryptoWallets, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ListCryptoWallets, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		listCryptoWalletsPathParams, listCryptoWalletsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/wallets", listCryptoWalletsHandler)
 
 	methodHeaders = getListCryptoTransfersHeaders()
 	listCryptoTransfersHandler := BindingMiddleware[ListCryptoTransfersRequest](
-		genericHandler(server.ListCryptoTransfers, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ListCryptoTransfers, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		listCryptoTransfersPathParams, listCryptoTransfersQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/wallets/transfers", listCryptoTransfersHandler)
 
 	methodHeaders = getGetCryptoTransferHeaders()
 	getCryptoTransferHandler := BindingMiddleware[GetCryptoTransferRequest](
-		genericHandler(server.GetCryptoTransfer, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetCryptoTransfer, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getCryptoTransferPathParams, getCryptoTransferQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/wallets/transfers/{transfer_id}", getCryptoTransferHandler)
 
 	methodHeaders = getCreateCryptoTransferHeaders()
 	createCryptoTransferHandler := BindingMiddleware[CreateCryptoTransferRequest](
-		genericHandler(server.CreateCryptoTransfer, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.CreateCryptoTransfer, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		createCryptoTransferPathParams, createCryptoTransferQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v2/wallets/transfers", createCryptoTransferHandler)
 
 	methodHeaders = getGetCryptoTransferEstimateHeaders()
 	getCryptoTransferEstimateHandler := BindingMiddleware[GetCryptoTransferEstimateRequest](
-		genericHandler(server.GetCryptoTransferEstimate, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetCryptoTransferEstimate, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getCryptoTransferEstimatePathParams, getCryptoTransferEstimateQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/wallets/fees/estimate", getCryptoTransferEstimateHandler)
 
 	methodHeaders = getListWhitelistedAddressesHeaders()
 	listWhitelistedAddressesHandler := BindingMiddleware[ListWhitelistedAddressesRequest](
-		genericHandler(server.ListWhitelistedAddresses, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.ListWhitelistedAddresses, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		listWhitelistedAddressesPathParams, listWhitelistedAddressesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/wallets/whitelists", listWhitelistedAddressesHandler)
 
 	methodHeaders = getCreateWhitelistedAddressHeaders()
 	createWhitelistedAddressHandler := BindingMiddleware[CreateWhitelistedAddressRequest](
-		genericHandler(server.CreateWhitelistedAddress, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.CreateWhitelistedAddress, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		createWhitelistedAddressPathParams, createWhitelistedAddressQueryParams,
-		"POST", config.errorHandler,
+		"POST", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("POST /v2/wallets/whitelists", createWhitelistedAddressHandler)
 
 	methodHeaders = getDeleteWhitelistedAddressHeaders()
 	deleteWhitelistedAddressHandler := BindingMiddleware[DeleteWhitelistedAddressRequest](
-		genericHandler(server.DeleteWhitelistedAddress, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.DeleteWhitelistedAddress, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		deleteWhitelistedAddressPathParams, deleteWhitelistedAddressQueryParams,
-		"DELETE", config.errorHandler,
+		"DELETE", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("DELETE /v2/wallets/whitelists/{whitelisted_address_id}", deleteWhitelistedAddressHandler)

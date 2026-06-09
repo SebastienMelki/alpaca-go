@@ -29,7 +29,7 @@ func RegisterBrokerV2ServiceServer(server BrokerV2ServiceServer, opts ...ServerO
 	subscribeTradeEventsV2Handler := SSEHandler[SubscribeTradeEventsV2Request](
 		server.SubscribeTradeEventsV2, config.errorHandler, serviceHeaders, methodHeaders,
 		subscribeTradeEventsV2PathParams, subscribeTradeEventsV2QueryParams,
-		"GET",
+		"GET", config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/events/trades", subscribeTradeEventsV2Handler)
@@ -38,7 +38,7 @@ func RegisterBrokerV2ServiceServer(server BrokerV2ServiceServer, opts ...ServerO
 	subscribeJournalEventsV2Handler := SSEHandler[SubscribeJournalEventsV2Request](
 		server.SubscribeJournalEventsV2, config.errorHandler, serviceHeaders, methodHeaders,
 		subscribeJournalEventsV2PathParams, subscribeJournalEventsV2QueryParams,
-		"GET",
+		"GET", config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/events/journals/status", subscribeJournalEventsV2Handler)
@@ -47,7 +47,7 @@ func RegisterBrokerV2ServiceServer(server BrokerV2ServiceServer, opts ...ServerO
 	subscribeSystemEventsV2Handler := SSEHandler[SubscribeSystemEventsV2Request](
 		server.SubscribeSystemEventsV2, config.errorHandler, serviceHeaders, methodHeaders,
 		subscribeSystemEventsV2PathParams, subscribeSystemEventsV2QueryParams,
-		"GET",
+		"GET", config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/events/system", subscribeSystemEventsV2Handler)
@@ -56,7 +56,7 @@ func RegisterBrokerV2ServiceServer(server BrokerV2ServiceServer, opts ...ServerO
 	subscribeAdminActionsV2Handler := SSEHandler[SubscribeAdminActionsV2Request](
 		server.SubscribeAdminActionsV2, config.errorHandler, serviceHeaders, methodHeaders,
 		subscribeAdminActionsV2PathParams, subscribeAdminActionsV2QueryParams,
-		"GET",
+		"GET", config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/events/admin-actions", subscribeAdminActionsV2Handler)
@@ -65,7 +65,7 @@ func RegisterBrokerV2ServiceServer(server BrokerV2ServiceServer, opts ...ServerO
 	subscribeFundingStatusV2Handler := SSEHandler[SubscribeFundingStatusV2Request](
 		server.SubscribeFundingStatusV2, config.errorHandler, serviceHeaders, methodHeaders,
 		subscribeFundingStatusV2PathParams, subscribeFundingStatusV2QueryParams,
-		"GET",
+		"GET", config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/events/funding/status", subscribeFundingStatusV2Handler)
@@ -74,7 +74,7 @@ func RegisterBrokerV2ServiceServer(server BrokerV2ServiceServer, opts ...ServerO
 	subscribeIPOEventsHandler := SSEHandler[SubscribeIPOEventsRequest](
 		server.SubscribeIPOEvents, config.errorHandler, serviceHeaders, methodHeaders,
 		subscribeIPOEventsPathParams, subscribeIPOEventsQueryParams,
-		"GET",
+		"GET", config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/events/ipos", subscribeIPOEventsHandler)

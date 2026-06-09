@@ -9,9 +9,9 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for ListJITLedgersResponse.
+// MarshalJSONSebuf implements sebufMarshaler for ListJITLedgersResponse.
 // This method performs root-level unwrap, serializing the message as just the map value.
-func (x *ListJITLedgersResponse) MarshalJSON() ([]byte, error) {
+func (x *ListJITLedgersResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
@@ -21,7 +21,15 @@ func (x *ListJITLedgersResponse) MarshalJSON() ([]byte, error) {
 		if wrapper != nil {
 			items := make([]json.RawMessage, 0, len(wrapper.GetLedgers()))
 			for _, item := range wrapper.GetLedgers() {
-				data, err := protojson.Marshal(item)
+				var data []byte
+				var err error
+				if m, ok := any(item).(interface {
+					MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+				}); ok {
+					data, err = m.MarshalJSONSebuf(opts)
+				} else {
+					data, err = opts.Marshal(item)
+				}
 				if err != nil {
 					return nil, err
 				}
@@ -35,6 +43,11 @@ func (x *ListJITLedgersResponse) MarshalJSON() ([]byte, error) {
 		}
 	}
 	return json.Marshal(out)
+}
+
+// MarshalJSON implements json.Marshaler for ListJITLedgersResponse.
+func (x *ListJITLedgersResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for ListJITLedgersResponse.
@@ -63,16 +76,24 @@ func (x *ListJITLedgersResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for JITLedgerList.
+// MarshalJSONSebuf implements sebufMarshaler for JITLedgerList.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *JITLedgerList) MarshalJSON() ([]byte, error) {
+func (x *JITLedgerList) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Ledgers))
 	for _, item := range x.Ledgers {
-		data, err := protojson.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -80,6 +101,11 @@ func (x *JITLedgerList) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for JITLedgerList.
+func (x *JITLedgerList) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for JITLedgerList.

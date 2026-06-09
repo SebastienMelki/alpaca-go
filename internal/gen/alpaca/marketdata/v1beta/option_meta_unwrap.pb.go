@@ -5,16 +5,23 @@ package marketdatav1beta
 
 import (
 	"encoding/json"
+
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for GetOptionMetaConditionsResponse.
+// MarshalJSONSebuf implements sebufMarshaler for GetOptionMetaConditionsResponse.
 // This method performs root-level unwrap, serializing the message as just the map value.
-func (x *GetOptionMetaConditionsResponse) MarshalJSON() ([]byte, error) {
+func (x *GetOptionMetaConditionsResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	return json.Marshal(x.Conditions)
+}
+
+// MarshalJSON implements json.Marshaler for GetOptionMetaConditionsResponse.
+func (x *GetOptionMetaConditionsResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for GetOptionMetaConditionsResponse.
@@ -23,14 +30,19 @@ func (x *GetOptionMetaConditionsResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &x.Conditions)
 }
 
-// MarshalJSON implements json.Marshaler for GetOptionMetaExchangesResponse.
+// MarshalJSONSebuf implements sebufMarshaler for GetOptionMetaExchangesResponse.
 // This method performs root-level unwrap, serializing the message as just the map value.
-func (x *GetOptionMetaExchangesResponse) MarshalJSON() ([]byte, error) {
+func (x *GetOptionMetaExchangesResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	return json.Marshal(x.Exchanges)
+}
+
+// MarshalJSON implements json.Marshaler for GetOptionMetaExchangesResponse.
+func (x *GetOptionMetaExchangesResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for GetOptionMetaExchangesResponse.

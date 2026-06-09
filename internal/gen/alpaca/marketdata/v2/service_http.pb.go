@@ -39,162 +39,162 @@ func RegisterMarketDataServiceServer(server MarketDataServiceServer, opts ...Ser
 
 	methodHeaders := getGetStockBarsHeaders()
 	getStockBarsHandler := BindingMiddleware[GetStockBarsRequest](
-		genericHandler(server.GetStockBars, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetStockBars, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getStockBarsPathParams, getStockBarsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/bars", getStockBarsHandler)
 
 	methodHeaders = getGetLatestStockBarsHeaders()
 	getLatestStockBarsHandler := BindingMiddleware[GetLatestStockBarsRequest](
-		genericHandler(server.GetLatestStockBars, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetLatestStockBars, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getLatestStockBarsPathParams, getLatestStockBarsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/bars/latest", getLatestStockBarsHandler)
 
 	methodHeaders = getGetStockBarsSingleHeaders()
 	getStockBarsSingleHandler := BindingMiddleware[GetStockBarsSingleRequest](
-		genericHandler(server.GetStockBarsSingle, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetStockBarsSingle, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getStockBarsSinglePathParams, getStockBarsSingleQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/{symbol}/bars", getStockBarsSingleHandler)
 
 	methodHeaders = getGetLatestStockBarSingleHeaders()
 	getLatestStockBarSingleHandler := BindingMiddleware[GetLatestStockBarSingleRequest](
-		genericHandler(server.GetLatestStockBarSingle, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetLatestStockBarSingle, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getLatestStockBarSinglePathParams, getLatestStockBarSingleQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/{symbol}/bars/latest", getLatestStockBarSingleHandler)
 
 	methodHeaders = getGetStockTradesHeaders()
 	getStockTradesHandler := BindingMiddleware[GetStockTradesRequest](
-		genericHandler(server.GetStockTrades, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetStockTrades, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getStockTradesPathParams, getStockTradesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/trades", getStockTradesHandler)
 
 	methodHeaders = getGetLatestStockTradesHeaders()
 	getLatestStockTradesHandler := BindingMiddleware[GetLatestStockTradesRequest](
-		genericHandler(server.GetLatestStockTrades, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetLatestStockTrades, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getLatestStockTradesPathParams, getLatestStockTradesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/trades/latest", getLatestStockTradesHandler)
 
 	methodHeaders = getGetStockTradesSingleHeaders()
 	getStockTradesSingleHandler := BindingMiddleware[GetStockTradesSingleRequest](
-		genericHandler(server.GetStockTradesSingle, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetStockTradesSingle, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getStockTradesSinglePathParams, getStockTradesSingleQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/{symbol}/trades", getStockTradesSingleHandler)
 
 	methodHeaders = getGetLatestStockTradeSingleHeaders()
 	getLatestStockTradeSingleHandler := BindingMiddleware[GetLatestStockTradeSingleRequest](
-		genericHandler(server.GetLatestStockTradeSingle, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetLatestStockTradeSingle, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getLatestStockTradeSinglePathParams, getLatestStockTradeSingleQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/{symbol}/trades/latest", getLatestStockTradeSingleHandler)
 
 	methodHeaders = getGetStockQuotesHeaders()
 	getStockQuotesHandler := BindingMiddleware[GetStockQuotesRequest](
-		genericHandler(server.GetStockQuotes, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetStockQuotes, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getStockQuotesPathParams, getStockQuotesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/quotes", getStockQuotesHandler)
 
 	methodHeaders = getGetLatestStockQuotesHeaders()
 	getLatestStockQuotesHandler := BindingMiddleware[GetLatestStockQuotesRequest](
-		genericHandler(server.GetLatestStockQuotes, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetLatestStockQuotes, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getLatestStockQuotesPathParams, getLatestStockQuotesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/quotes/latest", getLatestStockQuotesHandler)
 
 	methodHeaders = getGetStockQuotesSingleHeaders()
 	getStockQuotesSingleHandler := BindingMiddleware[GetStockQuotesSingleRequest](
-		genericHandler(server.GetStockQuotesSingle, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetStockQuotesSingle, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getStockQuotesSinglePathParams, getStockQuotesSingleQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/{symbol}/quotes", getStockQuotesSingleHandler)
 
 	methodHeaders = getGetLatestStockQuoteSingleHeaders()
 	getLatestStockQuoteSingleHandler := BindingMiddleware[GetLatestStockQuoteSingleRequest](
-		genericHandler(server.GetLatestStockQuoteSingle, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetLatestStockQuoteSingle, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getLatestStockQuoteSinglePathParams, getLatestStockQuoteSingleQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/{symbol}/quotes/latest", getLatestStockQuoteSingleHandler)
 
 	methodHeaders = getGetStockSnapshotsHeaders()
 	getStockSnapshotsHandler := BindingMiddleware[GetStockSnapshotsRequest](
-		genericHandler(server.GetStockSnapshots, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetStockSnapshots, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getStockSnapshotsPathParams, getStockSnapshotsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/snapshots", getStockSnapshotsHandler)
 
 	methodHeaders = getGetStockSnapshotHeaders()
 	getStockSnapshotHandler := BindingMiddleware[GetStockSnapshotRequest](
-		genericHandler(server.GetStockSnapshot, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetStockSnapshot, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getStockSnapshotPathParams, getStockSnapshotQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/{symbol}/snapshot", getStockSnapshotHandler)
 
 	methodHeaders = getGetStockAuctionsHeaders()
 	getStockAuctionsHandler := BindingMiddleware[GetStockAuctionsRequest](
-		genericHandler(server.GetStockAuctions, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetStockAuctions, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getStockAuctionsPathParams, getStockAuctionsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/auctions", getStockAuctionsHandler)
 
 	methodHeaders = getGetStockAuctionsSingleHeaders()
 	getStockAuctionsSingleHandler := BindingMiddleware[GetStockAuctionsSingleRequest](
-		genericHandler(server.GetStockAuctionsSingle, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetStockAuctionsSingle, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getStockAuctionsSinglePathParams, getStockAuctionsSingleQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/{symbol}/auctions", getStockAuctionsSingleHandler)
 
 	methodHeaders = getGetStockMetaConditionsHeaders()
 	getStockMetaConditionsHandler := BindingMiddleware[GetStockMetaConditionsRequest](
-		genericHandler(server.GetStockMetaConditions, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetStockMetaConditions, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getStockMetaConditionsPathParams, getStockMetaConditionsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/meta/conditions/{ticktype}", getStockMetaConditionsHandler)
 
 	methodHeaders = getGetStockMetaExchangesHeaders()
 	getStockMetaExchangesHandler := BindingMiddleware[GetStockMetaExchangesRequest](
-		genericHandler(server.GetStockMetaExchanges, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetStockMetaExchanges, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getStockMetaExchangesPathParams, getStockMetaExchangesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v2/stocks/meta/exchanges", getStockMetaExchangesHandler)

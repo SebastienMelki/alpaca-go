@@ -10,16 +10,16 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for Auction.
+// MarshalJSONSebuf implements sebufMarshaler for Auction.
 // This method handles int64_encoding=NUMBER fields: s
 // Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
-func (x *Auction) MarshalJSON() ([]byte, error) {
+func (x *Auction) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -39,6 +39,11 @@ func (x *Auction) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for Auction.
+func (x *Auction) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for Auction.
@@ -68,15 +73,15 @@ func (x *Auction) UnmarshalJSON(data []byte) error {
 	return protojson.Unmarshal(modified, x)
 }
 
-// MarshalJSON implements json.Marshaler for DailyAuctions.
+// MarshalJSONSebuf implements sebufMarshaler for DailyAuctions.
 // This method re-marshals nested messages that have int64_encoding=NUMBER fields: o, c
-func (x *DailyAuctions) MarshalJSON() ([]byte, error) {
+func (x *DailyAuctions) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	// Use protojson for base serialization (handles all other fields correctly)
-	data, err := protojson.Marshal(x)
+	data, err := opts.Marshal(x)
 	if err != nil {
 		return nil, err
 	}
@@ -87,23 +92,64 @@ func (x *DailyAuctions) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	// Re-serialize repeated "o" using its custom MarshalJSON
+	// Re-serialize repeated "o" forwarding opts to each element
 	if len(x.O) > 0 {
-		raw["o"], err = json.Marshal(x.O)
+		items := make([]json.RawMessage, 0, len(x.O))
+		for _, item := range x.O {
+			if m, ok := any(item).(interface {
+				MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+			}); ok {
+				itemData, itemErr := m.MarshalJSONSebuf(opts)
+				if itemErr != nil {
+					return nil, itemErr
+				}
+				items = append(items, itemData)
+			} else {
+				itemData, itemErr := opts.Marshal(item)
+				if itemErr != nil {
+					return nil, itemErr
+				}
+				items = append(items, itemData)
+			}
+		}
+		raw["o"], err = json.Marshal(items)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	// Re-serialize repeated "c" using its custom MarshalJSON
+	// Re-serialize repeated "c" forwarding opts to each element
 	if len(x.C) > 0 {
-		raw["c"], err = json.Marshal(x.C)
+		items := make([]json.RawMessage, 0, len(x.C))
+		for _, item := range x.C {
+			if m, ok := any(item).(interface {
+				MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+			}); ok {
+				itemData, itemErr := m.MarshalJSONSebuf(opts)
+				if itemErr != nil {
+					return nil, itemErr
+				}
+				items = append(items, itemData)
+			} else {
+				itemData, itemErr := opts.Marshal(item)
+				if itemErr != nil {
+					return nil, itemErr
+				}
+				items = append(items, itemData)
+			}
+		}
+		raw["c"], err = json.Marshal(items)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for DailyAuctions.
+func (x *DailyAuctions) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for DailyAuctions.

@@ -5,18 +5,28 @@ package marketdatav1beta
 
 import (
 	"encoding/json"
+
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// MarshalJSON implements json.Marshaler for CryptoBarsList.
+// MarshalJSONSebuf implements sebufMarshaler for CryptoBarsList.
 // This method performs root-level unwrap, serializing the message as just the array value.
-func (x *CryptoBarsList) MarshalJSON() ([]byte, error) {
+func (x *CryptoBarsList) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
 
 	items := make([]json.RawMessage, 0, len(x.Bars))
 	for _, item := range x.Bars {
-		data, err := json.Marshal(item)
+		var data []byte
+		var err error
+		if m, ok := any(item).(interface {
+			MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+		}); ok {
+			data, err = m.MarshalJSONSebuf(opts)
+		} else {
+			data, err = opts.Marshal(item)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -24,6 +34,11 @@ func (x *CryptoBarsList) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(items)
 
+}
+
+// MarshalJSON implements json.Marshaler for CryptoBarsList.
+func (x *CryptoBarsList) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for CryptoBarsList.
@@ -44,9 +59,9 @@ func (x *CryptoBarsList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler for GetCryptoBarsResponse.
+// MarshalJSONSebuf implements sebufMarshaler for GetCryptoBarsResponse.
 // This method handles unwrap field serialization for map values.
-func (x *GetCryptoBarsResponse) MarshalJSON() ([]byte, error) {
+func (x *GetCryptoBarsResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
@@ -61,7 +76,15 @@ func (x *GetCryptoBarsResponse) MarshalJSON() ([]byte, error) {
 				// Marshal the unwrap field directly (the array)
 				items := make([]json.RawMessage, 0, len(wrapper.GetBars()))
 				for _, item := range wrapper.GetBars() {
-					data, err := json.Marshal(item)
+					var data []byte
+					var err error
+					if m, ok := any(item).(interface {
+						MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+					}); ok {
+						data, err = m.MarshalJSONSebuf(opts)
+					} else {
+						data, err = opts.Marshal(item)
+					}
 					if err != nil {
 						return nil, err
 					}
@@ -91,6 +114,11 @@ func (x *GetCryptoBarsResponse) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(out)
+}
+
+// MarshalJSON implements json.Marshaler for GetCryptoBarsResponse.
+func (x *GetCryptoBarsResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
 // UnmarshalJSON implements json.Unmarshaler for GetCryptoBarsResponse.

@@ -44,207 +44,207 @@ func RegisterMarketDataBetaServiceServer(server MarketDataBetaServiceServer, opt
 
 	methodHeaders := getGetCryptoBarsHeaders()
 	getCryptoBarsHandler := BindingMiddleware[GetCryptoBarsRequest](
-		genericHandler(server.GetCryptoBars, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetCryptoBars, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getCryptoBarsPathParams, getCryptoBarsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta3/crypto/{loc}/bars", getCryptoBarsHandler)
 
 	methodHeaders = getGetLatestCryptoBarsHeaders()
 	getLatestCryptoBarsHandler := BindingMiddleware[GetLatestCryptoBarsRequest](
-		genericHandler(server.GetLatestCryptoBars, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetLatestCryptoBars, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getLatestCryptoBarsPathParams, getLatestCryptoBarsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta3/crypto/{loc}/latest/bars", getLatestCryptoBarsHandler)
 
 	methodHeaders = getGetCryptoTradesHeaders()
 	getCryptoTradesHandler := BindingMiddleware[GetCryptoTradesRequest](
-		genericHandler(server.GetCryptoTrades, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetCryptoTrades, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getCryptoTradesPathParams, getCryptoTradesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta3/crypto/{loc}/trades", getCryptoTradesHandler)
 
 	methodHeaders = getGetLatestCryptoTradesHeaders()
 	getLatestCryptoTradesHandler := BindingMiddleware[GetLatestCryptoTradesRequest](
-		genericHandler(server.GetLatestCryptoTrades, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetLatestCryptoTrades, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getLatestCryptoTradesPathParams, getLatestCryptoTradesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta3/crypto/{loc}/latest/trades", getLatestCryptoTradesHandler)
 
 	methodHeaders = getGetCryptoQuotesHeaders()
 	getCryptoQuotesHandler := BindingMiddleware[GetCryptoQuotesRequest](
-		genericHandler(server.GetCryptoQuotes, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetCryptoQuotes, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getCryptoQuotesPathParams, getCryptoQuotesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta3/crypto/{loc}/quotes", getCryptoQuotesHandler)
 
 	methodHeaders = getGetLatestCryptoQuotesHeaders()
 	getLatestCryptoQuotesHandler := BindingMiddleware[GetLatestCryptoQuotesRequest](
-		genericHandler(server.GetLatestCryptoQuotes, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetLatestCryptoQuotes, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getLatestCryptoQuotesPathParams, getLatestCryptoQuotesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta3/crypto/{loc}/latest/quotes", getLatestCryptoQuotesHandler)
 
 	methodHeaders = getGetCryptoSnapshotsHeaders()
 	getCryptoSnapshotsHandler := BindingMiddleware[GetCryptoSnapshotsRequest](
-		genericHandler(server.GetCryptoSnapshots, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetCryptoSnapshots, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getCryptoSnapshotsPathParams, getCryptoSnapshotsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta3/crypto/{loc}/snapshots", getCryptoSnapshotsHandler)
 
 	methodHeaders = getGetCryptoOrderbooksHeaders()
 	getCryptoOrderbooksHandler := BindingMiddleware[GetCryptoOrderbooksRequest](
-		genericHandler(server.GetCryptoOrderbooks, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetCryptoOrderbooks, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getCryptoOrderbooksPathParams, getCryptoOrderbooksQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta3/crypto/{loc}/latest/orderbooks", getCryptoOrderbooksHandler)
 
 	methodHeaders = getGetOptionBarsHeaders()
 	getOptionBarsHandler := BindingMiddleware[GetOptionBarsRequest](
-		genericHandler(server.GetOptionBars, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetOptionBars, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getOptionBarsPathParams, getOptionBarsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/options/bars", getOptionBarsHandler)
 
 	methodHeaders = getGetOptionTradesHeaders()
 	getOptionTradesHandler := BindingMiddleware[GetOptionTradesRequest](
-		genericHandler(server.GetOptionTrades, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetOptionTrades, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getOptionTradesPathParams, getOptionTradesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/options/trades", getOptionTradesHandler)
 
 	methodHeaders = getGetLatestOptionTradesHeaders()
 	getLatestOptionTradesHandler := BindingMiddleware[GetLatestOptionTradesRequest](
-		genericHandler(server.GetLatestOptionTrades, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetLatestOptionTrades, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getLatestOptionTradesPathParams, getLatestOptionTradesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/options/trades/latest", getLatestOptionTradesHandler)
 
 	methodHeaders = getGetLatestOptionQuotesHeaders()
 	getLatestOptionQuotesHandler := BindingMiddleware[GetLatestOptionQuotesRequest](
-		genericHandler(server.GetLatestOptionQuotes, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetLatestOptionQuotes, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getLatestOptionQuotesPathParams, getLatestOptionQuotesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/options/quotes/latest", getLatestOptionQuotesHandler)
 
 	methodHeaders = getGetOptionSnapshotsHeaders()
 	getOptionSnapshotsHandler := BindingMiddleware[GetOptionSnapshotsRequest](
-		genericHandler(server.GetOptionSnapshots, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetOptionSnapshots, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getOptionSnapshotsPathParams, getOptionSnapshotsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/options/snapshots", getOptionSnapshotsHandler)
 
 	methodHeaders = getGetOptionChainHeaders()
 	getOptionChainHandler := BindingMiddleware[GetOptionChainRequest](
-		genericHandler(server.GetOptionChain, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetOptionChain, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getOptionChainPathParams, getOptionChainQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/options/snapshots/{underlying_symbol}", getOptionChainHandler)
 
 	methodHeaders = getGetOptionMetaConditionsHeaders()
 	getOptionMetaConditionsHandler := BindingMiddleware[GetOptionMetaConditionsRequest](
-		genericHandler(server.GetOptionMetaConditions, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetOptionMetaConditions, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getOptionMetaConditionsPathParams, getOptionMetaConditionsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/options/meta/conditions/{ticktype}", getOptionMetaConditionsHandler)
 
 	methodHeaders = getGetOptionMetaExchangesHeaders()
 	getOptionMetaExchangesHandler := BindingMiddleware[GetOptionMetaExchangesRequest](
-		genericHandler(server.GetOptionMetaExchanges, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetOptionMetaExchanges, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getOptionMetaExchangesPathParams, getOptionMetaExchangesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/options/meta/exchanges", getOptionMetaExchangesHandler)
 
 	methodHeaders = getGetNewsHeaders()
 	getNewsHandler := BindingMiddleware[GetNewsRequest](
-		genericHandler(server.GetNews, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetNews, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getNewsPathParams, getNewsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/news", getNewsHandler)
 
 	methodHeaders = getGetMostActivesHeaders()
 	getMostActivesHandler := BindingMiddleware[GetMostActivesRequest](
-		genericHandler(server.GetMostActives, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetMostActives, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getMostActivesPathParams, getMostActivesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/screener/stocks/most-actives", getMostActivesHandler)
 
 	methodHeaders = getGetMoversHeaders()
 	getMoversHandler := BindingMiddleware[GetMoversRequest](
-		genericHandler(server.GetMovers, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetMovers, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getMoversPathParams, getMoversQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/screener/{market_type}/movers", getMoversHandler)
 
 	methodHeaders = getGetCorporateActionsHeaders()
 	getCorporateActionsHandler := BindingMiddleware[GetCorporateActionsRequest](
-		genericHandler(server.GetCorporateActions, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetCorporateActions, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getCorporateActionsPathParams, getCorporateActionsQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1/corporate-actions", getCorporateActionsHandler)
 
 	methodHeaders = getGetForexRatesHeaders()
 	getForexRatesHandler := BindingMiddleware[GetForexRatesRequest](
-		genericHandler(server.GetForexRates, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetForexRates, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getForexRatesPathParams, getForexRatesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/forex/rates", getForexRatesHandler)
 
 	methodHeaders = getGetLatestForexRatesHeaders()
 	getLatestForexRatesHandler := BindingMiddleware[GetLatestForexRatesRequest](
-		genericHandler(server.GetLatestForexRates, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetLatestForexRates, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getLatestForexRatesPathParams, getLatestForexRatesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/forex/latest/rates", getLatestForexRatesHandler)
 
 	methodHeaders = getGetFixedIncomeLatestPricesHeaders()
 	getFixedIncomeLatestPricesHandler := BindingMiddleware[GetFixedIncomeLatestPricesRequest](
-		genericHandler(server.GetFixedIncomeLatestPrices, config.errorHandler), serviceHeaders, methodHeaders,
+		genericHandler(server.GetFixedIncomeLatestPrices, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
 		getFixedIncomeLatestPricesPathParams, getFixedIncomeLatestPricesQueryParams,
-		"GET", config.errorHandler,
+		"GET", config.errorHandler, config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1beta1/fixed_income/latest/prices", getFixedIncomeLatestPricesHandler)
