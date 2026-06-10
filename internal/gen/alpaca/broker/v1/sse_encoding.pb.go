@@ -46,9 +46,9 @@ func (x *SSEEvent) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for SSEEvent.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for SSEEvent.
 // This method handles int64_encoding=NUMBER fields: retry
-func (x *SSEEvent) UnmarshalJSON(data []byte) error {
+func (x *SSEEvent) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -70,7 +70,12 @@ func (x *SSEEvent) UnmarshalJSON(data []byte) error {
 	}
 
 	// Use protojson to unmarshal the rest
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for SSEEvent.
+func (x *SSEEvent) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
 
 // MarshalJSONSebuf implements sebufMarshaler for SubscribeAccountEventsRequest.
@@ -117,9 +122,9 @@ func (x *SubscribeAccountEventsRequest) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for SubscribeAccountEventsRequest.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for SubscribeAccountEventsRequest.
 // This method handles int64_encoding=NUMBER fields: since_id, until_id
-func (x *SubscribeAccountEventsRequest) UnmarshalJSON(data []byte) error {
+func (x *SubscribeAccountEventsRequest) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -149,7 +154,12 @@ func (x *SubscribeAccountEventsRequest) UnmarshalJSON(data []byte) error {
 	}
 
 	// Use protojson to unmarshal the rest
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for SubscribeAccountEventsRequest.
+func (x *SubscribeAccountEventsRequest) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
 
 // MarshalJSONSebuf implements sebufMarshaler for SubscribeTradeEventsRequest.
@@ -196,9 +206,9 @@ func (x *SubscribeTradeEventsRequest) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for SubscribeTradeEventsRequest.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for SubscribeTradeEventsRequest.
 // This method handles int64_encoding=NUMBER fields: since_id, until_id
-func (x *SubscribeTradeEventsRequest) UnmarshalJSON(data []byte) error {
+func (x *SubscribeTradeEventsRequest) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -228,7 +238,12 @@ func (x *SubscribeTradeEventsRequest) UnmarshalJSON(data []byte) error {
 	}
 
 	// Use protojson to unmarshal the rest
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for SubscribeTradeEventsRequest.
+func (x *SubscribeTradeEventsRequest) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
 
 // MarshalJSONSebuf implements sebufMarshaler for SubscribeTransferEventsRequest.
@@ -275,9 +290,9 @@ func (x *SubscribeTransferEventsRequest) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for SubscribeTransferEventsRequest.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for SubscribeTransferEventsRequest.
 // This method handles int64_encoding=NUMBER fields: since_id, until_id
-func (x *SubscribeTransferEventsRequest) UnmarshalJSON(data []byte) error {
+func (x *SubscribeTransferEventsRequest) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -307,7 +322,12 @@ func (x *SubscribeTransferEventsRequest) UnmarshalJSON(data []byte) error {
 	}
 
 	// Use protojson to unmarshal the rest
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for SubscribeTransferEventsRequest.
+func (x *SubscribeTransferEventsRequest) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
 
 // MarshalJSONSebuf implements sebufMarshaler for SubscribeJournalEventsRequest.
@@ -354,9 +374,9 @@ func (x *SubscribeJournalEventsRequest) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for SubscribeJournalEventsRequest.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for SubscribeJournalEventsRequest.
 // This method handles int64_encoding=NUMBER fields: since_id, until_id
-func (x *SubscribeJournalEventsRequest) UnmarshalJSON(data []byte) error {
+func (x *SubscribeJournalEventsRequest) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -386,7 +406,12 @@ func (x *SubscribeJournalEventsRequest) UnmarshalJSON(data []byte) error {
 	}
 
 	// Use protojson to unmarshal the rest
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for SubscribeJournalEventsRequest.
+func (x *SubscribeJournalEventsRequest) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
 
 // MarshalJSONSebuf implements sebufMarshaler for SubscribeNTAEventsRequest.
@@ -433,9 +458,9 @@ func (x *SubscribeNTAEventsRequest) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for SubscribeNTAEventsRequest.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for SubscribeNTAEventsRequest.
 // This method handles int64_encoding=NUMBER fields: since_id, until_id
-func (x *SubscribeNTAEventsRequest) UnmarshalJSON(data []byte) error {
+func (x *SubscribeNTAEventsRequest) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -465,7 +490,12 @@ func (x *SubscribeNTAEventsRequest) UnmarshalJSON(data []byte) error {
 	}
 
 	// Use protojson to unmarshal the rest
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for SubscribeNTAEventsRequest.
+func (x *SubscribeNTAEventsRequest) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
 
 // MarshalJSONSebuf implements sebufMarshaler for SubscribeSSEResponse.
@@ -521,27 +551,33 @@ func (x *SubscribeSSEResponse) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for SubscribeSSEResponse.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for SubscribeSSEResponse.
 // This method handles nested messages that have int64_encoding=NUMBER fields: events
-func (x *SubscribeSSEResponse) UnmarshalJSON(data []byte) error {
+func (x *SubscribeSSEResponse) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
 
-	// Handle repeated "events" using its custom UnmarshalJSON
+	// Handle repeated "events" using its custom unmarshaler
 	if rawVal, ok := raw["events"]; ok {
-		var innerList []*SSEEvent
-		if err := json.Unmarshal(rawVal, &innerList); err != nil {
+		var rawItems []json.RawMessage
+		if err := json.Unmarshal(rawVal, &rawItems); err != nil {
 			return err
 		}
-		protoItems := make([]json.RawMessage, len(innerList))
-		for i, item := range innerList {
-			if item == nil {
-				protoItems[i] = json.RawMessage("null")
-				continue
+		protoItems := make([]json.RawMessage, len(rawItems))
+		for i, itemRaw := range rawItems {
+			inner := &SSEEvent{}
+			if u, ok := any(inner).(interface {
+				UnmarshalJSONSebuf([]byte, protojson.UnmarshalOptions) error
+			}); ok {
+				if err := u.UnmarshalJSONSebuf(itemRaw, opts); err != nil {
+					return err
+				}
+			} else if err := json.Unmarshal(itemRaw, inner); err != nil {
+				return err
 			}
-			itemJSON, marshalErr := protojson.Marshal(item)
+			itemJSON, marshalErr := protojson.Marshal(inner)
 			if marshalErr != nil {
 				return marshalErr
 			}
@@ -559,5 +595,10 @@ func (x *SubscribeSSEResponse) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for SubscribeSSEResponse.
+func (x *SubscribeSSEResponse) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }

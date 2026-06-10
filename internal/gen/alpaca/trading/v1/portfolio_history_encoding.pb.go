@@ -43,9 +43,9 @@ func (x *PortfolioHistory) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for PortfolioHistory.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for PortfolioHistory.
 // This method handles int64_encoding=NUMBER fields: timestamp
-func (x *PortfolioHistory) UnmarshalJSON(data []byte) error {
+func (x *PortfolioHistory) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -71,5 +71,10 @@ func (x *PortfolioHistory) UnmarshalJSON(data []byte) error {
 	}
 
 	// Use protojson to unmarshal the rest
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for PortfolioHistory.
+func (x *PortfolioHistory) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
