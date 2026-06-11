@@ -68,8 +68,8 @@ message IPOEvent {
 
   // --- allocation-only envelope fields ---
 
-  // Alpaca account number (allocation events only).
-  string account_number = 7 [(sebuf.http.field_examples) = { values: ["511768662"] }];
+  // Alpaca account ID (allocation events only).
+  string account_id = 7 [(sebuf.http.field_examples) = { values: ["6221407b-32b2-3e6b-a7fe-cd79e1b68ba3"] }];
   // Broker correspondent code (allocation events only).
   string correspondent = 8 [(sebuf.http.field_examples) = { values: ["LPCA"] }];
 }

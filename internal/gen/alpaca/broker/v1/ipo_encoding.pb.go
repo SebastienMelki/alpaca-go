@@ -46,9 +46,9 @@ func (x *IPOOffering) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSONSebuf implements sebufUnmarshaler for IPOOffering.
+// UnmarshalJSON implements json.Unmarshaler for IPOOffering.
 // This method handles int64_encoding=NUMBER fields: anticipated_shares
-func (x *IPOOffering) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
+func (x *IPOOffering) UnmarshalJSON(data []byte) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -70,12 +70,7 @@ func (x *IPOOffering) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOp
 	}
 
 	// Use protojson to unmarshal the rest
-	return opts.Unmarshal(modified, x)
-}
-
-// UnmarshalJSON implements json.Unmarshaler for IPOOffering.
-func (x *IPOOffering) UnmarshalJSON(data []byte) error {
-	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
+	return protojson.Unmarshal(modified, x)
 }
 
 // MarshalJSONSebuf implements sebufMarshaler for ListIPOOfferingsResponse.
@@ -131,33 +126,27 @@ func (x *ListIPOOfferingsResponse) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSONSebuf implements sebufUnmarshaler for ListIPOOfferingsResponse.
+// UnmarshalJSON implements json.Unmarshaler for ListIPOOfferingsResponse.
 // This method handles nested messages that have int64_encoding=NUMBER fields: data
-func (x *ListIPOOfferingsResponse) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
+func (x *ListIPOOfferingsResponse) UnmarshalJSON(data []byte) error {
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
 
-	// Handle repeated "data" using its custom unmarshaler
+	// Handle repeated "data" using its custom UnmarshalJSON
 	if rawVal, ok := raw["data"]; ok {
-		var rawItems []json.RawMessage
-		if err := json.Unmarshal(rawVal, &rawItems); err != nil {
+		var innerList []*IPOOffering
+		if err := json.Unmarshal(rawVal, &innerList); err != nil {
 			return err
 		}
-		protoItems := make([]json.RawMessage, len(rawItems))
-		for i, itemRaw := range rawItems {
-			inner := &IPOOffering{}
-			if u, ok := any(inner).(interface {
-				UnmarshalJSONSebuf([]byte, protojson.UnmarshalOptions) error
-			}); ok {
-				if err := u.UnmarshalJSONSebuf(itemRaw, opts); err != nil {
-					return err
-				}
-			} else if err := json.Unmarshal(itemRaw, inner); err != nil {
-				return err
+		protoItems := make([]json.RawMessage, len(innerList))
+		for i, item := range innerList {
+			if item == nil {
+				protoItems[i] = json.RawMessage("null")
+				continue
 			}
-			itemJSON, marshalErr := protojson.Marshal(inner)
+			itemJSON, marshalErr := protojson.Marshal(item)
 			if marshalErr != nil {
 				return marshalErr
 			}
@@ -175,12 +164,7 @@ func (x *ListIPOOfferingsResponse) UnmarshalJSONSebuf(data []byte, opts protojso
 		return err
 	}
 
-	return opts.Unmarshal(modified, x)
-}
-
-// UnmarshalJSON implements json.Unmarshaler for ListIPOOfferingsResponse.
-func (x *ListIPOOfferingsResponse) UnmarshalJSON(data []byte) error {
-	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
+	return protojson.Unmarshal(modified, x)
 }
 
 // MarshalJSONSebuf implements sebufMarshaler for GetIPOOfferingResponse.
@@ -224,24 +208,18 @@ func (x *GetIPOOfferingResponse) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSONSebuf implements sebufUnmarshaler for GetIPOOfferingResponse.
+// UnmarshalJSON implements json.Unmarshaler for GetIPOOfferingResponse.
 // This method handles nested messages that have int64_encoding=NUMBER fields: data
-func (x *GetIPOOfferingResponse) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
+func (x *GetIPOOfferingResponse) UnmarshalJSON(data []byte) error {
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
 
-	// Handle "data" using its custom unmarshaler
+	// Handle "data" using its custom UnmarshalJSON
 	if rawVal, ok := raw["data"]; ok {
 		inner := &IPOOffering{}
-		if u, ok := any(inner).(interface {
-			UnmarshalJSONSebuf([]byte, protojson.UnmarshalOptions) error
-		}); ok {
-			if err := u.UnmarshalJSONSebuf(rawVal, opts); err != nil {
-				return err
-			}
-		} else if err := json.Unmarshal(rawVal, inner); err != nil {
+		if err := json.Unmarshal(rawVal, inner); err != nil {
 			return err
 		}
 		innerJSON, err := protojson.Marshal(inner)
@@ -256,10 +234,5 @@ func (x *GetIPOOfferingResponse) UnmarshalJSONSebuf(data []byte, opts protojson.
 		return err
 	}
 
-	return opts.Unmarshal(modified, x)
-}
-
-// UnmarshalJSON implements json.Unmarshaler for GetIPOOfferingResponse.
-func (x *GetIPOOfferingResponse) UnmarshalJSON(data []byte) error {
-	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
+	return protojson.Unmarshal(modified, x)
 }

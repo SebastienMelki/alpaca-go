@@ -46,9 +46,9 @@ func (x *OAuthToken) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSONSebuf implements sebufUnmarshaler for OAuthToken.
+// UnmarshalJSON implements json.Unmarshaler for OAuthToken.
 // This method handles int64_encoding=NUMBER fields: expires_in
-func (x *OAuthToken) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
+func (x *OAuthToken) UnmarshalJSON(data []byte) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -70,10 +70,5 @@ func (x *OAuthToken) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOpt
 	}
 
 	// Use protojson to unmarshal the rest
-	return opts.Unmarshal(modified, x)
-}
-
-// UnmarshalJSON implements json.Unmarshaler for OAuthToken.
-func (x *OAuthToken) UnmarshalJSON(data []byte) error {
-	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
+	return protojson.Unmarshal(modified, x)
 }
