@@ -54,9 +54,9 @@ func (x *MostActive) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for MostActive.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for MostActive.
 // This method handles int64_encoding=NUMBER fields: volume, trade_count
-func (x *MostActive) UnmarshalJSON(data []byte) error {
+func (x *MostActive) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -86,7 +86,12 @@ func (x *MostActive) UnmarshalJSON(data []byte) error {
 	}
 
 	// Use protojson to unmarshal the rest
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for MostActive.
+func (x *MostActive) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
 
 // MarshalJSONSebuf implements sebufMarshaler for GetMostActivesResponse.
@@ -142,27 +147,33 @@ func (x *GetMostActivesResponse) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for GetMostActivesResponse.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for GetMostActivesResponse.
 // This method handles nested messages that have int64_encoding=NUMBER fields: most_actives
-func (x *GetMostActivesResponse) UnmarshalJSON(data []byte) error {
+func (x *GetMostActivesResponse) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
 
-	// Handle repeated "most_actives" using its custom UnmarshalJSON
+	// Handle repeated "most_actives" using its custom unmarshaler
 	if rawVal, ok := raw["most_actives"]; ok {
-		var innerList []*MostActive
-		if err := json.Unmarshal(rawVal, &innerList); err != nil {
+		var rawItems []json.RawMessage
+		if err := json.Unmarshal(rawVal, &rawItems); err != nil {
 			return err
 		}
-		protoItems := make([]json.RawMessage, len(innerList))
-		for i, item := range innerList {
-			if item == nil {
-				protoItems[i] = json.RawMessage("null")
-				continue
+		protoItems := make([]json.RawMessage, len(rawItems))
+		for i, itemRaw := range rawItems {
+			inner := &MostActive{}
+			if u, ok := any(inner).(interface {
+				UnmarshalJSONSebuf([]byte, protojson.UnmarshalOptions) error
+			}); ok {
+				if err := u.UnmarshalJSONSebuf(itemRaw, opts); err != nil {
+					return err
+				}
+			} else if err := json.Unmarshal(itemRaw, inner); err != nil {
+				return err
 			}
-			itemJSON, marshalErr := protojson.Marshal(item)
+			itemJSON, marshalErr := protojson.Marshal(inner)
 			if marshalErr != nil {
 				return marshalErr
 			}
@@ -180,5 +191,10 @@ func (x *GetMostActivesResponse) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for GetMostActivesResponse.
+func (x *GetMostActivesResponse) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }

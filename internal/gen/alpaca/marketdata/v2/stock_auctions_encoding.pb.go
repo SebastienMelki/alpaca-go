@@ -46,9 +46,9 @@ func (x *Auction) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for Auction.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for Auction.
 // This method handles int64_encoding=NUMBER fields: s
-func (x *Auction) UnmarshalJSON(data []byte) error {
+func (x *Auction) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -70,7 +70,12 @@ func (x *Auction) UnmarshalJSON(data []byte) error {
 	}
 
 	// Use protojson to unmarshal the rest
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for Auction.
+func (x *Auction) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
 
 // MarshalJSONSebuf implements sebufMarshaler for DailyAuctions.
@@ -152,27 +157,33 @@ func (x *DailyAuctions) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for DailyAuctions.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for DailyAuctions.
 // This method handles nested messages that have int64_encoding=NUMBER fields: o, c
-func (x *DailyAuctions) UnmarshalJSON(data []byte) error {
+func (x *DailyAuctions) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
 
-	// Handle repeated "o" using its custom UnmarshalJSON
+	// Handle repeated "o" using its custom unmarshaler
 	if rawVal, ok := raw["o"]; ok {
-		var innerList []*Auction
-		if err := json.Unmarshal(rawVal, &innerList); err != nil {
+		var rawItems []json.RawMessage
+		if err := json.Unmarshal(rawVal, &rawItems); err != nil {
 			return err
 		}
-		protoItems := make([]json.RawMessage, len(innerList))
-		for i, item := range innerList {
-			if item == nil {
-				protoItems[i] = json.RawMessage("null")
-				continue
+		protoItems := make([]json.RawMessage, len(rawItems))
+		for i, itemRaw := range rawItems {
+			inner := &Auction{}
+			if u, ok := any(inner).(interface {
+				UnmarshalJSONSebuf([]byte, protojson.UnmarshalOptions) error
+			}); ok {
+				if err := u.UnmarshalJSONSebuf(itemRaw, opts); err != nil {
+					return err
+				}
+			} else if err := json.Unmarshal(itemRaw, inner); err != nil {
+				return err
 			}
-			itemJSON, marshalErr := protojson.Marshal(item)
+			itemJSON, marshalErr := protojson.Marshal(inner)
 			if marshalErr != nil {
 				return marshalErr
 			}
@@ -185,19 +196,25 @@ func (x *DailyAuctions) UnmarshalJSON(data []byte) error {
 		raw["o"] = protoJSON
 	}
 
-	// Handle repeated "c" using its custom UnmarshalJSON
+	// Handle repeated "c" using its custom unmarshaler
 	if rawVal, ok := raw["c"]; ok {
-		var innerList []*Auction
-		if err := json.Unmarshal(rawVal, &innerList); err != nil {
+		var rawItems []json.RawMessage
+		if err := json.Unmarshal(rawVal, &rawItems); err != nil {
 			return err
 		}
-		protoItems := make([]json.RawMessage, len(innerList))
-		for i, item := range innerList {
-			if item == nil {
-				protoItems[i] = json.RawMessage("null")
-				continue
+		protoItems := make([]json.RawMessage, len(rawItems))
+		for i, itemRaw := range rawItems {
+			inner := &Auction{}
+			if u, ok := any(inner).(interface {
+				UnmarshalJSONSebuf([]byte, protojson.UnmarshalOptions) error
+			}); ok {
+				if err := u.UnmarshalJSONSebuf(itemRaw, opts); err != nil {
+					return err
+				}
+			} else if err := json.Unmarshal(itemRaw, inner); err != nil {
+				return err
 			}
-			itemJSON, marshalErr := protojson.Marshal(item)
+			itemJSON, marshalErr := protojson.Marshal(inner)
 			if marshalErr != nil {
 				return marshalErr
 			}
@@ -215,5 +232,10 @@ func (x *DailyAuctions) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for DailyAuctions.
+func (x *DailyAuctions) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
