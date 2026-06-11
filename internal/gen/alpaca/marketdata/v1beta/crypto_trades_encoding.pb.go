@@ -46,9 +46,9 @@ func (x *CryptoTrade) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSON implements json.Unmarshaler for CryptoTrade.
+// UnmarshalJSONSebuf implements sebufUnmarshaler for CryptoTrade.
 // This method handles int64_encoding=NUMBER fields: i
-func (x *CryptoTrade) UnmarshalJSON(data []byte) error {
+func (x *CryptoTrade) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -70,5 +70,10 @@ func (x *CryptoTrade) UnmarshalJSON(data []byte) error {
 	}
 
 	// Use protojson to unmarshal the rest
-	return protojson.Unmarshal(modified, x)
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for CryptoTrade.
+func (x *CryptoTrade) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
