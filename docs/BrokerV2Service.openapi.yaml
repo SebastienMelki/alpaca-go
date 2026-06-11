@@ -1079,12 +1079,12 @@ components:
                         - 01KMJ40PMRYYCV7JXS2R74JNHH
                     description: Event ID (ULID format). Present in some events.
                     example: 01KMJ40PMRYYCV7JXS2R74JNHH
-                accountNumber:
+                accountId:
                     type: string
                     examples:
-                        - 511768662
-                    description: Alpaca account number (allocation events only).
-                    example: 511768662
+                        - 6221407b-32b2-3e6b-a7fe-cd79e1b68ba3
+                    description: Alpaca account ID (allocation events only).
+                    example: 6221407b-32b2-3e6b-a7fe-cd79e1b68ba3
                 correspondent:
                     type: string
                     examples:

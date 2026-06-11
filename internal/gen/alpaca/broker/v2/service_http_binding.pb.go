@@ -79,10 +79,21 @@ func BindingMiddleware[Req any](next http.Handler, serviceHeaders, methodHeaders
 
 		toBind := new(Req)
 
-		// Bind body FIRST for POST, PUT, PATCH methods.
-		// This must happen before path/query binding because protojson.Unmarshal
-		// calls proto.Reset(), which would wipe any previously-set fields.
-		// By binding body first, path and query params applied afterwards take precedence.
+		// Bind path parameters
+		if msg, ok := any(toBind).(proto.Message); ok {
+			if err := bindPathParams(r, msg, pathParams); err != nil {
+				writeErrorWithHandler(w, r, err, errorHandler, marshalOpts)
+				return
+			}
+
+			// Bind query parameters
+			if err := bindQueryParams(r, msg, queryParams); err != nil {
+				writeErrorWithHandler(w, r, err, errorHandler, marshalOpts)
+				return
+			}
+		}
+
+		// Bind body only for POST, PUT, PATCH methods
 		if httpMethod == "POST" || httpMethod == "PUT" || httpMethod == "PATCH" {
 			err := bindDataBasedOnContentType(r, toBind)
 			if err != nil {
@@ -96,20 +107,6 @@ func BindingMiddleware[Req any](next http.Handler, serviceHeaders, methodHeaders
 					},
 				}
 				writeErrorWithHandler(w, r, validationErr, errorHandler, marshalOpts)
-				return
-			}
-		}
-
-		// Bind path and query parameters AFTER body, so URL-stated values always win
-		if msg, ok := any(toBind).(proto.Message); ok {
-			if err := bindPathParams(r, msg, pathParams); err != nil {
-				writeErrorWithHandler(w, r, err, errorHandler, marshalOpts)
-				return
-			}
-
-			// Bind query parameters
-			if err := bindQueryParams(r, msg, queryParams); err != nil {
-				writeErrorWithHandler(w, r, err, errorHandler, marshalOpts)
 				return
 			}
 		}
@@ -134,30 +131,6 @@ func filterFlags(content string) string {
 		}
 	}
 	return content
-}
-
-// resolveResponseContentType determines the response serialization format.
-// Per HTTP semantics (RFC 9110), the Accept header governs the desired response format.
-// Falls back to request Content-Type if Accept is absent, then defaults to JSON.
-func resolveResponseContentType(r *http.Request) string {
-	accept := filterFlags(r.Header.Get("Accept"))
-	switch accept {
-	case BinaryContentType, ProtoContentType:
-		return accept
-	case JSONContentType:
-		return JSONContentType
-	case "", "*/*":
-		// No Accept or wildcard: fall back to request Content-Type
-		ct := filterFlags(r.Header.Get("Content-Type"))
-		switch ct {
-		case BinaryContentType, ProtoContentType:
-			return ct
-		default:
-			return JSONContentType
-		}
-	default:
-		return JSONContentType
-	}
 }
 
 func bindDataBasedOnContentType[Req any](r *http.Request, toBind *Req) error {
@@ -250,7 +223,7 @@ func bindPathParams(r *http.Request, msg proto.Message, params []PathParamConfig
 			continue // Field not found, skip
 		}
 
-		convertedValue, err := convertStringToFieldValue(value, field)
+		convertedValue, err := convertStringToFieldValue(value, field.Kind())
 		if err != nil {
 			return &sebufhttp.ValidationError{
 				Violations: []*sebufhttp.FieldViolation{{
@@ -278,14 +251,6 @@ func bindQueryParams(r *http.Request, msg proto.Message, params []QueryParamConf
 
 	for _, param := range params {
 		values := query[param.QueryName]
-		// Filter empty values (e.g., ?param= treated as unset)
-		var filtered []string
-		for _, v := range values {
-			if v != "" {
-				filtered = append(filtered, v)
-			}
-		}
-		values = filtered
 		if len(values) == 0 {
 			if param.Required {
 				return &sebufhttp.ValidationError{
@@ -307,7 +272,7 @@ func bindQueryParams(r *http.Request, msg proto.Message, params []QueryParamConf
 		if field.IsList() {
 			list := reflectMsg.Mutable(field).List()
 			for _, v := range values {
-				converted, err := convertStringToFieldValue(v, field)
+				converted, err := convertStringToFieldValue(v, field.Kind())
 				if err != nil {
 					return &sebufhttp.ValidationError{
 						Violations: []*sebufhttp.FieldViolation{{
@@ -319,7 +284,7 @@ func bindQueryParams(r *http.Request, msg proto.Message, params []QueryParamConf
 				list.Append(converted)
 			}
 		} else {
-			converted, err := convertStringToFieldValue(values[0], field)
+			converted, err := convertStringToFieldValue(values[0], field.Kind())
 			if err != nil {
 				return &sebufhttp.ValidationError{
 					Violations: []*sebufhttp.FieldViolation{{
@@ -336,20 +301,8 @@ func bindQueryParams(r *http.Request, msg proto.Message, params []QueryParamConf
 }
 
 // convertStringToFieldValue converts a string value to the appropriate protoreflect.Value.
-func convertStringToFieldValue(value string, field protoreflect.FieldDescriptor) (protoreflect.Value, error) {
-	switch field.Kind() {
-	case protoreflect.EnumKind:
-		// Try numeric value first — accept unknown numbers for proto3 forward-compat
-		if v, err := strconv.ParseInt(value, 10, 32); err == nil {
-			return protoreflect.ValueOfEnum(protoreflect.EnumNumber(v)), nil
-		}
-		// Fall back to enum name lookup
-		enumDesc := field.Enum()
-		enumVal := enumDesc.Values().ByName(protoreflect.Name(value))
-		if enumVal != nil {
-			return protoreflect.ValueOfEnum(enumVal.Number()), nil
-		}
-		return protoreflect.Value{}, fmt.Errorf("invalid value %q for enum %s", value, enumDesc.Name())
+func convertStringToFieldValue(value string, kind protoreflect.Kind) (protoreflect.Value, error) {
+	switch kind {
 	case protoreflect.StringKind:
 		return protoreflect.ValueOfString(value), nil
 	case protoreflect.Int32Kind, protoreflect.Sint32Kind, protoreflect.Sfixed32Kind:
@@ -395,7 +348,7 @@ func convertStringToFieldValue(value string, field protoreflect.FieldDescriptor)
 		}
 		return protoreflect.ValueOfFloat64(v), nil
 	default:
-		return protoreflect.Value{}, fmt.Errorf("unsupported field type: %v", field.Kind())
+		return protoreflect.Value{}, fmt.Errorf("unsupported field type: %v", kind)
 	}
 }
 
@@ -427,8 +380,11 @@ func genericHandler[Req any, Res any](serve func(context.Context, Req) (Res, err
 			return
 		}
 
-		// Set response Content-Type based on Accept header (RFC 9110)
-		respContentType := resolveResponseContentType(r)
+		// Set Content-Type based on request Content-Type (matching serialization format)
+		respContentType := "application/json"
+		if ct := filterFlags(r.Header.Get("Content-Type")); ct == BinaryContentType || ct == ProtoContentType {
+			respContentType = "application/x-protobuf"
+		}
 		w.Header().Set("Content-Type", respContentType)
 
 		_, err = w.Write(responseBytes)
@@ -443,17 +399,23 @@ func genericHandler[Req any, Res any](serve func(context.Context, Req) (Res, err
 }
 
 func marshalResponse(r *http.Request, response any, marshalOpts protojson.MarshalOptions) ([]byte, error) {
-	contentType := resolveResponseContentType(r)
+	contentType := r.Header.Get("Content-Type")
+	if contentType == "" {
+		contentType = JSONContentType
+	}
 
 	msg, ok := response.(proto.Message)
 	if !ok {
 		return nil, fmt.Errorf("response is not a protocol buffer message")
 	}
 
-	switch contentType {
+	switch filterFlags(contentType) {
+	case JSONContentType:
+		return marshalJSONWithOpts(msg, marshalOpts)
 	case BinaryContentType, ProtoContentType:
 		return proto.Marshal(msg)
 	default:
+		// Default to JSON for unrecognized content types
 		return marshalJSONWithOpts(msg, marshalOpts)
 	}
 }
@@ -491,16 +453,26 @@ func (rc *responseCapture) Write(b []byte) (int, error) {
 
 // writeProtoMessageResponse writes a protobuf message as an HTTP response
 func writeProtoMessageResponse(w http.ResponseWriter, r *http.Request, msg proto.Message, statusCode int, fallbackMsg string, marshalOpts protojson.MarshalOptions) {
-	respContentType := resolveResponseContentType(r)
+	contentType := r.Header.Get("Content-Type")
+	if contentType == "" {
+		contentType = JSONContentType
+	}
 
 	var responseBytes []byte
 	var err error
+	var respContentType string
 
-	switch respContentType {
+	switch filterFlags(contentType) {
+	case JSONContentType:
+		responseBytes, err = marshalJSONWithOpts(msg, marshalOpts)
+		respContentType = "application/json"
 	case BinaryContentType, ProtoContentType:
 		responseBytes, err = proto.Marshal(msg)
+		respContentType = "application/x-protobuf"
 	default:
+		// Default to JSON for unrecognized content types
 		responseBytes, err = marshalJSONWithOpts(msg, marshalOpts)
+		respContentType = "application/json"
 	}
 
 	if err != nil {
@@ -629,16 +601,25 @@ func writeErrorWithHandler(w http.ResponseWriter, r *http.Request, err error, ha
 
 // writeResponseBody writes the response body without setting status code
 func writeResponseBody(w http.ResponseWriter, r *http.Request, msg proto.Message, marshalOpts protojson.MarshalOptions) {
-	respContentType := resolveResponseContentType(r)
+	contentType := r.Header.Get("Content-Type")
+	if contentType == "" {
+		contentType = JSONContentType
+	}
 
 	var responseBytes []byte
 	var err error
+	var respContentType string
 
-	switch respContentType {
+	switch filterFlags(contentType) {
+	case JSONContentType:
+		responseBytes, err = marshalJSONWithOpts(msg, marshalOpts)
+		respContentType = "application/json"
 	case BinaryContentType, ProtoContentType:
 		responseBytes, err = proto.Marshal(msg)
+		respContentType = "application/x-protobuf"
 	default:
 		responseBytes, err = marshalJSONWithOpts(msg, marshalOpts)
+		respContentType = "application/json"
 	}
 
 	if err != nil {
@@ -942,8 +923,18 @@ func SSEHandler[Req any](
 		}
 
 		req := new(Req)
+		if msg, ok := any(req).(proto.Message); ok {
+			if err := bindPathParams(r, msg, pathParams); err != nil {
+				writeErrorWithHandler(w, r, err, errorHandler, marshalOpts)
+				return
+			}
+			if err := bindQueryParams(r, msg, queryParams); err != nil {
+				writeErrorWithHandler(w, r, err, errorHandler, marshalOpts)
+				return
+			}
+		}
 
-		// Bind body FIRST (protojson.Unmarshal calls proto.Reset, which would wipe path/query values)
+		// Bind body for POST/PUT/PATCH
 		if httpMethod == "POST" || httpMethod == "PUT" || httpMethod == "PATCH" {
 			if err := bindDataBasedOnContentType(r, req); err != nil {
 				validationErr := &sebufhttp.ValidationError{
@@ -955,18 +946,6 @@ func SSEHandler[Req any](
 					},
 				}
 				writeErrorWithHandler(w, r, validationErr, errorHandler, marshalOpts)
-				return
-			}
-		}
-
-		// Bind path and query parameters AFTER body, so URL-stated values always win
-		if msg, ok := any(req).(proto.Message); ok {
-			if err := bindPathParams(r, msg, pathParams); err != nil {
-				writeErrorWithHandler(w, r, err, errorHandler, marshalOpts)
-				return
-			}
-			if err := bindQueryParams(r, msg, queryParams); err != nil {
-				writeErrorWithHandler(w, r, err, errorHandler, marshalOpts)
 				return
 			}
 		}

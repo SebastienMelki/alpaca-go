@@ -7,12 +7,13 @@
 package brokerv2
 
 import (
-	_ "github.com/SebastienMelki/sebuf/http"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	_ "github.com/SebastienMelki/sebuf/http"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -202,8 +203,8 @@ type IPOEvent struct {
 	At string `protobuf:"bytes,5,opt,name=at,proto3" json:"at,omitempty"`
 	// Event ID (ULID format). Present in some events.
 	EventId string `protobuf:"bytes,6,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
-	// Alpaca account number (allocation events only).
-	AccountNumber string `protobuf:"bytes,7,opt,name=account_number,json=accountNumber,proto3" json:"account_number,omitempty"`
+	// Alpaca account ID (allocation events only).
+	AccountId string `protobuf:"bytes,7,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	// Broker correspondent code (allocation events only).
 	Correspondent string `protobuf:"bytes,8,opt,name=correspondent,proto3" json:"correspondent,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -282,9 +283,9 @@ func (x *IPOEvent) GetEventId() string {
 	return ""
 }
 
-func (x *IPOEvent) GetAccountNumber() string {
+func (x *IPOEvent) GetAccountId() string {
 	if x != nil {
-		return x.AccountNumber
+		return x.AccountId
 	}
 	return ""
 }
@@ -387,7 +388,7 @@ const file_alpaca_broker_v2_ipo_proto_rawDesc = "" +
 	"\x10allocated_shares\x18\v \x01(\tB\t\xba\xb5\x18\x05\n" +
 	"\x03100R\x0fallocatedShares\x128\n" +
 	"\x10allocated_amount\x18\f \x01(\tB\r\xba\xb5\x18\t\n" +
-	"\a2000.00R\x0fallocatedAmount\"\xc3\x03\n" +
+	"\a2000.00R\x0fallocatedAmount\"\xd6\x03\n" +
 	"\bIPOEvent\x12\"\n" +
 	"\x04verb\x18\x01 \x01(\tB\x0e\xba\xb5\x18\n" +
 	"\n" +
@@ -402,9 +403,10 @@ const file_alpaca_broker_v2_ipo_proto_rawDesc = "" +
 	"\x02at\x18\x05 \x01(\tB\x1f\xba\xb5\x18\x1b\n" +
 	"\x192026-03-25T09:08:10.5207ZR\x02at\x12;\n" +
 	"\bevent_id\x18\x06 \x01(\tB \xba\xb5\x18\x1c\n" +
-	"\x1a01KMJ40PMRYYCV7JXS2R74JNHHR\aeventId\x126\n" +
-	"\x0eaccount_number\x18\a \x01(\tB\x0f\xba\xb5\x18\v\n" +
-	"\t511768662R\raccountNumber\x120\n" +
+	"\x1a01KMJ40PMRYYCV7JXS2R74JNHHR\aeventId\x12I\n" +
+	"\n" +
+	"account_id\x18\a \x01(\tB*\xba\xb5\x18&\n" +
+	"$6221407b-32b2-3e6b-a7fe-cd79e1b68ba3R\taccountId\x120\n" +
 	"\rcorrespondent\x18\b \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
 	"\x04LPCAR\rcorrespondent\"\x81\x01\n" +

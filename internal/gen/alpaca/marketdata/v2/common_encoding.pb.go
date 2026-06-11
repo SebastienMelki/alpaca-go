@@ -54,9 +54,9 @@ func (x *Bar) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSONSebuf implements sebufUnmarshaler for Bar.
+// UnmarshalJSON implements json.Unmarshaler for Bar.
 // This method handles int64_encoding=NUMBER fields: v, n
-func (x *Bar) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
+func (x *Bar) UnmarshalJSON(data []byte) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -86,12 +86,7 @@ func (x *Bar) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) e
 	}
 
 	// Use protojson to unmarshal the rest
-	return opts.Unmarshal(modified, x)
-}
-
-// UnmarshalJSON implements json.Unmarshaler for Bar.
-func (x *Bar) UnmarshalJSON(data []byte) error {
-	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
+	return protojson.Unmarshal(modified, x)
 }
 
 // MarshalJSONSebuf implements sebufMarshaler for Trade.
@@ -130,9 +125,9 @@ func (x *Trade) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSONSebuf implements sebufUnmarshaler for Trade.
+// UnmarshalJSON implements json.Unmarshaler for Trade.
 // This method handles int64_encoding=NUMBER fields: i
-func (x *Trade) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
+func (x *Trade) UnmarshalJSON(data []byte) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -154,12 +149,7 @@ func (x *Trade) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions)
 	}
 
 	// Use protojson to unmarshal the rest
-	return opts.Unmarshal(modified, x)
-}
-
-// UnmarshalJSON implements json.Unmarshaler for Trade.
-func (x *Trade) UnmarshalJSON(data []byte) error {
-	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
+	return protojson.Unmarshal(modified, x)
 }
 
 // MarshalJSONSebuf implements sebufMarshaler for Snapshot.
@@ -245,24 +235,18 @@ func (x *Snapshot) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSONSebuf implements sebufUnmarshaler for Snapshot.
+// UnmarshalJSON implements json.Unmarshaler for Snapshot.
 // This method handles nested messages that have int64_encoding=NUMBER fields: latest_trade, minute_bar, daily_bar, prev_daily_bar
-func (x *Snapshot) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
+func (x *Snapshot) UnmarshalJSON(data []byte) error {
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
 
-	// Handle "latestTrade" using its custom unmarshaler
+	// Handle "latestTrade" using its custom UnmarshalJSON
 	if rawVal, ok := raw["latestTrade"]; ok {
 		inner := &Trade{}
-		if u, ok := any(inner).(interface {
-			UnmarshalJSONSebuf([]byte, protojson.UnmarshalOptions) error
-		}); ok {
-			if err := u.UnmarshalJSONSebuf(rawVal, opts); err != nil {
-				return err
-			}
-		} else if err := json.Unmarshal(rawVal, inner); err != nil {
+		if err := json.Unmarshal(rawVal, inner); err != nil {
 			return err
 		}
 		innerJSON, err := protojson.Marshal(inner)
@@ -272,16 +256,10 @@ func (x *Snapshot) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptio
 		raw["latestTrade"] = innerJSON
 	}
 
-	// Handle "minuteBar" using its custom unmarshaler
+	// Handle "minuteBar" using its custom UnmarshalJSON
 	if rawVal, ok := raw["minuteBar"]; ok {
 		inner := &Bar{}
-		if u, ok := any(inner).(interface {
-			UnmarshalJSONSebuf([]byte, protojson.UnmarshalOptions) error
-		}); ok {
-			if err := u.UnmarshalJSONSebuf(rawVal, opts); err != nil {
-				return err
-			}
-		} else if err := json.Unmarshal(rawVal, inner); err != nil {
+		if err := json.Unmarshal(rawVal, inner); err != nil {
 			return err
 		}
 		innerJSON, err := protojson.Marshal(inner)
@@ -291,16 +269,10 @@ func (x *Snapshot) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptio
 		raw["minuteBar"] = innerJSON
 	}
 
-	// Handle "dailyBar" using its custom unmarshaler
+	// Handle "dailyBar" using its custom UnmarshalJSON
 	if rawVal, ok := raw["dailyBar"]; ok {
 		inner := &Bar{}
-		if u, ok := any(inner).(interface {
-			UnmarshalJSONSebuf([]byte, protojson.UnmarshalOptions) error
-		}); ok {
-			if err := u.UnmarshalJSONSebuf(rawVal, opts); err != nil {
-				return err
-			}
-		} else if err := json.Unmarshal(rawVal, inner); err != nil {
+		if err := json.Unmarshal(rawVal, inner); err != nil {
 			return err
 		}
 		innerJSON, err := protojson.Marshal(inner)
@@ -310,16 +282,10 @@ func (x *Snapshot) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptio
 		raw["dailyBar"] = innerJSON
 	}
 
-	// Handle "prevDailyBar" using its custom unmarshaler
+	// Handle "prevDailyBar" using its custom UnmarshalJSON
 	if rawVal, ok := raw["prevDailyBar"]; ok {
 		inner := &Bar{}
-		if u, ok := any(inner).(interface {
-			UnmarshalJSONSebuf([]byte, protojson.UnmarshalOptions) error
-		}); ok {
-			if err := u.UnmarshalJSONSebuf(rawVal, opts); err != nil {
-				return err
-			}
-		} else if err := json.Unmarshal(rawVal, inner); err != nil {
+		if err := json.Unmarshal(rawVal, inner); err != nil {
 			return err
 		}
 		innerJSON, err := protojson.Marshal(inner)
@@ -334,10 +300,5 @@ func (x *Snapshot) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptio
 		return err
 	}
 
-	return opts.Unmarshal(modified, x)
-}
-
-// UnmarshalJSON implements json.Unmarshaler for Snapshot.
-func (x *Snapshot) UnmarshalJSON(data []byte) error {
-	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
+	return protojson.Unmarshal(modified, x)
 }

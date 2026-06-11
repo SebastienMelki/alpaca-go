@@ -46,9 +46,9 @@ func (x *CryptoBar) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSONSebuf implements sebufUnmarshaler for CryptoBar.
+// UnmarshalJSON implements json.Unmarshaler for CryptoBar.
 // This method handles int64_encoding=NUMBER fields: n
-func (x *CryptoBar) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
+func (x *CryptoBar) UnmarshalJSON(data []byte) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -70,10 +70,5 @@ func (x *CryptoBar) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOpti
 	}
 
 	// Use protojson to unmarshal the rest
-	return opts.Unmarshal(modified, x)
-}
-
-// UnmarshalJSON implements json.Unmarshaler for CryptoBar.
-func (x *CryptoBar) UnmarshalJSON(data []byte) error {
-	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
+	return protojson.Unmarshal(modified, x)
 }

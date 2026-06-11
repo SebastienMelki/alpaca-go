@@ -7,11 +7,12 @@
 package marketdatav1beta
 
 import (
+	reflect "reflect"
+	unsafe "unsafe"
+
 	_ "github.com/SebastienMelki/sebuf/http"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	unsafe "unsafe"
 )
 
 const (

@@ -46,9 +46,9 @@ func (x *EODReport) MarshalJSON() ([]byte, error) {
 	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
 }
 
-// UnmarshalJSONSebuf implements sebufUnmarshaler for EODReport.
+// UnmarshalJSON implements json.Unmarshaler for EODReport.
 // This method handles int64_encoding=NUMBER fields: size
-func (x *EODReport) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
+func (x *EODReport) UnmarshalJSON(data []byte) error {
 	// First, parse the raw JSON to extract NUMBER-encoded fields
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -70,10 +70,5 @@ func (x *EODReport) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOpti
 	}
 
 	// Use protojson to unmarshal the rest
-	return opts.Unmarshal(modified, x)
-}
-
-// UnmarshalJSON implements json.Unmarshaler for EODReport.
-func (x *EODReport) UnmarshalJSON(data []byte) error {
-	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
+	return protojson.Unmarshal(modified, x)
 }
