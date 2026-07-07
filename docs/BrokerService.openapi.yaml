@@ -7579,7 +7579,7 @@ components:
         CreateTradingOrderRequest:
             type: object
             properties:
-                accountId:
+                account_id:
                     type: string
                     examples:
                         - 904837e3-3b76-47ec-b432-046db621571b
@@ -7625,7 +7625,7 @@ components:
                         - trailing_stop
                     description: Order type.
                     example: limit
-                timeInForce:
+                time_in_force:
                     type: string
                     examples:
                         - day
@@ -7638,44 +7638,44 @@ components:
                         - fok
                     description: Time in force.
                     example: day
-                limitPrice:
+                limit_price:
                     type: string
                     examples:
                         - 150.00
                     description: Limit price (for limit orders).
                     example: 150.00
-                stopPrice:
+                stop_price:
                     type: string
                     examples:
                         - 145.00
                     description: Stop price (for stop orders).
                     example: 145.00
-                trailPrice:
+                trail_price:
                     type: string
                     examples:
                         - 5.00
                     description: Trail price (for trailing stop orders).
                     example: 5.00
-                trailPercent:
+                trail_percent:
                     type: string
                     examples:
                         - 5.0
                     description: Trail percent (for trailing stop orders).
                     example: 5.0
-                extendedHours:
+                extended_hours:
                     type: boolean
                     examples:
                         - false
                     description: Extended hours trading.
                     example: false
-                clientOrderId:
+                client_order_id:
                     type: string
                     examples:
                         - my_order_123
                     maxLength: 48
                     description: Client order ID.
                     example: my_order_123
-                orderClass:
+                order_class:
                     type: string
                     examples:
                         - simple
@@ -7687,9 +7687,9 @@ components:
                         - oto
                     description: Order class.
                     example: simple
-                takeProfit:
+                take_profit:
                     $ref: '#/components/schemas/BrokerTakeProfitSpec'
-                stopLoss:
+                stop_loss:
                     $ref: '#/components/schemas/BrokerStopLossSpec'
                 commission:
                     type: string
@@ -7698,41 +7698,41 @@ components:
                     description: Commission to charge.
                     example: 0.00
             required:
-                - accountId
+                - account_id
                 - symbol
                 - side
                 - type
-                - timeInForce
+                - time_in_force
             description: CreateTradingOrderRequest is the request to create a trading order for a broker account.
         BrokerTakeProfitSpec:
             type: object
             properties:
-                limitPrice:
+                limit_price:
                     type: string
                     examples:
                         - 160.00
                     description: Limit price for take profit.
                     example: 160.00
             required:
-                - limitPrice
+                - limit_price
             description: BrokerTakeProfitSpec specifies take profit parameters for bracket orders.
         BrokerStopLossSpec:
             type: object
             properties:
-                stopPrice:
+                stop_price:
                     type: string
                     examples:
                         - 140.00
                     description: Stop price for stop loss.
                     example: 140.00
-                limitPrice:
+                limit_price:
                     type: string
                     examples:
                         - 139.00
                     description: Limit price for stop loss.
                     example: 139.00
             required:
-                - stopPrice
+                - stop_price
             description: BrokerStopLossSpec specifies stop loss parameters for bracket orders.
         BrokerOrder:
             type: object

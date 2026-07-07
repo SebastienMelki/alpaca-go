@@ -28,7 +28,7 @@ const (
 type BrokerTakeProfitSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Limit price for take profit.
-	LimitPrice    string `protobuf:"bytes,1,opt,name=limit_price,json=limitPrice,proto3" json:"limit_price,omitempty"`
+	LimitPrice    string `protobuf:"bytes,1,opt,name=limit_price,proto3" json:"limit_price,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -74,9 +74,9 @@ func (x *BrokerTakeProfitSpec) GetLimitPrice() string {
 type BrokerStopLossSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Stop price for stop loss.
-	StopPrice string `protobuf:"bytes,1,opt,name=stop_price,json=stopPrice,proto3" json:"stop_price,omitempty"`
+	StopPrice string `protobuf:"bytes,1,opt,name=stop_price,proto3" json:"stop_price,omitempty"`
 	// Limit price for stop loss.
-	LimitPrice    string `protobuf:"bytes,2,opt,name=limit_price,json=limitPrice,proto3" json:"limit_price,omitempty"`
+	LimitPrice    string `protobuf:"bytes,2,opt,name=limit_price,proto3" json:"limit_price,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -129,7 +129,7 @@ func (x *BrokerStopLossSpec) GetLimitPrice() string {
 type CreateTradingOrderRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The account ID (bound from path variable).
-	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	AccountId string `protobuf:"bytes,1,opt,name=account_id,proto3" json:"account_id,omitempty"`
 	// Symbol or asset ID to trade.
 	Symbol string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	// Quantity to trade (required if notional not specified).
@@ -141,25 +141,25 @@ type CreateTradingOrderRequest struct {
 	// Order type.
 	Type string `protobuf:"bytes,6,opt,name=type,proto3" json:"type,omitempty"`
 	// Time in force.
-	TimeInForce string `protobuf:"bytes,7,opt,name=time_in_force,json=timeInForce,proto3" json:"time_in_force,omitempty"`
+	TimeInForce string `protobuf:"bytes,7,opt,name=time_in_force,proto3" json:"time_in_force,omitempty"`
 	// Limit price (for limit orders).
-	LimitPrice string `protobuf:"bytes,8,opt,name=limit_price,json=limitPrice,proto3" json:"limit_price,omitempty"`
+	LimitPrice string `protobuf:"bytes,8,opt,name=limit_price,proto3" json:"limit_price,omitempty"`
 	// Stop price (for stop orders).
-	StopPrice string `protobuf:"bytes,9,opt,name=stop_price,json=stopPrice,proto3" json:"stop_price,omitempty"`
+	StopPrice string `protobuf:"bytes,9,opt,name=stop_price,proto3" json:"stop_price,omitempty"`
 	// Trail price (for trailing stop orders).
-	TrailPrice string `protobuf:"bytes,10,opt,name=trail_price,json=trailPrice,proto3" json:"trail_price,omitempty"`
+	TrailPrice string `protobuf:"bytes,10,opt,name=trail_price,proto3" json:"trail_price,omitempty"`
 	// Trail percent (for trailing stop orders).
-	TrailPercent string `protobuf:"bytes,11,opt,name=trail_percent,json=trailPercent,proto3" json:"trail_percent,omitempty"`
+	TrailPercent string `protobuf:"bytes,11,opt,name=trail_percent,proto3" json:"trail_percent,omitempty"`
 	// Extended hours trading.
-	ExtendedHours bool `protobuf:"varint,12,opt,name=extended_hours,json=extendedHours,proto3" json:"extended_hours,omitempty"`
+	ExtendedHours bool `protobuf:"varint,12,opt,name=extended_hours,proto3" json:"extended_hours,omitempty"`
 	// Client order ID.
-	ClientOrderId string `protobuf:"bytes,13,opt,name=client_order_id,json=clientOrderId,proto3" json:"client_order_id,omitempty"`
+	ClientOrderId string `protobuf:"bytes,13,opt,name=client_order_id,proto3" json:"client_order_id,omitempty"`
 	// Order class.
-	OrderClass string `protobuf:"bytes,14,opt,name=order_class,json=orderClass,proto3" json:"order_class,omitempty"`
+	OrderClass string `protobuf:"bytes,14,opt,name=order_class,proto3" json:"order_class,omitempty"`
 	// Take profit spec (for bracket orders).
-	TakeProfit *BrokerTakeProfitSpec `protobuf:"bytes,15,opt,name=take_profit,json=takeProfit,proto3" json:"take_profit,omitempty"`
+	TakeProfit *BrokerTakeProfitSpec `protobuf:"bytes,15,opt,name=take_profit,proto3" json:"take_profit,omitempty"`
 	// Stop loss spec (for bracket orders).
-	StopLoss *BrokerStopLossSpec `protobuf:"bytes,16,opt,name=stop_loss,json=stopLoss,proto3" json:"stop_loss,omitempty"`
+	StopLoss *BrokerStopLossSpec `protobuf:"bytes,16,opt,name=stop_loss,proto3" json:"stop_loss,omitempty"`
 	// Commission to charge.
 	Commission    string `protobuf:"bytes,17,opt,name=commission,proto3" json:"commission,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -319,22 +319,22 @@ var File_alpaca_broker_v1_create_trading_order_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v1_create_trading_order_proto_rawDesc = "" +
 	"\n" +
-	"+alpaca/broker/v1/create_trading_order.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"K\n" +
-	"\x14BrokerTakeProfitSpec\x123\n" +
+	"+alpaca/broker/v1/create_trading_order.proto\x12\x10alpaca.broker.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1csebuf/http/annotations.proto\"L\n" +
+	"\x14BrokerTakeProfitSpec\x124\n" +
 	"\vlimit_price\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xba\xb5\x18\b\n" +
-	"\x06160.00R\n" +
-	"limitPrice\"v\n" +
-	"\x12BrokerStopLossSpec\x121\n" +
+	"\x06160.00R\vlimit_price\"x\n" +
+	"\x12BrokerStopLossSpec\x122\n" +
 	"\n" +
 	"stop_price\x18\x01 \x01(\tB\x12\xbaH\x03\xc8\x01\x01\xba\xb5\x18\b\n" +
-	"\x06140.00R\tstopPrice\x12-\n" +
+	"\x06140.00R\n" +
+	"stop_price\x12.\n" +
 	"\vlimit_price\x18\x02 \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06139.00R\n" +
-	"limitPrice\"\xfb\a\n" +
-	"\x19CreateTradingOrderRequest\x12T\n" +
+	"\x06139.00R\vlimit_price\"\x88\b\n" +
+	"\x19CreateTradingOrderRequest\x12U\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tB5\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
-	"$904837e3-3b76-47ec-b432-046db621571bR\taccountId\x12(\n" +
+	"$904837e3-3b76-47ec-b432-046db621571bR\n" +
+	"account_id\x12(\n" +
 	"\x06symbol\x18\x02 \x01(\tB\x10\xbaH\x03\xc8\x01\x01\xba\xb5\x18\x06\n" +
 	"\x04AAPLR\x06symbol\x12\x1a\n" +
 	"\x03qty\x18\x03 \x01(\tB\b\xba\xb5\x18\x04\n" +
@@ -345,32 +345,29 @@ const file_alpaca_broker_v1_create_trading_order_proto_rawDesc = "" +
 	"\x03buyR\x04side\x12W\n" +
 	"\x04type\x18\x06 \x01(\tBC\xbaH5\xc8\x01\x01r0R\x06marketR\x05limitR\x04stopR\n" +
 	"stop_limitR\rtrailing_stop\xba\xb5\x18\a\n" +
-	"\x05limitR\x04type\x12S\n" +
+	"\x05limitR\x04type\x12U\n" +
 	"\rtime_in_force\x18\a \x01(\tB/\xbaH#\xc8\x01\x01r\x1eR\x03dayR\x03gtcR\x03opgR\x03clsR\x03iocR\x03fok\xba\xb5\x18\x05\n" +
-	"\x03dayR\vtimeInForce\x12-\n" +
+	"\x03dayR\rtime_in_force\x12.\n" +
 	"\vlimit_price\x18\b \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06150.00R\n" +
-	"limitPrice\x12+\n" +
+	"\x06150.00R\vlimit_price\x12,\n" +
 	"\n" +
 	"stop_price\x18\t \x01(\tB\f\xba\xb5\x18\b\n" +
-	"\x06145.00R\tstopPrice\x12+\n" +
+	"\x06145.00R\n" +
+	"stop_price\x12,\n" +
 	"\vtrail_price\x18\n" +
 	" \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
-	"\x045.00R\n" +
-	"trailPrice\x12.\n" +
+	"\x045.00R\vtrail_price\x12/\n" +
 	"\rtrail_percent\x18\v \x01(\tB\t\xba\xb5\x18\x05\n" +
-	"\x035.0R\ftrailPercent\x122\n" +
+	"\x035.0R\rtrail_percent\x123\n" +
 	"\x0eextended_hours\x18\f \x01(\bB\v\xba\xb5\x18\a\n" +
-	"\x05falseR\rextendedHours\x12A\n" +
+	"\x05falseR\x0eextended_hours\x12C\n" +
 	"\x0fclient_order_id\x18\r \x01(\tB\x19\xbaH\x04r\x02\x180\xba\xb5\x18\x0e\n" +
-	"\fmy_order_123R\rclientOrderId\x12O\n" +
+	"\fmy_order_123R\x0fclient_order_id\x12P\n" +
 	"\vorder_class\x18\x0e \x01(\tB.\xbaH\x1fr\x1dR\x00R\x06simpleR\abracketR\x03ocoR\x03oto\xba\xb5\x18\b\n" +
-	"\x06simpleR\n" +
-	"orderClass\x12G\n" +
-	"\vtake_profit\x18\x0f \x01(\v2&.alpaca.broker.v1.BrokerTakeProfitSpecR\n" +
-	"takeProfit\x12A\n" +
-	"\tstop_loss\x18\x10 \x01(\v2$.alpaca.broker.v1.BrokerStopLossSpecR\bstopLoss\x12*\n" +
+	"\x06simpleR\vorder_class\x12H\n" +
+	"\vtake_profit\x18\x0f \x01(\v2&.alpaca.broker.v1.BrokerTakeProfitSpecR\vtake_profit\x12B\n" +
+	"\tstop_loss\x18\x10 \x01(\v2$.alpaca.broker.v1.BrokerStopLossSpecR\tstop_loss\x12*\n" +
 	"\n" +
 	"commission\x18\x11 \x01(\tB\n" +
 	"\xba\xb5\x18\x06\n" +
