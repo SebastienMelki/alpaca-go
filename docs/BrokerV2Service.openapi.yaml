@@ -437,15 +437,15 @@ components:
                 since:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Starting date filter (YYYY-MM-DD).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: Ending date filter (YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 sinceId:
                     type: string
                     examples:
@@ -472,9 +472,9 @@ components:
                 at:
                     type: string
                     examples:
-                        - 2022-04-19T14:12:30.656741Z
+                        - "2022-04-19T14:12:30.656741Z"
                     description: Timestamp of event.
-                    example: 2022-04-19T14:12:30.656741Z
+                    example: "2022-04-19T14:12:30.656741Z"
                 event:
                     type: string
                     examples:
@@ -508,27 +508,27 @@ components:
                 timestamp:
                     type: string
                     examples:
-                        - 2022-04-19T14:12:30.602193534Z
+                        - "2022-04-19T14:12:30.602193534Z"
                     description: Timestamp of the event.
-                    example: 2022-04-19T14:12:30.602193534Z
+                    example: "2022-04-19T14:12:30.602193534Z"
                 price:
                     type: string
                     examples:
-                        - 150.25
+                        - "150.25"
                     description: Price at execution (for fills).
-                    example: 150.25
+                    example: "150.25"
                 swapRate:
                     type: string
                     examples:
-                        - 1.0
+                        - "1.0"
                     description: Swap rate for local currency/crypto trades.
-                    example: 1.0
+                    example: "1.0"
                 positionQty:
                     type: string
                     examples:
-                        - 200
+                        - "200"
                     description: Position quantity after fill (not for MultilegOptions).
-                    example: 200
+                    example: "200"
                 positionQtys:
                     type: object
                     additionalProperties:
@@ -537,9 +537,9 @@ components:
                 qty:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Quantity filled for this event.
-                    example: 100
+                    example: "100"
                 legs:
                     type: array
                     items:
@@ -564,15 +564,15 @@ components:
                 qty:
                     type: string
                     examples:
-                        - 1
+                        - "1"
                     description: The amount of shares filled for this event.
-                    example: 1
+                    example: "1"
                 price:
                     type: string
                     examples:
-                        - 0.04
+                        - "0.04"
                     description: The average price per share for this event.
-                    example: 0.04
+                    example: "0.04"
                 symbol:
                     type: string
                     examples:
@@ -589,9 +589,9 @@ components:
                 timestamp:
                     type: string
                     examples:
-                        - 2025-01-14T16:05:51.867802561Z
+                        - "2025-01-14T16:05:51.867802561Z"
                     description: Timestamp of this event leg.
-                    example: 2025-01-14T16:05:51.867802561Z
+                    example: "2025-01-14T16:05:51.867802561Z"
                 executionId:
                     type: string
                     examples:
@@ -606,15 +606,15 @@ components:
                 since:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Starting date filter (YYYY-MM-DD).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: Ending date filter (YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 sinceId:
                     type: string
                     examples:
@@ -640,9 +640,9 @@ components:
                 at:
                     type: string
                     examples:
-                        - 2021-05-07T10:28:23.163857Z
+                        - "2021-05-07T10:28:23.163857Z"
                     description: Timestamp of event.
-                    example: 2021-05-07T10:28:23.163857Z
+                    example: "2021-05-07T10:28:23.163857Z"
                 entryType:
                     type: string
                     examples:
@@ -702,15 +702,15 @@ components:
                 since:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Starting date filter (YYYY-MM-DD).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: Ending date filter (YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 sinceId:
                     type: string
                     examples:
@@ -730,9 +730,9 @@ components:
                 at:
                     type: string
                     examples:
-                        - 2026-01-05T10:28:23.163857Z
+                        - "2026-01-05T10:28:23.163857Z"
                     description: Timestamp of the event.
-                    example: 2026-01-05T10:28:23.163857Z
+                    example: "2026-01-05T10:28:23.163857Z"
                 eventId:
                     type: string
                     examples:
@@ -748,9 +748,9 @@ components:
                 systemDate:
                     type: string
                     examples:
-                        - 2026-01-05
+                        - "2026-01-05"
                     description: System date to which this event belongs.
-                    example: 2026-01-05
+                    example: "2026-01-05"
                 description:
                     type: string
                     examples:
@@ -764,15 +764,15 @@ components:
                 since:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Starting date filter (RFC3339 or YYYY-MM-DD).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: Ending date filter (RFC3339 or YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 sinceId:
                     type: string
                     examples:
@@ -804,9 +804,9 @@ components:
                 at:
                     type: string
                     examples:
-                        - 2023-03-06T16:38:01Z
+                        - "2023-03-06T16:38:01Z"
                     description: Timestamp of event.
-                    example: 2023-03-06T16:38:01Z
+                    example: "2023-03-06T16:38:01Z"
                 belongsTo:
                     $ref: '#/components/schemas/AdminActionBelongsTo'
                 createdBy:
@@ -896,15 +896,15 @@ components:
                 availableQty:
                     type: string
                     examples:
-                        - 0.0001
+                        - "0.0001"
                     description: Available quantity.
-                    example: 0.0001
+                    example: "0.0001"
                 requestedQty:
                     type: string
                     examples:
-                        - 0.0001
+                        - "0.0001"
                     description: Requested quantity.
-                    example: 0.0001
+                    example: "0.0001"
                 error:
                     type: string
                     description: Error message if any.
@@ -938,15 +938,15 @@ components:
                 since:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Starting date filter (YYYY-MM-DD).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: Ending date filter (YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 sinceId:
                     type: integer
                     format: int32
@@ -980,9 +980,9 @@ components:
                 at:
                     type: string
                     examples:
-                        - 2025-04-11T19:52:24.066998Z
+                        - "2025-04-11T19:52:24.066998Z"
                     description: Timestamp of the status change.
-                    example: 2025-04-11T19:52:24.066998Z
+                    example: "2025-04-11T19:52:24.066998Z"
                 accountId:
                     type: string
                     examples:
@@ -1034,15 +1034,15 @@ components:
                 since:
                     type: string
                     examples:
-                        - 2026-01-15
+                        - "2026-01-15"
                     description: Starting date filter (YYYY-MM-DD).
-                    example: 2026-01-15
+                    example: "2026-01-15"
                 until:
                     type: string
                     examples:
-                        - 2026-01-31
+                        - "2026-01-31"
                     description: Ending date filter (YYYY-MM-DD).
-                    example: 2026-01-31
+                    example: "2026-01-31"
             description: SubscribeIPOEventsRequest is the request to subscribe to IPO events via SSE.
         IPOEvent:
             type: object
@@ -1064,15 +1064,15 @@ components:
                 receivedAt:
                     type: string
                     examples:
-                        - 2026-01-14T10:30:00.000Z
+                        - "2026-01-14T10:30:00.000Z"
                     description: Timestamp when the event was received (RFC3339).
-                    example: 2026-01-14T10:30:00.000Z
+                    example: "2026-01-14T10:30:00.000Z"
                 at:
                     type: string
                     examples:
-                        - 2026-03-25T09:08:10.5207Z
+                        - "2026-03-25T09:08:10.5207Z"
                     description: Timestamp of the event (RFC3339). Present in some events.
-                    example: 2026-03-25T09:08:10.5207Z
+                    example: "2026-03-25T09:08:10.5207Z"
                 eventId:
                     type: string
                     examples:
@@ -1124,15 +1124,15 @@ components:
                 minPrice:
                     type: string
                     examples:
-                        - 18.00
+                        - "18.00"
                     description: Minimum offering price.
-                    example: 18.00
+                    example: "18.00"
                 maxPrice:
                     type: string
                     examples:
-                        - 22.00
+                        - "22.00"
                     description: Maximum offering price.
-                    example: 22.00
+                    example: "22.00"
                 source:
                     type: string
                     examples:
@@ -1160,27 +1160,27 @@ components:
                 cusipId:
                     type: string
                     examples:
-                        - 123456789
+                        - "123456789"
                     description: CUSIP identifier (allocation events).
-                    example: 123456789
+                    example: "123456789"
                 finalPrice:
                     type: string
                     examples:
-                        - 20.00
+                        - "20.00"
                     description: Final IPO price (allocation events).
-                    example: 20.00
+                    example: "20.00"
                 allocatedShares:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Number of shares allocated (allocation events).
-                    example: 100
+                    example: "100"
                 allocatedAmount:
                     type: string
                     examples:
-                        - 2000.00
+                        - "2000.00"
                     description: Total dollar amount allocated (allocation events).
-                    example: 2000.00
+                    example: "2000.00"
             description: |-
                 IPOEventPayload contains the event-specific data within an IPO event.
                  Fields are populated depending on the verb — unused fields will be empty/zero.

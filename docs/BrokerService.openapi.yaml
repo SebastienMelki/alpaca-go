@@ -5555,9 +5555,9 @@ components:
                 postalCode:
                     type: string
                     examples:
-                        - 10001
+                        - "10001"
                     description: Postal code.
-                    example: 10001
+                    example: "10001"
                 country:
                     type: string
                     examples:
@@ -5597,9 +5597,9 @@ components:
                 dateOfBirth:
                     type: string
                     examples:
-                        - 1990-01-15
+                        - "1990-01-15"
                     description: Date of birth (YYYY-MM-DD).
-                    example: 1990-01-15
+                    example: "1990-01-15"
                 taxId:
                     type: string
                     examples:
@@ -5646,15 +5646,15 @@ components:
                 visaExpirationDate:
                     type: string
                     examples:
-                        - 2025-12-31
+                        - "2025-12-31"
                     description: Visa expiration date (YYYY-MM-DD).
-                    example: 2025-12-31
+                    example: "2025-12-31"
                 dateOfDepartureFromUsa:
                     type: string
                     examples:
-                        - 2020-01-01
+                        - "2020-01-01"
                     description: Date of departure from USA (YYYY-MM-DD).
-                    example: 2020-01-01
+                    example: "2020-01-01"
                 permanentResident:
                     type: boolean
                     examples:
@@ -5672,39 +5672,39 @@ components:
                 liquidNetWorthMin:
                     type: string
                     examples:
-                        - 100000
+                        - "100000"
                     description: Liquid net worth minimum.
-                    example: 100000
+                    example: "100000"
                 liquidNetWorthMax:
                     type: string
                     examples:
-                        - 500000
+                        - "500000"
                     description: Liquid net worth maximum.
-                    example: 500000
+                    example: "500000"
                 annualIncomeMin:
                     type: string
                     examples:
-                        - 50000
+                        - "50000"
                     description: Annual income minimum.
-                    example: 50000
+                    example: "50000"
                 annualIncomeMax:
                     type: string
                     examples:
-                        - 100000
+                        - "100000"
                     description: Annual income maximum.
-                    example: 100000
+                    example: "100000"
                 totalNetWorthMin:
                     type: string
                     examples:
-                        - 200000
+                        - "200000"
                     description: Total net worth minimum.
-                    example: 200000
+                    example: "200000"
                 totalNetWorthMax:
                     type: string
                     examples:
-                        - 1000000
+                        - "1000000"
                     description: Total net worth maximum.
-                    example: 1000000
+                    example: "1000000"
                 maritalStatus:
                     type: string
                     examples:
@@ -5863,9 +5863,9 @@ components:
                 signedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when signed (RFC 3339).
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 ipAddress:
                     type: string
                     examples:
@@ -5875,9 +5875,9 @@ components:
                 revision:
                     type: string
                     examples:
-                        - 2024.01
+                        - "2024.01"
                     description: Revision of the agreement.
-                    example: 2024.01
+                    example: "2024.01"
                 accountId:
                     type: string
                     examples:
@@ -5933,9 +5933,9 @@ components:
                 postalCode:
                     type: string
                     examples:
-                        - 60601
+                        - "60601"
                     description: Postal code.
-                    example: 60601
+                    example: "60601"
                 country:
                     type: string
                     examples:
@@ -5982,15 +5982,15 @@ components:
                 lastEquity:
                     type: string
                     examples:
-                        - 50000.00
+                        - "50000.00"
                     description: Last equity value.
-                    example: 50000.00
+                    example: "50000.00"
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-01T00:00:00Z
+                        - "2024-01-01T00:00:00Z"
                     description: Creation timestamp (RFC 3339).
-                    example: 2024-01-01T00:00:00Z
+                    example: "2024-01-01T00:00:00Z"
                 contact:
                     $ref: '#/components/schemas/Contact'
                 identity:
@@ -6109,9 +6109,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Created at timestamp.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: OwnerDocument represents a document associated with an account owner.
         MinorIdentity:
             type: object
@@ -6165,9 +6165,9 @@ components:
                 maxMarginMultiplier:
                     type: string
                     examples:
-                        - 4
+                        - "4"
                     description: Maximum margin multiplier.
-                    example: 4
+                    example: "4"
                 pdtCheck:
                     type: string
                     examples:
@@ -6215,9 +6215,9 @@ components:
                 lastEquity:
                     type: string
                     examples:
-                        - 123.45
+                        - "123.45"
                     description: Last equity in USD.
-                    example: 123.45
+                    example: "123.45"
             description: USDValues represents USD values for LCT accounts.
         Beneficiary:
             type: object
@@ -6294,15 +6294,15 @@ components:
                 createdAfter:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Filter by creation date after (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 createdBefore:
                     type: string
                     examples:
-                        - 2024-12-31
+                        - "2024-12-31"
                     description: Filter by creation date before (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-12-31
+                    example: "2024-12-31"
                 status:
                     type: string
                     examples:
@@ -6438,68 +6438,68 @@ components:
                 buyingPower:
                     type: string
                     examples:
-                        - 50000.00
-                    example: 50000.00
+                        - "50000.00"
+                    example: "50000.00"
                 regtBuyingPower:
                     type: string
                     examples:
-                        - 50000.00
-                    example: 50000.00
+                        - "50000.00"
+                    example: "50000.00"
                 daytradingBuyingPower:
                     type: string
                     examples:
-                        - 200000.00
-                    example: 200000.00
+                        - "200000.00"
+                    example: "200000.00"
                 effectiveBuyingPower:
                     type: string
                     examples:
-                        - 50000.00
-                    example: 50000.00
+                        - "50000.00"
+                    example: "50000.00"
                 nonMarginableBuyingPower:
                     type: string
                     examples:
-                        - 50000.00
-                    example: 50000.00
+                        - "50000.00"
+                    example: "50000.00"
                 optionsBuyingPower:
                     type: string
                     examples:
-                        - 50000.00
-                    example: 50000.00
+                        - "50000.00"
+                    example: "50000.00"
                 bodDtbp:
                     type: string
                     examples:
-                        - 200000.00
-                    example: 200000.00
+                        - "200000.00"
+                    example: "200000.00"
                 accruedFees:
                     type: string
                     examples:
-                        - 0.00
-                    example: 0.00
+                        - "0.00"
+                    example: "0.00"
                 cash:
                     type: string
                     examples:
-                        - 50000.00
-                    example: 50000.00
+                        - "50000.00"
+                    example: "50000.00"
                 cashWithdrawable:
                     type: string
                     examples:
-                        - 50000.00
-                    example: 50000.00
+                        - "50000.00"
+                    example: "50000.00"
                 cashTransferable:
                     type: string
                     examples:
-                        - 50000.00
-                    example: 50000.00
+                        - "50000.00"
+                    example: "50000.00"
                 pendingTransferOut:
                     type: string
                     examples:
-                        - 0.00
-                    example: 0.00
+                        - "0.00"
+                    example: "0.00"
                 portfolioValue:
                     type: string
                     examples:
-                        - 50000.00
-                    example: 50000.00
+                        - "50000.00"
+                    example: "50000.00"
                 patternDayTrader:
                     type: boolean
                 tradingBlocked:
@@ -6511,115 +6511,115 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-01T00:00:00Z
-                    example: 2024-01-01T00:00:00Z
+                        - "2024-01-01T00:00:00Z"
+                    example: "2024-01-01T00:00:00Z"
                 tradeSuspendedByUser:
                     type: boolean
                 multiplier:
                     type: string
                     examples:
-                        - 2
-                    example: 2
+                        - "2"
+                    example: "2"
                 shortingEnabled:
                     type: boolean
                 equity:
                     type: string
                     examples:
-                        - 50000.00
-                    example: 50000.00
+                        - "50000.00"
+                    example: "50000.00"
                 lastEquity:
                     type: string
                     examples:
-                        - 49500.00
-                    example: 49500.00
+                        - "49500.00"
+                    example: "49500.00"
                 longMarketValue:
                     type: string
                     examples:
-                        - 25000.00
-                    example: 25000.00
+                        - "25000.00"
+                    example: "25000.00"
                 shortMarketValue:
                     type: string
                     examples:
-                        - 0.00
-                    example: 0.00
+                        - "0.00"
+                    example: "0.00"
                 positionMarketValue:
                     type: string
                     examples:
-                        - 25000.00
-                    example: 25000.00
+                        - "25000.00"
+                    example: "25000.00"
                 initialMargin:
                     type: string
                     examples:
-                        - 12500.00
-                    example: 12500.00
+                        - "12500.00"
+                    example: "12500.00"
                 maintenanceMargin:
                     type: string
                     examples:
-                        - 7500.00
-                    example: 7500.00
+                        - "7500.00"
+                    example: "7500.00"
                 lastMaintenanceMargin:
                     type: string
                     examples:
-                        - 7500.00
-                    example: 7500.00
+                        - "7500.00"
+                    example: "7500.00"
                 sma:
                     type: string
                     examples:
-                        - 50000.00
-                    example: 50000.00
+                        - "50000.00"
+                    example: "50000.00"
                 daytradeCount:
                     type: integer
                     format: int32
                 balanceAsof:
                     type: string
                     examples:
-                        - 2024-01-15
-                    example: 2024-01-15
+                        - "2024-01-15"
+                    example: "2024-01-15"
                 previousClose:
                     type: string
                     examples:
-                        - 2024-01-14T21:00:00Z
-                    example: 2024-01-14T21:00:00Z
+                        - "2024-01-14T21:00:00Z"
+                    example: "2024-01-14T21:00:00Z"
                 lastLongMarketValue:
                     type: string
                     examples:
-                        - 24000.00
-                    example: 24000.00
+                        - "24000.00"
+                    example: "24000.00"
                 lastShortMarketValue:
                     type: string
                     examples:
-                        - 0.00
-                    example: 0.00
+                        - "0.00"
+                    example: "0.00"
                 lastCash:
                     type: string
                     examples:
-                        - 49500.00
-                    example: 49500.00
+                        - "49500.00"
+                    example: "49500.00"
                 lastInitialMargin:
                     type: string
                     examples:
-                        - 12000.00
-                    example: 12000.00
+                        - "12000.00"
+                    example: "12000.00"
                 lastRegtBuyingPower:
                     type: string
                     examples:
-                        - 49500.00
-                    example: 49500.00
+                        - "49500.00"
+                    example: "49500.00"
                 lastDaytradingBuyingPower:
                     type: string
                     examples:
-                        - 198000.00
-                    example: 198000.00
+                        - "198000.00"
+                    example: "198000.00"
                 lastOptionsBuyingPower:
                     type: string
                     examples:
-                        - 49500.00
-                    example: 49500.00
+                        - "49500.00"
+                    example: "49500.00"
                 lastBuyingPower:
                     type: string
                     examples:
-                        - 49500.00
-                    example: 49500.00
+                        - "49500.00"
+                    example: "49500.00"
                 lastDaytradeCount:
                     type: integer
                     format: int32
@@ -6637,18 +6637,18 @@ components:
                 intradayAdjustments:
                     type: string
                     examples:
-                        - 0.00
-                    example: 0.00
+                        - "0.00"
+                    example: "0.00"
                 pendingRegTafFees:
                     type: string
                     examples:
-                        - 0.00
-                    example: 0.00
+                        - "0.00"
+                    example: "0.00"
                 memoposts:
                     type: string
                     examples:
-                        - 0.00
-                    example: 0.00
+                        - "0.00"
+                    example: "0.00"
             description: TradeAccount represents the trading details for a broker account.
         AdminConfigurations:
             type: object
@@ -6716,8 +6716,8 @@ components:
                 maxMarginMultiplier:
                     type: string
                     examples:
-                        - 2
-                    example: 2
+                        - "2"
+                    example: "2"
                 maxOptionsTradingLevel:
                     type: integer
                     format: int32
@@ -6753,21 +6753,21 @@ components:
                 date:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Filter by creation date (YYYY-MM-DD or RFC-3339).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-31T23:59:59Z
+                        - "2024-01-31T23:59:59Z"
                     description: Activities created before this date.
-                    example: 2024-01-31T23:59:59Z
+                    example: "2024-01-31T23:59:59Z"
                 after:
                     type: string
                     examples:
-                        - 2024-01-01T00:00:00Z
+                        - "2024-01-01T00:00:00Z"
                     description: Activities created after this date.
-                    example: 2024-01-01T00:00:00Z
+                    example: "2024-01-01T00:00:00Z"
                 direction:
                     type: string
                     examples:
@@ -6820,9 +6820,9 @@ components:
                 transactionTime:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Transaction timestamp.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 type:
                     type: string
                     examples:
@@ -6832,15 +6832,15 @@ components:
                 price:
                     type: string
                     examples:
-                        - 150.00
+                        - "150.00"
                     description: Fill price.
-                    example: 150.00
+                    example: "150.00"
                 qty:
                     type: string
                     examples:
-                        - 10
+                        - "10"
                     description: Filled quantity.
-                    example: 10
+                    example: "10"
                 side:
                     type: string
                     examples:
@@ -6856,9 +6856,9 @@ components:
                 leavesQty:
                     type: string
                     examples:
-                        - 0
+                        - "0"
                     description: Remaining quantity after this fill.
-                    example: 0
+                    example: "0"
                 orderId:
                     type: string
                     examples:
@@ -6868,9 +6868,9 @@ components:
                 cumQty:
                     type: string
                     examples:
-                        - 10
+                        - "10"
                     description: Cumulative filled quantity.
-                    example: 10
+                    example: "10"
                 orderStatus:
                     type: string
                     examples:
@@ -6886,9 +6886,9 @@ components:
                 date:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Activity date.
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 currency:
                     type: string
                     examples:
@@ -6898,9 +6898,9 @@ components:
                 netAmount:
                     type: string
                     examples:
-                        - 50.00
+                        - "50.00"
                     description: Net amount.
-                    example: 50.00
+                    example: "50.00"
                 description:
                     type: string
                     examples:
@@ -6916,15 +6916,15 @@ components:
                 cusip:
                     type: string
                     examples:
-                        - 037833100
+                        - "037833100"
                     description: CUSIP identifier.
-                    example: 037833100
+                    example: "037833100"
                 perShareAmount:
                     type: string
                     examples:
-                        - 0.50
+                        - "0.50"
                     description: Per-share amount.
-                    example: 0.50
+                    example: "0.50"
                 groupId:
                     type: string
                     examples:
@@ -6934,21 +6934,21 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Creation timestamp.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 swapRate:
                     type: string
                     examples:
-                        - 0.01
+                        - "0.01"
                     description: Swap rate (for crypto activities).
-                    example: 0.01
+                    example: "0.01"
                 commission:
                     type: string
                     examples:
-                        - 1.00
+                        - "1.00"
                     description: Commission charged for the trade.
-                    example: 1.00
+                    example: "1.00"
             description: AccountActivity represents an account activity event (trade or non-trade).
         ListAccountActivitiesByTypeRequest:
             type: object
@@ -6968,21 +6968,21 @@ components:
                 date:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Filter by creation date (YYYY-MM-DD or RFC-3339).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-31T23:59:59Z
+                        - "2024-01-31T23:59:59Z"
                     description: Activities created before this date.
-                    example: 2024-01-31T23:59:59Z
+                    example: "2024-01-31T23:59:59Z"
                 after:
                     type: string
                     examples:
-                        - 2024-01-01T00:00:00Z
+                        - "2024-01-01T00:00:00Z"
                     description: Activities created after this date.
-                    example: 2024-01-01T00:00:00Z
+                    example: "2024-01-01T00:00:00Z"
                 direction:
                     type: string
                     examples:
@@ -7038,15 +7038,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Start date/time (RFC-3339 or YYYY-MM-DD).
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 end:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: End date/time (RFC-3339 or YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 pnlReset:
                     type: string
                     examples:
@@ -7056,9 +7056,9 @@ components:
                 extendedHours:
                     type: string
                     examples:
-                        - true
+                        - "true"
                     description: Whether to include extended hours data (deprecated, use intraday_reporting).
-                    example: true
+                    example: "true"
                 cashflowTypes:
                     type: string
                     examples:
@@ -7112,9 +7112,9 @@ components:
                 base_value_asof:
                     type: string
                     examples:
-                        - 2024-01-14
+                        - "2024-01-14"
                     description: Trading date of the base_value closing equity.
-                    example: 2024-01-14
+                    example: "2024-01-14"
                 timeframe:
                     type: string
                     examples:
@@ -7170,15 +7170,15 @@ components:
                 bankAccountNumber:
                     type: string
                     examples:
-                        - 123456789
+                        - "123456789"
                     description: Bank account number.
-                    example: 123456789
+                    example: "123456789"
                 bankRoutingNumber:
                     type: string
                     examples:
-                        - 121000358
+                        - "121000358"
                     description: Bank routing number.
-                    example: 121000358
+                    example: "121000358"
                 nickname:
                     type: string
                     examples:
@@ -7215,15 +7215,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Creation timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Last update timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 status:
                     type: string
                     examples:
@@ -7251,9 +7251,9 @@ components:
                 bankRoutingNumber:
                     type: string
                     examples:
-                        - 121000358
+                        - "121000358"
                     description: Bank routing number.
-                    example: 121000358
+                    example: "121000358"
                 nickname:
                     type: string
                     examples:
@@ -7347,9 +7347,9 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Transfer amount.
-                    example: 1000.00
+                    example: "1000.00"
                 direction:
                     type: string
                     examples:
@@ -7412,27 +7412,27 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Transfer amount.
-                    example: 1000.00
+                    example: "1000.00"
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Creation timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Last update timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 expiresAt:
                     type: string
                     examples:
-                        - 2024-01-22T10:30:00Z
+                        - "2024-01-22T10:30:00Z"
                     description: Expiration date (RFC 3339).
-                    example: 2024-01-22T10:30:00Z
+                    example: "2024-01-22T10:30:00Z"
                 reason:
                     type: string
                     description: Reason for cancellation/rejection.
@@ -7442,15 +7442,15 @@ components:
                 fee:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Fee associated with the transfer.
-                    example: 0.00
+                    example: "0.00"
                 requestedAmount:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Requested amount (before fees).
-                    example: 1000.00
+                    example: "1000.00"
                 holdUntil:
                     type: string
                     description: Hold until date.
@@ -7595,15 +7595,15 @@ components:
                 qty:
                     type: string
                     examples:
-                        - 10
+                        - "10"
                     description: Quantity to trade (required if notional not specified).
-                    example: 10
+                    example: "10"
                 notional:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Notional value to trade (required if qty not specified).
-                    example: 1000.00
+                    example: "1000.00"
                 side:
                     type: string
                     examples:
@@ -7641,27 +7641,27 @@ components:
                 limit_price:
                     type: string
                     examples:
-                        - 150.00
+                        - "150.00"
                     description: Limit price (for limit orders).
-                    example: 150.00
+                    example: "150.00"
                 stop_price:
                     type: string
                     examples:
-                        - 145.00
+                        - "145.00"
                     description: Stop price (for stop orders).
-                    example: 145.00
+                    example: "145.00"
                 trail_price:
                     type: string
                     examples:
-                        - 5.00
+                        - "5.00"
                     description: Trail price (for trailing stop orders).
-                    example: 5.00
+                    example: "5.00"
                 trail_percent:
                     type: string
                     examples:
-                        - 5.0
+                        - "5.0"
                     description: Trail percent (for trailing stop orders).
-                    example: 5.0
+                    example: "5.0"
                 extended_hours:
                     type: boolean
                     examples:
@@ -7694,9 +7694,9 @@ components:
                 commission:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Commission to charge.
-                    example: 0.00
+                    example: "0.00"
             required:
                 - account_id
                 - symbol
@@ -7710,9 +7710,9 @@ components:
                 limit_price:
                     type: string
                     examples:
-                        - 160.00
+                        - "160.00"
                     description: Limit price for take profit.
-                    example: 160.00
+                    example: "160.00"
             required:
                 - limit_price
             description: BrokerTakeProfitSpec specifies take profit parameters for bracket orders.
@@ -7722,15 +7722,15 @@ components:
                 stop_price:
                     type: string
                     examples:
-                        - 140.00
+                        - "140.00"
                     description: Stop price for stop loss.
-                    example: 140.00
+                    example: "140.00"
                 limit_price:
                     type: string
                     examples:
-                        - 139.00
+                        - "139.00"
                     description: Limit price for stop loss.
-                    example: 139.00
+                    example: "139.00"
             required:
                 - stop_price
             description: BrokerStopLossSpec specifies stop loss parameters for bracket orders.
@@ -7753,27 +7753,27 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Creation timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:05Z
+                        - "2024-01-15T10:30:05Z"
                     description: Last update timestamp.
-                    example: 2024-01-15T10:30:05Z
+                    example: "2024-01-15T10:30:05Z"
                 submittedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Submission timestamp.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 filledAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:05Z
+                        - "2024-01-15T10:30:05Z"
                     description: Fill timestamp.
-                    example: 2024-01-15T10:30:05Z
+                    example: "2024-01-15T10:30:05Z"
                 expiredAt:
                     type: string
                     description: Expiration timestamp.
@@ -7823,27 +7823,27 @@ components:
                 notional:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Notional value (for fractional orders).
-                    example: 1000.00
+                    example: "1000.00"
                 qty:
                     type: string
                     examples:
-                        - 10
+                        - "10"
                     description: Quantity ordered.
-                    example: 10
+                    example: "10"
                 filledQty:
                     type: string
                     examples:
-                        - 10
+                        - "10"
                     description: Quantity filled.
-                    example: 10
+                    example: "10"
                 filledAvgPrice:
                     type: string
                     examples:
-                        - 150.25
+                        - "150.25"
                     description: Average fill price.
-                    example: 150.25
+                    example: "150.25"
                 orderClass:
                     type: string
                     examples:
@@ -7877,15 +7877,15 @@ components:
                 limitPrice:
                     type: string
                     examples:
-                        - 150.00
+                        - "150.00"
                     description: Limit price.
-                    example: 150.00
+                    example: "150.00"
                 stopPrice:
                     type: string
                     examples:
-                        - 145.00
+                        - "145.00"
                     description: Stop price.
-                    example: 145.00
+                    example: "145.00"
                 status:
                     type: string
                     examples:
@@ -7905,27 +7905,27 @@ components:
                 trailPercent:
                     type: string
                     examples:
-                        - 5.0
+                        - "5.0"
                     description: Trail percent.
-                    example: 5.0
+                    example: "5.0"
                 trailPrice:
                     type: string
                     examples:
-                        - 5.00
+                        - "5.00"
                     description: Trail price.
-                    example: 5.00
+                    example: "5.00"
                 hwm:
                     type: string
                     examples:
-                        - 155.00
+                        - "155.00"
                     description: High water mark.
-                    example: 155.00
+                    example: "155.00"
                 commission:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Commission charged.
-                    example: 0.00
+                    example: "0.00"
                 commissionBps:
                     type: string
                     description: Commission in basis points.
@@ -7953,8 +7953,8 @@ components:
                 expiresAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:05Z
-                    example: 2024-01-15T10:30:05Z
+                        - "2024-01-15T10:30:05Z"
+                    example: "2024-01-15T10:30:05Z"
             description: BrokerOrder represents a trading order for a broker account.
         ListTradingOrdersRequest:
             type: object
@@ -7990,9 +7990,9 @@ components:
                 until:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Filter by orders updated until this timestamp.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 direction:
                     type: string
                     examples:
@@ -8137,15 +8137,15 @@ components:
                 qty:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Quantity.
-                    example: 100
+                    example: "100"
                 avgEntryPrice:
                     type: string
                     examples:
-                        - 150.00
+                        - "150.00"
                     description: Average entry price.
-                    example: 150.00
+                    example: "150.00"
                 side:
                     type: string
                     examples:
@@ -8155,63 +8155,63 @@ components:
                 marketValue:
                     type: string
                     examples:
-                        - 15500.00
+                        - "15500.00"
                     description: Current market value.
-                    example: 15500.00
+                    example: "15500.00"
                 costBasis:
                     type: string
                     examples:
-                        - 15000.00
+                        - "15000.00"
                     description: Cost basis.
-                    example: 15000.00
+                    example: "15000.00"
                 unrealizedPl:
                     type: string
                     examples:
-                        - 500.00
+                        - "500.00"
                     description: Unrealized P/L.
-                    example: 500.00
+                    example: "500.00"
                 unrealizedPlpc:
                     type: string
                     examples:
-                        - 0.0333
+                        - "0.0333"
                     description: Unrealized P/L percentage.
-                    example: 0.0333
+                    example: "0.0333"
                 unrealizedIntradayPl:
                     type: string
                     examples:
-                        - 100.00
+                        - "100.00"
                     description: Unrealized intraday P/L.
-                    example: 100.00
+                    example: "100.00"
                 unrealizedIntradayPlpc:
                     type: string
                     examples:
-                        - 0.0065
+                        - "0.0065"
                     description: Unrealized intraday P/L percentage.
-                    example: 0.0065
+                    example: "0.0065"
                 currentPrice:
                     type: string
                     examples:
-                        - 155.00
+                        - "155.00"
                     description: Current price.
-                    example: 155.00
+                    example: "155.00"
                 lastdayPrice:
                     type: string
                     examples:
-                        - 154.00
+                        - "154.00"
                     description: Last day price.
-                    example: 154.00
+                    example: "154.00"
                 changeToday:
                     type: string
                     examples:
-                        - 0.0065
+                        - "0.0065"
                     description: Change today.
-                    example: 0.0065
+                    example: "0.0065"
                 qtyAvailable:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Quantity available.
-                    example: 100
+                    example: "100"
                 avgEntrySwapRate:
                     type: string
                     description: Average entry swap rate.
@@ -8273,15 +8273,15 @@ components:
                 qty:
                     type: string
                     examples:
-                        - 50
+                        - "50"
                     description: Quantity to close (optional).
-                    example: 50
+                    example: "50"
                 percentage:
                     type: string
                     examples:
-                        - 50
+                        - "50"
                     description: Percentage to close (optional).
-                    example: 50
+                    example: "50"
             required:
                 - accountId
                 - symbol
@@ -8351,15 +8351,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Filter by start date.
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 end:
                     type: string
                     examples:
-                        - 2024-12-31
+                        - "2024-12-31"
                     description: Filter by end date.
-                    example: 2024-12-31
+                    example: "2024-12-31"
             required:
                 - accountId
             description: ListAccountDocumentsRequest is the request to list documents for an account.
@@ -8410,9 +8410,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-02-01T00:00:00Z
+                        - "2024-02-01T00:00:00Z"
                     description: Timestamp when the document was created.
-                    example: 2024-02-01T00:00:00Z
+                    example: "2024-02-01T00:00:00Z"
                 name:
                     type: string
                     examples:
@@ -8422,9 +8422,9 @@ components:
                 date:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: Date the document was created.
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 content:
                     type: string
                     description: Content URL.
@@ -8517,15 +8517,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the watchlist was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T12:00:00Z
+                        - "2024-01-15T12:00:00Z"
                     description: Timestamp when the watchlist was last updated.
-                    example: 2024-01-15T12:00:00Z
+                    example: "2024-01-15T12:00:00Z"
                 name:
                     type: string
                     examples:
@@ -8841,9 +8841,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the wallet was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: BrokerCryptoWallet represents a crypto funding wallet for a broker account.
         ListBrokerCryptoTransfersRequest:
             type: object
@@ -8893,27 +8893,27 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 1.5
+                        - "1.5"
                     description: Amount of the transfer.
-                    example: 1.5
+                    example: "1.5"
                 usdValue:
                     type: string
                     examples:
-                        - 75000.00
+                        - "75000.00"
                     description: USD value at time of transfer.
-                    example: 75000.00
+                    example: "75000.00"
                 networkFee:
                     type: string
                     examples:
-                        - 0.002
+                        - "0.002"
                     description: Network fee.
-                    example: 0.002
+                    example: "0.002"
                 fees:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Additional fees.
-                    example: 0.00
+                    example: "0.00"
                 chain:
                     type: string
                     examples:
@@ -8941,9 +8941,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when transfer was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: BrokerCryptoTransfer represents a crypto transfer for a broker account.
         GetBrokerCryptoTransferRequest:
             type: object
@@ -8979,9 +8979,9 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 1.5
+                        - "1.5"
                     description: Amount to transfer.
-                    example: 1.5
+                    example: "1.5"
                 asset:
                     type: string
                     examples:
@@ -9060,9 +9060,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the address was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 status:
                     type: string
                     examples:
@@ -9167,9 +9167,9 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Amount (required for JNLC).
-                    example: 1000.00
+                    example: "1000.00"
                 symbol:
                     type: string
                     examples:
@@ -9179,9 +9179,9 @@ components:
                 qty:
                     type: string
                     examples:
-                        - 10
+                        - "10"
                     description: Quantity (required for JNLS).
-                    example: 10
+                    example: "10"
                 description:
                     type: string
                     examples:
@@ -9203,9 +9203,9 @@ components:
                 transmitterAccountNumber:
                     type: string
                     examples:
-                        - 1234567890
+                        - "1234567890"
                     description: Transmitter account number.
-                    example: 1234567890
+                    example: "1234567890"
                 transmitterAddress:
                     type: string
                     examples:
@@ -9221,9 +9221,9 @@ components:
                 transmitterTimestamp:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Transmitter timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             required:
                 - fromAccount
                 - toAccount
@@ -9265,15 +9265,15 @@ components:
                 settleDate:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Settlement date (YYYY-MM-DD).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 systemDate:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: System date (YYYY-MM-DD).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 symbol:
                     type: string
                     examples:
@@ -9283,21 +9283,21 @@ components:
                 qty:
                     type: string
                     examples:
-                        - 10
+                        - "10"
                     description: Quantity (for JNLS only).
-                    example: 10
+                    example: "10"
                 price:
                     type: string
                     examples:
-                        - 150.00
+                        - "150.00"
                     description: Price (for JNLS only).
-                    example: 150.00
+                    example: "150.00"
                 netAmount:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Net amount (for JNLC only).
-                    example: 1000.00
+                    example: "1000.00"
                 description:
                     type: string
                     examples:
@@ -9315,9 +9315,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the journal was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: Journal represents a cash or security transfer between accounts.
         TransmitterInfo:
             type: object
@@ -9349,9 +9349,9 @@ components:
                 originatorPostalCode:
                     type: string
                     examples:
-                        - 10001
+                        - "10001"
                     description: Postal code of the originator.
-                    example: 10001
+                    example: "10001"
                 originatorCountry:
                     type: string
                     examples:
@@ -9361,9 +9361,9 @@ components:
                 originatorBankAccountNumber:
                     type: string
                     examples:
-                        - 1234567890
+                        - "1234567890"
                     description: Bank account number of the originator.
-                    example: 1234567890
+                    example: "1234567890"
                 originatorBankName:
                     type: string
                     examples:
@@ -9383,15 +9383,15 @@ components:
                 after:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Filter by after date.
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 before:
                     type: string
                     examples:
-                        - 2024-12-31
+                        - "2024-12-31"
                     description: Filter by before date.
-                    example: 2024-12-31
+                    example: "2024-12-31"
                 status:
                     type: string
                     examples:
@@ -9505,15 +9505,15 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 100.00
+                        - "100.00"
                     description: Amount (for JNLC).
-                    example: 100.00
+                    example: "100.00"
                 qty:
                     type: string
                     examples:
-                        - 5
+                        - "5"
                     description: Quantity (for JNLS).
-                    example: 5
+                    example: "5"
             required:
                 - toAccount
             description: BatchJournalEntry represents a single entry in a batch journal request.
@@ -9637,15 +9637,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when portfolio was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when portfolio was last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: RebalancingPortfolio represents a rebalancing portfolio configuration.
         PortfolioWeight:
             type: object
@@ -9665,9 +9665,9 @@ components:
                 percent:
                     type: string
                     examples:
-                        - 25.00
+                        - "25.00"
                     description: Percentage allocation (up to two decimal places).
-                    example: 25.00
+                    example: "25.00"
             description: PortfolioWeight represents a weight allocation in a portfolio.
         CreatePortfolioRequest:
             type: object
@@ -9833,15 +9833,15 @@ components:
                 lastRebalancedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Last rebalanced timestamp.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when subscription was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: RebalancingSubscription represents an account's subscription to a portfolio.
         CreateSubscriptionRequest:
             type: object
@@ -9959,15 +9959,15 @@ components:
                 initiatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when run was initiated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 completedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:45:00Z
+                        - "2024-01-15T10:45:00Z"
                     description: Timestamp when run was completed.
-                    example: 2024-01-15T10:45:00Z
+                    example: "2024-01-15T10:45:00Z"
             description: RebalancingRun represents a rebalancing run execution.
         CreateRunRequest:
             type: object
@@ -10059,15 +10059,15 @@ components:
                 totalAmount:
                     type: string
                     examples:
-                        - 10000.00
+                        - "10000.00"
                     description: Total settlement amount.
-                    example: 10000.00
+                    example: "10000.00"
                 interestAmount:
                     type: string
                     examples:
-                        - 25.00
+                        - "25.00"
                     description: Total interest amount accrued.
-                    example: 25.00
+                    example: "25.00"
                 status:
                     type: string
                     examples:
@@ -10089,21 +10089,21 @@ components:
                 completedAt:
                     type: string
                     examples:
-                        - 2024-01-15T12:00:00Z
+                        - "2024-01-15T12:00:00Z"
                     description: Timestamp when settlement was completed.
-                    example: 2024-01-15T12:00:00Z
+                    example: "2024-01-15T12:00:00Z"
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when settlement was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T12:00:00Z
+                        - "2024-01-15T12:00:00Z"
                     description: Timestamp when settlement was last updated.
-                    example: 2024-01-15T12:00:00Z
+                    example: "2024-01-15T12:00:00Z"
                 currency:
                     type: string
                     examples:
@@ -10190,9 +10190,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 1653532627
+                        - "1653532627"
                     description: Creation time in UNIX format.
-                    example: 1653532627
+                    example: "1653532627"
             description: JITLedger represents a JIT ledger account.
         GetJITLedgerBalancesRequest:
             type: object
@@ -10221,15 +10221,15 @@ components:
                 balance:
                     type: string
                     examples:
-                        - 5000.00
+                        - "5000.00"
                     description: Balance amount.
-                    example: 5000.00
+                    example: "5000.00"
                 asOf:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp of the balance.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: JITLedgerBalance represents a balance entry for a JIT ledger.
         GetJITLimitsRequest:
             type: object
@@ -10240,27 +10240,27 @@ components:
                 maxTransfer:
                     type: string
                     examples:
-                        - 50000.00
+                        - "50000.00"
                     description: Maximum single transfer amount.
-                    example: 50000.00
+                    example: "50000.00"
                 maxDaily:
                     type: string
                     examples:
-                        - 250000.00
+                        - "250000.00"
                     description: Maximum daily total amount.
-                    example: 250000.00
+                    example: "250000.00"
                 dailyUsed:
                     type: string
                     examples:
-                        - 75000.00
+                        - "75000.00"
                     description: Current daily usage.
-                    example: 75000.00
+                    example: "75000.00"
                 dailyRemaining:
                     type: string
                     examples:
-                        - 175000.00
+                        - "175000.00"
                     description: Remaining daily limit.
-                    example: 175000.00
+                    example: "175000.00"
             description: JITLimits represents JIT funding limits.
         ListInstantFundingRequest:
             type: object
@@ -10296,15 +10296,15 @@ components:
                 systemDate:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Filter by system date.
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 deadline:
                     type: string
                     examples:
-                        - 2024-01-17
+                        - "2024-01-17"
                     description: Filter by deadline.
-                    example: 2024-01-17
+                    example: "2024-01-17"
                 status:
                     type: string
                     examples:
@@ -10314,9 +10314,9 @@ components:
                 before:
                     type: string
                     examples:
-                        - 2024-01-31T23:59:59Z
+                        - "2024-01-31T23:59:59Z"
                     description: Filter by creation date (before).
-                    example: 2024-01-31T23:59:59Z
+                    example: "2024-01-31T23:59:59Z"
             description: ListInstantFundingRequest is the request to list instant funding transfers.
         ListInstantFundingResponse:
             type: array
@@ -10335,9 +10335,9 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Transfer amount.
-                    example: 1000.00
+                    example: "1000.00"
                 accountNo:
                     type: string
                     examples:
@@ -10359,33 +10359,33 @@ components:
                 systemDate:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: System date.
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 deadline:
                     type: string
                     examples:
-                        - 2024-01-17
+                        - "2024-01-17"
                     description: Settlement deadline.
-                    example: 2024-01-17
+                    example: "2024-01-17"
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when transfer was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 totalInterest:
                     type: string
                     examples:
-                        - 1.50
+                        - "1.50"
                     description: Total interest accrued.
-                    example: 1.50
+                    example: "1.50"
                 remainingPayable:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Remaining payable amount.
-                    example: 0.00
+                    example: "0.00"
                 interests:
                     type: array
                     items:
@@ -10407,15 +10407,15 @@ components:
                 date:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Interest date.
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 amount:
                     type: string
                     examples:
-                        - 0.50
+                        - "0.50"
                     description: Interest amount.
-                    example: 0.50
+                    example: "0.50"
                 status:
                     type: string
                     examples:
@@ -10425,15 +10425,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when interest was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 reconciledAt:
                     type: string
                     examples:
-                        - 2024-01-16T10:30:00Z
+                        - "2024-01-16T10:30:00Z"
                     description: Timestamp when interest was reconciled.
-                    example: 2024-01-16T10:30:00Z
+                    example: "2024-01-16T10:30:00Z"
             description: InstantFundingInterest represents an interest entry.
         InstantFundingFee:
             type: object
@@ -10447,9 +10447,9 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 10.00
+                        - "10.00"
                     description: Fee amount.
-                    example: 10.00
+                    example: "10.00"
                 type:
                     type: string
                     examples:
@@ -10503,9 +10503,9 @@ components:
                 totalAmount:
                     type: string
                     examples:
-                        - 5000.00
+                        - "5000.00"
                     description: Total settlement amount.
-                    example: 5000.00
+                    example: "5000.00"
                 status:
                     type: string
                     examples:
@@ -10515,15 +10515,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when settlement was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 completedAt:
                     type: string
                     examples:
-                        - 2024-01-15T12:00:00Z
+                        - "2024-01-15T12:00:00Z"
                     description: Timestamp when settlement was completed.
-                    example: 2024-01-15T12:00:00Z
+                    example: "2024-01-15T12:00:00Z"
             description: InstantFundingSettlement represents an instant funding settlement.
         CreateInstantFundingSettlementRequest:
             type: object
@@ -10566,27 +10566,27 @@ components:
                 customerSplit:
                     type: string
                     examples:
-                        - 50.00
+                        - "50.00"
                     description: Customer split percentage.
-                    example: 50.00
+                    example: "50.00"
                 partnerSplit:
                     type: string
                     examples:
-                        - 50.00
+                        - "50.00"
                     description: Partner split percentage.
-                    example: 50.00
+                    example: "50.00"
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the tier was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the tier was last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: FPSLTier represents a Fully Paid Securities Lending (FPSL) tier.
         ListFPSLLoansRequest:
             type: object
@@ -10630,9 +10630,9 @@ components:
                 date:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Loan date.
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 accountId:
                     type: string
                     examples:
@@ -10642,9 +10642,9 @@ components:
                 accountNumber:
                     type: string
                     examples:
-                        - 286873545
+                        - "286873545"
                     description: Account's number at Alpaca.
-                    example: 286873545
+                    example: "286873545"
                 correspondent:
                     type: string
                     examples:
@@ -10681,9 +10681,9 @@ components:
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the loan was last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 interest:
                     $ref: '#/components/schemas/FPSLInterest'
             description: FPSLLoan represents a Fully Paid Securities Lending loan.
@@ -10731,21 +10731,21 @@ components:
                 apr:
                     type: string
                     examples:
-                        - 8.50
+                        - "8.50"
                     description: APR percentage.
-                    example: 8.50
+                    example: "8.50"
                 minBalance:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Minimum balance for this tier.
-                    example: 0.00
+                    example: "0.00"
                 maxBalance:
                     type: string
                     examples:
-                        - 50000.00
+                        - "50000.00"
                     description: Maximum balance for this tier.
-                    example: 50000.00
+                    example: "50000.00"
                 active:
                     type: boolean
                     examples:
@@ -10944,15 +10944,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the client was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the client was last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: OAuthClient represents an OAuth client application.
         CreateOAuthClientRequest:
             type: object
@@ -11067,15 +11067,15 @@ components:
                 since:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: 'Starting timestamp (format: YYYY-MM-DD).'
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: 'Ending timestamp (format: YYYY-MM-DD).'
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 sinceId:
                     type: integer
                     format: int64
@@ -11135,9 +11135,9 @@ components:
                 timestamp:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp of the event.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 retry:
                     type: integer
                     examples:
@@ -11152,15 +11152,15 @@ components:
                 since:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: 'Starting timestamp (format: YYYY-MM-DD).'
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: 'Ending timestamp (format: YYYY-MM-DD).'
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 sinceId:
                     type: integer
                     format: int64
@@ -11188,15 +11188,15 @@ components:
                 since:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: 'Starting timestamp (format: YYYY-MM-DD).'
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: 'Ending timestamp (format: YYYY-MM-DD).'
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 sinceId:
                     type: integer
                     format: int64
@@ -11224,15 +11224,15 @@ components:
                 since:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: 'Starting timestamp (format: YYYY-MM-DD).'
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: 'Ending timestamp (format: YYYY-MM-DD).'
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 sinceId:
                     type: integer
                     format: int64
@@ -11266,15 +11266,15 @@ components:
                 since:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: 'Starting timestamp (format: YYYY-MM-DD).'
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: 'Ending timestamp (format: YYYY-MM-DD).'
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 sinceId:
                     type: integer
                     format: int64
@@ -11350,15 +11350,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when CIP was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when CIP was last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 kyc:
                     $ref: '#/components/schemas/CIPKYCResult'
                 document:
@@ -11391,15 +11391,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the KYC record was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the KYC record was last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 riskScore:
                     type: integer
                     examples:
@@ -11439,9 +11439,9 @@ components:
                 dateOfBirth:
                     type: string
                     examples:
-                        - 1970-12-01
+                        - "1970-12-01"
                     description: Date of birth.
-                    example: 1970-12-01
+                    example: "1970-12-01"
                 address:
                     type: string
                     examples:
@@ -11451,9 +11451,9 @@ components:
                 postalCode:
                     type: string
                     examples:
-                        - 94401
+                        - "94401"
                     description: Postal code.
-                    example: 94401
+                    example: "94401"
                 countryOfResidency:
                     type: string
                     examples:
@@ -11463,9 +11463,9 @@ components:
                 completedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Completed at timestamp.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 ipAddress:
                     type: string
                     examples:
@@ -11475,15 +11475,15 @@ components:
                 checkInitiatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Check initiated at timestamp.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 checkCompletedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Check completed at timestamp.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 approvalStatus:
                     type: string
                     examples:
@@ -11502,9 +11502,9 @@ components:
                 approvedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Approved at timestamp.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: CIPKYCResult represents KYC verification results.
         CIPDocumentResult:
             type: object
@@ -11527,15 +11527,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the document record was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the document record was last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 result:
                     type: string
                     examples:
@@ -11551,9 +11551,9 @@ components:
                 externalCreatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: External created at timestamp from provider.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 dateOfBirth:
                     type: string
                     description: Date of birth from document.
@@ -11697,15 +11697,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the photo record was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the photo record was last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 result:
                     type: string
                     examples:
@@ -11758,15 +11758,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the identity record was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the identity record was last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 result:
                     type: string
                     examples:
@@ -11842,15 +11842,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the watchlist record was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the watchlist record was last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 result:
                     type: string
                     examples:
@@ -11866,9 +11866,9 @@ components:
                 externalCreatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: External created at timestamp from provider.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 records:
                     type: array
                     items:
@@ -11982,15 +11982,15 @@ components:
                 dob:
                     type: string
                     examples:
-                        - 1990-01-15
+                        - "1990-01-15"
                     description: Date of birth.
-                    example: 1990-01-15
+                    example: "1990-01-15"
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when applicant was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: OnfidoApplicant represents an Onfido applicant.
         GetOnfidoApplicantRequest:
             type: object
@@ -12042,9 +12042,9 @@ components:
                 expiresAt:
                     type: string
                     examples:
-                        - 2024-01-15T11:30:00Z
+                        - "2024-01-15T11:30:00Z"
                     description: Token expiration timestamp.
-                    example: 2024-01-15T11:30:00Z
+                    example: "2024-01-15T11:30:00Z"
             description: OnfidoSDKToken represents an Onfido SDK token for client-side integration.
         CreateOnfidoCheckRequest:
             type: object
@@ -12098,9 +12098,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when check was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: OnfidoCheck represents an Onfido check.
         OnfidoReport:
             type: object
@@ -12252,9 +12252,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when document was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: OnfidoDocument represents an uploaded Onfido document.
         UploadOnfidoPhotoRequest:
             type: object
@@ -12291,9 +12291,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when photo was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: OnfidoPhoto represents an uploaded Onfido live photo.
         GetMarketCalendarRequest:
             type: object
@@ -12301,15 +12301,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Start date for calendar range.
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 end:
                     type: string
                     examples:
-                        - 2024-12-31
+                        - "2024-12-31"
                     description: End date for calendar range.
-                    example: 2024-12-31
+                    example: "2024-12-31"
             description: GetMarketCalendarRequest is the request to get the market calendar.
         GetMarketCalendarResponse:
             type: array
@@ -12322,9 +12322,9 @@ components:
                 date:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Date of the trading day.
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 open:
                     type: string
                     examples:
@@ -12340,9 +12340,9 @@ components:
                 settlementDate:
                     type: string
                     examples:
-                        - 2024-01-17
+                        - "2024-01-17"
                     description: Settlement date.
-                    example: 2024-01-17
+                    example: "2024-01-17"
                 sessionOpen:
                     type: string
                     examples:
@@ -12365,9 +12365,9 @@ components:
                 timestamp:
                     type: string
                     examples:
-                        - 2024-01-15T14:30:00-05:00
+                        - "2024-01-15T14:30:00-05:00"
                     description: Current timestamp.
-                    example: 2024-01-15T14:30:00-05:00
+                    example: "2024-01-15T14:30:00-05:00"
                 isOpen:
                     type: boolean
                     examples:
@@ -12377,15 +12377,15 @@ components:
                 nextOpen:
                     type: string
                     examples:
-                        - 2024-01-16T09:30:00-05:00
+                        - "2024-01-16T09:30:00-05:00"
                     description: Next market open time.
-                    example: 2024-01-16T09:30:00-05:00
+                    example: "2024-01-16T09:30:00-05:00"
                 nextClose:
                     type: string
                     examples:
-                        - 2024-01-15T16:00:00-05:00
+                        - "2024-01-15T16:00:00-05:00"
                     description: Next market close time.
-                    example: 2024-01-15T16:00:00-05:00
+                    example: "2024-01-15T16:00:00-05:00"
             description: MarketClock represents the current market clock status.
         GetOptionsApprovalRequest:
             type: object
@@ -12436,15 +12436,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when approval was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when approval was last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: OptionsApproval represents an account's options trading approval.
         RequestOptionsApprovalRequest:
             type: object
@@ -12515,27 +12515,27 @@ components:
                 expirationDateGte:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Filter by expiration date (on or after).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 expirationDateLte:
                     type: string
                     examples:
-                        - 2024-03-15
+                        - "2024-03-15"
                     description: Filter by expiration date (on or before).
-                    example: 2024-03-15
+                    example: "2024-03-15"
                 strikePriceGte:
                     type: string
                     examples:
-                        - 140.00
+                        - "140.00"
                     description: Filter by strike price (greater than or equal).
-                    example: 140.00
+                    example: "140.00"
                 strikePriceLte:
                     type: string
                     examples:
-                        - 160.00
+                        - "160.00"
                     description: Filter by strike price (less than or equal).
-                    example: 160.00
+                    example: "160.00"
                 status:
                     type: string
                     examples:
@@ -12608,9 +12608,9 @@ components:
                 expirationDate:
                     type: string
                     examples:
-                        - 2024-01-19
+                        - "2024-01-19"
                     description: Expiration date.
-                    example: 2024-01-19
+                    example: "2024-01-19"
                 rootSymbol:
                     type: string
                     examples:
@@ -12644,45 +12644,45 @@ components:
                 strikePrice:
                     type: string
                     examples:
-                        - 150.00
+                        - "150.00"
                     description: Strike price.
-                    example: 150.00
+                    example: "150.00"
                 multiplier:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Multiplier for calculating trade premium and extended strike price.
-                    example: 100
+                    example: "100"
                 size:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Number of underlying shares delivered if exercised/assigned.
-                    example: 100
+                    example: "100"
                 openInterest:
                     type: string
                     examples:
-                        - 237
+                        - "237"
                     description: Open interest.
-                    example: 237
+                    example: "237"
                 openInterestDate:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Date of open interest data.
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 closePrice:
                     type: string
                     examples:
-                        - 5.50
+                        - "5.50"
                     description: Close price.
-                    example: 5.50
+                    example: "5.50"
                 closePriceDate:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Date of close price data.
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 ppind:
                     type: boolean
                     examples:
@@ -12761,21 +12761,21 @@ components:
                 excessAmount:
                     type: string
                     examples:
-                        - 1500.00
+                        - "1500.00"
                     description: Excess amount.
-                    example: 1500.00
+                    example: "1500.00"
                 earnings:
                     type: string
                     examples:
-                        - 75.00
+                        - "75.00"
                     description: Earnings attributable to excess.
-                    example: 75.00
+                    example: "75.00"
                 distributionAmount:
                     type: string
                     examples:
-                        - 1575.00
+                        - "1575.00"
                     description: Total distribution amount (excess + earnings).
-                    example: 1575.00
+                    example: "1575.00"
                 status:
                     type: string
                     examples:
@@ -12791,21 +12791,21 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 processedAt:
                     type: string
                     examples:
-                        - 2024-01-16T10:30:00Z
+                        - "2024-01-16T10:30:00Z"
                     description: Timestamp when processed.
-                    example: 2024-01-16T10:30:00Z
+                    example: "2024-01-16T10:30:00Z"
             description: IRAExcessContribution represents an IRA excess contribution record.
         GetIRAExcessContributionRequest:
             type: object
@@ -12846,9 +12846,9 @@ components:
                 excessAmount:
                     type: string
                     examples:
-                        - 1500.00
+                        - "1500.00"
                     description: Excess amount (required).
-                    example: 1500.00
+                    example: "1500.00"
                 reason:
                     type: string
                     examples:
@@ -12885,21 +12885,21 @@ components:
                 regularLimit:
                     type: string
                     examples:
-                        - 7000.00
+                        - "7000.00"
                     description: Regular contribution limit (under 50).
-                    example: 7000.00
+                    example: "7000.00"
                 catchupLimit:
                     type: string
                     examples:
-                        - 8000.00
+                        - "8000.00"
                     description: Catch-up contribution limit (50 and over).
-                    example: 8000.00
+                    example: "8000.00"
                 contributionDeadline:
                     type: string
                     examples:
-                        - 2025-04-15
+                        - "2025-04-15"
                     description: Deadline for contributions.
-                    example: 2025-04-15
+                    example: "2025-04-15"
             description: IRAContributionLimits represents IRA contribution limits for a tax year.
         ListCountriesRequest:
             type: object
@@ -13042,27 +13042,27 @@ components:
                 maxPrice:
                     type: string
                     examples:
-                        - 28
+                        - "28"
                     description: Maximum offering price (string representation of decimal).
-                    example: 28
+                    example: "28"
                 minPrice:
                     type: string
                     examples:
-                        - 22
+                        - "22"
                     description: Minimum offering price (string representation of decimal).
-                    example: 22
+                    example: "22"
                 tradeDate:
                     type: string
                     examples:
-                        - 2026-04-20
+                        - "2026-04-20"
                     description: Expected trading date (YYYY-MM-DD).
-                    example: 2026-04-20
+                    example: "2026-04-20"
                 settlementDate:
                     type: string
                     examples:
-                        - 2026-04-22
+                        - "2026-04-22"
                     description: Expected settlement date (YYYY-MM-DD).
-                    example: 2026-04-22
+                    example: "2026-04-22"
                 noNewOrders:
                     type: boolean
                     description: Whether new orders are blocked.
@@ -13074,27 +13074,27 @@ components:
                 unitStepSize:
                     type: string
                     examples:
-                        - 1
+                        - "1"
                     description: Unit step size for orders (string representation of decimal).
-                    example: 1
+                    example: "1"
                 minTicketSize:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Minimum order size (string representation of decimal).
-                    example: 100
+                    example: "100"
                 maxTicketSize:
                     type: string
                     examples:
-                        - 10000
+                        - "10000"
                     description: Maximum order size (string representation of decimal).
-                    example: 10000
+                    example: "10000"
                 sixtyMinuteExpirationTime:
                     type: string
                     examples:
-                        - 2026-03-27T16:36:14Z
+                        - "2026-03-27T16:36:14Z"
                     description: Expiration time for the 60-minute withdrawal window (RFC3339). Populated only while the window is active.
-                    example: 2026-03-27T16:36:14Z
+                    example: "2026-03-27T16:36:14Z"
             description: IPOOffering represents an IPO offering from Alpaca.
         GetIPOOfferingRequest:
             type: object

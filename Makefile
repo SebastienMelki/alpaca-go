@@ -4,10 +4,15 @@
 # Default target
 all: generate build
 
+# sebuf plugin version - keep in sync with the sebuf require in go.mod so
+# generation is reproducible across machines.
+SEBUF_VERSION := v0.23.2
+
 # Install required tools
 install-tools:
-	go install github.com/SebastienMelki/sebuf/cmd/protoc-gen-go-client@latest
-	go install github.com/SebastienMelki/sebuf/cmd/protoc-gen-openapiv3@latest
+	go install github.com/SebastienMelki/sebuf/cmd/protoc-gen-go-client@$(SEBUF_VERSION)
+	go install github.com/SebastienMelki/sebuf/cmd/protoc-gen-go-http@$(SEBUF_VERSION)
+	go install github.com/SebastienMelki/sebuf/cmd/protoc-gen-openapiv3@$(SEBUF_VERSION)
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 	go install golang.org/x/tools/cmd/goimports@latest

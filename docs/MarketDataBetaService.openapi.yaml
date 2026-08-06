@@ -1618,15 +1618,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Start timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 end:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: End timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 limit:
                     type: integer
                     examples:
@@ -1687,9 +1687,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2024-01-15T09:30:00Z
+                        - "2024-01-15T09:30:00Z"
                     description: Timestamp (RFC 3339).
-                    example: 2024-01-15T09:30:00Z
+                    example: "2024-01-15T09:30:00Z"
                 o:
                     type: number
                     examples:
@@ -1785,15 +1785,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-15T00:00:00Z
+                        - "2024-01-15T00:00:00Z"
                     description: Start timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T00:00:00Z
+                    example: "2024-01-15T00:00:00Z"
                 end:
                     type: string
                     examples:
-                        - 2024-01-15T23:59:59Z
+                        - "2024-01-15T23:59:59Z"
                     description: End timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T23:59:59Z
+                    example: "2024-01-15T23:59:59Z"
                 limit:
                     type: integer
                     examples:
@@ -1853,9 +1853,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00.123456Z
+                        - "2024-01-15T10:30:00.123456Z"
                     description: Timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00.123456Z
+                    example: "2024-01-15T10:30:00.123456Z"
                 p:
                     type: number
                     examples:
@@ -1929,15 +1929,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-15T00:00:00Z
+                        - "2024-01-15T00:00:00Z"
                     description: Start timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T00:00:00Z
+                    example: "2024-01-15T00:00:00Z"
                 end:
                     type: string
                     examples:
-                        - 2024-01-15T23:59:59Z
+                        - "2024-01-15T23:59:59Z"
                     description: End timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T23:59:59Z
+                    example: "2024-01-15T23:59:59Z"
                 limit:
                     type: integer
                     examples:
@@ -1997,9 +1997,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00.123456Z
+                        - "2024-01-15T10:30:00.123456Z"
                     description: Timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00.123456Z
+                    example: "2024-01-15T10:30:00.123456Z"
                 ap:
                     type: number
                     examples:
@@ -2147,9 +2147,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2022-06-24T08:00:14.137774336Z
+                        - "2022-06-24T08:00:14.137774336Z"
                     description: Timestamp in RFC-3339 format with nanosecond precision.
-                    example: 2022-06-24T08:00:14.137774336Z
+                    example: "2022-06-24T08:00:14.137774336Z"
                 b:
                     type: array
                     items:
@@ -2195,15 +2195,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Start timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 end:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: End timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 limit:
                     type: integer
                     examples:
@@ -2257,9 +2257,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2024-01-15T09:30:00Z
+                        - "2024-01-15T09:30:00Z"
                     description: Timestamp (RFC 3339).
-                    example: 2024-01-15T09:30:00Z
+                    example: "2024-01-15T09:30:00Z"
                 o:
                     type: number
                     examples:
@@ -2322,15 +2322,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-15T09:30:00Z
+                        - "2024-01-15T09:30:00Z"
                     description: Start timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T09:30:00Z
+                    example: "2024-01-15T09:30:00Z"
                 end:
                     type: string
                     examples:
-                        - 2024-01-15T16:00:00Z
+                        - "2024-01-15T16:00:00Z"
                     description: End timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T16:00:00Z
+                    example: "2024-01-15T16:00:00Z"
                 limit:
                     type: integer
                     examples:
@@ -2383,9 +2383,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00.123456Z
+                        - "2024-01-15T10:30:00.123456Z"
                     description: Timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00.123456Z
+                    example: "2024-01-15T10:30:00.123456Z"
                 x:
                     type: string
                     examples:
@@ -2474,9 +2474,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00.123456Z
+                        - "2024-01-15T10:30:00.123456Z"
                     description: Timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00.123456Z
+                    example: "2024-01-15T10:30:00.123456Z"
                 ax:
                     type: string
                     examples:
@@ -2659,15 +2659,15 @@ components:
                 expirationDateGte:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Filter by expiration date greater than or equal to (YYYY-MM-DD).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 expirationDateLte:
                     type: string
                     examples:
-                        - 2024-03-15
+                        - "2024-03-15"
                     description: Filter by expiration date less than or equal to (YYYY-MM-DD).
-                    example: 2024-03-15
+                    example: "2024-03-15"
                 pageToken:
                     type: string
                     examples:
@@ -2750,15 +2750,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-01T00:00:00Z
+                        - "2024-01-01T00:00:00Z"
                     description: Start timestamp (RFC 3339).
-                    example: 2024-01-01T00:00:00Z
+                    example: "2024-01-01T00:00:00Z"
                 end:
                     type: string
                     examples:
-                        - 2024-01-31T23:59:59Z
+                        - "2024-01-31T23:59:59Z"
                     description: End timestamp (RFC 3339).
-                    example: 2024-01-31T23:59:59Z
+                    example: "2024-01-31T23:59:59Z"
                 limit:
                     type: integer
                     examples:
@@ -2832,15 +2832,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Creation timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T11:00:00Z
+                        - "2024-01-15T11:00:00Z"
                     description: Update timestamp (RFC 3339).
-                    example: 2024-01-15T11:00:00Z
+                    example: "2024-01-15T11:00:00Z"
                 summary:
                     type: string
                     examples:
@@ -2920,9 +2920,9 @@ components:
                 last_updated:
                     type: string
                     examples:
-                        - 2024-01-15T16:00:00Z
+                        - "2024-01-15T16:00:00Z"
                     description: Timestamp when this data was last updated (RFC 3339).
-                    example: 2024-01-15T16:00:00Z
+                    example: "2024-01-15T16:00:00Z"
             description: GetMostActivesResponse is the response containing most active stocks.
         MostActive:
             type: object
@@ -2989,9 +2989,9 @@ components:
                 last_updated:
                     type: string
                     examples:
-                        - 2024-01-15T16:00:00Z
+                        - "2024-01-15T16:00:00Z"
                     description: Timestamp when this data was last updated (RFC 3339).
-                    example: 2024-01-15T16:00:00Z
+                    example: "2024-01-15T16:00:00Z"
             description: GetMoversResponse is the response containing top movers.
         Mover:
             type: object
@@ -3052,15 +3052,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-08-14
+                        - "2024-08-14"
                     description: 'The inclusive start of the interval. Format: YYYY-MM-DD. Default: current day.'
-                    example: 2024-08-14
+                    example: "2024-08-14"
                 end:
                     type: string
                     examples:
-                        - 2024-08-25
+                        - "2024-08-25"
                     description: 'The inclusive end of the interval. Format: YYYY-MM-DD. Default: current day.'
-                    example: 2024-08-25
+                    example: "2024-08-25"
                 ids:
                     type: string
                     examples:
@@ -3177,15 +3177,15 @@ components:
                 oldCusip:
                     type: string
                     examples:
-                        - 60879E101
+                        - "60879E101"
                     description: The old CUSIP identifier.
-                    example: 60879E101
+                    example: "60879E101"
                 newCusip:
                     type: string
                     examples:
-                        - 60879E200
+                        - "60879E200"
                     description: The new CUSIP identifier.
-                    example: 60879E200
+                    example: "60879E200"
                 newRate:
                     type: number
                     examples:
@@ -3203,27 +3203,27 @@ components:
                 processDate:
                     type: string
                     examples:
-                        - 2023-08-24
+                        - "2023-08-24"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2023-08-24
+                    example: "2023-08-24"
                 exDate:
                     type: string
                     examples:
-                        - 2023-08-24
+                        - "2023-08-24"
                     description: The ex-date marks the cutoff point for shareholders to be credited.
-                    example: 2023-08-24
+                    example: "2023-08-24"
                 recordDate:
                     type: string
                     examples:
-                        - 2023-08-24
+                        - "2023-08-24"
                     description: The record date for the corporate action.
-                    example: 2023-08-24
+                    example: "2023-08-24"
                 payableDate:
                     type: string
                     examples:
-                        - 2023-08-24
+                        - "2023-08-24"
                     description: The payable date for the corporate action.
-                    example: 2023-08-24
+                    example: "2023-08-24"
             description: ReverseSplit represents a reverse stock split corporate action.
         ForwardSplit:
             type: object
@@ -3243,9 +3243,9 @@ components:
                 cusip:
                     type: string
                     examples:
-                        - 816851109
+                        - "816851109"
                     description: The CUSIP identifier.
-                    example: 816851109
+                    example: "816851109"
                 newRate:
                     type: number
                     examples:
@@ -3263,33 +3263,33 @@ components:
                 processDate:
                     type: string
                     examples:
-                        - 2023-08-22
+                        - "2023-08-22"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2023-08-22
+                    example: "2023-08-22"
                 exDate:
                     type: string
                     examples:
-                        - 2023-08-22
+                        - "2023-08-22"
                     description: The ex-date marks the cutoff point for shareholders to be credited.
-                    example: 2023-08-22
+                    example: "2023-08-22"
                 recordDate:
                     type: string
                     examples:
-                        - 2023-08-14
+                        - "2023-08-14"
                     description: The record date for the corporate action.
-                    example: 2023-08-14
+                    example: "2023-08-14"
                 payableDate:
                     type: string
                     examples:
-                        - 2023-08-21
+                        - "2023-08-21"
                     description: The payable date for the corporate action.
-                    example: 2023-08-21
+                    example: "2023-08-21"
                 dueBillRedemptionDate:
                     type: string
                     examples:
-                        - 2023-08-23
+                        - "2023-08-23"
                     description: The due bill redemption date.
-                    example: 2023-08-23
+                    example: "2023-08-23"
             description: ForwardSplit represents a forward stock split corporate action.
         UnitSplit:
             type: object
@@ -3360,21 +3360,21 @@ components:
                 processDate:
                     type: string
                     examples:
-                        - 2023-03-01
+                        - "2023-03-01"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2023-03-01
+                    example: "2023-03-01"
                 effectiveDate:
                     type: string
                     examples:
-                        - 2023-03-01
+                        - "2023-03-01"
                     description: The effective date marks the cutoff point for shareholders to be credited.
-                    example: 2023-03-01
+                    example: "2023-03-01"
                 payableDate:
                     type: string
                     examples:
-                        - 2023-03-01
+                        - "2023-03-01"
                     description: The payable date for the corporate action.
-                    example: 2023-03-01
+                    example: "2023-03-01"
             description: UnitSplit represents a unit split corporate action.
         StockDividend:
             type: object
@@ -3394,9 +3394,9 @@ components:
                 cusip:
                     type: string
                     examples:
-                        - 605015106
+                        - "605015106"
                     description: The CUSIP identifier.
-                    example: 605015106
+                    example: "605015106"
                 rate:
                     type: number
                     examples:
@@ -3407,27 +3407,27 @@ components:
                 processDate:
                     type: string
                     examples:
-                        - 2023-05-19
+                        - "2023-05-19"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2023-05-19
+                    example: "2023-05-19"
                 exDate:
                     type: string
                     examples:
-                        - 2023-05-19
+                        - "2023-05-19"
                     description: The ex-date marks the cutoff point for shareholders to be credited.
-                    example: 2023-05-19
+                    example: "2023-05-19"
                 recordDate:
                     type: string
                     examples:
-                        - 2023-05-22
+                        - "2023-05-22"
                     description: The record date for the corporate action.
-                    example: 2023-05-22
+                    example: "2023-05-22"
                 payableDate:
                     type: string
                     examples:
-                        - 2023-05-05
+                        - "2023-05-05"
                     description: The payable date for the corporate action.
-                    example: 2023-05-05
+                    example: "2023-05-05"
             description: StockDividend represents a stock dividend corporate action.
         CashDividend:
             type: object
@@ -3447,9 +3447,9 @@ components:
                 cusip:
                     type: string
                     examples:
-                        - 319829107
+                        - "319829107"
                     description: The CUSIP identifier.
-                    example: 319829107
+                    example: "319829107"
                 rate:
                     type: number
                     examples:
@@ -3472,27 +3472,27 @@ components:
                 processDate:
                     type: string
                     examples:
-                        - 2023-05-19
+                        - "2023-05-19"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2023-05-19
+                    example: "2023-05-19"
                 exDate:
                     type: string
                     examples:
-                        - 2023-05-04
+                        - "2023-05-04"
                     description: The ex-date marks the cutoff point for shareholders to be credited.
-                    example: 2023-05-04
+                    example: "2023-05-04"
                 recordDate:
                     type: string
                     examples:
-                        - 2023-05-05
+                        - "2023-05-05"
                     description: The record date for the corporate action.
-                    example: 2023-05-05
+                    example: "2023-05-05"
                 payableDate:
                     type: string
                     examples:
-                        - 2023-05-19
+                        - "2023-05-19"
                     description: The payable date for the corporate action.
-                    example: 2023-05-19
+                    example: "2023-05-19"
                 dueBillOnDate:
                     type: string
                     description: The due bill on date.
@@ -3550,21 +3550,21 @@ components:
                 processDate:
                     type: string
                     examples:
-                        - 2023-08-15
+                        - "2023-08-15"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2023-08-15
+                    example: "2023-08-15"
                 exDate:
                     type: string
                     examples:
-                        - 2023-08-15
+                        - "2023-08-15"
                     description: The ex-date marks the cutoff point for shareholders to be credited.
-                    example: 2023-08-15
+                    example: "2023-08-15"
                 recordDate:
                     type: string
                     examples:
-                        - 2023-08-15
+                        - "2023-08-15"
                     description: The record date for the corporate action.
-                    example: 2023-08-15
+                    example: "2023-08-15"
                 payableDate:
                     type: string
                     description: The payable date for the corporate action.
@@ -3609,21 +3609,21 @@ components:
                 processDate:
                     type: string
                     examples:
-                        - 2023-07-17
+                        - "2023-07-17"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2023-07-17
+                    example: "2023-07-17"
                 effectiveDate:
                     type: string
                     examples:
-                        - 2023-07-17
+                        - "2023-07-17"
                     description: The effective date marks the cutoff point for shareholders to be credited.
-                    example: 2023-07-17
+                    example: "2023-07-17"
                 payableDate:
                     type: string
                     examples:
-                        - 2023-07-17
+                        - "2023-07-17"
                     description: The payable date for the corporate action.
-                    example: 2023-07-17
+                    example: "2023-07-17"
             description: CashMerger represents a cash merger corporate action.
         StockMerger:
             type: object
@@ -3675,21 +3675,21 @@ components:
                 processDate:
                     type: string
                     examples:
-                        - 2023-07-20
+                        - "2023-07-20"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2023-07-20
+                    example: "2023-07-20"
                 effectiveDate:
                     type: string
                     examples:
-                        - 2023-07-20
+                        - "2023-07-20"
                     description: The effective date marks the cutoff point for shareholders to be credited.
-                    example: 2023-07-20
+                    example: "2023-07-20"
                 payableDate:
                     type: string
                     examples:
-                        - 2023-07-20
+                        - "2023-07-20"
                     description: The payable date for the corporate action.
-                    example: 2023-07-20
+                    example: "2023-07-20"
             description: StockMerger represents a stock merger corporate action.
         StockAndCashMerger:
             type: object
@@ -3728,9 +3728,9 @@ components:
                 acquireeCusip:
                     type: string
                     examples:
-                        - 561409103
+                        - "561409103"
                     description: The acquiree CUSIP identifier.
-                    example: 561409103
+                    example: "561409103"
                 acquireeRate:
                     type: number
                     examples:
@@ -3748,21 +3748,21 @@ components:
                 processDate:
                     type: string
                     examples:
-                        - 2023-07-18
+                        - "2023-07-18"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2023-07-18
+                    example: "2023-07-18"
                 effectiveDate:
                     type: string
                     examples:
-                        - 2023-07-18
+                        - "2023-07-18"
                     description: The effective date marks the cutoff point for shareholders to be credited.
-                    example: 2023-07-18
+                    example: "2023-07-18"
                 payableDate:
                     type: string
                     examples:
-                        - 2023-07-18
+                        - "2023-07-18"
                     description: The payable date for the corporate action.
-                    example: 2023-07-18
+                    example: "2023-07-18"
             description: StockAndCashMerger represents a stock and cash merger corporate action.
         Redemption:
             type: object
@@ -3782,9 +3782,9 @@ components:
                 cusip:
                     type: string
                     examples:
-                        - 687305102
+                        - "687305102"
                     description: The CUSIP identifier.
-                    example: 687305102
+                    example: "687305102"
                 rate:
                     type: number
                     examples:
@@ -3795,15 +3795,15 @@ components:
                 processDate:
                     type: string
                     examples:
-                        - 2023-06-13
+                        - "2023-06-13"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2023-06-13
+                    example: "2023-06-13"
                 payableDate:
                     type: string
                     examples:
-                        - 2023-06-13
+                        - "2023-06-13"
                     description: The payable date for the corporate action.
-                    example: 2023-06-13
+                    example: "2023-06-13"
             description: Redemption represents a redemption corporate action.
         NameChange:
             type: object
@@ -3841,9 +3841,9 @@ components:
                 processDate:
                     type: string
                     examples:
-                        - 2023-08-15
+                        - "2023-08-15"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2023-08-15
+                    example: "2023-08-15"
             description: NameChange represents a name/symbol change corporate action.
         WorthlessRemoval:
             type: object
@@ -3863,15 +3863,15 @@ components:
                 cusip:
                     type: string
                     examples:
-                        - 078771300
+                        - "078771300"
                     description: The CUSIP identifier.
-                    example: 078771300
+                    example: "078771300"
                 processDate:
                     type: string
                     examples:
-                        - 2024-12-19
+                        - "2024-12-19"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2024-12-19
+                    example: "2024-12-19"
             description: WorthlessRemoval represents a worthless removal corporate action.
         RightsDistribution:
             type: object
@@ -3891,9 +3891,9 @@ components:
                 sourceCusip:
                     type: string
                     examples:
-                        - 454089103
+                        - "454089103"
                     description: The source CUSIP identifier.
-                    example: 454089103
+                    example: "454089103"
                 newSymbol:
                     type: string
                     examples:
@@ -3903,9 +3903,9 @@ components:
                 newCusip:
                     type: string
                     examples:
-                        - 454089111
+                        - "454089111"
                     description: The new CUSIP identifier.
-                    example: 454089111
+                    example: "454089111"
                 rate:
                     type: number
                     examples:
@@ -3916,33 +3916,33 @@ components:
                 processDate:
                     type: string
                     examples:
-                        - 2024-04-19
+                        - "2024-04-19"
                     description: The date when the corporate action is processed by Alpaca.
-                    example: 2024-04-19
+                    example: "2024-04-19"
                 exDate:
                     type: string
                     examples:
-                        - 2024-04-17
+                        - "2024-04-17"
                     description: The ex-date marks the cutoff point for shareholders to be credited.
-                    example: 2024-04-17
+                    example: "2024-04-17"
                 recordDate:
                     type: string
                     examples:
-                        - 2024-04-18
+                        - "2024-04-18"
                     description: The record date for the corporate action.
-                    example: 2024-04-18
+                    example: "2024-04-18"
                 payableDate:
                     type: string
                     examples:
-                        - 2024-04-19
+                        - "2024-04-19"
                     description: The payable date for the corporate action.
-                    example: 2024-04-19
+                    example: "2024-04-19"
                 expirationDate:
                     type: string
                     examples:
-                        - 2024-05-14
+                        - "2024-05-14"
                     description: The expiration date for the rights.
-                    example: 2024-05-14
+                    example: "2024-05-14"
             description: RightsDistribution represents a rights distribution corporate action.
         GetForexRatesRequest:
             type: object
@@ -3964,15 +3964,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-03T00:00:00Z
+                        - "2024-01-03T00:00:00Z"
                     description: 'The inclusive start of the interval. Format: RFC-3339 or YYYY-MM-DD.'
-                    example: 2024-01-03T00:00:00Z
+                    example: "2024-01-03T00:00:00Z"
                 end:
                     type: string
                     examples:
-                        - 2024-01-04T00:00:00Z
+                        - "2024-01-04T00:00:00Z"
                     description: 'The inclusive end of the interval. Format: RFC-3339 or YYYY-MM-DD.'
-                    example: 2024-01-04T00:00:00Z
+                    example: "2024-01-04T00:00:00Z"
                 limit:
                     type: integer
                     examples:
@@ -4053,9 +4053,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2022-04-20T18:23:00Z
+                        - "2022-04-20T18:23:00Z"
                     description: Timestamp of the rate in RFC-3339 format.
-                    example: 2022-04-20T18:23:00Z
+                    example: "2022-04-20T18:23:00Z"
             description: ForexRate represents a foreign exchange rate between two currencies at a given time.
         GetLatestForexRatesRequest:
             type: object
@@ -4112,9 +4112,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2025-02-14T20:58:00.648Z
+                        - "2025-02-14T20:58:00.648Z"
                     description: Timestamp in RFC-3339 format with nanosecond precision.
-                    example: 2025-02-14T20:58:00.648Z
+                    example: "2025-02-14T20:58:00.648Z"
                 p:
                     type: number
                     examples:

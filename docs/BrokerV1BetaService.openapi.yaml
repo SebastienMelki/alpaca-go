@@ -556,9 +556,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the wallet was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: FundingWallet represents a funding wallet for an account.
         GetFundingWalletRequest:
             type: object
@@ -633,15 +633,15 @@ components:
                 requestedAmount:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: The amount sent as part of the withdrawal creation.
-                    example: 1000.00
+                    example: "1000.00"
                 originalAmount:
                     type: string
                     examples:
-                        - 975.00
+                        - "975.00"
                     description: The amount expected to receive (requested amount - fees).
-                    example: 975.00
+                    example: "975.00"
                 originalCurrency:
                     type: string
                     examples:
@@ -663,15 +663,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the transfer was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T12:00:00Z
+                        - "2024-01-15T12:00:00Z"
                     description: Timestamp when the transfer was last updated.
-                    example: 2024-01-15T12:00:00Z
+                    example: "2024-01-15T12:00:00Z"
                 usd:
                     $ref: '#/components/schemas/UsdAmount'
                 paymentType:
@@ -693,9 +693,9 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 25.00
+                        - "25.00"
                     description: Fee amount.
-                    example: 25.00
+                    example: "25.00"
                 currency:
                     type: string
                     examples:
@@ -715,9 +715,9 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Amount in USD.
-                    example: 1000.00
+                    example: "1000.00"
             description: UsdAmount represents a USD amount.
         GetFundingWalletTransferRequest:
             type: object
@@ -753,9 +753,9 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Amount to withdraw.
-                    example: 1000.00
+                    example: "1000.00"
                 currency:
                     type: string
                     examples:
@@ -814,15 +814,15 @@ components:
                 accountNumber:
                     type: string
                     examples:
-                        - 1234567890
+                        - "1234567890"
                     description: Account number.
-                    example: 1234567890
+                    example: "1234567890"
                 routingNumber:
                     type: string
                     examples:
-                        - 021000021
+                        - "021000021"
                     description: Routing number.
-                    example: 021000021
+                    example: "021000021"
                 beneficiaryName:
                     type: string
                     examples:
@@ -849,9 +849,9 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 10000.00
+                        - "10000.00"
                     description: Amount to deposit.
-                    example: 10000.00
+                    example: "10000.00"
             required:
                 - accountId
                 - amount
@@ -945,15 +945,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the recipient bank was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the recipient bank was last updated.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: RecipientBank represents a recipient bank for wire transfers.
         CreateRecipientBankRequest:
             type: object

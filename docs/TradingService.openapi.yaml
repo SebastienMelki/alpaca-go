@@ -2552,63 +2552,63 @@ components:
                 buyingPower:
                     type: string
                     examples:
-                        - 50000.00
+                        - "50000.00"
                     description: Current available buying power (cash + margin).
-                    example: 50000.00
+                    example: "50000.00"
                 regtBuyingPower:
                     type: string
                     examples:
-                        - 50000.00
+                        - "50000.00"
                     description: Buying power for day trading (4x equity for pattern day traders).
-                    example: 50000.00
+                    example: "50000.00"
                 daytradingBuyingPower:
                     type: string
                     examples:
-                        - 200000.00
+                        - "200000.00"
                     description: Buying power for day trading (4x equity).
-                    example: 200000.00
+                    example: "200000.00"
                 effectiveBuyingPower:
                     type: string
                     examples:
-                        - 50000.00
+                        - "50000.00"
                     description: Effective buying power.
-                    example: 50000.00
+                    example: "50000.00"
                 nonMarginableBuyingPower:
                     type: string
                     examples:
-                        - 50000.00
+                        - "50000.00"
                     description: Non-marginable buying power.
-                    example: 50000.00
+                    example: "50000.00"
                 bodDtbp:
                     type: string
                     examples:
-                        - 200000.00
+                        - "200000.00"
                     description: Beginning of day day trading buying power.
-                    example: 200000.00
+                    example: "200000.00"
                 cash:
                     type: string
                     examples:
-                        - 50000.00
+                        - "50000.00"
                     description: Cash balance.
-                    example: 50000.00
+                    example: "50000.00"
                 accruedFees:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Accrued fees.
-                    example: 0.00
+                    example: "0.00"
                 pendingTransferIn:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Pending transfer amount.
-                    example: 0.00
+                    example: "0.00"
                 portfolioValue:
                     type: string
                     examples:
-                        - 50000.00
+                        - "50000.00"
                     description: Total portfolio value.
-                    example: 50000.00
+                    example: "50000.00"
                 patternDayTrader:
                     type: boolean
                     examples:
@@ -2636,9 +2636,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2021-01-01T00:00:00Z
+                        - "2021-01-01T00:00:00Z"
                     description: Timestamp when the account was created (RFC 3339).
-                    example: 2021-01-01T00:00:00Z
+                    example: "2021-01-01T00:00:00Z"
                 tradeSuspendedByUser:
                     type: boolean
                     examples:
@@ -2648,9 +2648,9 @@ components:
                 multiplier:
                     type: string
                     examples:
-                        - 4
+                        - "4"
                     description: Margin multiplier.
-                    example: 4
+                    example: "4"
                 shortingEnabled:
                     type: boolean
                     examples:
@@ -2660,57 +2660,57 @@ components:
                 equity:
                     type: string
                     examples:
-                        - 50000.00
+                        - "50000.00"
                     description: Total equity.
-                    example: 50000.00
+                    example: "50000.00"
                 lastEquity:
                     type: string
                     examples:
-                        - 50000.00
+                        - "50000.00"
                     description: Last equity value.
-                    example: 50000.00
+                    example: "50000.00"
                 longMarketValue:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Long market value.
-                    example: 0.00
+                    example: "0.00"
                 shortMarketValue:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Short market value.
-                    example: 0.00
+                    example: "0.00"
                 positionMarketValue:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Position market value.
-                    example: 0.00
+                    example: "0.00"
                 initialMargin:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Initial margin.
-                    example: 0.00
+                    example: "0.00"
                 maintenanceMargin:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Maintenance margin.
-                    example: 0.00
+                    example: "0.00"
                 lastMaintenanceMargin:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Last maintenance margin.
-                    example: 0.00
+                    example: "0.00"
                 sma:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: SMA (Special Memorandum Account).
-                    example: 0.00
+                    example: "0.00"
                 daytradeCount:
                     type: integer
                     examples:
@@ -2735,9 +2735,9 @@ components:
                 optionsBuyingPower:
                     type: string
                     examples:
-                        - 25000.00
+                        - "25000.00"
                     description: Options buying power.
-                    example: 25000.00
+                    example: "25000.00"
             description: Account represents an Alpaca trading account.
         GetAccountConfigurationsRequest:
             type: object
@@ -2779,9 +2779,9 @@ components:
                 maxMarginMultiplier:
                     type: string
                     examples:
-                        - 4
+                        - "4"
                     description: Maximum margin multiplier.
-                    example: 4
+                    example: "4"
                 maxOptionsTradingLevel:
                     type: integer
                     examples:
@@ -2839,9 +2839,9 @@ components:
                 maxMarginMultiplier:
                     type: string
                     examples:
-                        - 4
+                        - "4"
                     description: Maximum margin multiplier.
-                    example: 4
+                    example: "4"
                 pdtCheck:
                     type: boolean
                     examples:
@@ -2879,15 +2879,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Start date/time (RFC-3339 or YYYY-MM-DD).
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 end:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: End date/time (RFC-3339 or YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 pnlReset:
                     type: string
                     examples:
@@ -2898,9 +2898,9 @@ components:
                 extendedHours:
                     type: string
                     examples:
-                        - true
+                        - "true"
                     description: Whether to include extended hours data (deprecated, use intraday_reporting).
-                    example: true
+                    example: "true"
                 cashflowTypes:
                     type: string
                     examples:
@@ -2973,21 +2973,21 @@ components:
                 date:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Filter by date (YYYY-MM-DD or RFC 3339).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 until:
                     type: string
                     examples:
-                        - 2024-01-31T23:59:59Z
+                        - "2024-01-31T23:59:59Z"
                     description: Filter by activities until this timestamp (RFC 3339).
-                    example: 2024-01-31T23:59:59Z
+                    example: "2024-01-31T23:59:59Z"
                 after:
                     type: string
                     examples:
-                        - 2024-01-01T00:00:00Z
+                        - "2024-01-01T00:00:00Z"
                     description: Filter by activities after this timestamp (RFC 3339).
-                    example: 2024-01-01T00:00:00Z
+                    example: "2024-01-01T00:00:00Z"
                 direction:
                     type: string
                     examples:
@@ -3034,9 +3034,9 @@ components:
                 transactionTime:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Transaction time (RFC 3339).
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 type:
                     type: string
                     examples:
@@ -3046,15 +3046,15 @@ components:
                 price:
                     type: string
                     examples:
-                        - 150.25
+                        - "150.25"
                     description: Price (for fills).
-                    example: 150.25
+                    example: "150.25"
                 qty:
                     type: string
                     examples:
-                        - 10
+                        - "10"
                     description: Quantity (for fills).
-                    example: 10
+                    example: "10"
                 side:
                     type: string
                     examples:
@@ -3070,9 +3070,9 @@ components:
                 leavesQty:
                     type: string
                     examples:
-                        - 0
+                        - "0"
                     description: Leaves quantity (remaining quantity after fill).
-                    example: 0
+                    example: "0"
                 orderId:
                     type: string
                     examples:
@@ -3082,9 +3082,9 @@ components:
                 cumQty:
                     type: string
                     examples:
-                        - 10
+                        - "10"
                     description: Cumulative quantity filled.
-                    example: 10
+                    example: "10"
                 orderStatus:
                     type: string
                     examples:
@@ -3094,9 +3094,9 @@ components:
                 netAmount:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Net amount (for cash transactions).
-                    example: 1000.00
+                    example: "1000.00"
                 description:
                     type: string
                     examples:
@@ -3106,15 +3106,15 @@ components:
                 perShareAmount:
                     type: string
                     examples:
-                        - 0.22
+                        - "0.22"
                     description: Per share amount (for dividends).
-                    example: 0.22
+                    example: "0.22"
                 date:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Date (for cash transactions, YYYY-MM-DD).
-                    example: 2024-01-15
+                    example: "2024-01-15"
             description: AccountActivity represents an account activity event.
         GetAccountActivitiesByTypeRequest:
             type: object
@@ -3128,15 +3128,15 @@ components:
                 after:
                     type: string
                     examples:
-                        - 2024-01-01T00:00:00Z
+                        - "2024-01-01T00:00:00Z"
                     description: Filter by activities after this timestamp (RFC 3339).
-                    example: 2024-01-01T00:00:00Z
+                    example: "2024-01-01T00:00:00Z"
                 until:
                     type: string
                     examples:
-                        - 2024-01-31T23:59:59Z
+                        - "2024-01-31T23:59:59Z"
                     description: Filter by activities until this timestamp (RFC 3339).
-                    example: 2024-01-31T23:59:59Z
+                    example: "2024-01-31T23:59:59Z"
                 direction:
                     type: string
                     examples:
@@ -3159,9 +3159,9 @@ components:
                 date:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Filter by date (YYYY-MM-DD).
-                    example: 2024-01-15
+                    example: "2024-01-15"
             description: GetAccountActivitiesByTypeRequest is the request to get account activities of a specific type.
         CreateOrderRequest:
             type: object
@@ -3177,15 +3177,15 @@ components:
                 qty:
                     type: string
                     examples:
-                        - 10
+                        - "10"
                     description: Number of shares to trade. Required if notional is not specified.
-                    example: 10
+                    example: "10"
                 notional:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Dollar amount to trade. Required if qty is not specified.
-                    example: 1000.00
+                    example: "1000.00"
                 side:
                     type: string
                     examples:
@@ -3223,27 +3223,27 @@ components:
                 limitPrice:
                     type: string
                     examples:
-                        - 150.00
+                        - "150.00"
                     description: Limit price (required for limit orders).
-                    example: 150.00
+                    example: "150.00"
                 stopPrice:
                     type: string
                     examples:
-                        - 145.00
+                        - "145.00"
                     description: Stop price (required for stop orders).
-                    example: 145.00
+                    example: "145.00"
                 trailPrice:
                     type: string
                     examples:
-                        - 5.00
+                        - "5.00"
                     description: Trail price (for trailing stop orders).
-                    example: 5.00
+                    example: "5.00"
                 trailPercent:
                     type: string
                     examples:
-                        - 5.0
+                        - "5.0"
                     description: Trail percent (for trailing stop orders).
-                    example: 5.0
+                    example: "5.0"
                 extendedHours:
                     type: boolean
                     examples:
@@ -3302,9 +3302,9 @@ components:
                 limitPrice:
                     type: string
                     examples:
-                        - 160.00
+                        - "160.00"
                     description: Limit price for take profit.
-                    example: 160.00
+                    example: "160.00"
             required:
                 - limitPrice
             description: TakeProfitSpec specifies take profit parameters for bracket orders.
@@ -3314,15 +3314,15 @@ components:
                 stopPrice:
                     type: string
                     examples:
-                        - 140.00
+                        - "140.00"
                     description: Stop price for stop loss.
-                    example: 140.00
+                    example: "140.00"
                 limitPrice:
                     type: string
                     examples:
-                        - 139.00
+                        - "139.00"
                     description: Limit price for stop loss (for stop limit orders).
-                    example: 139.00
+                    example: "139.00"
             required:
                 - stopPrice
             description: StopLossSpec specifies stop loss parameters for bracket orders.
@@ -3360,9 +3360,9 @@ components:
                 ratioQty:
                     type: string
                     examples:
-                        - 1
+                        - "1"
                     description: Proportional quantity of this leg in relation to the overall multi-leg order qty.
-                    example: 1
+                    example: "1"
             required:
                 - symbol
                 - ratioQty
@@ -3385,27 +3385,27 @@ components:
                 displayQty:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Maximum shares/contracts displayed on the exchange at any time.
-                    example: 100
+                    example: "100"
                 startTime:
                     type: string
                     examples:
-                        - 2025-07-21T09:30:00-04:00
+                        - "2025-07-21T09:30:00-04:00"
                     description: When the algorithm is to start executing (RFC 3339).
-                    example: 2025-07-21T09:30:00-04:00
+                    example: "2025-07-21T09:30:00-04:00"
                 endTime:
                     type: string
                     examples:
-                        - 2025-07-21T15:30:00-04:00
+                        - "2025-07-21T15:30:00-04:00"
                     description: When the algorithm is to be done executing (RFC 3339).
-                    example: 2025-07-21T15:30:00-04:00
+                    example: "2025-07-21T15:30:00-04:00"
                 maxPercentage:
                     type: string
                     examples:
-                        - 0.314
+                        - "0.314"
                     description: Maximum percentage of the ticker's period volume (0 < max_percentage < 1).
-                    example: 0.314
+                    example: "0.314"
             description: AdvancedInstructions provides advanced instructions for Elite Smart Router.
         Order:
             type: object
@@ -3426,27 +3426,27 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the order was created (RFC 3339).
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:05Z
+                        - "2024-01-15T10:30:05Z"
                     description: Timestamp when the order was last updated.
-                    example: 2024-01-15T10:30:05Z
+                    example: "2024-01-15T10:30:05Z"
                 submittedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the order was submitted.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 filledAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:05Z
+                        - "2024-01-15T10:30:05Z"
                     description: Timestamp when the order was filled.
-                    example: 2024-01-15T10:30:05Z
+                    example: "2024-01-15T10:30:05Z"
                 expiredAt:
                     type: string
                     description: Timestamp when the order expired.
@@ -3498,27 +3498,27 @@ components:
                 notional:
                     type: string
                     examples:
-                        - 1000.00
+                        - "1000.00"
                     description: Notional value (for fractional orders).
-                    example: 1000.00
+                    example: "1000.00"
                 qty:
                     type: string
                     examples:
-                        - 10
+                        - "10"
                     description: Quantity ordered.
-                    example: 10
+                    example: "10"
                 filledQty:
                     type: string
                     examples:
-                        - 10
+                        - "10"
                     description: Quantity filled.
-                    example: 10
+                    example: "10"
                 filledAvgPrice:
                     type: string
                     examples:
-                        - 150.25
+                        - "150.25"
                     description: Average fill price.
-                    example: 150.25
+                    example: "150.25"
                 orderClass:
                     type: string
                     examples:
@@ -3585,15 +3585,15 @@ components:
                 limitPrice:
                     type: string
                     examples:
-                        - 150.00
+                        - "150.00"
                     description: Limit price (for limit orders).
-                    example: 150.00
+                    example: "150.00"
                 stopPrice:
                     type: string
                     examples:
-                        - 145.00
+                        - "145.00"
                     description: Stop price (for stop orders).
-                    example: 145.00
+                    example: "145.00"
                 status:
                     type: string
                     examples:
@@ -3632,21 +3632,21 @@ components:
                 trailPercent:
                     type: string
                     examples:
-                        - 5.0
+                        - "5.0"
                     description: Trail percent (for trailing stop orders).
-                    example: 5.0
+                    example: "5.0"
                 trailPrice:
                     type: string
                     examples:
-                        - 5.00
+                        - "5.00"
                     description: Trail price (for trailing stop orders).
-                    example: 5.00
+                    example: "5.00"
                 hwm:
                     type: string
                     examples:
-                        - 155.00
+                        - "155.00"
                     description: High water mark (for trailing stop orders).
-                    example: 155.00
+                    example: "155.00"
                 positionIntent:
                     type: string
                     examples:
@@ -3674,15 +3674,15 @@ components:
                 expiresAt:
                     type: string
                     examples:
-                        - 2024-01-19T21:00:00Z
+                        - "2024-01-19T21:00:00Z"
                     description: Expiration timestamp for options orders (RFC 3339).
-                    example: 2024-01-19T21:00:00Z
+                    example: "2024-01-19T21:00:00Z"
                 ratioQty:
                     type: string
                     examples:
-                        - 1
+                        - "1"
                     description: Proportional quantity for multi-leg orders.
-                    example: 1
+                    example: "1"
             description: Order represents a trading order.
         ListOrdersRequest:
             type: object
@@ -3711,9 +3711,9 @@ components:
                 until:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Filter by orders updated before this timestamp.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 direction:
                     type: string
                     examples:
@@ -3807,9 +3807,9 @@ components:
                 qty:
                     type: string
                     examples:
-                        - 15
+                        - "15"
                     description: New quantity (optional, keeps original if not specified).
-                    example: 15
+                    example: "15"
                 timeInForce:
                     type: string
                     examples:
@@ -3827,21 +3827,21 @@ components:
                 limitPrice:
                     type: string
                     examples:
-                        - 152.00
+                        - "152.00"
                     description: New limit price (optional, for limit orders).
-                    example: 152.00
+                    example: "152.00"
                 stopPrice:
                     type: string
                     examples:
-                        - 148.00
+                        - "148.00"
                     description: New stop price (optional, for stop orders).
-                    example: 148.00
+                    example: "148.00"
                 trail:
                     type: string
                     examples:
-                        - 5.00
+                        - "5.00"
                     description: New trail (optional, for trailing stop orders).
-                    example: 5.00
+                    example: "5.00"
                 clientOrderId:
                     type: string
                     examples:
@@ -3962,15 +3962,15 @@ components:
                 qty:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Quantity of shares held.
-                    example: 100
+                    example: "100"
                 avgEntryPrice:
                     type: string
                     examples:
-                        - 150.00
+                        - "150.00"
                     description: Average entry price.
-                    example: 150.00
+                    example: "150.00"
                 side:
                     type: string
                     examples:
@@ -3984,63 +3984,63 @@ components:
                 marketValue:
                     type: string
                     examples:
-                        - 15500.00
+                        - "15500.00"
                     description: Current market value.
-                    example: 15500.00
+                    example: "15500.00"
                 costBasis:
                     type: string
                     examples:
-                        - 15000.00
+                        - "15000.00"
                     description: Total cost basis.
-                    example: 15000.00
+                    example: "15000.00"
                 unrealizedPl:
                     type: string
                     examples:
-                        - 500.00
+                        - "500.00"
                     description: Unrealized profit/loss.
-                    example: 500.00
+                    example: "500.00"
                 unrealizedPlpc:
                     type: string
                     examples:
-                        - 0.0333
+                        - "0.0333"
                     description: Unrealized profit/loss percentage.
-                    example: 0.0333
+                    example: "0.0333"
                 unrealizedIntradayPl:
                     type: string
                     examples:
-                        - 100.00
+                        - "100.00"
                     description: Unrealized intraday profit/loss.
-                    example: 100.00
+                    example: "100.00"
                 unrealizedIntradayPlpc:
                     type: string
                     examples:
-                        - 0.0065
+                        - "0.0065"
                     description: Unrealized intraday profit/loss percentage.
-                    example: 0.0065
+                    example: "0.0065"
                 currentPrice:
                     type: string
                     examples:
-                        - 155.00
+                        - "155.00"
                     description: Current price.
-                    example: 155.00
+                    example: "155.00"
                 lastdayPrice:
                     type: string
                     examples:
-                        - 154.00
+                        - "154.00"
                     description: Last day's closing price.
-                    example: 154.00
+                    example: "154.00"
                 changeToday:
                     type: string
                     examples:
-                        - 0.0065
+                        - "0.0065"
                     description: Change today (percentage).
-                    example: 0.0065
+                    example: "0.0065"
                 qtyAvailable:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Quantity available for trading (excludes open orders).
-                    example: 100
+                    example: "100"
             description: Position represents a current holding in a security.
         GetPositionRequest:
             type: object
@@ -4068,15 +4068,15 @@ components:
                 qty:
                     type: string
                     examples:
-                        - 50
+                        - "50"
                     description: Quantity to close (optional, closes entire position if not specified).
-                    example: 50
+                    example: "50"
                 percentage:
                     type: string
                     examples:
-                        - 50
+                        - "50"
                     description: Percentage of position to close (optional, 0-100).
-                    example: 50
+                    example: "50"
             required:
                 - symbolOrAssetId
             description: ClosePositionRequest is the request to close a position.
@@ -4255,9 +4255,9 @@ components:
                 maintenanceMarginRequirement:
                     type: string
                     examples:
-                        - 30
+                        - "30"
                     description: Whether the asset supports maintenance margin.
-                    example: 30
+                    example: "30"
                 shortable:
                     type: boolean
                     examples:
@@ -4279,21 +4279,21 @@ components:
                 minOrderSize:
                     type: string
                     examples:
-                        - 1
+                        - "1"
                     description: Minimum order size.
-                    example: 1
+                    example: "1"
                 minTradeIncrement:
                     type: string
                     examples:
-                        - 0.0001
+                        - "0.0001"
                     description: Minimum trade increment.
-                    example: 0.0001
+                    example: "0.0001"
                 priceIncrement:
                     type: string
                     examples:
-                        - 0.01
+                        - "0.01"
                     description: Price increment.
-                    example: 0.01
+                    example: "0.01"
             description: Asset represents a tradeable asset.
         GetAssetRequest:
             type: object
@@ -4332,21 +4332,21 @@ components:
                 expirationDate:
                     type: string
                     examples:
-                        - 2025-06-20
+                        - "2025-06-20"
                     description: 'Filter contracts by the exact expiration date (format: YYYY-MM-DD).'
-                    example: 2025-06-20
+                    example: "2025-06-20"
                 expirationDateGte:
                     type: string
                     examples:
-                        - 2025-06-20
+                        - "2025-06-20"
                     description: Filter contracts with expiration date greater than or equal to the specified date.
-                    example: 2025-06-20
+                    example: "2025-06-20"
                 expirationDateLte:
                     type: string
                     examples:
-                        - 2025-06-20
+                        - "2025-06-20"
                     description: Filter contracts with expiration date less than or equal to the specified date.
-                    example: 2025-06-20
+                    example: "2025-06-20"
                 rootSymbol:
                     type: string
                     examples:
@@ -4368,15 +4368,15 @@ components:
                 strikePriceGte:
                     type: string
                     examples:
-                        - 50
+                        - "50"
                     description: Filter contracts with strike price greater than or equal to the specified value.
-                    example: 50
+                    example: "50"
                 strikePriceLte:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Filter contracts with strike price less than or equal to the specified value.
-                    example: 100
+                    example: "100"
                 pageToken:
                     type: string
                     examples:
@@ -4452,9 +4452,9 @@ components:
                 expirationDate:
                     type: string
                     examples:
-                        - 2025-06-20
+                        - "2025-06-20"
                     description: The expiration date of the option contract.
-                    example: 2025-06-20
+                    example: "2025-06-20"
                 rootSymbol:
                     type: string
                     examples:
@@ -4494,45 +4494,45 @@ components:
                 strikePrice:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: The strike price of the option contract.
-                    example: 100
+                    example: "100"
                 multiplier:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: The multiplier of the option contract.
-                    example: 100
+                    example: "100"
                 size:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Represents the number of underlying shares to be delivered in case the contract is exercised/assigned.
-                    example: 100
+                    example: "100"
                 openInterest:
                     type: string
                     examples:
-                        - 237
+                        - "237"
                     description: The open interest of the option contract.
-                    example: 237
+                    example: "237"
                 openInterestDate:
                     type: string
                     examples:
-                        - 2023-12-11
+                        - "2023-12-11"
                     description: The date of the open interest data.
-                    example: 2023-12-11
+                    example: "2023-12-11"
                 closePrice:
                     type: string
                     examples:
-                        - 148.38
+                        - "148.38"
                     description: The close price of the option contract.
-                    example: 148.38
+                    example: "148.38"
                 closePriceDate:
                     type: string
                     examples:
-                        - 2023-12-11
+                        - "2023-12-11"
                     description: The date of the close price data.
-                    example: 2023-12-11
+                    example: "2023-12-11"
                 deliverables:
                     type: array
                     items:
@@ -4565,15 +4565,15 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: The deliverable amount.
-                    example: 100
+                    example: "100"
                 allocationPercentage:
                     type: string
                     examples:
-                        - 100
+                        - "100"
                     description: Cost allocation percentage of the deliverable.
-                    example: 100
+                    example: "100"
                 settlementType:
                     type: string
                     examples:
@@ -4626,9 +4626,9 @@ components:
                 timestamp:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00-05:00
+                        - "2024-01-15T10:30:00-05:00"
                     description: Current timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00-05:00
+                    example: "2024-01-15T10:30:00-05:00"
                 isOpen:
                     type: boolean
                     examples:
@@ -4638,15 +4638,15 @@ components:
                 nextOpen:
                     type: string
                     examples:
-                        - 2024-01-16T09:30:00-05:00
+                        - "2024-01-16T09:30:00-05:00"
                     description: Next market open time (RFC 3339).
-                    example: 2024-01-16T09:30:00-05:00
+                    example: "2024-01-16T09:30:00-05:00"
                 nextClose:
                     type: string
                     examples:
-                        - 2024-01-15T16:00:00-05:00
+                        - "2024-01-15T16:00:00-05:00"
                     description: Next market close time (RFC 3339).
-                    example: 2024-01-15T16:00:00-05:00
+                    example: "2024-01-15T16:00:00-05:00"
             description: Clock represents the current market clock status.
         GetCalendarRequest:
             type: object
@@ -4654,15 +4654,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Start date (YYYY-MM-DD).
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 end:
                     type: string
                     examples:
-                        - 2024-12-31
+                        - "2024-12-31"
                     description: End date (YYYY-MM-DD).
-                    example: 2024-12-31
+                    example: "2024-12-31"
             description: GetCalendarRequest is the request to get the market calendar.
         GetCalendarResponse:
             type: object
@@ -4678,9 +4678,9 @@ components:
                 date:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Date (YYYY-MM-DD).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 open:
                     type: string
                     examples:
@@ -4740,15 +4740,15 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Creation timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 updatedAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Last update timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
                 assets:
                     type: array
                     items:
@@ -5011,9 +5011,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp (RFC3339) of wallet creation.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: CryptoWallet represents a crypto funding wallet.
         ListCryptoTransfersRequest:
             type: object
@@ -5060,27 +5060,27 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 0.5
+                        - "0.5"
                     description: Amount of transfer denominated in the underlying crypto asset.
-                    example: 0.5
+                    example: "0.5"
                 usdValue:
                     type: string
                     examples:
-                        - 25000.00
+                        - "25000.00"
                     description: Equivalent USD value at time of transfer.
-                    example: 25000.00
+                    example: "25000.00"
                 networkFee:
                     type: string
                     examples:
-                        - 0.001
+                        - "0.001"
                     description: Network fee for the transfer.
-                    example: 0.001
+                    example: "0.001"
                 fees:
                     type: string
                     examples:
-                        - 0.00
+                        - "0.00"
                     description: Additional fees.
-                    example: 0.00
+                    example: "0.00"
                 chain:
                     type: string
                     examples:
@@ -5108,9 +5108,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when transfer was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: CryptoTransfer represents a crypto funding transfer.
         GetCryptoTransferRequest:
             type: object
@@ -5130,9 +5130,9 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 0.5
+                        - "0.5"
                     description: Amount to transfer.
-                    example: 0.5
+                    example: "0.5"
                 asset:
                     type: string
                     examples:
@@ -5180,9 +5180,9 @@ components:
                 amount:
                     type: string
                     examples:
-                        - 0.5
+                        - "0.5"
                     description: The amount of the proposed transaction.
-                    example: 0.5
+                    example: "0.5"
             description: GetCryptoTransferEstimateRequest is the request to get a crypto transfer estimate.
         CryptoTransferEstimate:
             type: object
@@ -5190,9 +5190,9 @@ components:
                 fee:
                     type: string
                     examples:
-                        - 0.001
+                        - "0.001"
                     description: Estimated fee for the transfer.
-                    example: 0.001
+                    example: "0.001"
             description: CryptoTransferEstimate represents an estimate for a crypto transfer.
         ListWhitelistedAddressesRequest:
             type: object
@@ -5239,9 +5239,9 @@ components:
                 createdAt:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00Z
+                        - "2024-01-15T10:30:00Z"
                     description: Timestamp when the address was created.
-                    example: 2024-01-15T10:30:00Z
+                    example: "2024-01-15T10:30:00Z"
             description: WhitelistedAddress represents a whitelisted crypto address.
         CreateWhitelistedAddressRequest:
             type: object

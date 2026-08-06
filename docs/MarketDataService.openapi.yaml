@@ -1436,15 +1436,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Start timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 end:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: End timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 limit:
                     type: integer
                     examples:
@@ -1481,9 +1481,9 @@ components:
                 asof:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 currency:
                     type: string
                     examples:
@@ -1529,9 +1529,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2024-01-15T09:30:00Z
+                        - "2024-01-15T09:30:00Z"
                     description: Timestamp (RFC 3339).
-                    example: 2024-01-15T09:30:00Z
+                    example: "2024-01-15T09:30:00Z"
                 o:
                     type: number
                     examples:
@@ -1633,15 +1633,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Start timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 end:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: End timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 limit:
                     type: integer
                     examples:
@@ -1678,9 +1678,9 @@ components:
                 asof:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 currency:
                     type: string
                     examples:
@@ -1759,15 +1759,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-15T09:30:00Z
+                        - "2024-01-15T09:30:00Z"
                     description: Start timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T09:30:00Z
+                    example: "2024-01-15T09:30:00Z"
                 end:
                     type: string
                     examples:
-                        - 2024-01-15T16:00:00Z
+                        - "2024-01-15T16:00:00Z"
                     description: End timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T16:00:00Z
+                    example: "2024-01-15T16:00:00Z"
                 limit:
                     type: integer
                     examples:
@@ -1798,9 +1798,9 @@ components:
                 asof:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 currency:
                     type: string
                     examples:
@@ -1845,9 +1845,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00.123456Z
+                        - "2024-01-15T10:30:00.123456Z"
                     description: Timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00.123456Z
+                    example: "2024-01-15T10:30:00.123456Z"
                 x:
                     type: string
                     examples:
@@ -1937,15 +1937,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-15T09:30:00Z
+                        - "2024-01-15T09:30:00Z"
                     description: Start timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T09:30:00Z
+                    example: "2024-01-15T09:30:00Z"
                 end:
                     type: string
                     examples:
-                        - 2024-01-15T16:00:00Z
+                        - "2024-01-15T16:00:00Z"
                     description: End timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T16:00:00Z
+                    example: "2024-01-15T16:00:00Z"
                 limit:
                     type: integer
                     examples:
@@ -1976,9 +1976,9 @@ components:
                 asof:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 currency:
                     type: string
                     examples:
@@ -2056,15 +2056,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-15T09:30:00Z
+                        - "2024-01-15T09:30:00Z"
                     description: Start timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T09:30:00Z
+                    example: "2024-01-15T09:30:00Z"
                 end:
                     type: string
                     examples:
-                        - 2024-01-15T16:00:00Z
+                        - "2024-01-15T16:00:00Z"
                     description: End timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T16:00:00Z
+                    example: "2024-01-15T16:00:00Z"
                 limit:
                     type: integer
                     examples:
@@ -2095,9 +2095,9 @@ components:
                 asof:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 currency:
                     type: string
                     examples:
@@ -2142,9 +2142,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2024-01-15T10:30:00.123456Z
+                        - "2024-01-15T10:30:00.123456Z"
                     description: Timestamp (RFC 3339).
-                    example: 2024-01-15T10:30:00.123456Z
+                    example: "2024-01-15T10:30:00.123456Z"
                 ax:
                     type: string
                     examples:
@@ -2247,15 +2247,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-15T09:30:00Z
+                        - "2024-01-15T09:30:00Z"
                     description: Start timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T09:30:00Z
+                    example: "2024-01-15T09:30:00Z"
                 end:
                     type: string
                     examples:
-                        - 2024-01-15T16:00:00Z
+                        - "2024-01-15T16:00:00Z"
                     description: End timestamp (RFC 3339 or YYYY-MM-DD).
-                    example: 2024-01-15T16:00:00Z
+                    example: "2024-01-15T16:00:00Z"
                 limit:
                     type: integer
                     examples:
@@ -2286,9 +2286,9 @@ components:
                 asof:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 currency:
                     type: string
                     examples:
@@ -2446,15 +2446,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Start date (YYYY-MM-DD).
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 end:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: End date (YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 limit:
                     type: integer
                     examples:
@@ -2479,9 +2479,9 @@ components:
                 asof:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 currency:
                     type: string
                     examples:
@@ -2526,9 +2526,9 @@ components:
                 d:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: Date (YYYY-MM-DD).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 o:
                     type: array
                     items:
@@ -2544,9 +2544,9 @@ components:
                 t:
                     type: string
                     examples:
-                        - 2024-01-15T09:30:00Z
+                        - "2024-01-15T09:30:00Z"
                     description: Timestamp (RFC 3339).
-                    example: 2024-01-15T09:30:00Z
+                    example: "2024-01-15T09:30:00Z"
                 p:
                     type: number
                     examples:
@@ -2586,15 +2586,15 @@ components:
                 start:
                     type: string
                     examples:
-                        - 2024-01-01
+                        - "2024-01-01"
                     description: Start date (YYYY-MM-DD).
-                    example: 2024-01-01
+                    example: "2024-01-01"
                 end:
                     type: string
                     examples:
-                        - 2024-01-31
+                        - "2024-01-31"
                     description: End date (YYYY-MM-DD).
-                    example: 2024-01-31
+                    example: "2024-01-31"
                 limit:
                     type: integer
                     examples:
@@ -2619,9 +2619,9 @@ components:
                 asof:
                     type: string
                     examples:
-                        - 2024-01-15
+                        - "2024-01-15"
                     description: As-of date for symbol mapping (YYYY-MM-DD or "-" to skip mapping).
-                    example: 2024-01-15
+                    example: "2024-01-15"
                 currency:
                     type: string
                     examples:
