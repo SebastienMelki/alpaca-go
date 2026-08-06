@@ -1,5 +1,7 @@
 buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260209202127-80ab13bee0bf.1 h1:PMmTMyvHScV9Mn8wc6ASge9uRcHy0jtqPd+fM35LmsQ=
 buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260209202127-80ab13bee0bf.1/go.mod h1:tvtbpgaVXZX4g6Pn+AnzFycuRK3MOz5HJfEGeEllXYM=
+buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260709200747-435963d16310.1 h1:fXh8CsdNpjRr8R5vFdqtIxPt/Lno2IIJlYOdZBIZn0w=
+buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260709200747-435963d16310.1/go.mod h1:tvtbpgaVXZX4g6Pn+AnzFycuRK3MOz5HJfEGeEllXYM=
 buf.build/go/protovalidate v1.1.0 h1:pQqEQRpOo4SqS60qkvmhLTTQU9JwzEvdyiqAtXa5SeY=
 buf.build/go/protovalidate v1.1.0/go.mod h1:bGZcPiAQDC3ErCHK3t74jSoJDFOs2JH3d7LWuTEIdss=
 cel.dev/expr v0.24.0 h1:56OvJKSH3hDGL0ml5uSxZmz3/3Pq4tJ+fb1unVLAFcY=
@@ -8,6 +10,8 @@ github.com/SebastienMelki/sebuf v0.12.0 h1:jWEeYR1JQjYxhpoxni+Mut/ulUugH+muy+Odo
 github.com/SebastienMelki/sebuf v0.12.0/go.mod h1:aZ1kBaBkePoH8tYIIHS3w59OfcHxdlkfJ7tM5Ace0Ec=
 github.com/SebastienMelki/sebuf v0.18.0 h1:zHX36o15S8tnAAIiKtOIB9h+7EB3ist+jHdjGfqS7wg=
 github.com/SebastienMelki/sebuf v0.18.0/go.mod h1:BCBO7kZTrmiB5rhN6XjnOLRqEfyegN6aSaEw44e6xEA=
+github.com/SebastienMelki/sebuf v0.23.2 h1:AHYDp6UJK4kgXJ8zI//Rax3QCulrPtWzMooFGIBX254=
+github.com/SebastienMelki/sebuf v0.23.2/go.mod h1:0PUvRE2Sl9qr0CknaZpnX5j9E771JidB9jvJkkh7oLY=
 github.com/antlr4-go/antlr/v4 v4.13.1 h1:SqQKkuVZ+zWkMMNkjy5FZe5mr5WURWnlpmOuzYWrPrQ=
 github.com/antlr4-go/antlr/v4 v4.13.1/go.mod h1:GKmUxMtwp6ZgGwZSva4eWPC5mS6vUAmOABFgjdkM7Nw=
 github.com/brianvoe/gofakeit/v6 v6.28.0 h1:Xib46XXuQfmlLS2EXRuJpqcw8St6qSZz75OUo0tgAW4=

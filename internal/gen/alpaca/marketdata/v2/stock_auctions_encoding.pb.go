@@ -239,3 +239,108 @@ func (x *DailyAuctions) UnmarshalJSONSebuf(data []byte, opts protojson.Unmarshal
 func (x *DailyAuctions) UnmarshalJSON(data []byte) error {
 	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
+
+// MarshalJSONSebuf implements sebufMarshaler for GetStockAuctionsSingleResponse.
+// This method re-marshals nested messages that have int64_encoding=NUMBER fields: auctions
+func (x *GetStockAuctionsSingleResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
+	if x == nil {
+		return []byte("null"), nil
+	}
+
+	// Use protojson for base serialization (handles all other fields correctly)
+	data, err := opts.Marshal(x)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse into a map to re-serialize nested messages with custom MarshalJSON
+	var raw map[string]json.RawMessage
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+
+	// Re-serialize repeated "auctions" forwarding opts to each element
+	if len(x.Auctions) > 0 {
+		items := make([]json.RawMessage, 0, len(x.Auctions))
+		for _, item := range x.Auctions {
+			if m, ok := any(item).(interface {
+				MarshalJSONSebuf(protojson.MarshalOptions) ([]byte, error)
+			}); ok {
+				itemData, itemErr := m.MarshalJSONSebuf(opts)
+				if itemErr != nil {
+					return nil, itemErr
+				}
+				items = append(items, itemData)
+			} else {
+				itemData, itemErr := opts.Marshal(item)
+				if itemErr != nil {
+					return nil, itemErr
+				}
+				items = append(items, itemData)
+			}
+		}
+		raw["auctions"], err = json.Marshal(items)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for GetStockAuctionsSingleResponse.
+func (x *GetStockAuctionsSingleResponse) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
+}
+
+// UnmarshalJSONSebuf implements sebufUnmarshaler for GetStockAuctionsSingleResponse.
+// This method handles nested messages that have int64_encoding=NUMBER fields: auctions
+func (x *GetStockAuctionsSingleResponse) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
+	var raw map[string]json.RawMessage
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	// Handle repeated "auctions" using its custom unmarshaler
+	if rawVal, ok := raw["auctions"]; ok {
+		var rawItems []json.RawMessage
+		if err := json.Unmarshal(rawVal, &rawItems); err != nil {
+			return err
+		}
+		protoItems := make([]json.RawMessage, len(rawItems))
+		for i, itemRaw := range rawItems {
+			inner := &DailyAuctions{}
+			if u, ok := any(inner).(interface {
+				UnmarshalJSONSebuf([]byte, protojson.UnmarshalOptions) error
+			}); ok {
+				if err := u.UnmarshalJSONSebuf(itemRaw, opts); err != nil {
+					return err
+				}
+			} else if err := json.Unmarshal(itemRaw, inner); err != nil {
+				return err
+			}
+			itemJSON, marshalErr := protojson.Marshal(inner)
+			if marshalErr != nil {
+				return marshalErr
+			}
+			protoItems[i] = itemJSON
+		}
+		protoJSON, marshalErr := json.Marshal(protoItems)
+		if marshalErr != nil {
+			return marshalErr
+		}
+		raw["auctions"] = protoJSON
+	}
+
+	modified, err := json.Marshal(raw)
+	if err != nil {
+		return err
+	}
+
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for GetStockAuctionsSingleResponse.
+func (x *GetStockAuctionsSingleResponse) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
+}

@@ -3,9 +3,9 @@ module github.com/sebastienmelki/alpaca-go
 go 1.26.0
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260209202127-80ab13bee0bf.1
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260709200747-435963d16310.1
 	buf.build/go/protovalidate v1.1.0
-	github.com/SebastienMelki/sebuf v0.18.0
+	github.com/SebastienMelki/sebuf v0.23.2
 	github.com/joho/godotenv v1.5.1
 	google.golang.org/protobuf v1.36.11
 )
