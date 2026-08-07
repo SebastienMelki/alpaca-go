@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- `TradeUpdateEventV2.order` was typed `string`, but `/v2/events/trades` sends a nested JSON object. `protojson` rejected it with `invalid value for string field order`, so **every** trade-update event failed to unmarshal and the stream yielded nothing.
+
+### Added
+- `TradeUpdateEventV2Order` — typed order payload for trade-update events, re-exported from `pkg/broker`.
+
+### Changed
+- **Breaking:** `TradeUpdateEventV2.Order` is now `*TradeUpdateEventV2Order` rather than `string`. Callers that unmarshalled the JSON string themselves should read the typed fields instead.
+
 ## [1.3.1] - 2026-03-04
 
 ### Fixed

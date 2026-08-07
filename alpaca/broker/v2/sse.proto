@@ -35,6 +35,120 @@ message TradeUpdateEventV2Leg {
   ];
 }
 
+// TradeUpdateEventV2Order is the order payload carried by a trade update.
+// The API sends it as a nested JSON object.
+//
+// Numeric and timestamp fields are strings because that is how the API sends
+// them. No field validators: this is an inbound payload, so a validator would
+// reject real events rather than surface a bug. Unrecognised fields are handled
+// by the client's DiscardUnknownFields setting.
+message TradeUpdateEventV2Order {
+  // Order UUID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["31b28424-02c5-4210-8a15-5001fe9d53b7"] }];
+
+  // Account UUID the order belongs to.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["d1289278-3e7f-4c3a-8a91-701a87b6251c"] }];
+
+  // Client-supplied order identifier.
+  string client_order_id = 3 [(sebuf.http.field_examples) = { values: ["9dfe30f5-965a-4b55-bdeb-930f3fe893a1"] }];
+
+  // Creation timestamp.
+  string created_at = 4 [(sebuf.http.field_examples) = { values: ["2026-07-27T15:16:42.880254811Z"] }];
+
+  // Last update timestamp.
+  string updated_at = 5 [(sebuf.http.field_examples) = { values: ["2026-07-27T15:16:42.90172634Z"] }];
+
+  // Submission timestamp.
+  string submitted_at = 6 [(sebuf.http.field_examples) = { values: ["2026-07-27T15:16:42.880254811Z"] }];
+
+  // Fill timestamp.
+  string filled_at = 7;
+
+  // Expiry timestamp.
+  string expired_at = 8;
+
+  // Time the order is good until.
+  string expires_at = 9 [(sebuf.http.field_examples) = { values: ["2026-07-27T20:00:00Z"] }];
+
+  // Cancellation timestamp.
+  string canceled_at = 10;
+
+  // Failure timestamp.
+  string failed_at = 11;
+
+  // Replacement timestamp.
+  string replaced_at = 12;
+
+  // ID of the order this one replaces.
+  string replaces = 13;
+
+  // ID of the order that replaced this one.
+  string replaced_by = 14;
+
+  // Asset UUID.
+  string asset_id = 15 [(sebuf.http.field_examples) = { values: ["b0b6dd9d-8b9b-48a9-ba46-b9d54906e415"] }];
+
+  // Symbol of the asset.
+  string symbol = 16 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // Exchange the order routed to.
+  string exchange = 17;
+
+  // Asset class: us_equity, us_option, crypto or ipo.
+  string asset_class = 18 [(sebuf.http.field_examples) = { values: ["us_equity"] }];
+
+  // Ordered quantity.
+  string qty = 19 [(sebuf.http.field_examples) = { values: ["1"] }];
+
+  // Ordered notional amount.
+  string notional = 20;
+
+  // Quantity filled so far.
+  string filled_qty = 21 [(sebuf.http.field_examples) = { values: ["0"] }];
+
+  // Order type: market, limit, stop, trailing_stop and so on.
+  string order_type = 22 [(sebuf.http.field_examples) = { values: ["trailing_stop"] }];
+
+  // Side: buy or sell.
+  string side = 23 [(sebuf.http.field_examples) = { values: ["buy"] }];
+
+  // Time in force: day, gtc, ioc and so on.
+  string time_in_force = 24 [(sebuf.http.field_examples) = { values: ["day"] }];
+
+  // Limit price.
+  string limit_price = 25;
+
+  // Average fill price.
+  string filled_avg_price = 26;
+
+  // Stop price.
+  string stop_price = 27 [(sebuf.http.field_examples) = { values: ["345.28"] }];
+
+  // Trailing stop price.
+  string trail_price = 28 [(sebuf.http.field_examples) = { values: ["6.15"] }];
+
+  // Trailing stop percentage.
+  string trail_percent = 29;
+
+  // High water mark for a trailing stop.
+  string hwm = 30 [(sebuf.http.field_examples) = { values: ["339.13"] }];
+
+  // Order status.
+  string status = 31 [(sebuf.http.field_examples) = { values: ["new"] }];
+
+  // Whether the order is eligible for extended hours.
+  bool extended_hours = 32 [(sebuf.http.field_examples) = { values: ["false"] }];
+
+  // Legs of a multi-leg order.
+  repeated TradeUpdateEventV2Order legs = 33;
+
+  // Commission charged.
+  string commission = 34 [(sebuf.http.field_examples) = { values: ["0"] }];
+
+  // Commission in basis points.
+  string commission_bps = 35;
+}
+
 // TradeUpdateEventV2 represents a trade update event (v2).
 message TradeUpdateEventV2 {
   // Account UUID.
@@ -58,8 +172,8 @@ message TradeUpdateEventV2 {
   // Previous execution ID (present only in trade_bust and trade_correct events).
   string previous_execution_id = 6 [(sebuf.http.field_examples) = { values: ["aeb60660-412f-4537-8d1f-1101b3fc8f64"] }];
 
-  // Order details (JSON object).
-  string order = 7 [(sebuf.http.field_examples) = { values: ["{\"id\": \"...\", \"symbol\": \"AAPL\"}"] }];
+  // Order details. Sent as a nested JSON object, not a string.
+  TradeUpdateEventV2Order order = 7;
 
   // Timestamp of the event.
   string timestamp = 8 [(sebuf.http.field_examples) = { values: ["2022-04-19T14:12:30.602193534Z"] }];

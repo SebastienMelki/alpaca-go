@@ -500,11 +500,7 @@ components:
                     description: Previous execution ID (present only in trade_bust and trade_correct events).
                     example: aeb60660-412f-4537-8d1f-1101b3fc8f64
                 order:
-                    type: string
-                    examples:
-                        - '{"id": "...", "symbol": "AAPL"}'
-                    description: Order details (JSON object).
-                    example: '{"id": "...", "symbol": "AAPL"}'
+                    $ref: '#/components/schemas/TradeUpdateEventV2Order'
                 timestamp:
                     type: string
                     examples:
@@ -558,6 +554,186 @@ components:
                     type: string
                 value:
                     type: string
+        TradeUpdateEventV2Order:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - 31b28424-02c5-4210-8a15-5001fe9d53b7
+                    description: Order UUID.
+                    example: 31b28424-02c5-4210-8a15-5001fe9d53b7
+                accountId:
+                    type: string
+                    examples:
+                        - d1289278-3e7f-4c3a-8a91-701a87b6251c
+                    description: Account UUID the order belongs to.
+                    example: d1289278-3e7f-4c3a-8a91-701a87b6251c
+                clientOrderId:
+                    type: string
+                    examples:
+                        - 9dfe30f5-965a-4b55-bdeb-930f3fe893a1
+                    description: Client-supplied order identifier.
+                    example: 9dfe30f5-965a-4b55-bdeb-930f3fe893a1
+                createdAt:
+                    type: string
+                    examples:
+                        - 2026-07-27T15:16:42.880254811Z
+                    description: Creation timestamp.
+                    example: 2026-07-27T15:16:42.880254811Z
+                updatedAt:
+                    type: string
+                    examples:
+                        - 2026-07-27T15:16:42.90172634Z
+                    description: Last update timestamp.
+                    example: 2026-07-27T15:16:42.90172634Z
+                submittedAt:
+                    type: string
+                    examples:
+                        - 2026-07-27T15:16:42.880254811Z
+                    description: Submission timestamp.
+                    example: 2026-07-27T15:16:42.880254811Z
+                filledAt:
+                    type: string
+                    description: Fill timestamp.
+                expiredAt:
+                    type: string
+                    description: Expiry timestamp.
+                expiresAt:
+                    type: string
+                    examples:
+                        - 2026-07-27T20:00:00Z
+                    description: Time the order is good until.
+                    example: 2026-07-27T20:00:00Z
+                canceledAt:
+                    type: string
+                    description: Cancellation timestamp.
+                failedAt:
+                    type: string
+                    description: Failure timestamp.
+                replacedAt:
+                    type: string
+                    description: Replacement timestamp.
+                replaces:
+                    type: string
+                    description: ID of the order this one replaces.
+                replacedBy:
+                    type: string
+                    description: ID of the order that replaced this one.
+                assetId:
+                    type: string
+                    examples:
+                        - b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                    description: Asset UUID.
+                    example: b0b6dd9d-8b9b-48a9-ba46-b9d54906e415
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Symbol of the asset.
+                    example: AAPL
+                exchange:
+                    type: string
+                    description: Exchange the order routed to.
+                assetClass:
+                    type: string
+                    examples:
+                        - us_equity
+                    description: 'Asset class: us_equity, us_option, crypto or ipo.'
+                    example: us_equity
+                qty:
+                    type: string
+                    examples:
+                        - 1
+                    description: Ordered quantity.
+                    example: 1
+                notional:
+                    type: string
+                    description: Ordered notional amount.
+                filledQty:
+                    type: string
+                    examples:
+                        - 0
+                    description: Quantity filled so far.
+                    example: 0
+                orderType:
+                    type: string
+                    examples:
+                        - trailing_stop
+                    description: 'Order type: market, limit, stop, trailing_stop and so on.'
+                    example: trailing_stop
+                side:
+                    type: string
+                    examples:
+                        - buy
+                    description: 'Side: buy or sell.'
+                    example: buy
+                timeInForce:
+                    type: string
+                    examples:
+                        - day
+                    description: 'Time in force: day, gtc, ioc and so on.'
+                    example: day
+                limitPrice:
+                    type: string
+                    description: Limit price.
+                filledAvgPrice:
+                    type: string
+                    description: Average fill price.
+                stopPrice:
+                    type: string
+                    examples:
+                        - 345.28
+                    description: Stop price.
+                    example: 345.28
+                trailPrice:
+                    type: string
+                    examples:
+                        - 6.15
+                    description: Trailing stop price.
+                    example: 6.15
+                trailPercent:
+                    type: string
+                    description: Trailing stop percentage.
+                hwm:
+                    type: string
+                    examples:
+                        - 339.13
+                    description: High water mark for a trailing stop.
+                    example: 339.13
+                status:
+                    type: string
+                    examples:
+                        - new
+                    description: Order status.
+                    example: new
+                extendedHours:
+                    type: boolean
+                    examples:
+                        - false
+                    description: Whether the order is eligible for extended hours.
+                    example: false
+                legs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TradeUpdateEventV2Order'
+                commission:
+                    type: string
+                    examples:
+                        - 0
+                    description: Commission charged.
+                    example: 0
+                commissionBps:
+                    type: string
+                    description: Commission in basis points.
+            description: |-
+                TradeUpdateEventV2Order is the order payload carried by a trade update.
+                 The API sends it as a nested JSON object.
+
+                 Numeric and timestamp fields are strings because that is how the API sends
+                 them. No field validators: this is an inbound payload, so a validator would
+                 reject real events rather than surface a bug. Unrecognised fields are handled
+                 by the client's DiscardUnknownFields setting.
         TradeUpdateEventV2Leg:
             type: object
             properties:

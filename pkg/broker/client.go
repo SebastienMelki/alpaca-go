@@ -539,6 +539,7 @@ type (
 type (
 	TradeUpdateEventV2              = brokerv2.TradeUpdateEventV2
 	TradeUpdateEventV2Leg           = brokerv2.TradeUpdateEventV2Leg
+	TradeUpdateEventV2Order         = brokerv2.TradeUpdateEventV2Order
 	JournalStatusEventV2            = brokerv2.JournalStatusEventV2
 	SystemEventV2                   = brokerv2.SystemEventV2
 	AdminActionEventV2              = brokerv2.AdminActionEventV2
