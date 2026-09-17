@@ -297,6 +297,17 @@ type (
 )
 
 // =============================================================================
+// Asset Types
+// =============================================================================
+
+type (
+	Asset              = brokerv1.Asset
+	ListAssetsRequest  = brokerv1.ListAssetsRequest
+	ListAssetsResponse = brokerv1.ListAssetsResponse
+	GetAssetRequest    = brokerv1.GetAssetRequest
+)
+
+// =============================================================================
 // OAuth Types
 // =============================================================================
 

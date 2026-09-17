@@ -108,6 +108,8 @@ type BrokerServiceServer interface {
 	UploadOnfidoPhoto(context.Context, *UploadOnfidoPhotoRequest) (*OnfidoPhoto, error)
 	GetMarketCalendar(context.Context, *GetMarketCalendarRequest) (*GetMarketCalendarResponse, error)
 	GetMarketClock(context.Context, *GetMarketClockRequest) (*MarketClock, error)
+	ListAssets(context.Context, *ListAssetsRequest) (*ListAssetsResponse, error)
+	GetAsset(context.Context, *GetAssetRequest) (*Asset, error)
 	GetOptionsApproval(context.Context, *GetOptionsApprovalRequest) (*OptionsApproval, error)
 	RequestOptionsApproval(context.Context, *RequestOptionsApprovalRequest) (*OptionsApproval, error)
 	UpdateOptionsApproval(context.Context, *UpdateOptionsApprovalRequest) (*OptionsApproval, error)
@@ -1001,6 +1003,24 @@ func RegisterBrokerServiceServer(server BrokerServiceServer, opts ...ServerOptio
 
 	config.mux.Handle("GET /v1/clock", getMarketClockHandler)
 
+	methodHeaders = getListAssetsHeaders()
+	listAssetsHandler := BindingMiddleware[ListAssetsRequest](
+		genericHandler(server.ListAssets, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
+		listAssetsPathParams, listAssetsQueryParams,
+		"GET", config.errorHandler, config.marshalOpts,
+	)
+
+	config.mux.Handle("GET /v1/assets", listAssetsHandler)
+
+	methodHeaders = getGetAssetHeaders()
+	getAssetHandler := BindingMiddleware[GetAssetRequest](
+		genericHandler(server.GetAsset, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
+		getAssetPathParams, getAssetQueryParams,
+		"GET", config.errorHandler, config.marshalOpts,
+	)
+
+	config.mux.Handle("GET /v1/assets/{symbol_or_id}", getAssetHandler)
+
 	methodHeaders = getGetOptionsApprovalHeaders()
 	getOptionsApprovalHandler := BindingMiddleware[GetOptionsApprovalRequest](
 		genericHandler(server.GetOptionsApproval, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
@@ -1609,6 +1629,16 @@ func getGetMarketCalendarHeaders() []*sebufhttp.Header {
 
 // getGetMarketClockHeaders returns the method-level required headers for GetMarketClock
 func getGetMarketClockHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getListAssetsHeaders returns the method-level required headers for ListAssets
+func getListAssetsHeaders() []*sebufhttp.Header {
+	return nil
+}
+
+// getGetAssetHeaders returns the method-level required headers for GetAsset
+func getGetAssetHeaders() []*sebufhttp.Header {
 	return nil
 }
 
@@ -2544,6 +2574,24 @@ var getMarketClockPathParams = []PathParamConfig{}
 
 // getMarketClockQueryParams contains query parameter configuration for GetMarketClock
 var getMarketClockQueryParams = []QueryParamConfig{}
+
+// listAssetsPathParams contains path parameter configuration for ListAssets
+var listAssetsPathParams = []PathParamConfig{}
+
+// listAssetsQueryParams contains query parameter configuration for ListAssets
+var listAssetsQueryParams = []QueryParamConfig{
+	{QueryName: "status", FieldName: "status", Required: false},
+	{QueryName: "asset_class", FieldName: "asset_class", Required: false},
+	{QueryName: "attributes", FieldName: "attributes", Required: false},
+}
+
+// getAssetPathParams contains path parameter configuration for GetAsset
+var getAssetPathParams = []PathParamConfig{
+	{URLParam: "symbol_or_id", FieldName: "symbol_or_id"},
+}
+
+// getAssetQueryParams contains query parameter configuration for GetAsset
+var getAssetQueryParams = []QueryParamConfig{}
 
 // getOptionsApprovalPathParams contains path parameter configuration for GetOptionsApproval
 var getOptionsApprovalPathParams = []PathParamConfig{

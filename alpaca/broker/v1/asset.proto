@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package alpaca.broker.v1;
+
+import "buf/validate/validate.proto";
+import "sebuf/http/annotations.proto";
+
+// Asset represents a tradeable asset available through the Broker API.
+// Assets are sorted by asset class, exchange and symbol. Some assets are not
+// tradable with Alpaca; these are marked with tradable=false.
+message Asset {
+  // Asset ID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["904837e3-3b76-47ec-b432-046db621571b"] }];
+
+  // Asset class (us_equity, us_option, crypto, ipo).
+  string class = 2 [(sebuf.http.field_examples) = { values: ["us_equity"] }];
+
+  // Exchange where the asset is traded.
+  string exchange = 3 [(sebuf.http.field_examples) = { values: ["NASDAQ"] }];
+
+  // Asset symbol.
+  string symbol = 4 [(sebuf.http.field_examples) = { values: ["AAPL"] }];
+
+  // The official name of the asset.
+  string name = 5 [(sebuf.http.field_examples) = { values: ["Apple Inc. Common Stock"] }];
+
+  // Asset status (active or inactive).
+  string status = 6 [(sebuf.http.field_examples) = { values: ["active"] }];
+
+  // Whether the asset is tradable on Alpaca.
+  bool tradable = 7 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether the asset is marginable.
+  bool marginable = 8 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether the asset is shortable.
+  bool shortable = 9 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Whether the asset is fractionable.
+  bool fractionable = 10 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Deprecated: use borrow_status instead.
+  bool easy_to_borrow = 11 [(sebuf.http.field_examples) = { values: ["true"] }];
+
+  // Borrow status for US equity assets (easy_to_borrow or hard_to_borrow). Omitted for non-US-equity assets.
+  string borrow_status = 12 [(sebuf.http.field_examples) = { values: ["easy_to_borrow"] }];
+
+  // Deprecated: use margin_requirement_long or margin_requirement_short instead.
+  double maintenance_margin_requirement = 13 [(sebuf.http.field_examples) = { values: ["30"] }];
+
+  // Margin requirement percentage for long positions (equities only), as a decimal string.
+  string margin_requirement_long = 14 [(sebuf.http.field_examples) = { values: ["30"] }];
+
+  // Margin requirement percentage for short positions (equities only), as a decimal string.
+  string margin_requirement_short = 15 [(sebuf.http.field_examples) = { values: ["30"] }];
+
+  // Minimum order size. Available for crypto only.
+  string min_order_size = 16 [(sebuf.http.field_examples) = { values: ["0.0001"] }];
+
+  // Amount a trade quantity can be incremented by. Available for crypto only.
+  string min_trade_increment = 17 [(sebuf.http.field_examples) = { values: ["0.0001"] }];
+
+  // Amount the price can be incremented by. Available for crypto only.
+  string price_increment = 18 [(sebuf.http.field_examples) = { values: ["0.01"] }];
+
+  // Unique characteristics of the asset (e.g. ptp_no_exception, ipo, has_options, overnight_tradable).
+  repeated string attributes = 19 [(sebuf.http.field_examples) = { values: ["has_options"] }];
+}
+
+// ListAssetsRequest is the request to list all assets.
+message ListAssetsRequest {
+  // Asset status to filter by. Defaults to all.
+  string status = 1 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "active", "inactive", "all"]
+      }
+    },
+    (sebuf.http.query) = { name: "status" },
+    (sebuf.http.field_examples) = { values: ["all"] }
+  ];
+
+  // Asset class to filter by. Defaults to us_equity.
+  string asset_class = 2 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "us_equity", "crypto"]
+      }
+    },
+    (sebuf.http.query) = { name: "asset_class" },
+    (sebuf.http.field_examples) = { values: ["us_equity"] }
+  ];
+
+  // Comma separated list of attributes to filter by. Assets with any of the given attributes are included.
+  string attributes = 3 [
+    (buf.validate.field).string.pattern =
+      "^$|^(ptp_no_exception|ptp_with_exception|ipo|has_options|options_late_close|fractional_eh_enabled|overnight_tradable|overnight_halted)"
+      "(,(ptp_no_exception|ptp_with_exception|ipo|has_options|options_late_close|fractional_eh_enabled|overnight_tradable|overnight_halted))*$",
+    (sebuf.http.query) = { name: "attributes" },
+    (sebuf.http.field_examples) = { values: ["ptp_no_exception,ipo"] }
+  ];
+}
+
+// ListAssetsResponse is the response containing a list of assets.
+message ListAssetsResponse {
+  // List of assets.
+  repeated Asset assets = 1 [(sebuf.http.unwrap) = true];
+}
+
+// GetAssetRequest is the request to retrieve a single asset by ID or symbol.
+message GetAssetRequest {
+  // The symbol or asset ID (bound from path variable).
+  string symbol_or_id = 1 [
+    (buf.validate.field).required = true,
+    (sebuf.http.field_examples) = { values: ["AAPL", "904837e3-3b76-47ec-b432-046db621571b"] }
+  ];
+}

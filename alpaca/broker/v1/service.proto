@@ -38,6 +38,7 @@ import "alpaca/broker/v1/sse.proto";
 import "alpaca/broker/v1/cip.proto";
 import "alpaca/broker/v1/onfido.proto";
 import "alpaca/broker/v1/calendar.proto";
+import "alpaca/broker/v1/asset.proto";
 import "alpaca/broker/v1/options.proto";
 import "alpaca/broker/v1/ira.proto";
 import "alpaca/broker/v1/country.proto";
@@ -1037,6 +1038,28 @@ service BrokerService {
   rpc GetMarketClock(GetMarketClockRequest) returns (MarketClock) {
     option (sebuf.http.config) = {
       path: "/clock"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // ============================================
+  // Asset Operations
+  // ============================================
+
+  // ListAssets retrieves all assets.
+  // GET /v1/assets
+  rpc ListAssets(ListAssetsRequest) returns (ListAssetsResponse) {
+    option (sebuf.http.config) = {
+      path: "/assets"
+      method: HTTP_METHOD_GET
+    };
+  }
+
+  // GetAsset retrieves a single asset by symbol or asset ID.
+  // GET /v1/assets/{symbol_or_id}
+  rpc GetAsset(GetAssetRequest) returns (Asset) {
+    option (sebuf.http.config) = {
+      path: "/assets/{symbol_or_id}"
       method: HTTP_METHOD_GET
     };
   }
