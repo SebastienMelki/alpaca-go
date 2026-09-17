@@ -237,9 +237,9 @@ func (x *Asset) GetAttributes() []string {
 // ListAssetsRequest is the request to list all assets.
 type ListAssetsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Asset status to filter by (active, inactive, all). Defaults to all.
+	// Asset status to filter by. Defaults to all.
 	Status string `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
-	// Asset class to filter by (us_equity, crypto). Defaults to us_equity.
+	// Asset class to filter by. Defaults to us_equity.
 	AssetClass string `protobuf:"bytes,2,opt,name=asset_class,json=assetClass,proto3" json:"asset_class,omitempty"`
 	// Comma separated list of attributes to filter by. Assets with any of the given attributes are included.
 	Attributes    string `protobuf:"bytes,3,opt,name=attributes,proto3" json:"attributes,omitempty"`
@@ -445,17 +445,17 @@ const file_alpaca_broker_v1_asset_proto_rawDesc = "" +
 	"\n" +
 	"attributes\x18\x13 \x03(\tB\x11\xba\xb5\x18\r\n" +
 	"\vhas_optionsR\n" +
-	"attributes\"\xd1\x01\n" +
-	"\x11ListAssetsRequest\x12-\n" +
-	"\x06status\x18\x01 \x01(\tB\x15\xba\xb5\x18\x05\n" +
+	"attributes\"\xa2\x04\n" +
+	"\x11ListAssetsRequest\x12K\n" +
+	"\x06status\x18\x01 \x01(\tB3\xbaH\x1br\x19R\x00R\x06activeR\binactiveR\x03all\xba\xb5\x18\x05\n" +
 	"\x03allµ\x18\b\n" +
-	"\x06statusR\x06status\x12A\n" +
-	"\vasset_class\x18\x02 \x01(\tB \xba\xb5\x18\v\n" +
+	"\x06statusR\x06status\x12[\n" +
+	"\vasset_class\x18\x02 \x01(\tB:\xbaH\x17r\x15R\x00R\tus_equityR\x06crypto\xba\xb5\x18\v\n" +
 	"\tus_equityµ\x18\r\n" +
 	"\vasset_classR\n" +
-	"assetClass\x12J\n" +
+	"assetClass\x12\xe2\x02\n" +
 	"\n" +
-	"attributes\x18\x03 \x01(\tB*\xba\xb5\x18\x16\n" +
+	"attributes\x18\x03 \x01(\tB\xc1\x02\xbaH\x93\x02r\x90\x022\x8d\x02^$|^(ptp_no_exception|ptp_with_exception|ipo|has_options|options_late_close|fractional_eh_enabled|overnight_tradable|overnight_halted)(,(ptp_no_exception|ptp_with_exception|ipo|has_options|options_late_close|fractional_eh_enabled|overnight_tradable|overnight_halted))*$\xba\xb5\x18\x16\n" +
 	"\x14ptp_no_exception,ipoµ\x18\f\n" +
 	"\n" +
 	"attributesR\n" +

@@ -4874,13 +4874,13 @@ paths:
                     example: Basic QVBJLUtFWTpBUEktU0VDUkVU
                 - name: status
                   in: query
-                  description: Asset status to filter by (active, inactive, all). Defaults to all.
+                  description: Asset status to filter by. Defaults to all.
                   required: false
                   schema:
                     type: string
                 - name: asset_class
                   in: query
-                  description: Asset class to filter by (us_equity, crypto). Defaults to us_equity.
+                  description: Asset class to filter by. Defaults to us_equity.
                   required: false
                   schema:
                     type: string
@@ -12490,18 +12490,28 @@ components:
                     type: string
                     examples:
                         - all
-                    description: Asset status to filter by (active, inactive, all). Defaults to all.
+                    enum:
+                        -
+                        - active
+                        - inactive
+                        - all
+                    description: Asset status to filter by. Defaults to all.
                     example: all
                 assetClass:
                     type: string
                     examples:
                         - us_equity
-                    description: Asset class to filter by (us_equity, crypto). Defaults to us_equity.
+                    enum:
+                        -
+                        - us_equity
+                        - crypto
+                    description: Asset class to filter by. Defaults to us_equity.
                     example: us_equity
                 attributes:
                     type: string
                     examples:
                         - ptp_no_exception,ipo
+                    pattern: ^$|^(ptp_no_exception|ptp_with_exception|ipo|has_options|options_late_close|fractional_eh_enabled|overnight_tradable|overnight_halted)(,(ptp_no_exception|ptp_with_exception|ipo|has_options|options_late_close|fractional_eh_enabled|overnight_tradable|overnight_halted))*$
                     description: Comma separated list of attributes to filter by. Assets with any of the given attributes are included.
                     example: ptp_no_exception,ipo
             description: ListAssetsRequest is the request to list all assets.

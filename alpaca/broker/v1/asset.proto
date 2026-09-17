@@ -69,20 +69,33 @@ message Asset {
 
 // ListAssetsRequest is the request to list all assets.
 message ListAssetsRequest {
-  // Asset status to filter by (active, inactive, all). Defaults to all.
+  // Asset status to filter by. Defaults to all.
   string status = 1 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "active", "inactive", "all"]
+      }
+    },
     (sebuf.http.query) = { name: "status" },
     (sebuf.http.field_examples) = { values: ["all"] }
   ];
 
-  // Asset class to filter by (us_equity, crypto). Defaults to us_equity.
+  // Asset class to filter by. Defaults to us_equity.
   string asset_class = 2 [
+    (buf.validate.field) = {
+      string: {
+        in: ["", "us_equity", "crypto"]
+      }
+    },
     (sebuf.http.query) = { name: "asset_class" },
     (sebuf.http.field_examples) = { values: ["us_equity"] }
   ];
 
   // Comma separated list of attributes to filter by. Assets with any of the given attributes are included.
   string attributes = 3 [
+    (buf.validate.field).string.pattern =
+      "^$|^(ptp_no_exception|ptp_with_exception|ipo|has_options|options_late_close|fractional_eh_enabled|overnight_tradable|overnight_halted)"
+      "(,(ptp_no_exception|ptp_with_exception|ipo|has_options|options_late_close|fractional_eh_enabled|overnight_tradable|overnight_halted))*$",
     (sebuf.http.query) = { name: "attributes" },
     (sebuf.http.field_examples) = { values: ["ptp_no_exception,ipo"] }
   ];
