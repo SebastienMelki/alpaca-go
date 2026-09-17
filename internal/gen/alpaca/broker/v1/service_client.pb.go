@@ -131,6 +131,8 @@ type BrokerServiceClient interface {
 	UploadOnfidoPhoto(ctx context.Context, req *UploadOnfidoPhotoRequest, opts ...BrokerServiceCallOption) (*OnfidoPhoto, error)
 	GetMarketCalendar(ctx context.Context, req *GetMarketCalendarRequest, opts ...BrokerServiceCallOption) (*GetMarketCalendarResponse, error)
 	GetMarketClock(ctx context.Context, req *GetMarketClockRequest, opts ...BrokerServiceCallOption) (*MarketClock, error)
+	ListAssets(ctx context.Context, req *ListAssetsRequest, opts ...BrokerServiceCallOption) (*ListAssetsResponse, error)
+	GetAsset(ctx context.Context, req *GetAssetRequest, opts ...BrokerServiceCallOption) (*Asset, error)
 	GetOptionsApproval(ctx context.Context, req *GetOptionsApprovalRequest, opts ...BrokerServiceCallOption) (*OptionsApproval, error)
 	RequestOptionsApproval(ctx context.Context, req *RequestOptionsApprovalRequest, opts ...BrokerServiceCallOption) (*OptionsApproval, error)
 	UpdateOptionsApproval(ctx context.Context, req *UpdateOptionsApprovalRequest, opts ...BrokerServiceCallOption) (*OptionsApproval, error)
@@ -7217,6 +7219,150 @@ func (c *brokerServiceClient) GetMarketClock(ctx context.Context, req *GetMarket
 
 	// Unmarshal response
 	result := &MarketClock{}
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// ListAssets calls the ListAssets RPC.
+func (c *brokerServiceClient) ListAssets(ctx context.Context, req *ListAssetsRequest, opts ...BrokerServiceCallOption) (*ListAssetsResponse, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/assets"
+	reqURL := c.baseURL + path
+
+	// Add query parameters
+	queryParams := url.Values{}
+	if req.Status != "" {
+		queryParams.Set("status", fmt.Sprint(req.Status))
+	}
+	if req.AssetClass != "" {
+		queryParams.Set("asset_class", fmt.Sprint(req.AssetClass))
+	}
+	if req.Attributes != "" {
+		queryParams.Set("attributes", fmt.Sprint(req.Attributes))
+	}
+	if len(queryParams) > 0 {
+		reqURL += "?" + queryParams.Encode()
+	}
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
+	// Unmarshal response
+	result := &ListAssetsResponse{}
+	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return result, nil
+}
+
+// GetAsset calls the GetAsset RPC.
+func (c *brokerServiceClient) GetAsset(ctx context.Context, req *GetAssetRequest, opts ...BrokerServiceCallOption) (*Asset, error) {
+	callOpts := &brokerServiceCallOptions{}
+	for _, opt := range opts {
+		opt(callOpts)
+	}
+
+	// Build URL
+	path := "/v1/assets/{symbol_or_id}"
+	path = strings.Replace(path, "{symbol_or_id}", url.PathEscape(fmt.Sprint(req.SymbolOrId)), 1)
+	reqURL := c.baseURL + path
+
+	contentType := c.contentType
+	if callOpts.contentType != "" {
+		contentType = callOpts.contentType
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	httpReq.Header.Set("Content-Type", contentType)
+	for k, v := range c.defaultHeaders {
+		httpReq.Header.Set(k, v)
+	}
+	for k, v := range callOpts.headers {
+		httpReq.Header.Set(k, v)
+	}
+
+	// Execute request
+	resp, err := c.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Check for error status codes
+	if resp.StatusCode >= 400 {
+		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
+	}
+
+	// Resolve discardUnknownFields: per-call option overrides client default
+	discardUnknown := c.discardUnknownFields
+	if callOpts.discardUnknownFields != nil {
+		discardUnknown = *callOpts.discardUnknownFields
+	}
+
+	// Unmarshal response
+	result := &Asset{}
 	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}

@@ -4855,6 +4855,102 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+    /v1/assets:
+        get:
+            tags:
+                - BrokerService
+            summary: ListAssets
+            description: |-
+                ListAssets retrieves all assets.
+                 GET /v1/assets
+            operationId: ListAssets
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: status
+                  in: query
+                  description: Asset status to filter by (active, inactive, all). Defaults to all.
+                  required: false
+                  schema:
+                    type: string
+                - name: asset_class
+                  in: query
+                  description: Asset class to filter by (us_equity, crypto). Defaults to us_equity.
+                  required: false
+                  schema:
+                    type: string
+                - name: attributes
+                  in: query
+                  description: Comma separated list of attributes to filter by. Assets with any of the given attributes are included.
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListAssetsResponse'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /v1/assets/{symbol_or_id}:
+        get:
+            tags:
+                - BrokerService
+            summary: GetAsset
+            description: |-
+                GetAsset retrieves a single asset by symbol or asset ID.
+                 GET /v1/assets/{symbol_or_id}
+            operationId: GetAsset
+            parameters:
+                - name: Authorization
+                  in: header
+                  description: HTTP Basic Auth with base64 encoded API_KEY:API_SECRET
+                  required: true
+                  schema:
+                    type: string
+                    example: Basic QVBJLUtFWTpBUEktU0VDUkVU
+                - name: symbol_or_id
+                  in: path
+                  description: The symbol or asset ID (bound from path variable).
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: Successful response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Asset'
+                "400":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidationError'
+                default:
+                    description: Error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
     /v1/accounts/{account_id}/options:
         get:
             tags:
@@ -12387,6 +12483,170 @@ components:
                     description: Next market close time.
                     example: "2024-01-15T16:00:00-05:00"
             description: MarketClock represents the current market clock status.
+        ListAssetsRequest:
+            type: object
+            properties:
+                status:
+                    type: string
+                    examples:
+                        - all
+                    description: Asset status to filter by (active, inactive, all). Defaults to all.
+                    example: all
+                assetClass:
+                    type: string
+                    examples:
+                        - us_equity
+                    description: Asset class to filter by (us_equity, crypto). Defaults to us_equity.
+                    example: us_equity
+                attributes:
+                    type: string
+                    examples:
+                        - ptp_no_exception,ipo
+                    description: Comma separated list of attributes to filter by. Assets with any of the given attributes are included.
+                    example: ptp_no_exception,ipo
+            description: ListAssetsRequest is the request to list all assets.
+        ListAssetsResponse:
+            type: array
+            items:
+                $ref: '#/components/schemas/Asset'
+            description: ListAssetsResponse is the response containing a list of assets.
+        Asset:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: Asset ID.
+                    example: 904837e3-3b76-47ec-b432-046db621571b
+                class:
+                    type: string
+                    examples:
+                        - us_equity
+                    description: Asset class (us_equity, us_option, crypto, ipo).
+                    example: us_equity
+                exchange:
+                    type: string
+                    examples:
+                        - NASDAQ
+                    description: Exchange where the asset is traded.
+                    example: NASDAQ
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL
+                    description: Asset symbol.
+                    example: AAPL
+                name:
+                    type: string
+                    examples:
+                        - Apple Inc. Common Stock
+                    description: The official name of the asset.
+                    example: Apple Inc. Common Stock
+                status:
+                    type: string
+                    examples:
+                        - active
+                    description: Asset status (active or inactive).
+                    example: active
+                tradable:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the asset is tradable on Alpaca.
+                    example: true
+                marginable:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the asset is marginable.
+                    example: true
+                shortable:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the asset is shortable.
+                    example: true
+                fractionable:
+                    type: boolean
+                    examples:
+                        - true
+                    description: Whether the asset is fractionable.
+                    example: true
+                easyToBorrow:
+                    type: boolean
+                    examples:
+                        - true
+                    description: 'Deprecated: use borrow_status instead.'
+                    example: true
+                borrowStatus:
+                    type: string
+                    examples:
+                        - easy_to_borrow
+                    description: Borrow status for US equity assets (easy_to_borrow or hard_to_borrow). Omitted for non-US-equity assets.
+                    example: easy_to_borrow
+                maintenanceMarginRequirement:
+                    type: number
+                    examples:
+                        - 30
+                    format: double
+                    description: 'Deprecated: use margin_requirement_long or margin_requirement_short instead.'
+                    example: 30
+                marginRequirementLong:
+                    type: string
+                    examples:
+                        - "30"
+                    description: Margin requirement percentage for long positions (equities only), as a decimal string.
+                    example: "30"
+                marginRequirementShort:
+                    type: string
+                    examples:
+                        - "30"
+                    description: Margin requirement percentage for short positions (equities only), as a decimal string.
+                    example: "30"
+                minOrderSize:
+                    type: string
+                    examples:
+                        - "0.0001"
+                    description: Minimum order size. Available for crypto only.
+                    example: "0.0001"
+                minTradeIncrement:
+                    type: string
+                    examples:
+                        - "0.0001"
+                    description: Amount a trade quantity can be incremented by. Available for crypto only.
+                    example: "0.0001"
+                priceIncrement:
+                    type: string
+                    examples:
+                        - "0.01"
+                    description: Amount the price can be incremented by. Available for crypto only.
+                    example: "0.01"
+                attributes:
+                    type: array
+                    items:
+                        type: string
+                        examples:
+                            - has_options
+                        description: Unique characteristics of the asset (e.g. ptp_no_exception, ipo, has_options, overnight_tradable).
+                        example: has_options
+            description: |-
+                Asset represents a tradeable asset available through the Broker API.
+                 Assets are sorted by asset class, exchange and symbol. Some assets are not
+                 tradable with Alpaca; these are marked with tradable=false.
+        GetAssetRequest:
+            type: object
+            properties:
+                symbolOrId:
+                    type: string
+                    examples:
+                        - AAPL
+                        - 904837e3-3b76-47ec-b432-046db621571b
+                    description: The symbol or asset ID (bound from path variable).
+                    example: AAPL
+            required:
+                - symbolOrId
+            description: GetAssetRequest is the request to retrieve a single asset by ID or symbol.
         GetOptionsApprovalRequest:
             type: object
             properties:

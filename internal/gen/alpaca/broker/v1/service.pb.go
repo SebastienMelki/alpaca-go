@@ -26,7 +26,7 @@ var File_alpaca_broker_v1_service_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1ealpaca/broker/v1/service.proto\x12\x10alpaca.broker.v1\x1a\x1csebuf/http/annotations.proto\x1a\x18sebuf/http/headers.proto\x1a%alpaca/broker/v1/broker_account.proto\x1a%alpaca/broker/v1/create_account.proto\x1a$alpaca/broker/v1/list_accounts.proto\x1a\"alpaca/broker/v1/get_account.proto\x1a%alpaca/broker/v1/update_account.proto\x1a$alpaca/broker/v1/close_account.proto\x1a'alpaca/broker/v1/ach_relationship.proto\x1a.alpaca/broker/v1/create_ach_relationship.proto\x1a-alpaca/broker/v1/list_ach_relationships.proto\x1a.alpaca/broker/v1/delete_ach_relationship.proto\x1a\x1falpaca/broker/v1/transfer.proto\x1a&alpaca/broker/v1/create_transfer.proto\x1a%alpaca/broker/v1/list_transfers.proto\x1a#alpaca/broker/v1/get_transfer.proto\x1a&alpaca/broker/v1/cancel_transfer.proto\x1a$alpaca/broker/v1/trading_order.proto\x1a+alpaca/broker/v1/create_trading_order.proto\x1a*alpaca/broker/v1/list_trading_orders.proto\x1a(alpaca/broker/v1/get_trading_order.proto\x1a+alpaca/broker/v1/cancel_trading_order.proto\x1a'alpaca/broker/v1/trading_position.proto\x1a\x1falpaca/broker/v1/document.proto\x1a alpaca/broker/v1/watchlist.proto\x1a,alpaca/broker/v1/broker_crypto_funding.proto\x1a\x1ealpaca/broker/v1/journal.proto\x1a\"alpaca/broker/v1/rebalancing.proto\x1a\x1aalpaca/broker/v1/jit.proto\x1a&alpaca/broker/v1/instant_funding.proto\x1a\x1balpaca/broker/v1/fpsl.proto\x1a\x1calpaca/broker/v1/oauth.proto\x1a\x1aalpaca/broker/v1/sse.proto\x1a\x1aalpaca/broker/v1/cip.proto\x1a\x1dalpaca/broker/v1/onfido.proto\x1a\x1falpaca/broker/v1/calendar.proto\x1a\x1ealpaca/broker/v1/options.proto\x1a\x1aalpaca/broker/v1/ira.proto\x1a\x1ealpaca/broker/v1/country.proto\x1a\x1aalpaca/broker/v1/ipo.proto\x1a&alpaca/broker/v1/trading_account.proto\x1a'alpaca/broker/v1/account_activity.proto\x1a/alpaca/broker/v1/broker_portfolio_history.proto2\x91\x81\x01\n" +
+	"\x1ealpaca/broker/v1/service.proto\x12\x10alpaca.broker.v1\x1a\x1csebuf/http/annotations.proto\x1a\x18sebuf/http/headers.proto\x1a%alpaca/broker/v1/broker_account.proto\x1a%alpaca/broker/v1/create_account.proto\x1a$alpaca/broker/v1/list_accounts.proto\x1a\"alpaca/broker/v1/get_account.proto\x1a%alpaca/broker/v1/update_account.proto\x1a$alpaca/broker/v1/close_account.proto\x1a'alpaca/broker/v1/ach_relationship.proto\x1a.alpaca/broker/v1/create_ach_relationship.proto\x1a-alpaca/broker/v1/list_ach_relationships.proto\x1a.alpaca/broker/v1/delete_ach_relationship.proto\x1a\x1falpaca/broker/v1/transfer.proto\x1a&alpaca/broker/v1/create_transfer.proto\x1a%alpaca/broker/v1/list_transfers.proto\x1a#alpaca/broker/v1/get_transfer.proto\x1a&alpaca/broker/v1/cancel_transfer.proto\x1a$alpaca/broker/v1/trading_order.proto\x1a+alpaca/broker/v1/create_trading_order.proto\x1a*alpaca/broker/v1/list_trading_orders.proto\x1a(alpaca/broker/v1/get_trading_order.proto\x1a+alpaca/broker/v1/cancel_trading_order.proto\x1a'alpaca/broker/v1/trading_position.proto\x1a\x1falpaca/broker/v1/document.proto\x1a alpaca/broker/v1/watchlist.proto\x1a,alpaca/broker/v1/broker_crypto_funding.proto\x1a\x1ealpaca/broker/v1/journal.proto\x1a\"alpaca/broker/v1/rebalancing.proto\x1a\x1aalpaca/broker/v1/jit.proto\x1a&alpaca/broker/v1/instant_funding.proto\x1a\x1balpaca/broker/v1/fpsl.proto\x1a\x1calpaca/broker/v1/oauth.proto\x1a\x1aalpaca/broker/v1/sse.proto\x1a\x1aalpaca/broker/v1/cip.proto\x1a\x1dalpaca/broker/v1/onfido.proto\x1a\x1falpaca/broker/v1/calendar.proto\x1a\x1calpaca/broker/v1/asset.proto\x1a\x1ealpaca/broker/v1/options.proto\x1a\x1aalpaca/broker/v1/ira.proto\x1a\x1ealpaca/broker/v1/country.proto\x1a\x1aalpaca/broker/v1/ipo.proto\x1a&alpaca/broker/v1/trading_account.proto\x1a'alpaca/broker/v1/account_activity.proto\x1a/alpaca/broker/v1/broker_portfolio_history.proto2\xe3\x82\x01\n" +
 	"\rBrokerService\x12k\n" +
 	"\rCreateAccount\x12&.alpaca.broker.v1.CreateAccountRequest\x1a\x1f.alpaca.broker.v1.BrokerAccount\"\x11\x9a\xb5\x18\r\n" +
 	"\t/accounts\x10\x02\x12p\n" +
@@ -226,7 +226,12 @@ const file_alpaca_broker_v1_service_proto_rawDesc = "" +
 	"\t/calendar\x10\x01\x12h\n" +
 	"\x0eGetMarketClock\x12'.alpaca.broker.v1.GetMarketClockRequest\x1a\x1d.alpaca.broker.v1.MarketClock\"\x0e\x9a\xb5\x18\n" +
 	"\n" +
-	"\x06/clock\x10\x01\x12\x8c\x01\n" +
+	"\x06/clock\x10\x01\x12h\n" +
+	"\n" +
+	"ListAssets\x12#.alpaca.broker.v1.ListAssetsRequest\x1a$.alpaca.broker.v1.ListAssetsResponse\"\x0f\x9a\xb5\x18\v\n" +
+	"\a/assets\x10\x01\x12f\n" +
+	"\bGetAsset\x12!.alpaca.broker.v1.GetAssetRequest\x1a\x17.alpaca.broker.v1.Asset\"\x1e\x9a\xb5\x18\x1a\n" +
+	"\x16/assets/{symbol_or_id}\x10\x01\x12\x8c\x01\n" +
 	"\x12GetOptionsApproval\x12+.alpaca.broker.v1.GetOptionsApprovalRequest\x1a!.alpaca.broker.v1.OptionsApproval\"&\x9a\xb5\x18\"\n" +
 	"\x1e/accounts/{account_id}/options\x10\x01\x12\x94\x01\n" +
 	"\x16RequestOptionsApproval\x12/.alpaca.broker.v1.RequestOptionsApprovalRequest\x1a!.alpaca.broker.v1.OptionsApproval\"&\x9a\xb5\x18\"\n" +
@@ -354,98 +359,102 @@ var file_alpaca_broker_v1_service_proto_goTypes = []any{
 	(*UploadOnfidoPhotoRequest)(nil),               // 94: alpaca.broker.v1.UploadOnfidoPhotoRequest
 	(*GetMarketCalendarRequest)(nil),               // 95: alpaca.broker.v1.GetMarketCalendarRequest
 	(*GetMarketClockRequest)(nil),                  // 96: alpaca.broker.v1.GetMarketClockRequest
-	(*GetOptionsApprovalRequest)(nil),              // 97: alpaca.broker.v1.GetOptionsApprovalRequest
-	(*RequestOptionsApprovalRequest)(nil),          // 98: alpaca.broker.v1.RequestOptionsApprovalRequest
-	(*UpdateOptionsApprovalRequest)(nil),           // 99: alpaca.broker.v1.UpdateOptionsApprovalRequest
-	(*ListBrokerOptionContractsRequest)(nil),       // 100: alpaca.broker.v1.ListBrokerOptionContractsRequest
-	(*GetBrokerOptionContractRequest)(nil),         // 101: alpaca.broker.v1.GetBrokerOptionContractRequest
-	(*ListIRAExcessContributionsRequest)(nil),      // 102: alpaca.broker.v1.ListIRAExcessContributionsRequest
-	(*GetIRAExcessContributionRequest)(nil),        // 103: alpaca.broker.v1.GetIRAExcessContributionRequest
-	(*CreateIRAExcessContributionRequest)(nil),     // 104: alpaca.broker.v1.CreateIRAExcessContributionRequest
-	(*GetIRAContributionLimitsRequest)(nil),        // 105: alpaca.broker.v1.GetIRAContributionLimitsRequest
-	(*ListCountriesRequest)(nil),                   // 106: alpaca.broker.v1.ListCountriesRequest
-	(*ListIPOOfferingsRequest)(nil),                // 107: alpaca.broker.v1.ListIPOOfferingsRequest
-	(*GetIPOOfferingRequest)(nil),                  // 108: alpaca.broker.v1.GetIPOOfferingRequest
-	(*BrokerAccount)(nil),                          // 109: alpaca.broker.v1.BrokerAccount
-	(*ListAccountsResponse)(nil),                   // 110: alpaca.broker.v1.ListAccountsResponse
-	(*CloseBrokerAccountResponse)(nil),             // 111: alpaca.broker.v1.CloseBrokerAccountResponse
-	(*TradeAccount)(nil),                           // 112: alpaca.broker.v1.TradeAccount
-	(*ListAccountActivitiesResponse)(nil),          // 113: alpaca.broker.v1.ListAccountActivitiesResponse
-	(*BrokerPortfolioHistory)(nil),                 // 114: alpaca.broker.v1.BrokerPortfolioHistory
-	(*ACHRelationship)(nil),                        // 115: alpaca.broker.v1.ACHRelationship
-	(*ListACHRelationshipsResponse)(nil),           // 116: alpaca.broker.v1.ListACHRelationshipsResponse
-	(*DeleteACHRelationshipResponse)(nil),          // 117: alpaca.broker.v1.DeleteACHRelationshipResponse
-	(*Transfer)(nil),                               // 118: alpaca.broker.v1.Transfer
-	(*ListTransfersResponse)(nil),                  // 119: alpaca.broker.v1.ListTransfersResponse
-	(*CancelTransferResponse)(nil),                 // 120: alpaca.broker.v1.CancelTransferResponse
-	(*BrokerOrder)(nil),                            // 121: alpaca.broker.v1.BrokerOrder
-	(*ListTradingOrdersResponse)(nil),              // 122: alpaca.broker.v1.ListTradingOrdersResponse
-	(*CancelTradingOrderResponse)(nil),             // 123: alpaca.broker.v1.CancelTradingOrderResponse
-	(*ListTradingPositionsResponse)(nil),           // 124: alpaca.broker.v1.ListTradingPositionsResponse
-	(*BrokerPosition)(nil),                         // 125: alpaca.broker.v1.BrokerPosition
-	(*CloseAllTradingPositionsResponse)(nil),       // 126: alpaca.broker.v1.CloseAllTradingPositionsResponse
-	(*ListAccountDocumentsResponse)(nil),           // 127: alpaca.broker.v1.ListAccountDocumentsResponse
-	(*DownloadAccountDocumentResponse)(nil),        // 128: alpaca.broker.v1.DownloadAccountDocumentResponse
-	(*ListBrokerWatchlistsResponse)(nil),           // 129: alpaca.broker.v1.ListBrokerWatchlistsResponse
-	(*BrokerWatchlist)(nil),                        // 130: alpaca.broker.v1.BrokerWatchlist
-	(*DeleteBrokerWatchlistResponse)(nil),          // 131: alpaca.broker.v1.DeleteBrokerWatchlistResponse
-	(*RemoveBrokerWatchlistAssetResponse)(nil),     // 132: alpaca.broker.v1.RemoveBrokerWatchlistAssetResponse
-	(*ListBrokerCryptoWalletsResponse)(nil),        // 133: alpaca.broker.v1.ListBrokerCryptoWalletsResponse
-	(*ListBrokerCryptoTransfersResponse)(nil),      // 134: alpaca.broker.v1.ListBrokerCryptoTransfersResponse
-	(*BrokerCryptoTransfer)(nil),                   // 135: alpaca.broker.v1.BrokerCryptoTransfer
-	(*ListBrokerWhitelistedAddressesResponse)(nil), // 136: alpaca.broker.v1.ListBrokerWhitelistedAddressesResponse
-	(*BrokerWhitelistedAddress)(nil),               // 137: alpaca.broker.v1.BrokerWhitelistedAddress
-	(*DeleteBrokerWhitelistedAddressResponse)(nil), // 138: alpaca.broker.v1.DeleteBrokerWhitelistedAddressResponse
-	(*Journal)(nil),                                // 139: alpaca.broker.v1.Journal
-	(*ListJournalsResponse)(nil),                   // 140: alpaca.broker.v1.ListJournalsResponse
-	(*DeleteJournalResponse)(nil),                  // 141: alpaca.broker.v1.DeleteJournalResponse
-	(*CreateBatchJournalResponse)(nil),             // 142: alpaca.broker.v1.CreateBatchJournalResponse
-	(*ReverseBatchJournalResponse)(nil),            // 143: alpaca.broker.v1.ReverseBatchJournalResponse
-	(*ListPortfoliosResponse)(nil),                 // 144: alpaca.broker.v1.ListPortfoliosResponse
-	(*RebalancingPortfolio)(nil),                   // 145: alpaca.broker.v1.RebalancingPortfolio
-	(*DeletePortfolioResponse)(nil),                // 146: alpaca.broker.v1.DeletePortfolioResponse
-	(*ListSubscriptionsResponse)(nil),              // 147: alpaca.broker.v1.ListSubscriptionsResponse
-	(*RebalancingSubscription)(nil),                // 148: alpaca.broker.v1.RebalancingSubscription
-	(*DeleteSubscriptionResponse)(nil),             // 149: alpaca.broker.v1.DeleteSubscriptionResponse
-	(*ListRunsResponse)(nil),                       // 150: alpaca.broker.v1.ListRunsResponse
-	(*RebalancingRun)(nil),                         // 151: alpaca.broker.v1.RebalancingRun
-	(*CancelRunResponse)(nil),                      // 152: alpaca.broker.v1.CancelRunResponse
-	(*ListJITSettlementsResponse)(nil),             // 153: alpaca.broker.v1.ListJITSettlementsResponse
-	(*JITSettlement)(nil),                          // 154: alpaca.broker.v1.JITSettlement
-	(*ListJITLedgersResponse)(nil),                 // 155: alpaca.broker.v1.ListJITLedgersResponse
-	(*GetJITLedgerBalancesResponse)(nil),           // 156: alpaca.broker.v1.GetJITLedgerBalancesResponse
-	(*JITLimits)(nil),                              // 157: alpaca.broker.v1.JITLimits
-	(*ListInstantFundingResponse)(nil),             // 158: alpaca.broker.v1.ListInstantFundingResponse
-	(*DeleteInstantFundingResponse)(nil),           // 159: alpaca.broker.v1.DeleteInstantFundingResponse
-	(*ListInstantFundingSettlementsResponse)(nil),  // 160: alpaca.broker.v1.ListInstantFundingSettlementsResponse
-	(*InstantFundingSettlement)(nil),               // 161: alpaca.broker.v1.InstantFundingSettlement
-	(*ListFPSLTiersResponse)(nil),                  // 162: alpaca.broker.v1.ListFPSLTiersResponse
-	(*ListFPSLLoansResponse)(nil),                  // 163: alpaca.broker.v1.ListFPSLLoansResponse
-	(*ListAPRTiersResponse)(nil),                   // 164: alpaca.broker.v1.ListAPRTiersResponse
-	(*OAuthToken)(nil),                             // 165: alpaca.broker.v1.OAuthToken
-	(*AuthorizeOAuthResponse)(nil),                 // 166: alpaca.broker.v1.AuthorizeOAuthResponse
-	(*OAuthClient)(nil),                            // 167: alpaca.broker.v1.OAuthClient
-	(*DeleteOAuthClientResponse)(nil),              // 168: alpaca.broker.v1.DeleteOAuthClientResponse
-	(*RevokeOAuthAuthorizationResponse)(nil),       // 169: alpaca.broker.v1.RevokeOAuthAuthorizationResponse
-	(*SubscribeSSEResponse)(nil),                   // 170: alpaca.broker.v1.SubscribeSSEResponse
-	(*CIPInfo)(nil),                                // 171: alpaca.broker.v1.CIPInfo
-	(*OnfidoApplicant)(nil),                        // 172: alpaca.broker.v1.OnfidoApplicant
-	(*OnfidoSDKToken)(nil),                         // 173: alpaca.broker.v1.OnfidoSDKToken
-	(*OnfidoCheck)(nil),                            // 174: alpaca.broker.v1.OnfidoCheck
-	(*ListOnfidoChecksResponse)(nil),               // 175: alpaca.broker.v1.ListOnfidoChecksResponse
-	(*OnfidoDocument)(nil),                         // 176: alpaca.broker.v1.OnfidoDocument
-	(*OnfidoPhoto)(nil),                            // 177: alpaca.broker.v1.OnfidoPhoto
-	(*GetMarketCalendarResponse)(nil),              // 178: alpaca.broker.v1.GetMarketCalendarResponse
-	(*MarketClock)(nil),                            // 179: alpaca.broker.v1.MarketClock
-	(*OptionsApproval)(nil),                        // 180: alpaca.broker.v1.OptionsApproval
-	(*ListBrokerOptionContractsResponse)(nil),      // 181: alpaca.broker.v1.ListBrokerOptionContractsResponse
-	(*BrokerOptionContract)(nil),                   // 182: alpaca.broker.v1.BrokerOptionContract
-	(*ListIRAExcessContributionsResponse)(nil),     // 183: alpaca.broker.v1.ListIRAExcessContributionsResponse
-	(*IRAExcessContribution)(nil),                  // 184: alpaca.broker.v1.IRAExcessContribution
-	(*IRAContributionLimits)(nil),                  // 185: alpaca.broker.v1.IRAContributionLimits
-	(*ListCountriesResponse)(nil),                  // 186: alpaca.broker.v1.ListCountriesResponse
-	(*ListIPOOfferingsResponse)(nil),               // 187: alpaca.broker.v1.ListIPOOfferingsResponse
-	(*GetIPOOfferingResponse)(nil),                 // 188: alpaca.broker.v1.GetIPOOfferingResponse
+	(*ListAssetsRequest)(nil),                      // 97: alpaca.broker.v1.ListAssetsRequest
+	(*GetAssetRequest)(nil),                        // 98: alpaca.broker.v1.GetAssetRequest
+	(*GetOptionsApprovalRequest)(nil),              // 99: alpaca.broker.v1.GetOptionsApprovalRequest
+	(*RequestOptionsApprovalRequest)(nil),          // 100: alpaca.broker.v1.RequestOptionsApprovalRequest
+	(*UpdateOptionsApprovalRequest)(nil),           // 101: alpaca.broker.v1.UpdateOptionsApprovalRequest
+	(*ListBrokerOptionContractsRequest)(nil),       // 102: alpaca.broker.v1.ListBrokerOptionContractsRequest
+	(*GetBrokerOptionContractRequest)(nil),         // 103: alpaca.broker.v1.GetBrokerOptionContractRequest
+	(*ListIRAExcessContributionsRequest)(nil),      // 104: alpaca.broker.v1.ListIRAExcessContributionsRequest
+	(*GetIRAExcessContributionRequest)(nil),        // 105: alpaca.broker.v1.GetIRAExcessContributionRequest
+	(*CreateIRAExcessContributionRequest)(nil),     // 106: alpaca.broker.v1.CreateIRAExcessContributionRequest
+	(*GetIRAContributionLimitsRequest)(nil),        // 107: alpaca.broker.v1.GetIRAContributionLimitsRequest
+	(*ListCountriesRequest)(nil),                   // 108: alpaca.broker.v1.ListCountriesRequest
+	(*ListIPOOfferingsRequest)(nil),                // 109: alpaca.broker.v1.ListIPOOfferingsRequest
+	(*GetIPOOfferingRequest)(nil),                  // 110: alpaca.broker.v1.GetIPOOfferingRequest
+	(*BrokerAccount)(nil),                          // 111: alpaca.broker.v1.BrokerAccount
+	(*ListAccountsResponse)(nil),                   // 112: alpaca.broker.v1.ListAccountsResponse
+	(*CloseBrokerAccountResponse)(nil),             // 113: alpaca.broker.v1.CloseBrokerAccountResponse
+	(*TradeAccount)(nil),                           // 114: alpaca.broker.v1.TradeAccount
+	(*ListAccountActivitiesResponse)(nil),          // 115: alpaca.broker.v1.ListAccountActivitiesResponse
+	(*BrokerPortfolioHistory)(nil),                 // 116: alpaca.broker.v1.BrokerPortfolioHistory
+	(*ACHRelationship)(nil),                        // 117: alpaca.broker.v1.ACHRelationship
+	(*ListACHRelationshipsResponse)(nil),           // 118: alpaca.broker.v1.ListACHRelationshipsResponse
+	(*DeleteACHRelationshipResponse)(nil),          // 119: alpaca.broker.v1.DeleteACHRelationshipResponse
+	(*Transfer)(nil),                               // 120: alpaca.broker.v1.Transfer
+	(*ListTransfersResponse)(nil),                  // 121: alpaca.broker.v1.ListTransfersResponse
+	(*CancelTransferResponse)(nil),                 // 122: alpaca.broker.v1.CancelTransferResponse
+	(*BrokerOrder)(nil),                            // 123: alpaca.broker.v1.BrokerOrder
+	(*ListTradingOrdersResponse)(nil),              // 124: alpaca.broker.v1.ListTradingOrdersResponse
+	(*CancelTradingOrderResponse)(nil),             // 125: alpaca.broker.v1.CancelTradingOrderResponse
+	(*ListTradingPositionsResponse)(nil),           // 126: alpaca.broker.v1.ListTradingPositionsResponse
+	(*BrokerPosition)(nil),                         // 127: alpaca.broker.v1.BrokerPosition
+	(*CloseAllTradingPositionsResponse)(nil),       // 128: alpaca.broker.v1.CloseAllTradingPositionsResponse
+	(*ListAccountDocumentsResponse)(nil),           // 129: alpaca.broker.v1.ListAccountDocumentsResponse
+	(*DownloadAccountDocumentResponse)(nil),        // 130: alpaca.broker.v1.DownloadAccountDocumentResponse
+	(*ListBrokerWatchlistsResponse)(nil),           // 131: alpaca.broker.v1.ListBrokerWatchlistsResponse
+	(*BrokerWatchlist)(nil),                        // 132: alpaca.broker.v1.BrokerWatchlist
+	(*DeleteBrokerWatchlistResponse)(nil),          // 133: alpaca.broker.v1.DeleteBrokerWatchlistResponse
+	(*RemoveBrokerWatchlistAssetResponse)(nil),     // 134: alpaca.broker.v1.RemoveBrokerWatchlistAssetResponse
+	(*ListBrokerCryptoWalletsResponse)(nil),        // 135: alpaca.broker.v1.ListBrokerCryptoWalletsResponse
+	(*ListBrokerCryptoTransfersResponse)(nil),      // 136: alpaca.broker.v1.ListBrokerCryptoTransfersResponse
+	(*BrokerCryptoTransfer)(nil),                   // 137: alpaca.broker.v1.BrokerCryptoTransfer
+	(*ListBrokerWhitelistedAddressesResponse)(nil), // 138: alpaca.broker.v1.ListBrokerWhitelistedAddressesResponse
+	(*BrokerWhitelistedAddress)(nil),               // 139: alpaca.broker.v1.BrokerWhitelistedAddress
+	(*DeleteBrokerWhitelistedAddressResponse)(nil), // 140: alpaca.broker.v1.DeleteBrokerWhitelistedAddressResponse
+	(*Journal)(nil),                                // 141: alpaca.broker.v1.Journal
+	(*ListJournalsResponse)(nil),                   // 142: alpaca.broker.v1.ListJournalsResponse
+	(*DeleteJournalResponse)(nil),                  // 143: alpaca.broker.v1.DeleteJournalResponse
+	(*CreateBatchJournalResponse)(nil),             // 144: alpaca.broker.v1.CreateBatchJournalResponse
+	(*ReverseBatchJournalResponse)(nil),            // 145: alpaca.broker.v1.ReverseBatchJournalResponse
+	(*ListPortfoliosResponse)(nil),                 // 146: alpaca.broker.v1.ListPortfoliosResponse
+	(*RebalancingPortfolio)(nil),                   // 147: alpaca.broker.v1.RebalancingPortfolio
+	(*DeletePortfolioResponse)(nil),                // 148: alpaca.broker.v1.DeletePortfolioResponse
+	(*ListSubscriptionsResponse)(nil),              // 149: alpaca.broker.v1.ListSubscriptionsResponse
+	(*RebalancingSubscription)(nil),                // 150: alpaca.broker.v1.RebalancingSubscription
+	(*DeleteSubscriptionResponse)(nil),             // 151: alpaca.broker.v1.DeleteSubscriptionResponse
+	(*ListRunsResponse)(nil),                       // 152: alpaca.broker.v1.ListRunsResponse
+	(*RebalancingRun)(nil),                         // 153: alpaca.broker.v1.RebalancingRun
+	(*CancelRunResponse)(nil),                      // 154: alpaca.broker.v1.CancelRunResponse
+	(*ListJITSettlementsResponse)(nil),             // 155: alpaca.broker.v1.ListJITSettlementsResponse
+	(*JITSettlement)(nil),                          // 156: alpaca.broker.v1.JITSettlement
+	(*ListJITLedgersResponse)(nil),                 // 157: alpaca.broker.v1.ListJITLedgersResponse
+	(*GetJITLedgerBalancesResponse)(nil),           // 158: alpaca.broker.v1.GetJITLedgerBalancesResponse
+	(*JITLimits)(nil),                              // 159: alpaca.broker.v1.JITLimits
+	(*ListInstantFundingResponse)(nil),             // 160: alpaca.broker.v1.ListInstantFundingResponse
+	(*DeleteInstantFundingResponse)(nil),           // 161: alpaca.broker.v1.DeleteInstantFundingResponse
+	(*ListInstantFundingSettlementsResponse)(nil),  // 162: alpaca.broker.v1.ListInstantFundingSettlementsResponse
+	(*InstantFundingSettlement)(nil),               // 163: alpaca.broker.v1.InstantFundingSettlement
+	(*ListFPSLTiersResponse)(nil),                  // 164: alpaca.broker.v1.ListFPSLTiersResponse
+	(*ListFPSLLoansResponse)(nil),                  // 165: alpaca.broker.v1.ListFPSLLoansResponse
+	(*ListAPRTiersResponse)(nil),                   // 166: alpaca.broker.v1.ListAPRTiersResponse
+	(*OAuthToken)(nil),                             // 167: alpaca.broker.v1.OAuthToken
+	(*AuthorizeOAuthResponse)(nil),                 // 168: alpaca.broker.v1.AuthorizeOAuthResponse
+	(*OAuthClient)(nil),                            // 169: alpaca.broker.v1.OAuthClient
+	(*DeleteOAuthClientResponse)(nil),              // 170: alpaca.broker.v1.DeleteOAuthClientResponse
+	(*RevokeOAuthAuthorizationResponse)(nil),       // 171: alpaca.broker.v1.RevokeOAuthAuthorizationResponse
+	(*SubscribeSSEResponse)(nil),                   // 172: alpaca.broker.v1.SubscribeSSEResponse
+	(*CIPInfo)(nil),                                // 173: alpaca.broker.v1.CIPInfo
+	(*OnfidoApplicant)(nil),                        // 174: alpaca.broker.v1.OnfidoApplicant
+	(*OnfidoSDKToken)(nil),                         // 175: alpaca.broker.v1.OnfidoSDKToken
+	(*OnfidoCheck)(nil),                            // 176: alpaca.broker.v1.OnfidoCheck
+	(*ListOnfidoChecksResponse)(nil),               // 177: alpaca.broker.v1.ListOnfidoChecksResponse
+	(*OnfidoDocument)(nil),                         // 178: alpaca.broker.v1.OnfidoDocument
+	(*OnfidoPhoto)(nil),                            // 179: alpaca.broker.v1.OnfidoPhoto
+	(*GetMarketCalendarResponse)(nil),              // 180: alpaca.broker.v1.GetMarketCalendarResponse
+	(*MarketClock)(nil),                            // 181: alpaca.broker.v1.MarketClock
+	(*ListAssetsResponse)(nil),                     // 182: alpaca.broker.v1.ListAssetsResponse
+	(*Asset)(nil),                                  // 183: alpaca.broker.v1.Asset
+	(*OptionsApproval)(nil),                        // 184: alpaca.broker.v1.OptionsApproval
+	(*ListBrokerOptionContractsResponse)(nil),      // 185: alpaca.broker.v1.ListBrokerOptionContractsResponse
+	(*BrokerOptionContract)(nil),                   // 186: alpaca.broker.v1.BrokerOptionContract
+	(*ListIRAExcessContributionsResponse)(nil),     // 187: alpaca.broker.v1.ListIRAExcessContributionsResponse
+	(*IRAExcessContribution)(nil),                  // 188: alpaca.broker.v1.IRAExcessContribution
+	(*IRAContributionLimits)(nil),                  // 189: alpaca.broker.v1.IRAContributionLimits
+	(*ListCountriesResponse)(nil),                  // 190: alpaca.broker.v1.ListCountriesResponse
+	(*ListIPOOfferingsResponse)(nil),               // 191: alpaca.broker.v1.ListIPOOfferingsResponse
+	(*GetIPOOfferingResponse)(nil),                 // 192: alpaca.broker.v1.GetIPOOfferingResponse
 }
 var file_alpaca_broker_v1_service_proto_depIdxs = []int32{
 	0,   // 0: alpaca.broker.v1.BrokerService.CreateAccount:input_type -> alpaca.broker.v1.CreateAccountRequest
@@ -545,129 +554,133 @@ var file_alpaca_broker_v1_service_proto_depIdxs = []int32{
 	94,  // 94: alpaca.broker.v1.BrokerService.UploadOnfidoPhoto:input_type -> alpaca.broker.v1.UploadOnfidoPhotoRequest
 	95,  // 95: alpaca.broker.v1.BrokerService.GetMarketCalendar:input_type -> alpaca.broker.v1.GetMarketCalendarRequest
 	96,  // 96: alpaca.broker.v1.BrokerService.GetMarketClock:input_type -> alpaca.broker.v1.GetMarketClockRequest
-	97,  // 97: alpaca.broker.v1.BrokerService.GetOptionsApproval:input_type -> alpaca.broker.v1.GetOptionsApprovalRequest
-	98,  // 98: alpaca.broker.v1.BrokerService.RequestOptionsApproval:input_type -> alpaca.broker.v1.RequestOptionsApprovalRequest
-	99,  // 99: alpaca.broker.v1.BrokerService.UpdateOptionsApproval:input_type -> alpaca.broker.v1.UpdateOptionsApprovalRequest
-	100, // 100: alpaca.broker.v1.BrokerService.ListBrokerOptionContracts:input_type -> alpaca.broker.v1.ListBrokerOptionContractsRequest
-	101, // 101: alpaca.broker.v1.BrokerService.GetBrokerOptionContract:input_type -> alpaca.broker.v1.GetBrokerOptionContractRequest
-	102, // 102: alpaca.broker.v1.BrokerService.ListIRAExcessContributions:input_type -> alpaca.broker.v1.ListIRAExcessContributionsRequest
-	103, // 103: alpaca.broker.v1.BrokerService.GetIRAExcessContribution:input_type -> alpaca.broker.v1.GetIRAExcessContributionRequest
-	104, // 104: alpaca.broker.v1.BrokerService.CreateIRAExcessContribution:input_type -> alpaca.broker.v1.CreateIRAExcessContributionRequest
-	105, // 105: alpaca.broker.v1.BrokerService.GetIRAContributionLimits:input_type -> alpaca.broker.v1.GetIRAContributionLimitsRequest
-	106, // 106: alpaca.broker.v1.BrokerService.ListCountries:input_type -> alpaca.broker.v1.ListCountriesRequest
-	107, // 107: alpaca.broker.v1.BrokerService.ListIPOOfferings:input_type -> alpaca.broker.v1.ListIPOOfferingsRequest
-	108, // 108: alpaca.broker.v1.BrokerService.GetIPOOffering:input_type -> alpaca.broker.v1.GetIPOOfferingRequest
-	109, // 109: alpaca.broker.v1.BrokerService.CreateAccount:output_type -> alpaca.broker.v1.BrokerAccount
-	110, // 110: alpaca.broker.v1.BrokerService.ListAccounts:output_type -> alpaca.broker.v1.ListAccountsResponse
-	109, // 111: alpaca.broker.v1.BrokerService.GetAccount:output_type -> alpaca.broker.v1.BrokerAccount
-	109, // 112: alpaca.broker.v1.BrokerService.UpdateAccount:output_type -> alpaca.broker.v1.BrokerAccount
-	111, // 113: alpaca.broker.v1.BrokerService.CloseAccount:output_type -> alpaca.broker.v1.CloseBrokerAccountResponse
-	112, // 114: alpaca.broker.v1.BrokerService.GetTradingAccount:output_type -> alpaca.broker.v1.TradeAccount
-	113, // 115: alpaca.broker.v1.BrokerService.ListAccountActivities:output_type -> alpaca.broker.v1.ListAccountActivitiesResponse
-	113, // 116: alpaca.broker.v1.BrokerService.ListAccountActivitiesByType:output_type -> alpaca.broker.v1.ListAccountActivitiesResponse
-	114, // 117: alpaca.broker.v1.BrokerService.GetBrokerPortfolioHistory:output_type -> alpaca.broker.v1.BrokerPortfolioHistory
-	115, // 118: alpaca.broker.v1.BrokerService.CreateACHRelationship:output_type -> alpaca.broker.v1.ACHRelationship
-	116, // 119: alpaca.broker.v1.BrokerService.ListACHRelationships:output_type -> alpaca.broker.v1.ListACHRelationshipsResponse
-	117, // 120: alpaca.broker.v1.BrokerService.DeleteACHRelationship:output_type -> alpaca.broker.v1.DeleteACHRelationshipResponse
-	118, // 121: alpaca.broker.v1.BrokerService.CreateTransfer:output_type -> alpaca.broker.v1.Transfer
-	119, // 122: alpaca.broker.v1.BrokerService.ListTransfers:output_type -> alpaca.broker.v1.ListTransfersResponse
-	118, // 123: alpaca.broker.v1.BrokerService.GetTransfer:output_type -> alpaca.broker.v1.Transfer
-	120, // 124: alpaca.broker.v1.BrokerService.CancelTransfer:output_type -> alpaca.broker.v1.CancelTransferResponse
-	121, // 125: alpaca.broker.v1.BrokerService.CreateTradingOrder:output_type -> alpaca.broker.v1.BrokerOrder
-	122, // 126: alpaca.broker.v1.BrokerService.ListTradingOrders:output_type -> alpaca.broker.v1.ListTradingOrdersResponse
-	121, // 127: alpaca.broker.v1.BrokerService.GetTradingOrder:output_type -> alpaca.broker.v1.BrokerOrder
-	123, // 128: alpaca.broker.v1.BrokerService.CancelTradingOrder:output_type -> alpaca.broker.v1.CancelTradingOrderResponse
-	124, // 129: alpaca.broker.v1.BrokerService.ListTradingPositions:output_type -> alpaca.broker.v1.ListTradingPositionsResponse
-	125, // 130: alpaca.broker.v1.BrokerService.GetTradingPosition:output_type -> alpaca.broker.v1.BrokerPosition
-	121, // 131: alpaca.broker.v1.BrokerService.CloseTradingPosition:output_type -> alpaca.broker.v1.BrokerOrder
-	126, // 132: alpaca.broker.v1.BrokerService.CloseAllTradingPositions:output_type -> alpaca.broker.v1.CloseAllTradingPositionsResponse
-	127, // 133: alpaca.broker.v1.BrokerService.ListAccountDocuments:output_type -> alpaca.broker.v1.ListAccountDocumentsResponse
-	128, // 134: alpaca.broker.v1.BrokerService.DownloadAccountDocument:output_type -> alpaca.broker.v1.DownloadAccountDocumentResponse
-	128, // 135: alpaca.broker.v1.BrokerService.DownloadW8BenDocument:output_type -> alpaca.broker.v1.DownloadAccountDocumentResponse
-	129, // 136: alpaca.broker.v1.BrokerService.ListBrokerWatchlists:output_type -> alpaca.broker.v1.ListBrokerWatchlistsResponse
-	130, // 137: alpaca.broker.v1.BrokerService.CreateBrokerWatchlist:output_type -> alpaca.broker.v1.BrokerWatchlist
-	130, // 138: alpaca.broker.v1.BrokerService.GetBrokerWatchlist:output_type -> alpaca.broker.v1.BrokerWatchlist
-	130, // 139: alpaca.broker.v1.BrokerService.UpdateBrokerWatchlist:output_type -> alpaca.broker.v1.BrokerWatchlist
-	131, // 140: alpaca.broker.v1.BrokerService.DeleteBrokerWatchlist:output_type -> alpaca.broker.v1.DeleteBrokerWatchlistResponse
-	130, // 141: alpaca.broker.v1.BrokerService.AddBrokerWatchlistAsset:output_type -> alpaca.broker.v1.BrokerWatchlist
-	132, // 142: alpaca.broker.v1.BrokerService.RemoveBrokerWatchlistAsset:output_type -> alpaca.broker.v1.RemoveBrokerWatchlistAssetResponse
-	133, // 143: alpaca.broker.v1.BrokerService.ListBrokerCryptoWallets:output_type -> alpaca.broker.v1.ListBrokerCryptoWalletsResponse
-	134, // 144: alpaca.broker.v1.BrokerService.ListBrokerCryptoTransfers:output_type -> alpaca.broker.v1.ListBrokerCryptoTransfersResponse
-	135, // 145: alpaca.broker.v1.BrokerService.GetBrokerCryptoTransfer:output_type -> alpaca.broker.v1.BrokerCryptoTransfer
-	135, // 146: alpaca.broker.v1.BrokerService.CreateBrokerCryptoTransfer:output_type -> alpaca.broker.v1.BrokerCryptoTransfer
-	136, // 147: alpaca.broker.v1.BrokerService.ListBrokerWhitelistedAddresses:output_type -> alpaca.broker.v1.ListBrokerWhitelistedAddressesResponse
-	137, // 148: alpaca.broker.v1.BrokerService.CreateBrokerWhitelistedAddress:output_type -> alpaca.broker.v1.BrokerWhitelistedAddress
-	138, // 149: alpaca.broker.v1.BrokerService.DeleteBrokerWhitelistedAddress:output_type -> alpaca.broker.v1.DeleteBrokerWhitelistedAddressResponse
-	139, // 150: alpaca.broker.v1.BrokerService.CreateJournal:output_type -> alpaca.broker.v1.Journal
-	140, // 151: alpaca.broker.v1.BrokerService.ListJournals:output_type -> alpaca.broker.v1.ListJournalsResponse
-	139, // 152: alpaca.broker.v1.BrokerService.GetJournal:output_type -> alpaca.broker.v1.Journal
-	141, // 153: alpaca.broker.v1.BrokerService.DeleteJournal:output_type -> alpaca.broker.v1.DeleteJournalResponse
-	142, // 154: alpaca.broker.v1.BrokerService.CreateBatchJournal:output_type -> alpaca.broker.v1.CreateBatchJournalResponse
-	143, // 155: alpaca.broker.v1.BrokerService.ReverseBatchJournal:output_type -> alpaca.broker.v1.ReverseBatchJournalResponse
-	144, // 156: alpaca.broker.v1.BrokerService.ListPortfolios:output_type -> alpaca.broker.v1.ListPortfoliosResponse
-	145, // 157: alpaca.broker.v1.BrokerService.CreatePortfolio:output_type -> alpaca.broker.v1.RebalancingPortfolio
-	145, // 158: alpaca.broker.v1.BrokerService.GetPortfolio:output_type -> alpaca.broker.v1.RebalancingPortfolio
-	145, // 159: alpaca.broker.v1.BrokerService.UpdatePortfolio:output_type -> alpaca.broker.v1.RebalancingPortfolio
-	146, // 160: alpaca.broker.v1.BrokerService.DeletePortfolio:output_type -> alpaca.broker.v1.DeletePortfolioResponse
-	147, // 161: alpaca.broker.v1.BrokerService.ListSubscriptions:output_type -> alpaca.broker.v1.ListSubscriptionsResponse
-	148, // 162: alpaca.broker.v1.BrokerService.CreateSubscription:output_type -> alpaca.broker.v1.RebalancingSubscription
-	148, // 163: alpaca.broker.v1.BrokerService.GetSubscription:output_type -> alpaca.broker.v1.RebalancingSubscription
-	149, // 164: alpaca.broker.v1.BrokerService.DeleteSubscription:output_type -> alpaca.broker.v1.DeleteSubscriptionResponse
-	150, // 165: alpaca.broker.v1.BrokerService.ListRuns:output_type -> alpaca.broker.v1.ListRunsResponse
-	151, // 166: alpaca.broker.v1.BrokerService.CreateRun:output_type -> alpaca.broker.v1.RebalancingRun
-	151, // 167: alpaca.broker.v1.BrokerService.GetRun:output_type -> alpaca.broker.v1.RebalancingRun
-	152, // 168: alpaca.broker.v1.BrokerService.CancelRun:output_type -> alpaca.broker.v1.CancelRunResponse
-	153, // 169: alpaca.broker.v1.BrokerService.ListJITSettlements:output_type -> alpaca.broker.v1.ListJITSettlementsResponse
-	154, // 170: alpaca.broker.v1.BrokerService.GetJITSettlement:output_type -> alpaca.broker.v1.JITSettlement
-	154, // 171: alpaca.broker.v1.BrokerService.CreateJITSettlement:output_type -> alpaca.broker.v1.JITSettlement
-	155, // 172: alpaca.broker.v1.BrokerService.ListJITLedgers:output_type -> alpaca.broker.v1.ListJITLedgersResponse
-	156, // 173: alpaca.broker.v1.BrokerService.GetJITLedgerBalances:output_type -> alpaca.broker.v1.GetJITLedgerBalancesResponse
-	157, // 174: alpaca.broker.v1.BrokerService.GetJITLimits:output_type -> alpaca.broker.v1.JITLimits
-	158, // 175: alpaca.broker.v1.BrokerService.ListInstantFunding:output_type -> alpaca.broker.v1.ListInstantFundingResponse
-	159, // 176: alpaca.broker.v1.BrokerService.DeleteInstantFunding:output_type -> alpaca.broker.v1.DeleteInstantFundingResponse
-	160, // 177: alpaca.broker.v1.BrokerService.ListInstantFundingSettlements:output_type -> alpaca.broker.v1.ListInstantFundingSettlementsResponse
-	161, // 178: alpaca.broker.v1.BrokerService.CreateInstantFundingSettlement:output_type -> alpaca.broker.v1.InstantFundingSettlement
-	162, // 179: alpaca.broker.v1.BrokerService.ListFPSLTiers:output_type -> alpaca.broker.v1.ListFPSLTiersResponse
-	163, // 180: alpaca.broker.v1.BrokerService.ListFPSLLoans:output_type -> alpaca.broker.v1.ListFPSLLoansResponse
-	164, // 181: alpaca.broker.v1.BrokerService.ListAPRTiers:output_type -> alpaca.broker.v1.ListAPRTiersResponse
-	165, // 182: alpaca.broker.v1.BrokerService.CreateOAuthToken:output_type -> alpaca.broker.v1.OAuthToken
-	166, // 183: alpaca.broker.v1.BrokerService.AuthorizeOAuth:output_type -> alpaca.broker.v1.AuthorizeOAuthResponse
-	167, // 184: alpaca.broker.v1.BrokerService.GetOAuthClient:output_type -> alpaca.broker.v1.OAuthClient
-	167, // 185: alpaca.broker.v1.BrokerService.CreateOAuthClient:output_type -> alpaca.broker.v1.OAuthClient
-	167, // 186: alpaca.broker.v1.BrokerService.UpdateOAuthClient:output_type -> alpaca.broker.v1.OAuthClient
-	168, // 187: alpaca.broker.v1.BrokerService.DeleteOAuthClient:output_type -> alpaca.broker.v1.DeleteOAuthClientResponse
-	169, // 188: alpaca.broker.v1.BrokerService.RevokeOAuthAuthorization:output_type -> alpaca.broker.v1.RevokeOAuthAuthorizationResponse
-	170, // 189: alpaca.broker.v1.BrokerService.SubscribeAccountEvents:output_type -> alpaca.broker.v1.SubscribeSSEResponse
-	170, // 190: alpaca.broker.v1.BrokerService.SubscribeTradeEvents:output_type -> alpaca.broker.v1.SubscribeSSEResponse
-	170, // 191: alpaca.broker.v1.BrokerService.SubscribeTransferEvents:output_type -> alpaca.broker.v1.SubscribeSSEResponse
-	170, // 192: alpaca.broker.v1.BrokerService.SubscribeJournalEvents:output_type -> alpaca.broker.v1.SubscribeSSEResponse
-	170, // 193: alpaca.broker.v1.BrokerService.SubscribeNTAEvents:output_type -> alpaca.broker.v1.SubscribeSSEResponse
-	171, // 194: alpaca.broker.v1.BrokerService.GetCIPInfo:output_type -> alpaca.broker.v1.CIPInfo
-	171, // 195: alpaca.broker.v1.BrokerService.UpdateCIPInfo:output_type -> alpaca.broker.v1.CIPInfo
-	172, // 196: alpaca.broker.v1.BrokerService.CreateOnfidoApplicant:output_type -> alpaca.broker.v1.OnfidoApplicant
-	172, // 197: alpaca.broker.v1.BrokerService.GetOnfidoApplicant:output_type -> alpaca.broker.v1.OnfidoApplicant
-	173, // 198: alpaca.broker.v1.BrokerService.GenerateOnfidoSDKToken:output_type -> alpaca.broker.v1.OnfidoSDKToken
-	174, // 199: alpaca.broker.v1.BrokerService.CreateOnfidoCheck:output_type -> alpaca.broker.v1.OnfidoCheck
-	174, // 200: alpaca.broker.v1.BrokerService.GetOnfidoCheck:output_type -> alpaca.broker.v1.OnfidoCheck
-	175, // 201: alpaca.broker.v1.BrokerService.ListOnfidoChecks:output_type -> alpaca.broker.v1.ListOnfidoChecksResponse
-	176, // 202: alpaca.broker.v1.BrokerService.UploadOnfidoDocument:output_type -> alpaca.broker.v1.OnfidoDocument
-	177, // 203: alpaca.broker.v1.BrokerService.UploadOnfidoPhoto:output_type -> alpaca.broker.v1.OnfidoPhoto
-	178, // 204: alpaca.broker.v1.BrokerService.GetMarketCalendar:output_type -> alpaca.broker.v1.GetMarketCalendarResponse
-	179, // 205: alpaca.broker.v1.BrokerService.GetMarketClock:output_type -> alpaca.broker.v1.MarketClock
-	180, // 206: alpaca.broker.v1.BrokerService.GetOptionsApproval:output_type -> alpaca.broker.v1.OptionsApproval
-	180, // 207: alpaca.broker.v1.BrokerService.RequestOptionsApproval:output_type -> alpaca.broker.v1.OptionsApproval
-	180, // 208: alpaca.broker.v1.BrokerService.UpdateOptionsApproval:output_type -> alpaca.broker.v1.OptionsApproval
-	181, // 209: alpaca.broker.v1.BrokerService.ListBrokerOptionContracts:output_type -> alpaca.broker.v1.ListBrokerOptionContractsResponse
-	182, // 210: alpaca.broker.v1.BrokerService.GetBrokerOptionContract:output_type -> alpaca.broker.v1.BrokerOptionContract
-	183, // 211: alpaca.broker.v1.BrokerService.ListIRAExcessContributions:output_type -> alpaca.broker.v1.ListIRAExcessContributionsResponse
-	184, // 212: alpaca.broker.v1.BrokerService.GetIRAExcessContribution:output_type -> alpaca.broker.v1.IRAExcessContribution
-	184, // 213: alpaca.broker.v1.BrokerService.CreateIRAExcessContribution:output_type -> alpaca.broker.v1.IRAExcessContribution
-	185, // 214: alpaca.broker.v1.BrokerService.GetIRAContributionLimits:output_type -> alpaca.broker.v1.IRAContributionLimits
-	186, // 215: alpaca.broker.v1.BrokerService.ListCountries:output_type -> alpaca.broker.v1.ListCountriesResponse
-	187, // 216: alpaca.broker.v1.BrokerService.ListIPOOfferings:output_type -> alpaca.broker.v1.ListIPOOfferingsResponse
-	188, // 217: alpaca.broker.v1.BrokerService.GetIPOOffering:output_type -> alpaca.broker.v1.GetIPOOfferingResponse
-	109, // [109:218] is the sub-list for method output_type
-	0,   // [0:109] is the sub-list for method input_type
+	97,  // 97: alpaca.broker.v1.BrokerService.ListAssets:input_type -> alpaca.broker.v1.ListAssetsRequest
+	98,  // 98: alpaca.broker.v1.BrokerService.GetAsset:input_type -> alpaca.broker.v1.GetAssetRequest
+	99,  // 99: alpaca.broker.v1.BrokerService.GetOptionsApproval:input_type -> alpaca.broker.v1.GetOptionsApprovalRequest
+	100, // 100: alpaca.broker.v1.BrokerService.RequestOptionsApproval:input_type -> alpaca.broker.v1.RequestOptionsApprovalRequest
+	101, // 101: alpaca.broker.v1.BrokerService.UpdateOptionsApproval:input_type -> alpaca.broker.v1.UpdateOptionsApprovalRequest
+	102, // 102: alpaca.broker.v1.BrokerService.ListBrokerOptionContracts:input_type -> alpaca.broker.v1.ListBrokerOptionContractsRequest
+	103, // 103: alpaca.broker.v1.BrokerService.GetBrokerOptionContract:input_type -> alpaca.broker.v1.GetBrokerOptionContractRequest
+	104, // 104: alpaca.broker.v1.BrokerService.ListIRAExcessContributions:input_type -> alpaca.broker.v1.ListIRAExcessContributionsRequest
+	105, // 105: alpaca.broker.v1.BrokerService.GetIRAExcessContribution:input_type -> alpaca.broker.v1.GetIRAExcessContributionRequest
+	106, // 106: alpaca.broker.v1.BrokerService.CreateIRAExcessContribution:input_type -> alpaca.broker.v1.CreateIRAExcessContributionRequest
+	107, // 107: alpaca.broker.v1.BrokerService.GetIRAContributionLimits:input_type -> alpaca.broker.v1.GetIRAContributionLimitsRequest
+	108, // 108: alpaca.broker.v1.BrokerService.ListCountries:input_type -> alpaca.broker.v1.ListCountriesRequest
+	109, // 109: alpaca.broker.v1.BrokerService.ListIPOOfferings:input_type -> alpaca.broker.v1.ListIPOOfferingsRequest
+	110, // 110: alpaca.broker.v1.BrokerService.GetIPOOffering:input_type -> alpaca.broker.v1.GetIPOOfferingRequest
+	111, // 111: alpaca.broker.v1.BrokerService.CreateAccount:output_type -> alpaca.broker.v1.BrokerAccount
+	112, // 112: alpaca.broker.v1.BrokerService.ListAccounts:output_type -> alpaca.broker.v1.ListAccountsResponse
+	111, // 113: alpaca.broker.v1.BrokerService.GetAccount:output_type -> alpaca.broker.v1.BrokerAccount
+	111, // 114: alpaca.broker.v1.BrokerService.UpdateAccount:output_type -> alpaca.broker.v1.BrokerAccount
+	113, // 115: alpaca.broker.v1.BrokerService.CloseAccount:output_type -> alpaca.broker.v1.CloseBrokerAccountResponse
+	114, // 116: alpaca.broker.v1.BrokerService.GetTradingAccount:output_type -> alpaca.broker.v1.TradeAccount
+	115, // 117: alpaca.broker.v1.BrokerService.ListAccountActivities:output_type -> alpaca.broker.v1.ListAccountActivitiesResponse
+	115, // 118: alpaca.broker.v1.BrokerService.ListAccountActivitiesByType:output_type -> alpaca.broker.v1.ListAccountActivitiesResponse
+	116, // 119: alpaca.broker.v1.BrokerService.GetBrokerPortfolioHistory:output_type -> alpaca.broker.v1.BrokerPortfolioHistory
+	117, // 120: alpaca.broker.v1.BrokerService.CreateACHRelationship:output_type -> alpaca.broker.v1.ACHRelationship
+	118, // 121: alpaca.broker.v1.BrokerService.ListACHRelationships:output_type -> alpaca.broker.v1.ListACHRelationshipsResponse
+	119, // 122: alpaca.broker.v1.BrokerService.DeleteACHRelationship:output_type -> alpaca.broker.v1.DeleteACHRelationshipResponse
+	120, // 123: alpaca.broker.v1.BrokerService.CreateTransfer:output_type -> alpaca.broker.v1.Transfer
+	121, // 124: alpaca.broker.v1.BrokerService.ListTransfers:output_type -> alpaca.broker.v1.ListTransfersResponse
+	120, // 125: alpaca.broker.v1.BrokerService.GetTransfer:output_type -> alpaca.broker.v1.Transfer
+	122, // 126: alpaca.broker.v1.BrokerService.CancelTransfer:output_type -> alpaca.broker.v1.CancelTransferResponse
+	123, // 127: alpaca.broker.v1.BrokerService.CreateTradingOrder:output_type -> alpaca.broker.v1.BrokerOrder
+	124, // 128: alpaca.broker.v1.BrokerService.ListTradingOrders:output_type -> alpaca.broker.v1.ListTradingOrdersResponse
+	123, // 129: alpaca.broker.v1.BrokerService.GetTradingOrder:output_type -> alpaca.broker.v1.BrokerOrder
+	125, // 130: alpaca.broker.v1.BrokerService.CancelTradingOrder:output_type -> alpaca.broker.v1.CancelTradingOrderResponse
+	126, // 131: alpaca.broker.v1.BrokerService.ListTradingPositions:output_type -> alpaca.broker.v1.ListTradingPositionsResponse
+	127, // 132: alpaca.broker.v1.BrokerService.GetTradingPosition:output_type -> alpaca.broker.v1.BrokerPosition
+	123, // 133: alpaca.broker.v1.BrokerService.CloseTradingPosition:output_type -> alpaca.broker.v1.BrokerOrder
+	128, // 134: alpaca.broker.v1.BrokerService.CloseAllTradingPositions:output_type -> alpaca.broker.v1.CloseAllTradingPositionsResponse
+	129, // 135: alpaca.broker.v1.BrokerService.ListAccountDocuments:output_type -> alpaca.broker.v1.ListAccountDocumentsResponse
+	130, // 136: alpaca.broker.v1.BrokerService.DownloadAccountDocument:output_type -> alpaca.broker.v1.DownloadAccountDocumentResponse
+	130, // 137: alpaca.broker.v1.BrokerService.DownloadW8BenDocument:output_type -> alpaca.broker.v1.DownloadAccountDocumentResponse
+	131, // 138: alpaca.broker.v1.BrokerService.ListBrokerWatchlists:output_type -> alpaca.broker.v1.ListBrokerWatchlistsResponse
+	132, // 139: alpaca.broker.v1.BrokerService.CreateBrokerWatchlist:output_type -> alpaca.broker.v1.BrokerWatchlist
+	132, // 140: alpaca.broker.v1.BrokerService.GetBrokerWatchlist:output_type -> alpaca.broker.v1.BrokerWatchlist
+	132, // 141: alpaca.broker.v1.BrokerService.UpdateBrokerWatchlist:output_type -> alpaca.broker.v1.BrokerWatchlist
+	133, // 142: alpaca.broker.v1.BrokerService.DeleteBrokerWatchlist:output_type -> alpaca.broker.v1.DeleteBrokerWatchlistResponse
+	132, // 143: alpaca.broker.v1.BrokerService.AddBrokerWatchlistAsset:output_type -> alpaca.broker.v1.BrokerWatchlist
+	134, // 144: alpaca.broker.v1.BrokerService.RemoveBrokerWatchlistAsset:output_type -> alpaca.broker.v1.RemoveBrokerWatchlistAssetResponse
+	135, // 145: alpaca.broker.v1.BrokerService.ListBrokerCryptoWallets:output_type -> alpaca.broker.v1.ListBrokerCryptoWalletsResponse
+	136, // 146: alpaca.broker.v1.BrokerService.ListBrokerCryptoTransfers:output_type -> alpaca.broker.v1.ListBrokerCryptoTransfersResponse
+	137, // 147: alpaca.broker.v1.BrokerService.GetBrokerCryptoTransfer:output_type -> alpaca.broker.v1.BrokerCryptoTransfer
+	137, // 148: alpaca.broker.v1.BrokerService.CreateBrokerCryptoTransfer:output_type -> alpaca.broker.v1.BrokerCryptoTransfer
+	138, // 149: alpaca.broker.v1.BrokerService.ListBrokerWhitelistedAddresses:output_type -> alpaca.broker.v1.ListBrokerWhitelistedAddressesResponse
+	139, // 150: alpaca.broker.v1.BrokerService.CreateBrokerWhitelistedAddress:output_type -> alpaca.broker.v1.BrokerWhitelistedAddress
+	140, // 151: alpaca.broker.v1.BrokerService.DeleteBrokerWhitelistedAddress:output_type -> alpaca.broker.v1.DeleteBrokerWhitelistedAddressResponse
+	141, // 152: alpaca.broker.v1.BrokerService.CreateJournal:output_type -> alpaca.broker.v1.Journal
+	142, // 153: alpaca.broker.v1.BrokerService.ListJournals:output_type -> alpaca.broker.v1.ListJournalsResponse
+	141, // 154: alpaca.broker.v1.BrokerService.GetJournal:output_type -> alpaca.broker.v1.Journal
+	143, // 155: alpaca.broker.v1.BrokerService.DeleteJournal:output_type -> alpaca.broker.v1.DeleteJournalResponse
+	144, // 156: alpaca.broker.v1.BrokerService.CreateBatchJournal:output_type -> alpaca.broker.v1.CreateBatchJournalResponse
+	145, // 157: alpaca.broker.v1.BrokerService.ReverseBatchJournal:output_type -> alpaca.broker.v1.ReverseBatchJournalResponse
+	146, // 158: alpaca.broker.v1.BrokerService.ListPortfolios:output_type -> alpaca.broker.v1.ListPortfoliosResponse
+	147, // 159: alpaca.broker.v1.BrokerService.CreatePortfolio:output_type -> alpaca.broker.v1.RebalancingPortfolio
+	147, // 160: alpaca.broker.v1.BrokerService.GetPortfolio:output_type -> alpaca.broker.v1.RebalancingPortfolio
+	147, // 161: alpaca.broker.v1.BrokerService.UpdatePortfolio:output_type -> alpaca.broker.v1.RebalancingPortfolio
+	148, // 162: alpaca.broker.v1.BrokerService.DeletePortfolio:output_type -> alpaca.broker.v1.DeletePortfolioResponse
+	149, // 163: alpaca.broker.v1.BrokerService.ListSubscriptions:output_type -> alpaca.broker.v1.ListSubscriptionsResponse
+	150, // 164: alpaca.broker.v1.BrokerService.CreateSubscription:output_type -> alpaca.broker.v1.RebalancingSubscription
+	150, // 165: alpaca.broker.v1.BrokerService.GetSubscription:output_type -> alpaca.broker.v1.RebalancingSubscription
+	151, // 166: alpaca.broker.v1.BrokerService.DeleteSubscription:output_type -> alpaca.broker.v1.DeleteSubscriptionResponse
+	152, // 167: alpaca.broker.v1.BrokerService.ListRuns:output_type -> alpaca.broker.v1.ListRunsResponse
+	153, // 168: alpaca.broker.v1.BrokerService.CreateRun:output_type -> alpaca.broker.v1.RebalancingRun
+	153, // 169: alpaca.broker.v1.BrokerService.GetRun:output_type -> alpaca.broker.v1.RebalancingRun
+	154, // 170: alpaca.broker.v1.BrokerService.CancelRun:output_type -> alpaca.broker.v1.CancelRunResponse
+	155, // 171: alpaca.broker.v1.BrokerService.ListJITSettlements:output_type -> alpaca.broker.v1.ListJITSettlementsResponse
+	156, // 172: alpaca.broker.v1.BrokerService.GetJITSettlement:output_type -> alpaca.broker.v1.JITSettlement
+	156, // 173: alpaca.broker.v1.BrokerService.CreateJITSettlement:output_type -> alpaca.broker.v1.JITSettlement
+	157, // 174: alpaca.broker.v1.BrokerService.ListJITLedgers:output_type -> alpaca.broker.v1.ListJITLedgersResponse
+	158, // 175: alpaca.broker.v1.BrokerService.GetJITLedgerBalances:output_type -> alpaca.broker.v1.GetJITLedgerBalancesResponse
+	159, // 176: alpaca.broker.v1.BrokerService.GetJITLimits:output_type -> alpaca.broker.v1.JITLimits
+	160, // 177: alpaca.broker.v1.BrokerService.ListInstantFunding:output_type -> alpaca.broker.v1.ListInstantFundingResponse
+	161, // 178: alpaca.broker.v1.BrokerService.DeleteInstantFunding:output_type -> alpaca.broker.v1.DeleteInstantFundingResponse
+	162, // 179: alpaca.broker.v1.BrokerService.ListInstantFundingSettlements:output_type -> alpaca.broker.v1.ListInstantFundingSettlementsResponse
+	163, // 180: alpaca.broker.v1.BrokerService.CreateInstantFundingSettlement:output_type -> alpaca.broker.v1.InstantFundingSettlement
+	164, // 181: alpaca.broker.v1.BrokerService.ListFPSLTiers:output_type -> alpaca.broker.v1.ListFPSLTiersResponse
+	165, // 182: alpaca.broker.v1.BrokerService.ListFPSLLoans:output_type -> alpaca.broker.v1.ListFPSLLoansResponse
+	166, // 183: alpaca.broker.v1.BrokerService.ListAPRTiers:output_type -> alpaca.broker.v1.ListAPRTiersResponse
+	167, // 184: alpaca.broker.v1.BrokerService.CreateOAuthToken:output_type -> alpaca.broker.v1.OAuthToken
+	168, // 185: alpaca.broker.v1.BrokerService.AuthorizeOAuth:output_type -> alpaca.broker.v1.AuthorizeOAuthResponse
+	169, // 186: alpaca.broker.v1.BrokerService.GetOAuthClient:output_type -> alpaca.broker.v1.OAuthClient
+	169, // 187: alpaca.broker.v1.BrokerService.CreateOAuthClient:output_type -> alpaca.broker.v1.OAuthClient
+	169, // 188: alpaca.broker.v1.BrokerService.UpdateOAuthClient:output_type -> alpaca.broker.v1.OAuthClient
+	170, // 189: alpaca.broker.v1.BrokerService.DeleteOAuthClient:output_type -> alpaca.broker.v1.DeleteOAuthClientResponse
+	171, // 190: alpaca.broker.v1.BrokerService.RevokeOAuthAuthorization:output_type -> alpaca.broker.v1.RevokeOAuthAuthorizationResponse
+	172, // 191: alpaca.broker.v1.BrokerService.SubscribeAccountEvents:output_type -> alpaca.broker.v1.SubscribeSSEResponse
+	172, // 192: alpaca.broker.v1.BrokerService.SubscribeTradeEvents:output_type -> alpaca.broker.v1.SubscribeSSEResponse
+	172, // 193: alpaca.broker.v1.BrokerService.SubscribeTransferEvents:output_type -> alpaca.broker.v1.SubscribeSSEResponse
+	172, // 194: alpaca.broker.v1.BrokerService.SubscribeJournalEvents:output_type -> alpaca.broker.v1.SubscribeSSEResponse
+	172, // 195: alpaca.broker.v1.BrokerService.SubscribeNTAEvents:output_type -> alpaca.broker.v1.SubscribeSSEResponse
+	173, // 196: alpaca.broker.v1.BrokerService.GetCIPInfo:output_type -> alpaca.broker.v1.CIPInfo
+	173, // 197: alpaca.broker.v1.BrokerService.UpdateCIPInfo:output_type -> alpaca.broker.v1.CIPInfo
+	174, // 198: alpaca.broker.v1.BrokerService.CreateOnfidoApplicant:output_type -> alpaca.broker.v1.OnfidoApplicant
+	174, // 199: alpaca.broker.v1.BrokerService.GetOnfidoApplicant:output_type -> alpaca.broker.v1.OnfidoApplicant
+	175, // 200: alpaca.broker.v1.BrokerService.GenerateOnfidoSDKToken:output_type -> alpaca.broker.v1.OnfidoSDKToken
+	176, // 201: alpaca.broker.v1.BrokerService.CreateOnfidoCheck:output_type -> alpaca.broker.v1.OnfidoCheck
+	176, // 202: alpaca.broker.v1.BrokerService.GetOnfidoCheck:output_type -> alpaca.broker.v1.OnfidoCheck
+	177, // 203: alpaca.broker.v1.BrokerService.ListOnfidoChecks:output_type -> alpaca.broker.v1.ListOnfidoChecksResponse
+	178, // 204: alpaca.broker.v1.BrokerService.UploadOnfidoDocument:output_type -> alpaca.broker.v1.OnfidoDocument
+	179, // 205: alpaca.broker.v1.BrokerService.UploadOnfidoPhoto:output_type -> alpaca.broker.v1.OnfidoPhoto
+	180, // 206: alpaca.broker.v1.BrokerService.GetMarketCalendar:output_type -> alpaca.broker.v1.GetMarketCalendarResponse
+	181, // 207: alpaca.broker.v1.BrokerService.GetMarketClock:output_type -> alpaca.broker.v1.MarketClock
+	182, // 208: alpaca.broker.v1.BrokerService.ListAssets:output_type -> alpaca.broker.v1.ListAssetsResponse
+	183, // 209: alpaca.broker.v1.BrokerService.GetAsset:output_type -> alpaca.broker.v1.Asset
+	184, // 210: alpaca.broker.v1.BrokerService.GetOptionsApproval:output_type -> alpaca.broker.v1.OptionsApproval
+	184, // 211: alpaca.broker.v1.BrokerService.RequestOptionsApproval:output_type -> alpaca.broker.v1.OptionsApproval
+	184, // 212: alpaca.broker.v1.BrokerService.UpdateOptionsApproval:output_type -> alpaca.broker.v1.OptionsApproval
+	185, // 213: alpaca.broker.v1.BrokerService.ListBrokerOptionContracts:output_type -> alpaca.broker.v1.ListBrokerOptionContractsResponse
+	186, // 214: alpaca.broker.v1.BrokerService.GetBrokerOptionContract:output_type -> alpaca.broker.v1.BrokerOptionContract
+	187, // 215: alpaca.broker.v1.BrokerService.ListIRAExcessContributions:output_type -> alpaca.broker.v1.ListIRAExcessContributionsResponse
+	188, // 216: alpaca.broker.v1.BrokerService.GetIRAExcessContribution:output_type -> alpaca.broker.v1.IRAExcessContribution
+	188, // 217: alpaca.broker.v1.BrokerService.CreateIRAExcessContribution:output_type -> alpaca.broker.v1.IRAExcessContribution
+	189, // 218: alpaca.broker.v1.BrokerService.GetIRAContributionLimits:output_type -> alpaca.broker.v1.IRAContributionLimits
+	190, // 219: alpaca.broker.v1.BrokerService.ListCountries:output_type -> alpaca.broker.v1.ListCountriesResponse
+	191, // 220: alpaca.broker.v1.BrokerService.ListIPOOfferings:output_type -> alpaca.broker.v1.ListIPOOfferingsResponse
+	192, // 221: alpaca.broker.v1.BrokerService.GetIPOOffering:output_type -> alpaca.broker.v1.GetIPOOfferingResponse
+	111, // [111:222] is the sub-list for method output_type
+	0,   // [0:111] is the sub-list for method input_type
 	0,   // [0:0] is the sub-list for extension type_name
 	0,   // [0:0] is the sub-list for extension extendee
 	0,   // [0:0] is the sub-list for field type_name
@@ -712,6 +725,7 @@ func file_alpaca_broker_v1_service_proto_init() {
 	file_alpaca_broker_v1_cip_proto_init()
 	file_alpaca_broker_v1_onfido_proto_init()
 	file_alpaca_broker_v1_calendar_proto_init()
+	file_alpaca_broker_v1_asset_proto_init()
 	file_alpaca_broker_v1_options_proto_init()
 	file_alpaca_broker_v1_ira_proto_init()
 	file_alpaca_broker_v1_country_proto_init()
