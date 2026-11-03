@@ -198,6 +198,10 @@ message TradeUpdateEventV2 {
 
   // Group ID linking related activities (optional).
   string group_id = 15 [(sebuf.http.field_examples) = { values: ["5765f185-4788-4d3e-86c4-c85202dab04e"] }];
+
+  // Machine-readable cause, present only when Alpaca populates one (e.g. CORPORATE_ACTION, TRADE_BUST);
+  // venue-originated canceled/trade_bust/trade_correct events may carry the venue's own free-form text.
+  string reason = 16 [(sebuf.http.field_examples) = { values: ["CORPORATE_ACTION"] }];
 }
 
 // JournalStatusEventV2 represents a journal status change event (v2).

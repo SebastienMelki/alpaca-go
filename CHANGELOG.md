@@ -7,14 +7,106 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `TradeUpdateEventV2.reason` — Alpaca's top-level cause on trade-update events (`CORPORATE_ACTION` on `canceled`, `TOO_LATE_TO_CANCEL` on `order_cancel_rejected`/`order_replace_rejected`, `TRADE_BUST` on `trade_bust`, or free-form venue text). Empty when Alpaca sends none. Previously dropped on decode.
+
+## [1.12.1] - 2026-09-17
+
+### Added
+- Broker Assets API: `ListAssets` (`GET /v1/assets`) and `GetAsset` (`GET /v1/assets/{symbol_or_id}`), with broker-specific fields (`attributes`, `borrow_status`, `margin_requirement_long`/`short`, etc.)
+- `buf.validate` constraints on the assets query params `status`, `asset_class` and `attributes`, limited to Alpaca's documented values
+
+## [1.12.0] - 2026-08-07
+
 ### Fixed
 - `TradeUpdateEventV2.order` was typed `string`, but `/v2/events/trades` sends a nested JSON object. `protojson` rejected it with `invalid value for string field order`, so **every** trade-update event failed to unmarshal and the stream yielded nothing.
+- OpenAPI specs: examples on string-typed fields were emitted as untagged YAML scalars (e.g. `"50000.00"` parsed as a float), fixed by the sebuf v0.23.2 bump
 
 ### Added
 - `TradeUpdateEventV2Order` — typed order payload for trade-update events, re-exported from `pkg/broker`.
 
 ### Changed
 - **Breaking:** `TradeUpdateEventV2.Order` is now `*TradeUpdateEventV2Order` rather than `string`. Callers that unmarshalled the JSON string themselves should read the typed fields instead.
+- Bumped sebuf to v0.23.2; `install-tools` now pins the sebuf plugins to the `go.mod` version and installs the missing `protoc-gen-go-http`
+
+## [1.11.2] - 2026-07-07
+
+### Fixed
+- Added `json_name` annotations to `CreateTradingOrderRequest`, `BrokerTakeProfitSpec` and `BrokerStopLossSpec` so the client sends snake_case keys; previously `POST /trading/accounts/{id}/orders` failed with `422 invalid time_in_force`
+
+## [1.11.1] - 2026-06-11
+
+### Fixed
+- Regenerated code with sebuf v0.18.0; v1.11.0 had been generated with an older sebuf, reverting the v1.10.0 generated-file updates
+
+## [1.11.0] - 2026-06-11
+
+### Changed
+- **Breaking:** `IPOEvent.account_number` (field 7) replaced by `account_id` on allocation events
+
+## [1.10.0] - 2026-06-10
+
+### Fixed
+- Bumped sebuf to v0.18.0, which generates `UnmarshalJSONSebuf` for messages with `int64_encoding=NUMBER` fields, so `DiscardUnknownFields` is honoured on those types (e.g. `IPOOffering`) instead of being silently dropped
+
+## [1.9.0] - 2026-06-09
+
+### Changed
+- Regenerated all code and OpenAPI specs (`make all`)
+
+## [1.8.0] - 2026-06-09
+
+### Fixed
+- **Breaking:** `GetIPOOffering` now returns `GetIPOOfferingResponse` (wrapping the offering in `data`) to match the API's response envelope
+
+## [1.7.0] - 2026-05-22
+
+### Added
+- `GetIPOOffering` RPC for `GET /v1/ipos/{ipo_reference}`; `GetIPOOfferingRequest` re-exported from `pkg/broker`
+- `ListIPOOfferingsRequest`: `availability`, `ticker`, `limit` and `page_token` query params
+- `IPOOffering.sixty_minute_expiration_time`
+
+## [1.6.0] - 2026-05-12
+
+### Added
+- Broker APIs: `GetTradingAccount`, `ListAccountActivities`, `ListAccountActivitiesByType` and `GetBrokerPortfolioHistory`, with public type aliases, OpenAPI docs and test harness coverage
+
+### Fixed
+- Pinned `json_name` on portfolio history fields so `profit_loss`, `profit_loss_pct`, `base_value` and `base_value_asof` are no longer dropped on unmarshal
+
+## [1.5.0] - 2026-04-30
+
+### Added
+- CI workflow running `go build` and `go vet` on push and pull request
+
+### Fixed
+- Removed duplicate `V2CallOption` declarations in `pkg/broker` that broke compilation after two concurrent merges
+
+## [1.4.2] - 2026-04-30
+
+### Added
+- IPO listing (v1) and IPO event streaming (v2) broker endpoints
+- `DiscardUnknownFields` exposed at client level and per call across all public client packages (auth, broker, marketdata, trading)
+
+## [1.4.1] - 2026-04-29
+
+### Added
+- `BrokerV2ServiceCallOption` and `WithBrokerV2ServiceCallDiscardUnknownFields` re-exported from `pkg/broker` for per-call discarding of unknown fields
+
+## [1.4.0] - 2026-04-24
+
+### Added
+- `TradeUpdateEventV2.group_id`, previously dropped on decode
+- Upgraded sebuf to v0.12.0 for `WithXxxDiscardUnknownFields` support in generated clients and SSE streams
+
+## [1.3.2] - 2026-04-21
+
+### Added
+- Native SSE streaming for v2 broker event endpoints (sebuf v0.10.0): events are read one at a time through `EventStream` with `Next()`/`Err()`/`Close()` instead of buffering the whole body
+- Create Tag workflow for releases, with optional version input and minor auto-bump
+
+### Removed
+- **Breaking:** wrapper response messages such as `SubscribeTradeEventsV2Response`; streaming RPCs return the event type directly
 
 ## [1.3.1] - 2026-03-04
 
@@ -139,8 +231,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Makefile with `generate`, `build`, `lint`, `lint-fix`, `buf-lint`, `check`, and `release` targets
 - golangci-lint configuration for code quality
 
-[unreleased]: https://github.com/sebastienmelki/alpaca-go/compare/v1.3.1...HEAD
+[unreleased]: https://github.com/sebastienmelki/alpaca-go/compare/v1.12.1...HEAD
+[1.12.1]: https://github.com/sebastienmelki/alpaca-go/compare/v1.12.0...v1.12.1
+[1.12.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.11.2...v1.12.0
+[1.11.2]: https://github.com/sebastienmelki/alpaca-go/compare/v1.11.1...v1.11.2
+[1.11.1]: https://github.com/sebastienmelki/alpaca-go/compare/v1.11.0...v1.11.1
+[1.11.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.10.0...v1.11.0
+[1.10.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.9.0...v1.10.0
+[1.9.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.8.0...v1.9.0
+[1.8.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.7.0...v1.8.0
+[1.7.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.6.0...v1.7.0
+[1.6.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.5.0...v1.6.0
+[1.5.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.4.2...v1.5.0
+[1.4.2]: https://github.com/sebastienmelki/alpaca-go/compare/v1.4.1...v1.4.2
+[1.4.1]: https://github.com/sebastienmelki/alpaca-go/compare/v1.4.0...v1.4.1
+[1.4.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.3.2...v1.4.0
+[1.3.2]: https://github.com/sebastienmelki/alpaca-go/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/sebastienmelki/alpaca-go/compare/v1.3.0...v1.3.1
+[1.3.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/sebastienmelki/alpaca-go/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/sebastienmelki/alpaca-go/compare/v1.0.0...v1.1.0
