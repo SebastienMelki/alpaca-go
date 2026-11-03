@@ -505,7 +505,10 @@ type TradeUpdateEventV2 struct {
 	// Legs for MultilegOptions fill events.
 	Legs []*TradeUpdateEventV2Leg `protobuf:"bytes,14,rep,name=legs,proto3" json:"legs,omitempty"`
 	// Group ID linking related activities (optional).
-	GroupId       string `protobuf:"bytes,15,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	GroupId string `protobuf:"bytes,15,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	// Machine-readable cause, present only when Alpaca populates one (e.g. CORPORATE_ACTION, TRADE_BUST);
+	// venue-originated canceled/trade_bust/trade_correct events may carry the venue's own free-form text.
+	Reason        string `protobuf:"bytes,16,opt,name=reason,proto3" json:"reason,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -641,6 +644,13 @@ func (x *TradeUpdateEventV2) GetLegs() []*TradeUpdateEventV2Leg {
 func (x *TradeUpdateEventV2) GetGroupId() string {
 	if x != nil {
 		return x.GroupId
+	}
+	return ""
+}
+
+func (x *TradeUpdateEventV2) GetReason() string {
+	if x != nil {
+		return x.Reason
 	}
 	return ""
 }
@@ -1889,7 +1899,7 @@ const file_alpaca_broker_v2_sse_proto_rawDesc = "" +
 	"commission\x18\" \x01(\tB\a\xba\xb5\x18\x03\n" +
 	"\x010R\n" +
 	"commission\x12%\n" +
-	"\x0ecommission_bps\x18# \x01(\tR\rcommissionBps\"\xe6\a\n" +
+	"\x0ecommission_bps\x18# \x01(\tR\rcommissionBps\"\x96\b\n" +
 	"\x12TradeUpdateEventV2\x12Q\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tB2\xbaH\x05r\x03\xb0\x01\x01\xba\xb5\x18&\n" +
@@ -1920,7 +1930,9 @@ const file_alpaca_broker_v2_sse_proto_rawDesc = "" +
 	"\x03100R\x03qty\x12;\n" +
 	"\x04legs\x18\x0e \x03(\v2'.alpaca.broker.v2.TradeUpdateEventV2LegR\x04legs\x12E\n" +
 	"\bgroup_id\x18\x0f \x01(\tB*\xba\xb5\x18&\n" +
-	"$5765f185-4788-4d3e-86c4-c85202dab04eR\agroupId\x1a?\n" +
+	"$5765f185-4788-4d3e-86c4-c85202dab04eR\agroupId\x12.\n" +
+	"\x06reason\x18\x10 \x01(\tB\x16\xba\xb5\x18\x12\n" +
+	"\x10CORPORATE_ACTIONR\x06reason\x1a?\n" +
 	"\x11PositionQtysEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xef\x04\n" +
