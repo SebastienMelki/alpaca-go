@@ -498,6 +498,74 @@ func (x *SubscribeNTAEventsRequest) UnmarshalJSON(data []byte) error {
 	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
 }
 
+// MarshalJSONSebuf implements sebufMarshaler for NTAEvent.
+// This method handles int64_encoding=NUMBER fields: event_id
+// Warning: int64 fields with NUMBER encoding may lose precision for values > 2^53 in JavaScript.
+func (x *NTAEvent) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {
+	if x == nil {
+		return []byte("null"), nil
+	}
+
+	// Use protojson for base serialization (handles all other fields correctly)
+	data, err := opts.Marshal(x)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse into a map to modify NUMBER-encoded int64 fields
+	var raw map[string]json.RawMessage
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+
+	// Convert EventId from string to number
+	if x.EventId != 0 {
+		raw["eventId"], _ = json.Marshal(x.EventId)
+	} else {
+		// Remove the field if zero (proto3 default behavior)
+		delete(raw, "eventId")
+	}
+
+	return json.Marshal(raw)
+}
+
+// MarshalJSON implements json.Marshaler for NTAEvent.
+func (x *NTAEvent) MarshalJSON() ([]byte, error) {
+	return x.MarshalJSONSebuf(protojson.MarshalOptions{})
+}
+
+// UnmarshalJSONSebuf implements sebufUnmarshaler for NTAEvent.
+// This method handles int64_encoding=NUMBER fields: event_id
+func (x *NTAEvent) UnmarshalJSONSebuf(data []byte, opts protojson.UnmarshalOptions) error {
+	// First, parse the raw JSON to extract NUMBER-encoded fields
+	var raw map[string]json.RawMessage
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	// Convert eventId from number to string for protojson
+	if rawVal, ok := raw["eventId"]; ok {
+		var num int64
+		if err := json.Unmarshal(rawVal, &num); err == nil {
+			raw["eventId"], _ = json.Marshal(strconv.FormatInt(num, 10))
+		}
+	}
+
+	// Re-marshal to JSON with string values for protojson
+	modified, err := json.Marshal(raw)
+	if err != nil {
+		return err
+	}
+
+	// Use protojson to unmarshal the rest
+	return opts.Unmarshal(modified, x)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for NTAEvent.
+func (x *NTAEvent) UnmarshalJSON(data []byte) error {
+	return x.UnmarshalJSONSebuf(data, protojson.UnmarshalOptions{})
+}
+
 // MarshalJSONSebuf implements sebufMarshaler for SubscribeSSEResponse.
 // This method re-marshals nested messages that have int64_encoding=NUMBER fields: events
 func (x *SubscribeSSEResponse) MarshalJSONSebuf(opts protojson.MarshalOptions) ([]byte, error) {

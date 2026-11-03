@@ -364,3 +364,78 @@ message SubscribeNTAEventsRequest {
     (sebuf.http.field_examples) = { values: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] }
   ];
 }
+
+// NTAEvent is a single non-trading activity streamed from GET /v1/events/nta.
+//
+// Numeric fields are double because the feed sends them as JSON numbers, except
+// price, which the feed sends as a string or null. No field validators: this is
+// an inbound payload, so a validator would reject real events rather than
+// surface a bug. Unrecognised fields are handled by the client's
+// DiscardUnknownFields setting.
+message NTAEvent {
+  // Activity UUID.
+  string id = 1 [(sebuf.http.field_examples) = { values: ["0ee89bcf-a004-4ed0-b0c5-af44e057f185"] }];
+
+  // Account UUID the activity belongs to.
+  string account_id = 2 [(sebuf.http.field_examples) = { values: ["517dc9b6-1e23-4ce0-98b5-25bce762fa56"] }];
+
+  // Activity type, such as JNLC, CSD, OPEXP or FEE.
+  string entry_type = 3 [(sebuf.http.field_examples) = { values: ["JNLC"] }];
+
+  // Activity sub type.
+  string entry_sub_type = 4 [(sebuf.http.field_examples) = { values: ["DP"] }];
+
+  // Human readable description of the activity.
+  string description = 5 [(sebuf.http.field_examples) = { values: ["DT269010605 deposit"] }];
+
+  // Net cash amount of the activity.
+  double net_amount = 6 [(sebuf.http.field_examples) = { values: ["40"] }];
+
+  // Quantity of shares or units.
+  double qty = 7 [(sebuf.http.field_examples) = { values: ["0"] }];
+
+  // Per share amount.
+  double per_share_amount = 8;
+
+  // Price, sent as a string or null.
+  string price = 9 [(sebuf.http.field_examples) = { values: ["255"] }];
+
+  // Symbol of the asset.
+  string symbol = 10 [(sebuf.http.field_examples) = { values: ["AAPL260904C00327500"] }];
+
+  // CUSIP of the asset.
+  string cusip = 11 [(sebuf.http.field_examples) = { values: ["023135106"] }];
+
+  // Status of the activity.
+  string status = 12 [(sebuf.http.field_examples) = { values: ["executed"] }];
+
+  // Currency of the activity.
+  string currency = 13 [(sebuf.http.field_examples) = { values: ["USD"] }];
+
+  // ID linking activities that share a sibling relationship.
+  string group_id = 14 [(sebuf.http.field_examples) = { values: ["dccb8a7c-026e-45dd-bd17-b2655c2c5095"] }];
+
+  // Order UUID the activity originates from.
+  string order_id = 15;
+
+  // Execution UUID the activity originates from.
+  string execution_id = 16;
+
+  // Date the activity was booked (format: YYYY-MM-DD).
+  string system_date = 17 [(sebuf.http.field_examples) = { values: ["2026-09-01"] }];
+
+  // Date the activity settles (format: YYYY-MM-DD).
+  string settle_date = 18 [(sebuf.http.field_examples) = { values: ["2026-09-01"] }];
+
+  // Timestamp of the event.
+  string at = 19 [(sebuf.http.field_examples) = { values: ["2026-09-01T08:23:35.748617Z"] }];
+
+  // Integer-based event ID.
+  int64 event_id = 20 [(sebuf.http.field_examples) = { values: ["36373146"] }, (sebuf.http.int64_encoding) = INT64_ENCODING_NUMBER];
+
+  // ULID-based event ID, used to resume a stream.
+  string event_ulid = 21 [(sebuf.http.field_examples) = { values: ["01M1E122J43G4TFNW408G8MP6A"] }];
+
+  // Swap rate applied to the activity.
+  double swap_rate = 22;
+}

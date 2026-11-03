@@ -1484,7 +1484,7 @@ func testSubscribeNTAEvents(ctx context.Context, client *broker.Client) TestResu
 	timeoutCtx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
 
-	_, err := client.V1.SubscribeNTAEvents(timeoutCtx, &broker.SubscribeNTAEventsRequest{})
+	stream, err := client.V1.SubscribeNTAEvents(timeoutCtx, &broker.SubscribeNTAEventsRequest{})
 	if err != nil {
 		// Timeout or context deadline is expected
 		if strings.Contains(err.Error(), "context deadline") || strings.Contains(err.Error(), "timeout") {
@@ -1496,6 +1496,8 @@ func testSubscribeNTAEvents(ctx context.Context, client *broker.Client) TestResu
 		printResult(result)
 		return result
 	}
+	defer stream.Close()
+
 	result.Success = true
 	result.Details = "Connected to NTA events stream"
 	printResult(result)

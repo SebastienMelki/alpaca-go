@@ -909,12 +909,15 @@ service BrokerService {
     };
   }
 
-  // SubscribeNTAEvents subscribes to non-trading activity events.
+  // SubscribeNTAEvents subscribes to non-trading activity events via SSE.
+  // Streams one NTAEvent per activity: journals, deposits, withdrawals, fees,
+  // corporate actions and option lifecycle events.
   // GET /v1/events/nta
-  rpc SubscribeNTAEvents(SubscribeNTAEventsRequest) returns (SubscribeSSEResponse) {
+  rpc SubscribeNTAEvents(SubscribeNTAEventsRequest) returns (NTAEvent) {
     option (sebuf.http.config) = {
       path: "/events/nta"
       method: HTTP_METHOD_GET
+      stream: true
     };
   }
 
