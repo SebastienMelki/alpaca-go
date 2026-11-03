@@ -869,3 +869,142 @@ func validateTimeFormat(value string) error {
 	}
 	return nil
 }
+
+// SSESender allows sending Server-Sent Events to the client.
+type SSESender interface {
+	// Send sends a single SSE event with the given data.
+	// The data will be serialized as JSON in the SSE "data:" field.
+	Send(event proto.Message) error
+	// SendWithEvent sends an SSE event with a named event type.
+	SendWithEvent(eventType string, event proto.Message) error
+	// Flush ensures all buffered data is sent to the client.
+	// Called automatically after each Send/SendWithEvent.
+	Flush()
+}
+
+// sseSender implements SSESender using http.ResponseWriter and http.Flusher.
+// It tracks whether the response has been committed (any flush) to support proper error handling.
+type sseSender struct {
+	w           http.ResponseWriter
+	flusher     http.Flusher
+	committed   bool
+	marshalOpts protojson.MarshalOptions
+}
+
+func (s *sseSender) Send(event proto.Message) error {
+	data, err := marshalJSONWithOpts(event, s.marshalOpts)
+	if err != nil {
+		return fmt.Errorf("failed to marshal SSE event: %w", err)
+	}
+	_, writeErr := fmt.Fprintf(s.w, "data: %s\n\n", data)
+	if writeErr != nil {
+		return writeErr
+	}
+	s.committed = true
+	s.flusher.Flush()
+	return nil
+}
+
+func (s *sseSender) SendWithEvent(eventType string, event proto.Message) error {
+	data, err := marshalJSONWithOpts(event, s.marshalOpts)
+	if err != nil {
+		return fmt.Errorf("failed to marshal SSE event: %w", err)
+	}
+	_, writeErr := fmt.Fprintf(s.w, "event: %s\ndata: %s\n\n", eventType, data)
+	if writeErr != nil {
+		return writeErr
+	}
+	s.committed = true
+	s.flusher.Flush()
+	return nil
+}
+
+func (s *sseSender) Flush() {
+	s.committed = true
+	s.flusher.Flush()
+}
+
+// SSEHandler creates an HTTP handler for SSE streaming methods.
+func SSEHandler[Req any](
+	handler func(context.Context, *Req, SSESender) error,
+	errorHandler ErrorHandler,
+	serviceHeaders, methodHeaders []*sebufhttp.Header,
+	pathParams []PathParamConfig,
+	queryParams []QueryParamConfig,
+	httpMethod string,
+	marshalOpts protojson.MarshalOptions,
+) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Validate headers
+		if validationErr := validateHeaders(r, serviceHeaders, methodHeaders); validationErr != nil {
+			writeErrorWithHandler(w, r, validationErr, errorHandler, marshalOpts)
+			return
+		}
+
+		req := new(Req)
+
+		// Bind body FIRST (protojson.Unmarshal calls proto.Reset, which would wipe path/query values)
+		if httpMethod == "POST" || httpMethod == "PUT" || httpMethod == "PATCH" {
+			if err := bindDataBasedOnContentType(r, req); err != nil {
+				validationErr := &sebufhttp.ValidationError{
+					Violations: []*sebufhttp.FieldViolation{
+						{
+							Field:       "body",
+							Description: fmt.Sprintf("failed to parse request body: %v", err),
+						},
+					},
+				}
+				writeErrorWithHandler(w, r, validationErr, errorHandler, marshalOpts)
+				return
+			}
+		}
+
+		// Bind path and query parameters AFTER body, so URL-stated values always win
+		if msg, ok := any(req).(proto.Message); ok {
+			if err := bindPathParams(r, msg, pathParams); err != nil {
+				writeErrorWithHandler(w, r, err, errorHandler, marshalOpts)
+				return
+			}
+			if err := bindQueryParams(r, msg, queryParams); err != nil {
+				writeErrorWithHandler(w, r, err, errorHandler, marshalOpts)
+				return
+			}
+		}
+
+		// Validate request body
+		if msg, ok := any(req).(proto.Message); ok {
+			if err := ValidateMessage(msg); err != nil {
+				writeErrorWithHandler(w, r, convertProtovalidateError(err), errorHandler, marshalOpts)
+				return
+			}
+		}
+
+		// Check Flusher support
+		flusher, ok := w.(http.Flusher)
+		if !ok {
+			http.Error(w, "streaming not supported", http.StatusInternalServerError)
+			return
+		}
+
+		// Set SSE headers
+		w.Header().Set("Content-Type", "text/event-stream")
+		w.Header().Set("Cache-Control", "no-cache")
+		w.Header().Set("Connection", "keep-alive")
+
+		sender := &sseSender{w: w, flusher: flusher, marshalOpts: marshalOpts}
+
+		// Call handler -- blocks until stream completes or context cancels
+		if err := handler(r.Context(), req, sender); err != nil {
+			if !sender.committed {
+				// No events sent yet -- headers not flushed to client, so we can
+				// still send a proper HTTP error response.
+				writeErrorWithHandler(w, r, err, errorHandler, marshalOpts)
+			} else {
+				// Events already sent -- HTTP 200 and SSE headers are committed.
+				// Send an SSE error event instead.
+				fmt.Fprintf(w, "event: error\ndata: %q\n\n", err.Error())
+				flusher.Flush()
+			}
+		}
+	})
+}

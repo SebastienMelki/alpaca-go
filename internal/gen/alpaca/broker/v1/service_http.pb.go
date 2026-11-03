@@ -95,7 +95,7 @@ type BrokerServiceServer interface {
 	SubscribeTradeEvents(context.Context, *SubscribeTradeEventsRequest) (*SubscribeSSEResponse, error)
 	SubscribeTransferEvents(context.Context, *SubscribeTransferEventsRequest) (*SubscribeSSEResponse, error)
 	SubscribeJournalEvents(context.Context, *SubscribeJournalEventsRequest) (*SubscribeSSEResponse, error)
-	SubscribeNTAEvents(context.Context, *SubscribeNTAEventsRequest) (*SubscribeSSEResponse, error)
+	SubscribeNTAEvents(context.Context, *SubscribeNTAEventsRequest, SSESender) error
 	GetCIPInfo(context.Context, *GetCIPInfoRequest) (*CIPInfo, error)
 	UpdateCIPInfo(context.Context, *UpdateCIPInfoRequest) (*CIPInfo, error)
 	CreateOnfidoApplicant(context.Context, *CreateOnfidoApplicantRequest) (*OnfidoApplicant, error)
@@ -887,10 +887,10 @@ func RegisterBrokerServiceServer(server BrokerServiceServer, opts ...ServerOptio
 	config.mux.Handle("GET /v1/events/journals/status", subscribeJournalEventsHandler)
 
 	methodHeaders = getSubscribeNTAEventsHeaders()
-	subscribeNTAEventsHandler := BindingMiddleware[SubscribeNTAEventsRequest](
-		genericHandler(server.SubscribeNTAEvents, config.errorHandler, config.marshalOpts), serviceHeaders, methodHeaders,
+	subscribeNTAEventsHandler := SSEHandler[SubscribeNTAEventsRequest](
+		server.SubscribeNTAEvents, config.errorHandler, serviceHeaders, methodHeaders,
 		subscribeNTAEventsPathParams, subscribeNTAEventsQueryParams,
-		"GET", config.errorHandler, config.marshalOpts,
+		"GET", config.marshalOpts,
 	)
 
 	config.mux.Handle("GET /v1/events/nta", subscribeNTAEventsHandler)

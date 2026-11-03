@@ -4226,7 +4226,9 @@ paths:
                 - BrokerService
             summary: SubscribeNTAEvents
             description: |-
-                SubscribeNTAEvents subscribes to non-trading activity events.
+                SubscribeNTAEvents subscribes to non-trading activity events via SSE.
+                 Streams one NTAEvent per activity: journals, deposits, withdrawals, fees,
+                 corporate actions and option lifecycle events.
                  GET /v1/events/nta
             operationId: SubscribeNTAEvents
             parameters:
@@ -4295,11 +4297,14 @@ paths:
                     type: string
             responses:
                 "200":
-                    description: Successful response
+                    description: Server-Sent Events stream
                     content:
-                        application/json:
+                        text/event-stream:
                             schema:
-                                $ref: '#/components/schemas/SubscribeSSEResponse'
+                                type: string
+                                description: SSE stream. Each event contains a JSON-encoded NTAEvent in the data field.
+                    x-sse-event-schema:
+                        $ref: '#/components/schemas/NTAEvent'
                 "400":
                     description: Validation error
                     content:
@@ -11401,6 +11406,142 @@ components:
                     description: ID used to link activities who share a sibling relationship.
                     example: f47ac10b-58cc-4372-a567-0e02b2c3d479
             description: SubscribeNTAEventsRequest is the request to subscribe to non-trading activity events.
+        NTAEvent:
+            type: object
+            properties:
+                id:
+                    type: string
+                    examples:
+                        - 0ee89bcf-a004-4ed0-b0c5-af44e057f185
+                    description: Activity UUID.
+                    example: 0ee89bcf-a004-4ed0-b0c5-af44e057f185
+                accountId:
+                    type: string
+                    examples:
+                        - 517dc9b6-1e23-4ce0-98b5-25bce762fa56
+                    description: Account UUID the activity belongs to.
+                    example: 517dc9b6-1e23-4ce0-98b5-25bce762fa56
+                entryType:
+                    type: string
+                    examples:
+                        - JNLC
+                    description: Activity type, such as JNLC, CSD, OPEXP or FEE.
+                    example: JNLC
+                entrySubType:
+                    type: string
+                    examples:
+                        - DP
+                    description: Activity sub type.
+                    example: DP
+                description:
+                    type: string
+                    examples:
+                        - DT269010605 deposit
+                    description: Human readable description of the activity.
+                    example: DT269010605 deposit
+                netAmount:
+                    type: number
+                    examples:
+                        - 40
+                    format: double
+                    description: Net cash amount of the activity.
+                    example: 40
+                qty:
+                    type: number
+                    examples:
+                        - 0
+                    format: double
+                    description: Quantity of shares or units.
+                    example: 0
+                perShareAmount:
+                    type: number
+                    format: double
+                    description: Per share amount.
+                price:
+                    type: string
+                    examples:
+                        - "255"
+                    description: Price, sent as a string or null.
+                    example: "255"
+                symbol:
+                    type: string
+                    examples:
+                        - AAPL260904C00327500
+                    description: Symbol of the asset.
+                    example: AAPL260904C00327500
+                cusip:
+                    type: string
+                    examples:
+                        - "023135106"
+                    description: CUSIP of the asset.
+                    example: "023135106"
+                status:
+                    type: string
+                    examples:
+                        - executed
+                    description: Status of the activity.
+                    example: executed
+                currency:
+                    type: string
+                    examples:
+                        - USD
+                    description: Currency of the activity.
+                    example: USD
+                groupId:
+                    type: string
+                    examples:
+                        - dccb8a7c-026e-45dd-bd17-b2655c2c5095
+                    description: ID linking activities that share a sibling relationship.
+                    example: dccb8a7c-026e-45dd-bd17-b2655c2c5095
+                orderId:
+                    type: string
+                    description: Order UUID the activity originates from.
+                executionId:
+                    type: string
+                    description: Execution UUID the activity originates from.
+                systemDate:
+                    type: string
+                    examples:
+                        - "2026-09-01"
+                    description: 'Date the activity was booked (format: YYYY-MM-DD).'
+                    example: "2026-09-01"
+                settleDate:
+                    type: string
+                    examples:
+                        - "2026-09-01"
+                    description: 'Date the activity settles (format: YYYY-MM-DD).'
+                    example: "2026-09-01"
+                at:
+                    type: string
+                    examples:
+                        - "2026-09-01T08:23:35.748617Z"
+                    description: Timestamp of the event.
+                    example: "2026-09-01T08:23:35.748617Z"
+                eventId:
+                    type: integer
+                    examples:
+                        - 36373146
+                    format: int64
+                    description: 'Integer-based event ID.. Warning: Values > 2^53 may lose precision in JavaScript'
+                    example: 36373146
+                eventUlid:
+                    type: string
+                    examples:
+                        - 01M1E122J43G4TFNW408G8MP6A
+                    description: ULID-based event ID, used to resume a stream.
+                    example: 01M1E122J43G4TFNW408G8MP6A
+                swapRate:
+                    type: number
+                    format: double
+                    description: Swap rate applied to the activity.
+            description: |-
+                NTAEvent is a single non-trading activity streamed from GET /v1/events/nta.
+
+                 Numeric fields are double because the feed sends them as JSON numbers, except
+                 price, which the feed sends as a string or null. No field validators: this is
+                 an inbound payload, so a validator would reject real events rather than
+                 surface a bug. Unrecognised fields are handled by the client's
+                 DiscardUnknownFields setting.
         GetCIPInfoRequest:
             type: object
             properties:
@@ -11716,14 +11857,19 @@ components:
                         $ref: '#/components/schemas/Value'
                     description: Unordered map of dynamically typed values.
             description: |-
-                `Struct` represents a structured data value, consisting of fields
-                 which map to dynamically typed values. In some languages, `Struct`
-                 might be supported by a native representation. For example, in
-                 scripting languages like JS a struct is represented as an
-                 object. The details of that representation are described together
-                 with the proto support for the language.
+                Represents a JSON object.
 
-                 The JSON representation for `Struct` is JSON object.
+                 An unordered key-value map, intending to perfectly capture the semantics of a
+                 JSON object. This enables parsing any arbitrary JSON payload as a message
+                 field in ProtoJSON format.
+
+                 This follows RFC 8259 guidelines for interoperable JSON: notably this type
+                 cannot represent large Int64 values or `NaN`/`Infinity` numbers,
+                 since the JSON format generally does not support those values in its number
+                 type.
+
+                 If you do not intend to parse arbitrary JSON into your message, a custom
+                 typed message should be preferred instead of using this type.
         FieldsEntry:
             type: object
             properties:
@@ -11739,31 +11885,40 @@ components:
                     enum:
                         - NULL_VALUE
                     description: |-
-                        `NullValue` is a singleton enumeration to represent the null value for the
-                         `Value` type union.
+                        Represents a JSON `null`.
 
-                         The JSON representation for `NullValue` is JSON `null`.
+                         `NullValue` is a sentinel, using an enum with only one value to represent
+                         the null value for the `Value` type union.
+
+                         A field of type `NullValue` with any value other than `0` is considered
+                         invalid. Most ProtoJSON serializers will emit a Value with a `null_value` set
+                         as a JSON `null` regardless of the integer value, and so will round trip to
+                         a `0` value.
                 numberValue:
                     type: number
                     format: double
-                    description: Represents a double value.
+                    description: |-
+                        Represents a JSON number. Must not be `NaN`, `Infinity` or
+                         `-Infinity`, since those are not supported in JSON. This also cannot
+                         represent large Int64 values, since JSON format generally does not
+                         support them in its number type.
                 stringValue:
                     type: string
-                    description: Represents a string value.
+                    description: Represents a JSON string.
                 boolValue:
                     type: boolean
-                    description: Represents a boolean value.
+                    description: Represents a JSON boolean (`true` or `false` literal in JSON).
                 structValue:
                     $ref: '#/components/schemas/Struct'
                 listValue:
                     $ref: '#/components/schemas/ListValue'
             description: |-
-                `Value` represents a dynamically typed value which can be either
+                Represents a JSON value.
+
+                 `Value` represents a dynamically typed value which can be either
                  null, a number, a string, a boolean, a recursive struct value, or a
                  list of values. A producer of value is expected to set one of these
-                 variants. Absence of any variant indicates an error.
-
-                 The JSON representation for `Value` is JSON value.
+                 variants. Absence of any variant is an invalid state.
         ListValue:
             type: object
             properties:
@@ -11771,10 +11926,7 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/Value'
-            description: |-
-                `ListValue` is a wrapper around a repeated field of values.
-
-                 The JSON representation for `ListValue` is JSON array.
+            description: Represents a JSON array.
         CIPPhotoResult:
             type: object
             properties:

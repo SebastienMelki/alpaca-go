@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `TradeUpdateEventV2.reason` — Alpaca's top-level cause on trade-update events (`CORPORATE_ACTION` on `canceled`, `TOO_LATE_TO_CANCEL` on `order_cancel_rejected`/`order_replace_rejected`, `TRADE_BUST` on `trade_bust`, or free-form venue text). Empty when Alpaca sends none. Previously dropped on decode.
+- `NTAEvent` — typed non-trading-activity payload for `/v1/events/nta`, re-exported from `pkg/broker`. It carries every scalar field the feed sends, including `group_id` and `event_ulid`.
+
+### Changed
+- **Breaking:** `SubscribeNTAEvents` now streams: it returns `(*BrokerServiceEventStream[*NTAEvent], error)` rather than `(*SubscribeSSEResponse, error)`. `/v1/events/nta` is a live SSE feed, so the unary form could never return. Callers should range over the stream with `Next` and `Close` it.
 
 ## [1.12.1] - 2026-09-17
 

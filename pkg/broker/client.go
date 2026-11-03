@@ -541,6 +541,7 @@ type (
 	SubscribeTransferEventsRequest = brokerv1.SubscribeTransferEventsRequest
 	SubscribeJournalEventsRequest  = brokerv1.SubscribeJournalEventsRequest
 	SubscribeNTAEventsRequest      = brokerv1.SubscribeNTAEventsRequest
+	NTAEvent                       = brokerv1.NTAEvent
 )
 
 // =============================================================================
