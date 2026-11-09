@@ -4,6 +4,7 @@
 package brokerv1
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -118,7 +119,7 @@ type BrokerServiceClient interface {
 	SubscribeTradeEvents(ctx context.Context, req *SubscribeTradeEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error)
 	SubscribeTransferEvents(ctx context.Context, req *SubscribeTransferEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error)
 	SubscribeJournalEvents(ctx context.Context, req *SubscribeJournalEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error)
-	SubscribeNTAEvents(ctx context.Context, req *SubscribeNTAEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error)
+	SubscribeNTAEvents(ctx context.Context, req *SubscribeNTAEventsRequest, opts ...BrokerServiceCallOption) (*BrokerServiceEventStream[*NTAEvent], error)
 	GetCIPInfo(ctx context.Context, req *GetCIPInfoRequest, opts ...BrokerServiceCallOption) (*CIPInfo, error)
 	UpdateCIPInfo(ctx context.Context, req *UpdateCIPInfoRequest, opts ...BrokerServiceCallOption) (*CIPInfo, error)
 	CreateOnfidoApplicant(ctx context.Context, req *CreateOnfidoApplicantRequest, opts ...BrokerServiceCallOption) (*OnfidoApplicant, error)
@@ -253,6 +254,57 @@ func NewBrokerServiceClient(baseURL string, opts ...BrokerServiceClientOption) B
 	}
 
 	return c
+}
+
+// BrokerServiceEventStream reads Server-Sent Events from a streaming endpoint.
+type BrokerServiceEventStream[T proto.Message] struct {
+	resp                 *http.Response
+	reader               *bufio.Reader
+	err                  error
+	discardUnknownFields bool
+}
+
+// Next reads the next event from the stream.
+// Returns false when the stream ends or an error occurs.
+func (s *BrokerServiceEventStream[T]) Next(event T) bool {
+	for {
+		line, err := s.reader.ReadString('\n')
+		if err != nil {
+			if err != io.EOF {
+				s.err = err
+			}
+			return false
+		}
+		line = strings.TrimRight(line, "\r\n")
+		if !strings.HasPrefix(line, "data: ") {
+			continue
+		}
+		data := strings.TrimPrefix(line, "data: ")
+		opts := protojson.UnmarshalOptions{DiscardUnknown: s.discardUnknownFields}
+		var unmarshalErr error
+		if u, ok := any(event).(sebufUnmarshaler); ok {
+			unmarshalErr = u.UnmarshalJSONSebuf([]byte(data), opts)
+		} else if u, ok := any(event).(json.Unmarshaler); ok {
+			unmarshalErr = u.UnmarshalJSON([]byte(data))
+		} else {
+			unmarshalErr = opts.Unmarshal([]byte(data), event)
+		}
+		if unmarshalErr != nil {
+			s.err = fmt.Errorf("failed to unmarshal SSE event: %w", unmarshalErr)
+			return false
+		}
+		return true
+	}
+}
+
+// Err returns any error encountered during streaming.
+func (s *BrokerServiceEventStream[T]) Err() error {
+	return s.err
+}
+
+// Close closes the underlying HTTP response body.
+func (s *BrokerServiceEventStream[T]) Close() error {
+	return s.resp.Body.Close()
 }
 
 // CreateAccount calls the CreateAccount RPC.
@@ -6302,8 +6354,8 @@ func (c *brokerServiceClient) SubscribeJournalEvents(ctx context.Context, req *S
 	return result, nil
 }
 
-// SubscribeNTAEvents calls the SubscribeNTAEvents RPC.
-func (c *brokerServiceClient) SubscribeNTAEvents(ctx context.Context, req *SubscribeNTAEventsRequest, opts ...BrokerServiceCallOption) (*SubscribeSSEResponse, error) {
+// SubscribeNTAEvents calls the SubscribeNTAEvents SSE streaming RPC.
+func (c *brokerServiceClient) SubscribeNTAEvents(ctx context.Context, req *SubscribeNTAEventsRequest, opts ...BrokerServiceCallOption) (*BrokerServiceEventStream[*NTAEvent], error) {
 	callOpts := &brokerServiceCallOptions{}
 	for _, opt := range opts {
 		opt(callOpts)
@@ -6359,6 +6411,7 @@ func (c *brokerServiceClient) SubscribeNTAEvents(ctx context.Context, req *Subsc
 
 	// Set headers
 	httpReq.Header.Set("Content-Type", contentType)
+	httpReq.Header.Set("Accept", "text/event-stream")
 	for k, v := range c.defaultHeaders {
 		httpReq.Header.Set(k, v)
 	}
@@ -6371,32 +6424,27 @@ func (c *brokerServiceClient) SubscribeNTAEvents(ctx context.Context, req *Subsc
 	if err != nil {
 		return nil, fmt.Errorf("failed to execute request: %w", err)
 	}
-	defer resp.Body.Close()
-
-	// Read response body
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response body: %w", err)
-	}
 
 	// Check for error status codes
 	if resp.StatusCode >= 400 {
+		defer resp.Body.Close()
+		respBody, readErr := io.ReadAll(resp.Body)
+		if readErr != nil {
+			return nil, fmt.Errorf("failed to read error response: %w", readErr)
+		}
 		return nil, c.handleErrorResponse(resp.StatusCode, respBody, contentType)
 	}
 
-	// Resolve discardUnknownFields: per-call option overrides client default
 	discardUnknown := c.discardUnknownFields
 	if callOpts.discardUnknownFields != nil {
 		discardUnknown = *callOpts.discardUnknownFields
 	}
 
-	// Unmarshal response
-	result := &SubscribeSSEResponse{}
-	if err := c.unmarshalResponse(respBody, result, contentType, discardUnknown); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
-	}
-
-	return result, nil
+	return &BrokerServiceEventStream[*NTAEvent]{
+		resp:                 resp,
+		reader:               bufio.NewReader(resp.Body),
+		discardUnknownFields: discardUnknown,
+	}, nil
 }
 
 // GetCIPInfo calls the GetCIPInfo RPC.

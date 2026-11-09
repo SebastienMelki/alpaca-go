@@ -541,6 +541,7 @@ type (
 	SubscribeTransferEventsRequest = brokerv1.SubscribeTransferEventsRequest
 	SubscribeJournalEventsRequest  = brokerv1.SubscribeJournalEventsRequest
 	SubscribeNTAEventsRequest      = brokerv1.SubscribeNTAEventsRequest
+	NTAEvent                       = brokerv1.NTAEvent
 )
 
 // =============================================================================
@@ -600,3 +601,7 @@ var (
 // EventStream is a generic type alias for reading Server-Sent Events from v2 streaming endpoints.
 // Use Next() to read events, Err() to check for errors, and Close() to release the connection.
 type EventStream[T proto.Message] = brokerv2.BrokerV2ServiceEventStream[T]
+
+// V1EventStream is a generic type alias for reading Server-Sent Events from v1 streaming endpoints.
+// Use Next() to read events, Err() to check for errors, and Close() to release the connection.
+type V1EventStream[T proto.Message] = brokerv1.BrokerServiceEventStream[T]

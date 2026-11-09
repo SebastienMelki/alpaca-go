@@ -1135,6 +1135,247 @@ func (x *SubscribeNTAEventsRequest) GetGroupId() string {
 	return ""
 }
 
+// NTAEvent is a single non-trading activity streamed from GET /v1/events/nta.
+//
+// Numeric fields are double because the feed sends them as JSON numbers, except
+// price, which the feed sends as a string or null. No field validators: this is
+// an inbound payload, so a validator would reject real events rather than
+// surface a bug. Unrecognised fields are handled by the client's
+// DiscardUnknownFields setting.
+type NTAEvent struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Activity UUID.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Account UUID the activity belongs to.
+	AccountId string `protobuf:"bytes,2,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	// Activity type, such as JNLC, CSD, OPEXP or FEE.
+	EntryType string `protobuf:"bytes,3,opt,name=entry_type,json=entryType,proto3" json:"entry_type,omitempty"`
+	// Activity sub type.
+	EntrySubType string `protobuf:"bytes,4,opt,name=entry_sub_type,json=entrySubType,proto3" json:"entry_sub_type,omitempty"`
+	// Human readable description of the activity.
+	Description string `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	// Net cash amount of the activity.
+	NetAmount float64 `protobuf:"fixed64,6,opt,name=net_amount,json=netAmount,proto3" json:"net_amount,omitempty"`
+	// Quantity of shares or units.
+	Qty float64 `protobuf:"fixed64,7,opt,name=qty,proto3" json:"qty,omitempty"`
+	// Per share amount.
+	PerShareAmount float64 `protobuf:"fixed64,8,opt,name=per_share_amount,json=perShareAmount,proto3" json:"per_share_amount,omitempty"`
+	// Price, sent as a string or null.
+	Price string `protobuf:"bytes,9,opt,name=price,proto3" json:"price,omitempty"`
+	// Symbol of the asset.
+	Symbol string `protobuf:"bytes,10,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	// CUSIP of the asset.
+	Cusip string `protobuf:"bytes,11,opt,name=cusip,proto3" json:"cusip,omitempty"`
+	// Status of the activity.
+	Status string `protobuf:"bytes,12,opt,name=status,proto3" json:"status,omitempty"`
+	// Currency of the activity.
+	Currency string `protobuf:"bytes,13,opt,name=currency,proto3" json:"currency,omitempty"`
+	// ID linking activities that share a sibling relationship.
+	GroupId string `protobuf:"bytes,14,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
+	// Order UUID the activity originates from.
+	OrderId string `protobuf:"bytes,15,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	// Execution UUID the activity originates from.
+	ExecutionId string `protobuf:"bytes,16,opt,name=execution_id,json=executionId,proto3" json:"execution_id,omitempty"`
+	// Date the activity was booked (format: YYYY-MM-DD).
+	SystemDate string `protobuf:"bytes,17,opt,name=system_date,json=systemDate,proto3" json:"system_date,omitempty"`
+	// Date the activity settles (format: YYYY-MM-DD).
+	SettleDate string `protobuf:"bytes,18,opt,name=settle_date,json=settleDate,proto3" json:"settle_date,omitempty"`
+	// Timestamp of the event.
+	At string `protobuf:"bytes,19,opt,name=at,proto3" json:"at,omitempty"`
+	// Integer-based event ID.
+	EventId int64 `protobuf:"varint,20,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
+	// ULID-based event ID, used to resume a stream.
+	EventUlid string `protobuf:"bytes,21,opt,name=event_ulid,json=eventUlid,proto3" json:"event_ulid,omitempty"`
+	// Swap rate applied to the activity.
+	SwapRate      float64 `protobuf:"fixed64,22,opt,name=swap_rate,json=swapRate,proto3" json:"swap_rate,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NTAEvent) Reset() {
+	*x = NTAEvent{}
+	mi := &file_alpaca_broker_v1_sse_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NTAEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NTAEvent) ProtoMessage() {}
+
+func (x *NTAEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_alpaca_broker_v1_sse_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NTAEvent.ProtoReflect.Descriptor instead.
+func (*NTAEvent) Descriptor() ([]byte, []int) {
+	return file_alpaca_broker_v1_sse_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *NTAEvent) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetEntryType() string {
+	if x != nil {
+		return x.EntryType
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetEntrySubType() string {
+	if x != nil {
+		return x.EntrySubType
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetNetAmount() float64 {
+	if x != nil {
+		return x.NetAmount
+	}
+	return 0
+}
+
+func (x *NTAEvent) GetQty() float64 {
+	if x != nil {
+		return x.Qty
+	}
+	return 0
+}
+
+func (x *NTAEvent) GetPerShareAmount() float64 {
+	if x != nil {
+		return x.PerShareAmount
+	}
+	return 0
+}
+
+func (x *NTAEvent) GetPrice() string {
+	if x != nil {
+		return x.Price
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetSymbol() string {
+	if x != nil {
+		return x.Symbol
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetCusip() string {
+	if x != nil {
+		return x.Cusip
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetGroupId() string {
+	if x != nil {
+		return x.GroupId
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetOrderId() string {
+	if x != nil {
+		return x.OrderId
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetExecutionId() string {
+	if x != nil {
+		return x.ExecutionId
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetSystemDate() string {
+	if x != nil {
+		return x.SystemDate
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetSettleDate() string {
+	if x != nil {
+		return x.SettleDate
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetAt() string {
+	if x != nil {
+		return x.At
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetEventId() int64 {
+	if x != nil {
+		return x.EventId
+	}
+	return 0
+}
+
+func (x *NTAEvent) GetEventUlid() string {
+	if x != nil {
+		return x.EventUlid
+	}
+	return ""
+}
+
+func (x *NTAEvent) GetSwapRate() float64 {
+	if x != nil {
+		return x.SwapRate
+	}
+	return 0
+}
+
 var File_alpaca_broker_v1_sse_proto protoreflect.FileDescriptor
 
 const file_alpaca_broker_v1_sse_proto_rawDesc = "" +
@@ -1378,7 +1619,60 @@ const file_alpaca_broker_v1_sse_proto_rawDesc = "" +
 	"\bgroup_id\x18\t \x01(\tB8\xba\xb5\x18&\n" +
 	"$f47ac10b-58cc-4372-a567-0e02b2c3d479µ\x18\n" +
 	"\n" +
-	"\bgroup_idR\agroupIdB\xce\x01\n" +
+	"\bgroup_idR\agroupId\"\x8c\b\n" +
+	"\bNTAEvent\x12:\n" +
+	"\x02id\x18\x01 \x01(\tB*\xba\xb5\x18&\n" +
+	"$0ee89bcf-a004-4ed0-b0c5-af44e057f185R\x02id\x12I\n" +
+	"\n" +
+	"account_id\x18\x02 \x01(\tB*\xba\xb5\x18&\n" +
+	"$517dc9b6-1e23-4ce0-98b5-25bce762fa56R\taccountId\x12)\n" +
+	"\n" +
+	"entry_type\x18\x03 \x01(\tB\n" +
+	"\xba\xb5\x18\x06\n" +
+	"\x04JNLCR\tentryType\x12.\n" +
+	"\x0eentry_sub_type\x18\x04 \x01(\tB\b\xba\xb5\x18\x04\n" +
+	"\x02DPR\fentrySubType\x12;\n" +
+	"\vdescription\x18\x05 \x01(\tB\x19\xba\xb5\x18\x15\n" +
+	"\x13DT269010605 depositR\vdescription\x12'\n" +
+	"\n" +
+	"net_amount\x18\x06 \x01(\x01B\b\xba\xb5\x18\x04\n" +
+	"\x0240R\tnetAmount\x12\x19\n" +
+	"\x03qty\x18\a \x01(\x01B\a\xba\xb5\x18\x03\n" +
+	"\x010R\x03qty\x12(\n" +
+	"\x10per_share_amount\x18\b \x01(\x01R\x0eperShareAmount\x12\x1f\n" +
+	"\x05price\x18\t \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"\x03255R\x05price\x121\n" +
+	"\x06symbol\x18\n" +
+	" \x01(\tB\x19\xba\xb5\x18\x15\n" +
+	"\x13AAPL260904C00327500R\x06symbol\x12%\n" +
+	"\x05cusip\x18\v \x01(\tB\x0f\xba\xb5\x18\v\n" +
+	"\t023135106R\x05cusip\x12&\n" +
+	"\x06status\x18\f \x01(\tB\x0e\xba\xb5\x18\n" +
+	"\n" +
+	"\bexecutedR\x06status\x12%\n" +
+	"\bcurrency\x18\r \x01(\tB\t\xba\xb5\x18\x05\n" +
+	"\x03USDR\bcurrency\x12E\n" +
+	"\bgroup_id\x18\x0e \x01(\tB*\xba\xb5\x18&\n" +
+	"$dccb8a7c-026e-45dd-bd17-b2655c2c5095R\agroupId\x12\x19\n" +
+	"\border_id\x18\x0f \x01(\tR\aorderId\x12!\n" +
+	"\fexecution_id\x18\x10 \x01(\tR\vexecutionId\x121\n" +
+	"\vsystem_date\x18\x11 \x01(\tB\x10\xba\xb5\x18\f\n" +
+	"\n" +
+	"2026-09-01R\n" +
+	"systemDate\x121\n" +
+	"\vsettle_date\x18\x12 \x01(\tB\x10\xba\xb5\x18\f\n" +
+	"\n" +
+	"2026-09-01R\n" +
+	"settleDate\x121\n" +
+	"\x02at\x18\x13 \x01(\tB!\xba\xb5\x18\x1d\n" +
+	"\x1b2026-09-01T08:23:35.748617ZR\x02at\x12-\n" +
+	"\bevent_id\x18\x14 \x01(\x03B\x12\xba\xb5\x18\n" +
+	"\n" +
+	"\b36373146е\x18\x02R\aeventId\x12?\n" +
+	"\n" +
+	"event_ulid\x18\x15 \x01(\tB \xba\xb5\x18\x1c\n" +
+	"\x1a01M1E122J43G4TFNW408G8MP6AR\teventUlid\x12\x1b\n" +
+	"\tswap_rate\x18\x16 \x01(\x01R\bswapRateB\xce\x01\n" +
 	"\x14com.alpaca.broker.v1B\bSseProtoP\x01ZJgithub.com/sebastienmelki/alpaca-go/internal/gen/alpaca/broker/v1;brokerv1\xa2\x02\x03ABX\xaa\x02\x10Alpaca.Broker.V1\xca\x02\x10Alpaca\\Broker\\V1\xe2\x02\x1cAlpaca\\Broker\\V1\\GPBMetadata\xea\x02\x12Alpaca::Broker::V1b\x06proto3"
 
 var (
@@ -1393,7 +1687,7 @@ func file_alpaca_broker_v1_sse_proto_rawDescGZIP() []byte {
 	return file_alpaca_broker_v1_sse_proto_rawDescData
 }
 
-var file_alpaca_broker_v1_sse_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_alpaca_broker_v1_sse_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_alpaca_broker_v1_sse_proto_goTypes = []any{
 	(*SSEEvent)(nil),                       // 0: alpaca.broker.v1.SSEEvent
 	(*AccountUpdatedEvent)(nil),            // 1: alpaca.broker.v1.AccountUpdatedEvent
@@ -1407,6 +1701,7 @@ var file_alpaca_broker_v1_sse_proto_goTypes = []any{
 	(*SubscribeTransferEventsRequest)(nil), // 9: alpaca.broker.v1.SubscribeTransferEventsRequest
 	(*SubscribeJournalEventsRequest)(nil),  // 10: alpaca.broker.v1.SubscribeJournalEventsRequest
 	(*SubscribeNTAEventsRequest)(nil),      // 11: alpaca.broker.v1.SubscribeNTAEventsRequest
+	(*NTAEvent)(nil),                       // 12: alpaca.broker.v1.NTAEvent
 }
 var file_alpaca_broker_v1_sse_proto_depIdxs = []int32{
 	0, // 0: alpaca.broker.v1.SubscribeSSEResponse.events:type_name -> alpaca.broker.v1.SSEEvent
@@ -1428,7 +1723,7 @@ func file_alpaca_broker_v1_sse_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_alpaca_broker_v1_sse_proto_rawDesc), len(file_alpaca_broker_v1_sse_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
